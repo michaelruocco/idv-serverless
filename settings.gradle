@@ -1,0 +1,4 @@
+rootProject.name = 'idv'
+
+include 'app:identity'
+
