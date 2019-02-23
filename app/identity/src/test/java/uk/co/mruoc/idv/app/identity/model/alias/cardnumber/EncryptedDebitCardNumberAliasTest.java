@@ -9,7 +9,7 @@ public class EncryptedDebitCardNumberAliasTest {
 
     private final String VALUE = "NMSADNMj3r2k332lhdasdasaSANdsamdaskh";
 
-    private final CardNumberAlias alias = new EncryptedCreditCardNumberAlias(VALUE);
+    private final CardNumberAlias alias = new EncryptedDebitCardNumberAlias(VALUE);
 
     @Test
     public void shouldReturnValue() {
@@ -18,7 +18,7 @@ public class EncryptedDebitCardNumberAliasTest {
 
     @Test
     public void shouldHaveCorrectType() {
-        assertThat(alias.getType()).isEqualTo(AliasType.CREDIT_CARD_NUMBER);
+        assertThat(alias.getType()).isEqualTo(AliasType.DEBIT_CARD_NUMBER);
     }
 
     @Test
@@ -31,4 +31,12 @@ public class EncryptedDebitCardNumberAliasTest {
         assertThat(alias.hasFormat(SecureAliasFormat.ENCRYPTED)).isTrue();
     }
 
+    @Test
+    public void shouldPrintDetails() {
+        assertThat(alias.toString()).isEqualTo("EncryptedDebitCardNumberAlias" +
+                "(super=DebitCardNumberAlias" +
+                "(super=CardNumberAlias" +
+                "(super=AbstractAlias" +
+                "(type=DEBIT_CARD_NUMBER, value=NMSADNMj3r2k332lhdasdasaSANdsamdaskh), format=ENCRYPTED)))");
+    }
 }

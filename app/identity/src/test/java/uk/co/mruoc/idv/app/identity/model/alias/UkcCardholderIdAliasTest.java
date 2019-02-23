@@ -25,4 +25,10 @@ public class UkcCardholderIdAliasTest {
         assertThat(alias.isCardNumber()).isFalse();
     }
 
+    @Test
+    public void shouldPrintDetails() {
+        assertThat(alias.toString()).isEqualTo("UkcCardholderIdAlias" +
+                "(super=AbstractAlias(type=UKC_CARDHOLDER_ID, value=12345678))");
+    }
+
 }

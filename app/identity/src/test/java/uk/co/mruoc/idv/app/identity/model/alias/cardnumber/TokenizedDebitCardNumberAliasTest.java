@@ -30,4 +30,13 @@ public class TokenizedDebitCardNumberAliasTest  {
     public void isTokenized() {
         assertThat(alias.hasFormat(SecureAliasFormat.TOKENIZED)).isTrue();
     }
+
+    @Test
+    public void shouldPrintDetails() {
+        assertThat(alias.toString()).isEqualTo("TokenizedDebitCardNumberAlias" +
+                "(super=DebitCardNumberAlias" +
+                "(super=CardNumberAlias" +
+                "(super=AbstractAlias" +
+                "(type=DEBIT_CARD_NUMBER, value=4320432489138001), format=TOKENIZED)))");
+    }
 }

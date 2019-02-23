@@ -6,6 +6,7 @@ import uk.co.mruoc.idv.app.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.app.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.app.identity.model.alias.UkcCardholderIdAlias;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +24,26 @@ public class IdentityTest {
     @Test
     public void cannotCreateIdentityWithMoreThanOneIdvId() {
         final Throwable thrown = catchThrowable(() -> Identity.withAliases(new IdvIdAlias(), new IdvIdAlias()));
+
+        assertThat(thrown).isInstanceOf(Identity.IdentityMustHaveExactlyOneIdvIdException.class);
+    }
+
+    @Test
+    public void cannotAddMoreThanOneIdvId() {
+        final Alias idvId = new IdvIdAlias();
+        final Identity identity = Identity.withAliases(idvId);
+
+        final Throwable thrown = catchThrowable(() -> identity.addAliases(new IdvIdAlias()));
+
+        assertThat(thrown).isInstanceOf(Identity.IdentityMustHaveExactlyOneIdvIdException.class);
+    }
+
+    @Test
+    public void cannotRemoveIdvId() {
+        final Alias idvId = new IdvIdAlias();
+        final Identity identity = Identity.withAliases(idvId);
+
+        final Throwable thrown = catchThrowable(() -> identity.removeAliases(AliasType.IDV_ID));
 
         assertThat(thrown).isInstanceOf(Identity.IdentityMustHaveExactlyOneIdvIdException.class);
     }
@@ -144,16 +165,34 @@ public class IdentityTest {
     }
 
     @Test
-    public void shouldThrowExceptionIfAliasTypeNotFound() {
-        final Alias idvId = new IdvIdAlias();
-        final Identity identity = Identity.withAliases(idvId);
-        final String expectedMessage = String.format("Identity(aliases=[AbstractAlias(type=IDV_ID, value=%s)]) does not have alias of type [UKC_CARDHOLDER_ID]", idvId.getValue());
+    public void shouldReturnEmptyCollectionIfAliasOfTypeNotFound() {
+        final Identity identity = Identity.withAliases(new IdvIdAlias());
 
-        final Throwable thrown = catchThrowable(() -> identity.getAlias(AliasType.UKC_CARDHOLDER_ID));
+        final Collection<Alias> aliases = identity.getAliasesByType(AliasType.UKC_CARDHOLDER_ID);
 
-        assertThat(thrown)
-                .isInstanceOf(Identity.IdentityAliasOfTypeNotFoundException.class)
-                .hasMessage(expectedMessage);
+        assertThat(aliases).isEmpty();
+    }
+
+    @Test
+    public void shouldRemoveAlias() {
+        final Identity identity = Identity.withAliases(new IdvIdAlias(), new UkcCardholderIdAlias("12345678"));
+
+        final Identity identityWithoutCardholderId = identity.removeAliases(AliasType.UKC_CARDHOLDER_ID);
+
+        assertThat(identityWithoutCardholderId.hasAlias(AliasType.IDV_ID)).isTrue();
+        assertThat(identityWithoutCardholderId.hasAlias(AliasType.UKC_CARDHOLDER_ID)).isFalse();
+    }
+
+    @Test
+    public void shouldPrintAllAliases() {
+        final Alias idvId = new IdvIdAlias(UUID.fromString("786fa43d-6bcd-4a0c-ab7e-21348eb77faf"));
+        final Identity identity = Identity.withAliases(idvId, new UkcCardholderIdAlias("12345678"));
+
+        final String value = identity.toString();
+
+        assertThat(value).isEqualTo("Identity(aliases=Aliases(aliases=" +
+                "[IdvIdAlias(super=AbstractAlias(type=IDV_ID, value=786fa43d-6bcd-4a0c-ab7e-21348eb77faf)), " +
+                "UkcCardholderIdAlias(super=AbstractAlias(type=UKC_CARDHOLDER_ID, value=12345678))]))");
     }
 
 }

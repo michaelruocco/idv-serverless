@@ -40,4 +40,12 @@ public class IdvIdAliasTest {
         assertThat(randomIdvId.getValue()).isNotNull();
     }
 
+    @Test
+    public void shouldPrintDetails() {
+        final String expectedValue = String.format("IdvIdAlias" +
+                "(super=AbstractAlias(type=IDV_ID, value=%s))", VALUE.toString());
+
+        assertThat(alias.toString()).isEqualTo(expectedValue);
+    }
+
 }

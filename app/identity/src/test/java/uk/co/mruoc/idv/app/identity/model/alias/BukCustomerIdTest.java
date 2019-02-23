@@ -25,4 +25,10 @@ public class BukCustomerIdTest {
         assertThat(alias.isCardNumber()).isFalse();
     }
 
+    @Test
+    public void shouldPrintDetails() {
+        assertThat(alias.toString()).isEqualTo("BukCustomerId" +
+                "(super=AbstractAlias(type=BUK_CUSTOMER_ID, value=87654321))");
+    }
+
 }

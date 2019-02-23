@@ -1,10 +1,8 @@
 package uk.co.mruoc.idv.app.identity.model.alias;
 
-import lombok.Getter;
-import uk.co.mruoc.idv.app.identity.model.alias.AbstractAlias;
-import uk.co.mruoc.idv.app.identity.model.alias.AliasType;
+import lombok.ToString;
 
-@Getter
+@ToString(callSuper = true)
 public class BukCustomerId extends AbstractAlias {
 
     public BukCustomerId(final String value) {

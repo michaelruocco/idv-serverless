@@ -1,5 +1,8 @@
 package uk.co.mruoc.idv.app.identity.model.alias;
 
+import lombok.ToString;
+
+@ToString(callSuper = true)
 public class UkcCardholderIdAlias extends AbstractAlias {
 
     public UkcCardholderIdAlias(final String value) {
