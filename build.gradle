@@ -1,5 +1,19 @@
+plugins {
+    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'com.github.kt3k.coveralls' version '2.8.2'
+}
+
+allprojects {
+    apply plugin: 'jacoco'
+    apply plugin: 'com.github.kt3k.coveralls'
+
+    jacoco {
+        toolVersion = '0.8.2'
+    }
+}
+
 subprojects {
-    group = 'uk.co.mruoc.idv'
+    group = 'com.github.michaelruocco'
     version = '1.0.0-SNAPSHOT'
 
     apply plugin: 'java'
@@ -8,15 +22,51 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven { url = 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
     }
 
     dependencies {
-        compile 'org.projectlombok:lombok:1.18.4'
+        compile 'org.projectlombok:lombok:1.18.6'
         compile 'org.slf4j:slf4j-api:1.7.25'
 
         testCompile 'junit:junit:4.12'
-        testCompile 'org.assertj:assertj-core:3.11.1'
+        testCompile 'org.assertj:assertj-core:3.12.0'
         testCompile 'org.mockito:mockito-all:1.10.19'
     }
+
+    jacocoTestReport {
+        additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories = files(sourceSets.main.allSource.srcDirs)
+        classDirectories =  files(sourceSets.main.output)
+
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+}
+
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn = subprojects.test
+
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    doFirst {
+        executionData = files(executionData.findAll { it.exists() })
+    }
+}
+
+coveralls {
+    sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+}
+
+tasks.coveralls {
+    dependsOn jacocoRootReport
 }
