@@ -6,17 +6,26 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableSet;
 
 @ToString
 public class Aliases implements Iterable<Alias> {
 
-    private final Collection<Alias> aliases;
+    private final Set<Alias> aliases;
+
+    public static Aliases empty() {
+        return with();
+    }
+
+    public static Aliases with(final Aliases aliases) {
+        return with(aliases.aliases);
+    }
 
     public static Aliases with(final Alias... aliases) {
         return with(Arrays.asList(aliases));
@@ -27,7 +36,7 @@ public class Aliases implements Iterable<Alias> {
     }
 
     private Aliases(final Collection<Alias> aliases) {
-        this.aliases = unmodifiableCollection(aliases);
+        this.aliases = unmodifiableSet(new LinkedHashSet<>(aliases));
     }
 
     @Override
@@ -50,7 +59,7 @@ public class Aliases implements Iterable<Alias> {
         return Aliases.with(remainingAliases);
     }
 
-    public boolean containsSame(final Aliases otherAliases) {
+    public boolean containsExactly(final Aliases otherAliases) {
         if (aliases.size() != otherAliases.size()) {
             return false;
         }
@@ -66,7 +75,7 @@ public class Aliases implements Iterable<Alias> {
         return filterByType(type).count();
     }
 
-    public Collection<Alias> findByType(final AliasType type) {
+    public Collection<Alias> getByType(final AliasType type) {
         return filterByType(type).collect(Collectors.toList());
     }
 

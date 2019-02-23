@@ -48,4 +48,14 @@ public class IdvIdAliasTest {
         assertThat(alias.toString()).isEqualTo(expectedValue);
     }
 
+    @Test
+    public void testEquals() {
+        final IdvIdAlias alias = new IdvIdAlias();
+        final Alias sameAlias = new IdvIdAlias(alias.getValueAsUuid());
+        final Alias differentAlias = new IdvIdAlias();
+
+        assertThat(alias.equals(sameAlias)).isTrue();
+        assertThat(alias.equals(differentAlias)).isFalse();
+    }
+
 }

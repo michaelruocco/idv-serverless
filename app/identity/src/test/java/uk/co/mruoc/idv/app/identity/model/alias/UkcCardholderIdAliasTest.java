@@ -31,4 +31,14 @@ public class UkcCardholderIdAliasTest {
                 "(super=AbstractAlias(type=UKC_CARDHOLDER_ID, value=12345678))");
     }
 
+    @Test
+    public void testEquals() {
+        final Alias alias = new UkcCardholderIdAlias("12345678");
+        final Alias sameAlias = new UkcCardholderIdAlias("12345678");
+        final Alias differentAlias = new UkcCardholderIdAlias("12345677");
+
+        assertThat(alias.equals(sameAlias)).isTrue();
+        assertThat(alias.equals(differentAlias)).isFalse();
+    }
+
 }

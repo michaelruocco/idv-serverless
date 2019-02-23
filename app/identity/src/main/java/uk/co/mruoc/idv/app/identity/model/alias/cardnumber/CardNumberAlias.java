@@ -1,10 +1,12 @@
 package uk.co.mruoc.idv.app.identity.model.alias.cardnumber;
 
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import uk.co.mruoc.idv.app.identity.model.alias.AbstractAlias;
 import uk.co.mruoc.idv.app.identity.model.alias.AliasType;
 
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public abstract class CardNumberAlias extends AbstractAlias {
 
     private final SecureAliasFormat format;

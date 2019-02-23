@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.app.identity.model.alias.cardnumber;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.app.identity.model.alias.Alias;
 import uk.co.mruoc.idv.app.identity.model.alias.AliasType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,6 +39,16 @@ public class TokenizedCreditCardNumberAliasTest {
                 "(super=CardNumberAlias" +
                 "(super=AbstractAlias" +
                 "(type=CREDIT_CARD_NUMBER, value=4320432489138001), format=TOKENIZED)))");
+    }
+
+    @Test
+    public void testEquals() {
+        final Alias alias = new TokenizedCreditCardNumberAlias("1234567890123456");
+        final Alias sameAlias = new TokenizedCreditCardNumberAlias("1234567890123456");
+        final Alias differentAlias = new TokenizedCreditCardNumberAlias("6543210987654321");
+
+        assertThat(alias.equals(sameAlias)).isTrue();
+        assertThat(alias.equals(differentAlias)).isFalse();
     }
 
 }

@@ -175,12 +175,33 @@ public class IdentityTest {
 
     @Test
     public void shouldRemoveAlias() {
-        final Identity identity = Identity.withAliases(new IdvIdAlias(), new UkcCardholderIdAlias("12345678"));
+        final Alias idvId = new IdvIdAlias();
+        final Identity identity = Identity.withAliases(idvId, new UkcCardholderIdAlias("12345678"));
 
         final Identity identityWithoutCardholderId = identity.removeAliases(AliasType.UKC_CARDHOLDER_ID);
 
-        assertThat(identityWithoutCardholderId.hasAlias(AliasType.IDV_ID)).isTrue();
-        assertThat(identityWithoutCardholderId.hasAlias(AliasType.UKC_CARDHOLDER_ID)).isFalse();
+        assertThat(identityWithoutCardholderId.getAliases()).containsExactly(idvId);
+    }
+
+    @Test
+    public void shouldNotAllowDuplicateAliases() {
+        final Alias idvId = new IdvIdAlias();
+        final Alias cardholderId = new UkcCardholderIdAlias("12345678");
+
+        final Identity identity = Identity.withAliases(idvId, cardholderId, cardholderId);
+
+        assertThat(identity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
+    }
+
+    @Test
+    public void shouldNotAllowDuplicateAliasesToBeAdded() {
+        final Alias idvId = new IdvIdAlias();
+        final Alias cardholderId = new UkcCardholderIdAlias("12345678");
+        final Identity identity = Identity.withAliases(idvId, cardholderId);
+
+        final Identity aliasAddedIdentity = identity.addAliases(cardholderId);
+
+        assertThat(aliasAddedIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
     }
 
     @Test

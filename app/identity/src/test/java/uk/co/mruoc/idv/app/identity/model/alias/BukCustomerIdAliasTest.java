@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BukCustomerIdTest {
+public class BukCustomerIdAliasTest {
 
     private final String VALUE = "87654321";
 
-    private final Alias alias = new BukCustomerId(VALUE);
+    private final Alias alias = new BukCustomerIdAlias(VALUE);
 
     @Test
     public void shouldReturnValue() {
@@ -27,8 +27,18 @@ public class BukCustomerIdTest {
 
     @Test
     public void shouldPrintDetails() {
-        assertThat(alias.toString()).isEqualTo("BukCustomerId" +
+        assertThat(alias.toString()).isEqualTo("BukCustomerIdAlias" +
                 "(super=AbstractAlias(type=BUK_CUSTOMER_ID, value=87654321))");
+    }
+
+    @Test
+    public void testEquals() {
+        final Alias alias = new BukCustomerIdAlias("12345678");
+        final Alias sameAlias = new BukCustomerIdAlias("12345678");
+        final Alias differentAlias = new BukCustomerIdAlias("12345677");
+
+        assertThat(alias.equals(sameAlias)).isTrue();
+        assertThat(alias.equals(differentAlias)).isFalse();
     }
 
 }

@@ -60,7 +60,7 @@ public class Identity {
     }
 
     public boolean hasSameAliases(final Identity otherIdentity) {
-        return aliases.containsSame(otherIdentity.aliases);
+        return aliases.containsExactly(otherIdentity.aliases);
     }
 
     public boolean hasAlias(final AliasType type) {
@@ -78,7 +78,7 @@ public class Identity {
     }
 
     public Collection<Alias> getAliasesByType(final AliasType type) {
-        return aliases.findByType(type);
+        return aliases.getByType(type);
     }
 
     private static void validate(final Aliases aliases) {

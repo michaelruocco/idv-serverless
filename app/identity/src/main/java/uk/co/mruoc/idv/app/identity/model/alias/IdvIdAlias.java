@@ -1,10 +1,12 @@
 package uk.co.mruoc.idv.app.identity.model.alias;
 
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.UUID;
 
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class IdvIdAlias extends AbstractAlias {
 
     public IdvIdAlias() {

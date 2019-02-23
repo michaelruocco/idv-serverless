@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.app.identity.model.alias.cardnumber;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.app.identity.model.alias.Alias;
 import uk.co.mruoc.idv.app.identity.model.alias.AliasType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,4 +40,15 @@ public class EncryptedDebitCardNumberAliasTest {
                 "(super=AbstractAlias" +
                 "(type=DEBIT_CARD_NUMBER, value=NMSADNMj3r2k332lhdasdasaSANdsamdaskh), format=ENCRYPTED)))");
     }
+
+    @Test
+    public void testEquals() {
+        final Alias alias = new EncryptedDebitCardNumberAlias("ABCDEFGHIJK1234567890");
+        final Alias sameAlias = new EncryptedDebitCardNumberAlias("ABCDEFGHIJK1234567890");
+        final Alias differentAlias = new EncryptedDebitCardNumberAlias("0987654321KJIHGFEDCBA");
+
+        assertThat(alias.equals(sameAlias)).isTrue();
+        assertThat(alias.equals(differentAlias)).isFalse();
+    }
+
 }
