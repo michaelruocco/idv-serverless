@@ -17,5 +17,3 @@ cache:
 
 after_success:
     - ./gradlew jacocoRootReport coveralls
-
-    
