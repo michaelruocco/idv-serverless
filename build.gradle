@@ -6,6 +6,14 @@ plugins {
 allprojects {
     apply plugin: 'jacoco'
     apply plugin: 'com.github.kt3k.coveralls'
+
+    repositories {
+        mavenCentral()
+    }
+
+    jacoco {
+        toolVersion = '0.8.2'
+    }
 }
 
 subprojects {
@@ -15,10 +23,6 @@ subprojects {
     apply plugin: 'java'
 
     sourceCompatibility = 1.8
-
-    repositories {
-        mavenCentral()
-    }
 
     dependencies {
         compile 'org.projectlombok:lombok:1.18.6'
