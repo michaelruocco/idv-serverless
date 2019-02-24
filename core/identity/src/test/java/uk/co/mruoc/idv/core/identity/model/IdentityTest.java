@@ -8,8 +8,6 @@ import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
 
 import java.util.Collection;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
