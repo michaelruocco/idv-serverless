@@ -28,7 +28,7 @@ public class BukCustomerIdAliasTest {
     @Test
     public void shouldPrintDetails() {
         assertThat(alias.toString()).isEqualTo("BukCustomerIdAlias" +
-                "(super=AbstractAlias(type=BUK_CUSTOMER_ID, value=87654321))");
+                "(super=AbstractAlias(type=BUK_CUSTOMER_ID, format=PLAIN_TEXT, value=87654321))");
     }
 
     @Test

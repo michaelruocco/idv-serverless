@@ -5,4 +5,3 @@ include 'core:identity'
 include 'dao:identity:fake'
 
 include 'plugins:identity:alias-loader'
-

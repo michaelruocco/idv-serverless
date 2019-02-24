@@ -8,7 +8,7 @@ import lombok.ToString;
 public class BukCustomerIdAlias extends AbstractAlias {
 
     public BukCustomerIdAlias(final String value) {
-        super(AliasType.BUK_CUSTOMER_ID, value);
+        super(AliasType.BUK_CUSTOMER_ID, AliasFormat.PLAIN_TEXT, value);
     }
 
     @Override

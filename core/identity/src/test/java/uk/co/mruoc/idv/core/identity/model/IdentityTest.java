@@ -212,8 +212,8 @@ public class IdentityTest {
         final String value = identity.toString();
 
         assertThat(value).isEqualTo("Identity(aliases=Aliases(aliases=" +
-                "[IdvIdAlias(super=AbstractAlias(type=IDV_ID, value=786fa43d-6bcd-4a0c-ab7e-21348eb77faf)), " +
-                "UkcCardholderIdAlias(super=AbstractAlias(type=UKC_CARDHOLDER_ID, value=12345678))]))");
+                "[IdvIdAlias(super=AbstractAlias(type=IDV_ID, format=PLAIN_TEXT, value=786fa43d-6bcd-4a0c-ab7e-21348eb77faf)), " +
+                "UkcCardholderIdAlias(super=AbstractAlias(type=UKC_CARDHOLDER_ID, format=PLAIN_TEXT, value=12345678))]))");
     }
 
 }

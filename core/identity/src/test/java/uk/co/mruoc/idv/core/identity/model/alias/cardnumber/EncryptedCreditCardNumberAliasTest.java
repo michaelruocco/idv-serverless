@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.identity.model.alias.cardnumber;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasFormat;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,8 +29,13 @@ public class EncryptedCreditCardNumberAliasTest {
     }
 
     @Test
+    public void isSensitive() {
+        assertThat(alias.isSensitive()).isTrue();
+    }
+
+    @Test
     public void isEncrypted() {
-        assertThat(alias.hasFormat(SecureAliasFormat.ENCRYPTED)).isTrue();
+        assertThat(alias.hasFormat(AliasFormat.ENCRYPTED)).isTrue();
     }
 
     @Test
@@ -37,8 +43,9 @@ public class EncryptedCreditCardNumberAliasTest {
         assertThat(alias.toString()).isEqualTo("EncryptedCreditCardNumberAlias" +
                 "(super=CreditCardNumberAlias" +
                 "(super=CardNumberAlias" +
+                "(super=SensitiveAlias" +
                 "(super=AbstractAlias" +
-                "(type=CREDIT_CARD_NUMBER, value=NMSADNMj3r2k332lhdasdasaSANdsamdaskh), format=ENCRYPTED)))");
+                "(type=CREDIT_CARD_NUMBER, format=ENCRYPTED, value=NMSADNMj3r2k332lhdasdasaSANdsamdaskh)))))");
     }
 
     @Test

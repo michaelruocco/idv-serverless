@@ -2,27 +2,21 @@ package uk.co.mruoc.idv.core.identity.model.alias.cardnumber;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import uk.co.mruoc.idv.core.identity.model.alias.AbstractAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasFormat;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
+import uk.co.mruoc.idv.core.identity.model.alias.SensitiveAlias;
 
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public abstract class CardNumberAlias extends AbstractAlias {
+public abstract class CardNumberAlias extends SensitiveAlias {
 
-    private final SecureAliasFormat format;
-
-    public CardNumberAlias(final AliasType type, final SecureAliasFormat format, final String value) {
-        super(type, value);
-        this.format = format;
+    public CardNumberAlias(final AliasType type, final AliasFormat format, final String value) {
+        super(type, format, value);
     }
 
     @Override
     public boolean isCardNumber() {
         return true;
-    }
-
-    public boolean hasFormat(final SecureAliasFormat format) {
-        return this.format == format;
     }
 
 }
