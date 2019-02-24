@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.core.identity.service;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
