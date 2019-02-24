@@ -1,4 +1,5 @@
 rootProject.name = 'idv'
 
-include 'app:identity'
+include 'core:identity'
+include 'plugins:identity:alias-loader'
 
