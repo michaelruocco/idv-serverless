@@ -25,7 +25,9 @@ public class IdentityService {
         final Identity identity = loadOrCreateIdentity(request);
         log.debug("loaded identity {}", identity);
         final Aliases loadedAliases = loadAliases(request.getChannelId(), identity);
+        log.debug("loaded aliases {}", loadedAliases);
         final Identity identityWithAliases = identity.addAliases(loadedAliases);
+        log.info("saving identity {}", identity);
         dao.save(identityWithAliases);
         return identityWithAliases;
     }
@@ -41,8 +43,8 @@ public class IdentityService {
 
     private Identity createNewIdentity(final Alias requestAlias) {
         final Alias idvId = idvIdGenerator.generate();
-        log.info("creating new identity with generated idvId {}", idvId);
         final Aliases aliases = Aliases.with(idvId, requestAlias);
+        log.info("creating new identity aliases {}", aliases);
         return Identity.withAliases(aliases);
     }
 
