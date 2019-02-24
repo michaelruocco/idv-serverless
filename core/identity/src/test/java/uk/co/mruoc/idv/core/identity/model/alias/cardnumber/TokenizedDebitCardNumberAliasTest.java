@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.core.identity.model.alias.cardnumber;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.AliasFormat;
+import uk.co.mruoc.idv.core.identity.model.alias.SensitiveAliasFormat;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,13 +29,8 @@ public class TokenizedDebitCardNumberAliasTest  {
     }
 
     @Test
-    public void isSensitive() {
-        assertThat(alias.isSensitive()).isTrue();
-    }
-
-    @Test
     public void isTokenized() {
-        assertThat(alias.hasFormat(AliasFormat.TOKENIZED)).isTrue();
+        assertThat(alias.hasFormat(SensitiveAliasFormat.TOKENIZED)).isTrue();
     }
 
     @Test
@@ -45,7 +40,7 @@ public class TokenizedDebitCardNumberAliasTest  {
                 "(super=CardNumberAlias" +
                 "(super=SensitiveAlias" +
                 "(super=AbstractAlias" +
-                "(type=DEBIT_CARD_NUMBER, format=TOKENIZED, value=4320432489138001)))))");
+                "(type=DEBIT_CARD_NUMBER, value=4320432489138001), format=TOKENIZED))))");
     }
 
     @Test

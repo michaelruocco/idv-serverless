@@ -28,7 +28,7 @@ public class UkcCardholderIdAliasTest {
     @Test
     public void shouldPrintDetails() {
         assertThat(alias.toString()).isEqualTo("UkcCardholderIdAlias" +
-                "(super=AbstractAlias(type=UKC_CARDHOLDER_ID, format=PLAIN_TEXT, value=12345678))");
+                "(super=AbstractAlias(type=UKC_CARDHOLDER_ID, value=12345678))");
     }
 
     @Test

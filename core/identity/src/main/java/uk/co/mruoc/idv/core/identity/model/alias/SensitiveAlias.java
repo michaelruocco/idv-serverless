@@ -7,25 +7,20 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public abstract class SensitiveAlias extends AbstractAlias {
 
-    public SensitiveAlias(final AliasType type, final AliasFormat format, final String value) {
-        super(type, format, value);
-        validateFormat(format);
+    private final SensitiveAliasFormat format;
+
+    public SensitiveAlias(final AliasType type, final SensitiveAliasFormat format, final String value) {
+        super(type, value);
+        this.format = format;
     }
 
-    @Override
-    public boolean isSensitive() {
-        return true;
-    }
-
-    private static void validateFormat(final AliasFormat format) {
-        if (!format.isSensitive()) {
-            throw new MustHaveSensitiveAliasFormatException(format);
-        }
+    public boolean hasFormat(final SensitiveAliasFormat format) {
+        return this.format == format;
     }
 
     public static class MustHaveSensitiveAliasFormatException extends RuntimeException {
 
-        public MustHaveSensitiveAliasFormatException(final AliasFormat format) {
+        public MustHaveSensitiveAliasFormatException(final SensitiveAliasFormat format) {
             super(format.toString());
         }
 

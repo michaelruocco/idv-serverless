@@ -43,7 +43,7 @@ public class IdvIdAliasTest {
     @Test
     public void shouldPrintDetails() {
         final String expectedValue = String.format("IdvIdAlias" +
-                "(super=AbstractAlias(type=IDV_ID, format=PLAIN_TEXT, value=%s))", VALUE.toString());
+                "(super=AbstractAlias(type=IDV_ID, value=%s))", VALUE.toString());
 
         assertThat(alias.toString()).isEqualTo(expectedValue);
     }

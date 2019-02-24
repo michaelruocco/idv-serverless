@@ -14,7 +14,7 @@ public class IdvIdAlias extends AbstractAlias {
     }
 
     public IdvIdAlias(final UUID value) {
-        super(AliasType.IDV_ID, AliasFormat.PLAIN_TEXT, value.toString());
+        super(AliasType.IDV_ID, value.toString());
     }
 
     public UUID getValueAsUuid() {

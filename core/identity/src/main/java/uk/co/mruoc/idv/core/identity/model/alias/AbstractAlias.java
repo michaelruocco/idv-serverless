@@ -8,23 +8,11 @@ import lombok.ToString;
 public abstract class AbstractAlias implements Alias {
 
     private final AliasType type;
-    private final AliasFormat format;
     private final String value;
 
-    public AbstractAlias(final AliasType type, final AliasFormat format, final String value) {
+    public AbstractAlias(final AliasType type, final String value) {
         this.type = type;
-        this.format = format;
         this.value = value;
-    }
-
-    @Override
-    public boolean isSensitive() {
-        return format.isSensitive();
-    }
-
-    @Override
-    public boolean hasFormat(final AliasFormat format) {
-        return this.format == format;
     }
 
     @Override
