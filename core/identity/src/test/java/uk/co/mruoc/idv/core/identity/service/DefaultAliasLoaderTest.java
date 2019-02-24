@@ -43,7 +43,6 @@ public class DefaultAliasLoaderTest {
 
     @Test
     public void shouldReturnEmptyListIfAliasTypeIsNotSupported() {
-
         final AliasLoaderRequest request = AliasLoaderRequest.builder()
                 .channelId(SUPPORTED_CHANNEL_ID)
                 .aliases(Aliases.with(unsupportedAlias))
