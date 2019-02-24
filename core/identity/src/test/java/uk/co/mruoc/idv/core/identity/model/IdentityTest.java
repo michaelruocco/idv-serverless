@@ -1,6 +1,5 @@
 package uk.co.mruoc.idv.core.identity.model;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
@@ -55,7 +54,7 @@ public class IdentityTest {
 
         final Identity identity = Identity.withAliases(idvId);
 
-        Assertions.assertThat(identity.getAliases()).containsExactly(idvId);
+        assertThat(identity.getAliases()).containsExactly(idvId);
     }
 
     @Test
@@ -66,7 +65,7 @@ public class IdentityTest {
 
         final Identity addedAliasIdentity = identity.addAliases(cardholderId);
 
-        Assertions.assertThat(addedAliasIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
+        assertThat(addedAliasIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
     }
 
     @Test
@@ -77,7 +76,7 @@ public class IdentityTest {
 
         final Identity addedAliasIdentity = identity.addAliases(cardholderId);
 
-        Assertions.assertThat(addedAliasIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
+        assertThat(addedAliasIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
     }
 
     @Test
@@ -91,7 +90,7 @@ public class IdentityTest {
 
         final Identity mergedIdentity = identity.merge(identityToMerge);
 
-        Assertions.assertThat(mergedIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId1, cardholderId2);
+        assertThat(mergedIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId1, cardholderId2);
     }
 
     @Test
@@ -104,7 +103,7 @@ public class IdentityTest {
 
         final Identity mergedIdentity = identity.merge(identityToMerge);
 
-        Assertions.assertThat(mergedIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId1);
+        assertThat(mergedIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId1);
     }
 
     @Test
@@ -181,7 +180,7 @@ public class IdentityTest {
 
         final Identity identityWithoutCardholderId = identity.removeAliases(AliasType.UKC_CARDHOLDER_ID);
 
-        Assertions.assertThat(identityWithoutCardholderId.getAliases()).containsExactly(idvId);
+        assertThat(identityWithoutCardholderId.getAliases()).containsExactly(idvId);
     }
 
     @Test
@@ -191,7 +190,7 @@ public class IdentityTest {
 
         final Identity identity = Identity.withAliases(idvId, cardholderId, cardholderId);
 
-        Assertions.assertThat(identity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
+        assertThat(identity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
     }
 
     @Test
@@ -202,7 +201,7 @@ public class IdentityTest {
 
         final Identity aliasAddedIdentity = identity.addAliases(cardholderId);
 
-        Assertions.assertThat(aliasAddedIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
+        assertThat(aliasAddedIdentity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
     }
 
     @Test
