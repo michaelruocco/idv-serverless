@@ -1,6 +1,8 @@
 rootProject.name = 'idv'
 
 include 'core:identity'
-include 'plugins:identity:alias-loader'
+
 include 'dao:identity:fake'
+
+include 'plugins:identity:alias-loader'
 

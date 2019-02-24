@@ -1,17 +1,16 @@
 package uk.co.mruoc.idv.core.identity.service;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 
 @Getter
 @Builder
 @ToString
-public class AliasLoaderRequest {
+public class UpsertIdentityRequest {
 
     private final String channelId;
-    private final Aliases aliases;
+    private final Alias alias;
 
 }
