@@ -84,6 +84,10 @@ public class Aliases implements Iterable<Alias> {
         return filterByTypes(types).collect(Collectors.toList());
     }
 
+    public Stream<Alias> stream() {
+        return aliases.stream();
+    }
+
     private int size() {
         return aliases.size();
     }
