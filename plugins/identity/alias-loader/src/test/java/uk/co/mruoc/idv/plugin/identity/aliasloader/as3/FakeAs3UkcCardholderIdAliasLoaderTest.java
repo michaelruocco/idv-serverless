@@ -7,7 +7,6 @@ import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
 import uk.co.mruoc.idv.core.identity.service.AliasLoader;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderRequest;
-import uk.co.mruoc.idv.plugin.identity.aliasloader.as3.FakeAs3UkcCardholderIdAliasLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

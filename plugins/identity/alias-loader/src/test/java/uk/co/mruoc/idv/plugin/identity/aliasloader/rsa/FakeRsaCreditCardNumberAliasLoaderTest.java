@@ -7,7 +7,6 @@ import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.AliasLoader;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderRequest;
-import uk.co.mruoc.idv.plugin.identity.aliasloader.rsa.FakeRsaCreditCardNumberAliasLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
