@@ -23,12 +23,4 @@ public abstract class SensitiveAlias extends AbstractAlias {
         return format;
     }
 
-    public static class MustHaveSensitiveAliasFormatException extends RuntimeException {
-
-        public MustHaveSensitiveAliasFormatException(final SensitiveAliasFormat format) {
-            super(format.toString());
-        }
-
-    }
-
 }
