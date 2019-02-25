@@ -5,3 +5,6 @@ include 'core:identity'
 include 'dao:identity:fake'
 
 include 'plugins:identity:alias-loader'
+
+include 'json-api'
+include 'json-api:identity'

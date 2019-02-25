@@ -29,8 +29,13 @@ public class TokenizedDebitCardNumberAliasTest  {
     }
 
     @Test
+    public void isSensitive() {
+        assertThat(alias.isSensitive()).isTrue();
+    }
+
+    @Test
     public void isTokenized() {
-        assertThat(alias.hasFormat(SensitiveAliasFormat.TOKENIZED)).isTrue();
+        assertThat(alias.getFormat()).isEqualTo(SensitiveAliasFormat.TOKENIZED);
     }
 
     @Test

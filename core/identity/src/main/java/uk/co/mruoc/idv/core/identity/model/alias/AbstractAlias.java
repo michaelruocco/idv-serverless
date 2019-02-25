@@ -28,4 +28,7 @@ public abstract class AbstractAlias implements Alias {
     @Override
     public abstract boolean isCardNumber();
 
+    @Override
+    public abstract boolean isSensitive();
+
 }

@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.core.identity.model;
 
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;

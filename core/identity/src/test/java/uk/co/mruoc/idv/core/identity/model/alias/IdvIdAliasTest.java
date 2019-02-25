@@ -33,6 +33,11 @@ public class IdvIdAliasTest {
     }
 
     @Test
+    public void isNotSensitive() {
+        assertThat(alias.isSensitive()).isFalse();
+    }
+
+    @Test
     public void shouldCreateRandomValueIfNotProvided() {
         final IdvIdAlias randomIdvId = new IdvIdAlias();
 

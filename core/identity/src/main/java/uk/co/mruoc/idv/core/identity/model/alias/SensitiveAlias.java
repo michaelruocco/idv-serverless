@@ -14,8 +14,13 @@ public abstract class SensitiveAlias extends AbstractAlias {
         this.format = format;
     }
 
-    public boolean hasFormat(final SensitiveAliasFormat format) {
-        return this.format == format;
+    @Override
+    public boolean isSensitive() {
+        return true;
+    }
+
+    public SensitiveAliasFormat getFormat() {
+        return format;
     }
 
     public static class MustHaveSensitiveAliasFormatException extends RuntimeException {

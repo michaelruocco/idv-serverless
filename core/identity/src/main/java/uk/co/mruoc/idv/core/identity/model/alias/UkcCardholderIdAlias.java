@@ -16,4 +16,9 @@ public class UkcCardholderIdAlias extends AbstractAlias {
         return false;
     }
 
+    @Override
+    public boolean isSensitive() {
+        return false;
+    }
+
 }

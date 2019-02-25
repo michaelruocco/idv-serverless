@@ -17,7 +17,7 @@ allprojects {
 }
 
 subprojects {
-    group = 'com.github.michaelruocco'
+    group = 'com.github.michaelruocco.idv'
     version = '1.0.0-SNAPSHOT'
 
     apply plugin: 'java'

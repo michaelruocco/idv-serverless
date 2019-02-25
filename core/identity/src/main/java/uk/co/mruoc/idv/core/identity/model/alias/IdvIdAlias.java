@@ -26,4 +26,9 @@ public class IdvIdAlias extends AbstractAlias {
         return false;
     }
 
+    @Override
+    public boolean isSensitive() {
+        return false;
+    }
+
 }

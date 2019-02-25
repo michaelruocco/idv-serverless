@@ -29,8 +29,13 @@ public class EncryptedDebitCardNumberAliasTest {
     }
 
     @Test
+    public void isSensitive() {
+        assertThat(alias.isSensitive()).isTrue();
+    }
+
+    @Test
     public void isEncrypted() {
-        assertThat(alias.hasFormat(SensitiveAliasFormat.ENCRYPTED)).isTrue();
+        assertThat(alias.getFormat()).isEqualTo(SensitiveAliasFormat.ENCRYPTED);
     }
 
     @Test

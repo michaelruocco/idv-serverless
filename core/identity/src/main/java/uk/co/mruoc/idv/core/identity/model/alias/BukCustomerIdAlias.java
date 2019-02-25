@@ -16,4 +16,9 @@ public class BukCustomerIdAlias extends AbstractAlias {
         return false;
     }
 
+    @Override
+    public boolean isSensitive() {
+        return false;
+    }
+
 }

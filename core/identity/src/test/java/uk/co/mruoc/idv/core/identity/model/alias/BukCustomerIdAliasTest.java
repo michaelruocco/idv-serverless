@@ -26,6 +26,11 @@ public class BukCustomerIdAliasTest {
     }
 
     @Test
+    public void isNotSensitive() {
+        assertThat(alias.isSensitive()).isFalse();
+    }
+
+    @Test
     public void shouldPrintDetails() {
         assertThat(alias.toString()).isEqualTo("BukCustomerIdAlias" +
                 "(super=AbstractAlias(type=BUK_CUSTOMER_ID, value=87654321))");

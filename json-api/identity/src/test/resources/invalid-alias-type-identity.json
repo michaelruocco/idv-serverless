@@ -1,0 +1,14 @@
+{
+  "data": {
+    "id": "21b4d9e0-11c3-4e84-aa87-dc37d7f59e23",
+    "type": "identities",
+    "attributes": {
+      "aliases": [
+        {
+          "type": "INVALID_ALIAS_TYPE",
+          "value": "ABC123"
+        }
+      ]
+    }
+  }
+}
