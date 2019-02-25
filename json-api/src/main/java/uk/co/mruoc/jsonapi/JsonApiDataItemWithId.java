@@ -3,12 +3,14 @@ package uk.co.mruoc.jsonapi;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.UUID;
 
 @Getter
 @JsonPropertyOrder({ "id", "type" })
 @NoArgsConstructor(force = true) // required by jackson
+@ToString(callSuper = true)
 public class JsonApiDataItemWithId<T> extends JsonApiDataItem<T> {
 
     private final UUID id;
