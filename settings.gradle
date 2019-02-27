@@ -1,10 +1,12 @@
 rootProject.name = 'idv'
 
-include 'core:identity'
+include 'core:identity-core'
 
-include 'dao:identity:fake'
+include 'dao:identity:identity-dao-fake'
 
 include 'plugins:identity:alias-loader'
 
 include 'json-api'
-include 'json-api:identity'
+include 'json-api:identity-json-api'
+
+include 'aws-lambda:identity-aws-lambda'

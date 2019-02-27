@@ -1,0 +1,55 @@
+{
+  "data": {
+    "id": "21b4d9e0-11c3-4e84-aa87-dc37d7f59e23",
+    "type": "identities",
+    "attributes": {
+      "aliases": [
+        {
+          "type": "IDV_ID",
+          "format": "CLEAR_TEXT",
+          "value": "21b4d9e0-11c3-4e84-aa87-dc37d7f59e23"
+        },
+        {
+          "type": "BUK_CUSTOMER_ID",
+          "format": "CLEAR_TEXT",
+          "value": "11111111"
+        },
+        {
+          "type": "UKC_CARDHOLDER_ID",
+          "format": "CLEAR_TEXT",
+          "value": "2222222222"
+        },
+        {
+          "type": "CREDIT_CARD_NUMBER",
+          "format": "TOKENIZED",
+          "value": "3489347343788005"
+        },
+        {
+          "type": "CREDIT_CARD_NUMBER",
+          "format": "ENCRYPTED",
+          "value": "DAJKSDJASJKDASJcnmzcnsadas"
+        },
+        {
+          "type": "DEBIT_CARD_NUMBER",
+          "format": "TOKENIZED",
+          "value": "3489347343789008"
+        },
+        {
+          "type": "DEBIT_CARD_NUMBER",
+          "format": "ENCRYPTED",
+          "value": "DAJKSDJASJKDASJcnmzcnsfrfr"
+        },
+        {
+          "type": "CARD_NUMBER",
+          "format": "TOKENIZED",
+          "value": "3489347343788005"
+        },
+        {
+          "type": "CARD_NUMBER",
+          "format": "ENCRYPTED",
+          "value": "DAJKSDJASJKDASJcnmzcnsfrfr"
+        }
+      ]
+    }
+  }
+}

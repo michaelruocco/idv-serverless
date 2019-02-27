@@ -1,0 +1,14 @@
+{
+  "data": {
+    "id": "21b4d9e0-11c3-4e84-aa87-dc37d7f59e23",
+    "type": "identities",
+    "attributes": {
+      "aliases": [
+        {
+          "type": "IDV_ID",
+          "value": "23d106b4-0003-4ad8-8fc2-7f3a601c2125"
+        }
+      ]
+    }
+  }
+}

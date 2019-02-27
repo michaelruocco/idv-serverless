@@ -1,0 +1,21 @@
+group = 'com.github.michaelruocco.idv.awslambda.identity' //assign group to work around this gradle bug: https://github.com/gradle/gradle/issues/847
+
+dependencies {
+    compile project(':core:identity-core')
+    compile project(':dao:identity:identity-dao-fake')
+    compile project(':json-api:identity-json-api')
+    compile project(':plugins:identity:alias-loader')
+
+    compile group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.0'
+    compile group: 'com.amazonaws', name: 'aws-lambda-java-events', version: '2.2.5'
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip

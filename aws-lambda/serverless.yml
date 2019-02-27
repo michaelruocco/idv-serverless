@@ -1,0 +1,41 @@
+service: idv
+
+custom:
+  defaultStage: dev
+  defaultRegion: eu-west-1
+  defaultVersion: 1.0.0-SNAPSHOT
+
+  stage: ${opt:stage, self:custom.defaultStage}
+  region: ${opt:region, self:custom.defaultRegion}
+  version: ${opt:version, self:custom.defaultVersion}
+
+  lambdas:
+
+    getIdentity:
+      name: ${self:custom.stage}-get-identity
+
+provider:
+  name: aws
+  runtime: java8
+  stage: ${self:custom.stage}
+  region: ${self:custom.region}
+  timeout: 20
+  environment:
+    STAGE: ${self:custom.stage}
+    REGION: ${self:custom.region}
+
+package:
+  artifact: identity-aws-lambda/build/distributions/identity-aws-lambda-${self:custom.version}.zip
+
+functions:
+
+  getIdentity:
+    handler: uk.co.mruoc.idv.awslambda.identity.GetIdentityHandler
+    name: ${self:custom.lambdas.getIdentity.name}
+    events:
+      - http:
+          path: identities/{id}
+          method: get
+      - http:
+          path: identities
+          method: get
