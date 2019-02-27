@@ -4,6 +4,4 @@ dependencies {
     compile project(':json-api')
     compile project(':core:identity-core')
     compile 'org.apache.commons:commons-lang3:3.8.1'
-
-    testCompile 'com.github.michaelruocco:file-loader:4.0.0'
 }
