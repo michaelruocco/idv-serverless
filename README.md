@@ -7,15 +7,12 @@
 
 ## To Do
 
-need proper error handling for:
-
-1. id or alias type and value not provided
-2. identity not found
-3. need to add dynamo db dao rather than hard coded
-4. add missing test coverage for alias factory
-5. add missing test coverage for handler
-6. package lambda functions individually
-7. identity merging, when create identity raise event with created identity, this can be used
+* implement deploying to aws from travis ci and running tests (try out newman / postman) against deployed service
+* see how to package lambda functions individually, might be easier to wait until second one is built
+* error handling for id or alias type and value not provided with unit tests
+* error handling for identity not found with unit tests
+* need to add dynamo db dao rather than hard coded with unit tests
+* identity merging, when create identity raise event with created identity, this can be used
 for both MI reporting and to trigger an "offline" lambda event to check for matching aliases and merge
 identities if and duplicated aliases
 
