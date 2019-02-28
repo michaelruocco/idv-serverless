@@ -16,7 +16,6 @@
 for both MI reporting and to trigger an "offline" lambda event to check for matching aliases and merge
 identities if and duplicated aliases
 
-
 ## Running the Tests
 
 You can run the unit tests for this project by running:
