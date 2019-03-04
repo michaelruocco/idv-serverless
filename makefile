@@ -10,7 +10,7 @@ build:
 
 deploy:
 	cd aws-lambda; \
-	npm install serverless; \
+	npm install -g serverless; \
 	sls deploy -s $(env) --conceal
 
 postman:
