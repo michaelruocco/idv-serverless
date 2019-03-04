@@ -15,5 +15,5 @@ deploy:
 
 postman:
 	cd postman; \
-	npm install newman; \
+	npm install -g newman; \
 	newman run idv.postman_collection.json -e environment/idv-dev.postman_environment.json
