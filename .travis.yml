@@ -5,7 +5,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - make build deploy
+  - make build deploy postman
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock

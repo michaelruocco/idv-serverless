@@ -1,4 +1,4 @@
-.PHONY: clean build deploy
+.PHONY: clean build deploy postman
 
 env=dev
 
@@ -10,5 +10,10 @@ build:
 
 deploy:
 	cd aws-lambda; \
-	npm install -g serverless; \
+	npm install serverless; \
 	sls deploy -s $(env) --conceal
+
+postman:
+	cd postman; \
+	npm install newman; \
+	newman run idv.postman_collection.json -e environment/idv-dev.postman_environment.json
