@@ -5,7 +5,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - ./gradlew check --stacktrace
+  - make deploy
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -14,6 +14,8 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/postman/node_modules
+    - $HOME/aws-lambda/node_modules
 
 after_success:
     - ./gradlew jacocoRootReport coveralls
