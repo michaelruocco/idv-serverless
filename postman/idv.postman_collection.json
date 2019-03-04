@@ -148,6 +148,60 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Identity bad request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c02761c1-a436-4906-84f2-f92a28a86fcf",
+						"exec": [
+							"pm.test(\"should return 400 status\", function () {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							"",
+							"pm.test(\"should return correct error\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.errors[0].status).to.equal(\"400\");",
+							"    pm.expect(json.errors[0].code).to.equal(\"BAD_REQUEST\");",
+							"    pm.expect(json.errors[0].title).to.equal(\"Bad Request\");",
+							"    pm.expect(json.errors[0].detail).to.equal(\"either IDV ID or aliasType and aliasValue must be provided\");",
+							"    pm.expect(json.errors[0].meta).to.eql({});",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/identities?aliasTyp=BUK_CUSTOMER_ID&aliasValu=1111111111",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"identities"
+					],
+					"query": [
+						{
+							"key": "aliasTyp",
+							"value": "BUK_CUSTOMER_ID"
+						},
+						{
+							"key": "aliasValu",
+							"value": "1111111111"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

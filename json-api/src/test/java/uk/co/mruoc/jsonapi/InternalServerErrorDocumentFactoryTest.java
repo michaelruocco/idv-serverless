@@ -23,13 +23,11 @@ public class InternalServerErrorDocumentFactoryTest {
 
         final JsonApiErrorDocument document = factory.build(new Exception(message));
 
-        assertThat(document.getStatusCode()).isEqualTo(STATUS_CODE);
-        final List<JsonApiErrorItem> errors = document.getData();
+        final List<JsonApiErrorItem> errors = document.getErrors();
         assertThat(errors).hasSize(1);
         final JsonApiErrorItem error = errors.get(0);
         assertThat(error.getStatusCode()).isEqualTo(STATUS_CODE);
         assertThat(error.getStatus()).isEqualTo(Integer.toString(STATUS_CODE));
-        assertThat(error.getId()).isNotNull();
         assertThat(error.getCode()).isEqualTo("INTERNAL_SERVER_ERROR");
         assertThat(error.getTitle()).isEqualTo("Internal server error");
         assertThat(error.getDetail()).isEqualTo(message);

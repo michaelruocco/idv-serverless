@@ -13,11 +13,6 @@
           "type": "UKC_CARDHOLDER_ID",
           "format": "CLEAR_TEXT",
           "value": "12345678"
-        },
-        {
-          "type": "BUK_CUSTOMER_ID",
-          "format": "CLEAR_TEXT",
-          "value": "1111111111"
         }
       ]
     }
