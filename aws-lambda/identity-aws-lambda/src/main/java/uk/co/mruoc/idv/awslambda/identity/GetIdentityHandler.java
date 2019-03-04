@@ -6,6 +6,9 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
+import uk.co.mruoc.idv.awslambda.ErrorHandlerDelegator;
+import uk.co.mruoc.idv.awslambda.RequestValidator;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
@@ -16,30 +19,48 @@ import uk.co.mruoc.idv.jsonapi.identity.IdentityJsonApiDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
+import java.io.UncheckedIOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Builder
 public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final ObjectMapper mapper;
     private final IdentityService identityService;
     private final RequestValidator requestValidator;
+    private final ErrorHandlerDelegator errorHandler;
 
     public GetIdentityHandler() {
-        this(ObjectMapperSingleton.get(), IdentityServiceSingleton.get(), new GetIdentityRequestValidator());
+        this(ObjectMapperSingleton.get(),
+                IdentityServiceSingleton.get(),
+                new GetIdentityRequestValidator(),
+                new GetIdentityErrorHandlerDelegator());
     }
 
-    public GetIdentityHandler(final ObjectMapper mapper, final IdentityService identityService, final RequestValidator requestValidator) {
+    public GetIdentityHandler(final ObjectMapper mapper,
+                              final IdentityService identityService,
+                              final RequestValidator requestValidator,
+                              final ErrorHandlerDelegator errorHandler) {
         this.mapper = mapper;
         this.identityService = identityService;
         this.requestValidator = requestValidator;
+        this.errorHandler = errorHandler;
     }
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
+        try {
+            return handle(input);
+        } catch (IdentityService.IdentityNotFoundException e) {
+            return toResponse(errorHandler.toDocument(e));
+        }
+    }
+
+    private APIGatewayProxyResponseEvent handle(final APIGatewayProxyRequestEvent input) {
         final Optional<JsonApiErrorDocument> errorDocument = requestValidator.validate(input);
         if (errorDocument.isPresent()) {
             return toResponse(errorDocument.get());
@@ -80,7 +101,7 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
                     .withBody(mapper.writeValueAsString(document))
                     .withStatusCode(200);
         } catch (final JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -90,7 +111,7 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
                     .withBody(mapper.writeValueAsString(document))
                     .withStatusCode(calculateErrorStatusCode(document));
         } catch (final JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 

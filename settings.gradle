@@ -9,4 +9,5 @@ include 'plugins:identity:alias-loader'
 include 'json-api'
 include 'json-api:identity-json-api'
 
+include 'aws-lambda'
 include 'aws-lambda:identity-aws-lambda'

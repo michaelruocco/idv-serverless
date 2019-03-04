@@ -1,10 +1,8 @@
 {
   "errors": [
     {
-      "status": "400",
-      "code": "BAD_REQUEST",
       "title": "Bad Request",
-      "detail": "either IDV ID or aliasType and aliasValue must be provided",
+      "detail": "Either IDV ID or aliasType and aliasValue must be provided",
       "meta": {}
     }
   ]

@@ -59,8 +59,15 @@ public class IdentityService {
 
     public static class IdentityNotFoundException extends RuntimeException {
 
+        private final Alias alias;
+
         public IdentityNotFoundException(final Alias alias) {
             super(alias.toString());
+            this.alias = alias;
+        }
+
+        public Alias getAlias() {
+            return alias;
         }
 
     }

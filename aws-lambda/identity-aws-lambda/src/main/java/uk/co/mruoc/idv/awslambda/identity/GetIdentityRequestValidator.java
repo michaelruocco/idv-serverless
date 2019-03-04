@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.awslambda.identity;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.awslambda.RequestValidator;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
@@ -34,13 +35,12 @@ public class GetIdentityRequestValidator implements RequestValidator {
 
     public static class IdentityIdOrAliasNotProvidedError extends JsonApiErrorItem {
 
-        private static final String CODE = "BAD_REQUEST";
+        private static final int STATUS_CODE = 400;
         private static final String TITLE = "Bad Request";
-        private static final String DETAIL = "either IDV ID or aliasType and aliasValue must be provided";
-        private static final int STATUS = 400;
+        private static final String DETAIL = "Either IDV ID or aliasType and aliasValue must be provided";
 
         public IdentityIdOrAliasNotProvidedError() {
-            super(CODE, TITLE, DETAIL, Collections.emptyMap(), STATUS);
+            super(TITLE, DETAIL, Collections.emptyMap(), STATUS_CODE);
         }
 
     }

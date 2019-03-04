@@ -5,9 +5,9 @@ dependencies {
     compile project(':dao:identity:identity-dao-fake')
     compile project(':json-api:identity-json-api')
     compile project(':plugins:identity:alias-loader')
+    compile project(':aws-lambda')
 
     compile group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.0'
-    compile group: 'com.amazonaws', name: 'aws-lambda-java-events', version: '2.2.5'
 }
 
 task buildZip(type: Zip) {

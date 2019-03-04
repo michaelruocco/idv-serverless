@@ -15,19 +15,14 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true) // required by jackson
-@JsonPropertyOrder({ "status", "code", "title", "detail", "meta" })
+@JsonPropertyOrder({ "title", "detail", "meta" })
 public class JsonApiErrorItem {
 
-    private final String code;
     private final String title;
     private final String detail;
     private final Map<String, Object> meta;
 
     @JsonIgnore
     private final int statusCode;
-
-    public String getStatus() {
-        return Integer.toString(statusCode);
-    }
 
 }

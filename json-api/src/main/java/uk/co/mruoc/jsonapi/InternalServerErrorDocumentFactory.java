@@ -6,6 +6,8 @@ import static java.util.Collections.singleton;
 
 public class InternalServerErrorDocumentFactory implements JsonApiErrorDocumentFactory {
 
+    private static final int STATUS_CODE = 500;
+
     @Override
     public JsonApiErrorDocument build(final Exception e) {
         return new JsonApiErrorDocument(toErrorItem(e));
@@ -18,10 +20,9 @@ public class InternalServerErrorDocumentFactory implements JsonApiErrorDocumentF
 
     private static JsonApiErrorItem toErrorItem(final Exception e) {
         return JsonApiErrorItem.builder()
-                .statusCode(500)
-                .code("INTERNAL_SERVER_ERROR")
                 .title("Internal server error")
                 .detail(e.getMessage())
+                .statusCode(STATUS_CODE)
                 .build();
     }
 
