@@ -9,7 +9,6 @@ build:
 	./gradlew build
 
 deploy:
-	make build
 	cd aws-lambda; \
 	npm install -g serverless; \
 	sls deploy -s $(env) --conceal
