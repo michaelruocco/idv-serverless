@@ -21,12 +21,26 @@
 for both MI reporting and to trigger an "offline" lambda event to check for matching aliases and merge
 identities if and duplicated aliases
 
-## Running the Tests
+## Running Unit Tests
 
 You can run the unit tests for this project by running:
 
 ```bash
 ./gradlew clean build
+```
+
+## Running Postman Tests
+
+To run the postman tests you will need to install the newman npm package by running:
+
+```bash
+npm install newman
+```
+
+Once newman is installed you can run the postman tests by running the following command:
+
+```bash
+newman run postman/idv.postman_collection.json -e postman/environment/idv-dev.postman_environment.json
 ```
 
 ## Checking dependencies
