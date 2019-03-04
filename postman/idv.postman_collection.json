@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "395d7deb-7430-4be0-9f15-bbe019650803",
+		"name": "idv",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Identity by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return correct identity\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var identityId = json.data.id;",
+							"    pm.expect(identityId).to.equal(\"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/identities/3713f6f6-8fa6-4686-bcbc-e348ee3b4b06",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"identities",
+						"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Identity by Cardholder ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "205180a0-738a-4c23-a26d-4dfe79ade434",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return correct identity\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var identityId = json.data.id;",
+							"    pm.expect(identityId).to.equal(\"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/identities?aliasType=UKC_CARDHOLDER_ID&aliasValue=12345678",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"identities"
+					],
+					"query": [
+						{
+							"key": "aliasType",
+							"value": "UKC_CARDHOLDER_ID"
+						},
+						{
+							"key": "aliasValue",
+							"value": "12345678"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Identity by Customer ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c02761c1-a436-4906-84f2-f92a28a86fcf",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return correct identity\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var identityId = json.data.id;",
+							"    pm.expect(identityId).to.equal(\"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/identities?aliasType=BUK_CUSTOMER_ID&aliasValue=1111111111",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"identities"
+					],
+					"query": [
+						{
+							"key": "aliasType",
+							"value": "BUK_CUSTOMER_ID"
+						},
+						{
+							"key": "aliasValue",
+							"value": "1111111111"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
