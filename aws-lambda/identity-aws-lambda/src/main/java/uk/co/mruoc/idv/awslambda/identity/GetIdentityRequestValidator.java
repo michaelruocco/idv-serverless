@@ -23,7 +23,7 @@ public class GetIdentityRequestValidator implements RequestValidator {
         }
 
         final Map<String, String> queryStringParameters = input.getQueryStringParameters();
-        if (queryStringParameters.containsKey("aliasType") && queryStringParameters.containsKey("aliasValue")) {
+        if (queryStringParameters != null && queryStringParameters.containsKey("aliasType") && queryStringParameters.containsKey("aliasValue")) {
             log.debug("aliasType and aliasValue query string parameters provided, request is valid");
             return Optional.empty();
         }
