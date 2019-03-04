@@ -67,7 +67,7 @@ public class GetIdentityHandlerTest {
         given(requestValidator.validate(request)).willReturn(Optional.empty());
         final Exception exception = new IdentityService.IdentityNotFoundException(UKC_CARDHOLDER_ID_ALIAS);
         doThrow(exception).when(identityService).load(UKC_CARDHOLDER_ID_ALIAS);
-        given(errorHandler.toDocument(exception)).willReturn(new JsonApiErrorDocument(new IdentityNotFoundErrorItem("error detail", UKC_CARDHOLDER_ID_ALIAS)));
+        given(errorHandler.toDocument(exception)).willReturn(new JsonApiErrorDocument(new IdentityNotFoundErrorItem(UKC_CARDHOLDER_ID_ALIAS)));
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
 

@@ -18,7 +18,7 @@ public class IdentityNotFoundErrorHandler implements JsonApiErrorHandler {
     @Override
     public JsonApiErrorDocument handle(final Exception e) {
         final IdentityNotFoundException exception = (IdentityNotFoundException) e;
-        return new JsonApiErrorDocument(new IdentityNotFoundErrorItem(exception.getMessage(), exception.getAlias()));
+        return new JsonApiErrorDocument(new IdentityNotFoundErrorItem(exception.getAlias()));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class IdentityNotFoundErrorHandler implements JsonApiErrorHandler {
         private static final String TITLE = "Identity not found";
         private static final String DETAIL_TEMPLATE = "Identity not found using alias type %s and %s value %s";
 
-        public IdentityNotFoundErrorItem(final String detail, final Alias alias) {
+        public IdentityNotFoundErrorItem(final Alias alias) {
             super(TITLE, toDetail(alias), toMeta(alias), STATUS_CODE);
         }
 
