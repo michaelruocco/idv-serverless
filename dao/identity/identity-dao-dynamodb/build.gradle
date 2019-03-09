@@ -4,7 +4,7 @@ repositories {
 
 dependencies {
     compile project(':core:identity-core')
-    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.485'
+    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.515'
 
     testCompile 'com.amazonaws:DynamoDBLocal:1.11.477'
 }

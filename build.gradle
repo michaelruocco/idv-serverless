@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'com.github.ben-manes.versions' version '0.21.0'
     id 'com.github.kt3k.coveralls' version '2.8.2'
 }
 
@@ -12,7 +12,7 @@ allprojects {
     }
 
     jacoco {
-        toolVersion = '0.8.2'
+        toolVersion = '0.8.3'
     }
 }
 
@@ -26,12 +26,12 @@ subprojects {
 
     dependencies {
         compile 'org.projectlombok:lombok:1.18.6'
-        compile 'org.slf4j:slf4j-api:1.7.25'
+        compile 'org.slf4j:slf4j-api:1.7.26'
 
         testCompile 'junit:junit:4.12'
-        testCompile 'org.assertj:assertj-core:3.12.0'
+        testCompile 'org.assertj:assertj-core:3.12.1'
         testCompile 'org.mockito:mockito-all:1.10.19'
-        testCompile 'org.slf4j:slf4j-simple:1.7.25'
+        testCompile 'org.slf4j:slf4j-simple:1.7.26'
         testCompile 'com.github.michaelruocco:file-loader:4.0.0'
     }
 
@@ -72,4 +72,17 @@ coveralls {
 
 tasks.coveralls {
     dependsOn jacocoRootReport
+}
+
+dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
 }

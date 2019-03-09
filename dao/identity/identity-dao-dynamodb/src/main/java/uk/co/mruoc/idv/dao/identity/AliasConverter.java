@@ -23,7 +23,7 @@ public class AliasConverter {
     private AliasConverter() {
         // utility class
     }
-    
+
     public static Set<String> toStrings(final Aliases aliases) {
         return aliases.stream().map(AliasConverter::toString).collect(Collectors.toSet());
     }
