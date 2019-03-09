@@ -1,5 +1,5 @@
 dependencies {
     compile project(':json-api')
 
-    compile group: 'com.amazonaws', name: 'aws-lambda-java-events', version: '2.2.5'
+    compile 'com.amazonaws:aws-lambda-java-events:2.2.5'
 }
