@@ -221,4 +221,14 @@ public class IdentityTest {
                 "]))");
     }
 
+    @Test
+    public void shouldReturnAliasCount() {
+        final Alias idvId = new IdvIdAlias(UUID.fromString("786fa43d-6bcd-4a0c-ab7e-21348eb77faf"));
+        final Identity identity = Identity.withAliases(idvId, new UkcCardholderIdAlias("12345678"));
+
+        final int aliasCount = identity.getAliasCount();
+
+        assertThat(aliasCount).isEqualTo(2);
+    }
+
 }

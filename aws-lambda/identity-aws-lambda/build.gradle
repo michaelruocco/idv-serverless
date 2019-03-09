@@ -2,7 +2,7 @@ group = 'com.github.michaelruocco.idv.awslambda.identity' //assign group to work
 
 dependencies {
     compile project(':core:identity-core')
-    compile project(':dao:identity:identity-dao-fake')
+    compile project(':dao:identity:identity-dao-dynamodb')
     compile project(':json-api:identity-json-api')
     compile project(':plugins:identity:alias-loader')
     compile project(':aws-lambda')

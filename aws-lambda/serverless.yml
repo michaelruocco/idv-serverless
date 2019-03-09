@@ -1,3 +1,6 @@
+plugins:
+  - serverless-iam-roles-per-function
+
 service: idv
 
 custom:
@@ -10,9 +13,13 @@ custom:
   version: ${opt:version, self:custom.defaultVersion}
 
   lambdas:
-
     getIdentity:
       name: ${self:custom.stage}-get-identity
+
+  dynamoTables:
+    identity:
+      name: ${self:custom.stage}-identity
+      arn: { "Fn::Join" : ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref" : "AWS::AccountId" }, ":table/${self:custom.dynamoTables.identity.name}" ] ] }
 
 provider:
   name: aws
@@ -39,3 +46,27 @@ functions:
       - http:
           path: identities
           method: get
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:BatchWriteItem
+        Resource: ${self:custom.dynamoTables.identity.arn}
+
+resources:
+  Resources:
+    identityTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: alias
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: alias
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.dynamoTables.identity.name}

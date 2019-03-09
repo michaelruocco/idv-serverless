@@ -3,6 +3,7 @@ rootProject.name = 'idv'
 include 'core:identity-core'
 
 include 'dao:identity:identity-dao-fake'
+include 'dao:identity:identity-dao-dynamodb'
 
 include 'plugins:identity:alias-loader'
 

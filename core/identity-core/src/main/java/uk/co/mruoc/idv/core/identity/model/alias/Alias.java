@@ -14,6 +14,10 @@ public interface Alias {
 
     class Formats {
 
+        private Formats() {
+            // utility class
+        }
+
         public static final String CLEAR_TEXT = "CLEAR_TEXT";
         public static final String TOKENIZED = "TOKENIZED";
         public static final String ENCRYPTED = "ENCRYPTED";
@@ -21,6 +25,10 @@ public interface Alias {
     }
 
     class Types {
+
+        private Types() {
+            // utility class
+        }
 
         public static final String IDV_ID = "IDV_ID";
         public static final String UKC_CARDHOLDER_ID = "UKC_CARDHOLDER_ID";

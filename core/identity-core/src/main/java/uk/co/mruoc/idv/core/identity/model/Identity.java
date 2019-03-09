@@ -87,6 +87,10 @@ public class Identity {
         }
     }
 
+    public int getAliasCount() {
+        return aliases.size();
+    }
+
     public static class IdentityMustHaveExactlyOneIdvIdException extends RuntimeException {
 
         // intentionally blank

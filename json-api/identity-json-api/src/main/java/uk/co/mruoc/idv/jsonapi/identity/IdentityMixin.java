@@ -13,4 +13,7 @@ public abstract class IdentityMixin {
     @JsonIgnore
     public abstract IdvIdAlias getIdvId();
 
+    @JsonIgnore
+    public abstract int getAliasCount();
+
 }

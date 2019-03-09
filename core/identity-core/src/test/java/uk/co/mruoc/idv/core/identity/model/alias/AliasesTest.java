@@ -20,4 +20,15 @@ public class AliasesTest {
         assertThat(stream.collect(Collectors.toList())).containsExactly(idIdv, cardholderId);
     }
 
+    @Test
+    public void shouldReturnSize() {
+        final Alias idIdv = new IdvIdAlias();
+        final Alias cardholderId = new UkcCardholderIdAlias("12345678");
+        final Aliases aliases = Aliases.with(idIdv, cardholderId);
+
+        final int size = aliases.size();
+
+        assertThat(size).isEqualTo(2);
+    }
+
 }

@@ -88,7 +88,7 @@ public class Aliases implements Iterable<Alias> {
         return aliases.stream();
     }
 
-    private int size() {
+    public int size() {
         return aliases.size();
     }
 
