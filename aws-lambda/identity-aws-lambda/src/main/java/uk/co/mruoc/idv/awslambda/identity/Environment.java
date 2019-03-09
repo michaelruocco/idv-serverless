@@ -2,6 +2,10 @@ package uk.co.mruoc.idv.awslambda.identity;
 
 public class Environment {
 
+    private Environment() {
+        // utility class
+    }
+    
     public static String getRegion() {
         return System.getenv("REGION");
     }
