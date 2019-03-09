@@ -14,21 +14,17 @@ public interface Alias {
 
     class Formats {
 
-        private Formats() {
-            // utility class
-        }
-
         public static final String CLEAR_TEXT = "CLEAR_TEXT";
         public static final String TOKENIZED = "TOKENIZED";
         public static final String ENCRYPTED = "ENCRYPTED";
 
+        private Formats() {
+            // utility class
+        }
+
     }
 
     class Types {
-
-        private Types() {
-            // utility class
-        }
 
         public static final String IDV_ID = "IDV_ID";
         public static final String UKC_CARDHOLDER_ID = "UKC_CARDHOLDER_ID";
@@ -36,6 +32,10 @@ public interface Alias {
         public static final String CREDIT_CARD_NUMBER = "CREDIT_CARD_NUMBER";
         public static final String DEBIT_CARD_NUMBER = "DEBIT_CARD_NUMBER";
         public static final String CARD_NUMBER = "CARD_NUMBER";
+
+        private Types() {
+            // utility class
+        }
 
     }
 

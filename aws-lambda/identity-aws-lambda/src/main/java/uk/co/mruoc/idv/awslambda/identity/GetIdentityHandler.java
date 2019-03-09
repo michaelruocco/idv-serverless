@@ -14,6 +14,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.jsonapi.identity.IdentityJsonApiDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
@@ -35,8 +36,12 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
     private final ErrorHandlerDelegator errorHandler;
 
     public GetIdentityHandler() {
+        this(IdentityDaoFactory.build(Environment.getRegion(), Environment.getStage()));
+    }
+
+    public GetIdentityHandler(final IdentityDao dao) {
         this(ObjectMapperSingleton.get(),
-                IdentityServiceSingleton.get(),
+                IdentityServiceSingleton.get(dao),
                 new GetIdentityRequestValidator(),
                 new GetIdentityErrorHandlerDelegator());
     }

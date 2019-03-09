@@ -10,5 +10,5 @@ dependencies {
 }
 
 test {
-    systemProperty 'sqlite4java.library.path', 'libs/sqlite4java'
+    systemProperty 'sqlite4java.library.path', '../../../libs/sqlite4java'
 }

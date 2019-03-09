@@ -1,0 +1,25 @@
+{
+  "data": {
+    "id": "3713f6f6-8fa6-4686-bcbc-e348ee3b4b06",
+    "type": "identities",
+    "attributes": {
+      "aliases": [
+        {
+          "type": "IDV_ID",
+          "format": "CLEAR_TEXT",
+          "value": "3713f6f6-8fa6-4686-bcbc-e348ee3b4b06"
+        },
+        {
+          "type": "UKC_CARDHOLDER_ID",
+          "format": "CLEAR_TEXT",
+          "value": "12345678"
+        },
+        {
+          "type": "BUK_CUSTOMER_ID",
+          "format": "CLEAR_TEXT",
+          "value": "1111111111"
+        }
+      ]
+    }
+  }
+}
