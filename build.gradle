@@ -52,7 +52,8 @@ task jacocoRootReport(type: JacocoReport) {
 
     sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
     classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(subprojects.jacocoTestReport.executionData)
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    //executionData = files(subprojects.jacocoTestReport.executionData)
 
     reports {
         html.enabled = true
