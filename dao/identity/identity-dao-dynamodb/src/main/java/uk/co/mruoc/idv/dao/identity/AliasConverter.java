@@ -20,6 +20,10 @@ public class AliasConverter {
 
     private static final char DELIMITER = '|';
 
+    private AliasConverter() {
+        // utility class
+    }
+    
     public static Set<String> toStrings(final Aliases aliases) {
         return aliases.stream().map(AliasConverter::toString).collect(Collectors.toSet());
     }

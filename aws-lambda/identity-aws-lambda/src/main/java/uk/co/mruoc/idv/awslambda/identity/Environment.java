@@ -5,7 +5,7 @@ public class Environment {
     private Environment() {
         // utility class
     }
-    
+
     public static String getRegion() {
         return System.getenv("REGION");
     }
