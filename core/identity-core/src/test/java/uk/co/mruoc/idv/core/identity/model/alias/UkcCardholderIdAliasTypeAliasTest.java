@@ -17,7 +17,7 @@ public class UkcCardholderIdAliasTypeAliasTest {
 
     @Test
     public void shouldHaveCorrectType() {
-        assertThat(alias.getTypeName()).isEqualTo(UkcCardholderIdAliasType.NAME);
+        assertThat(alias.getTypeName()).isEqualTo(AliasType.Names.UKC_CARDHOLDER_ID);
     }
 
     @Test

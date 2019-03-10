@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.identity.model.alias.cardnumber;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +19,7 @@ public class EncryptedDebitCardNumberAliasTest {
 
     @Test
     public void shouldHaveCorrectType() {
-        assertThat(alias.getTypeName()).isEqualTo(DebitCardNumberAliasType.NAME);
+        assertThat(alias.getTypeName()).isEqualTo(AliasType.Names.DEBIT_CARD_NUMBER);
     }
 
     @Test

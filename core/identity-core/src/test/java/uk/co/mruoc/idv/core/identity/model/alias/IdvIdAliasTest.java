@@ -24,7 +24,7 @@ public class IdvIdAliasTest {
 
     @Test
     public void shouldHaveCorrectType() {
-        assertThat(alias.getTypeName()).isEqualTo(IdvIdAliasType.NAME);
+        assertThat(alias.getTypeName()).isEqualTo(AliasType.Names.IDV_ID);
     }
 
     @Test

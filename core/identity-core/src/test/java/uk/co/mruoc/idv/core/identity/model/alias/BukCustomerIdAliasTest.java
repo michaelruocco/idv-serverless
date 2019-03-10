@@ -17,7 +17,7 @@ public class BukCustomerIdAliasTest {
 
     @Test
     public void shouldHaveCorrectType() {
-        assertThat(alias.getTypeName()).isEqualTo(BukCustomerIdAliasType.NAME);
+        assertThat(alias.getTypeName()).isEqualTo(AliasType.Names.BUK_CUSTOMER_ID);
     }
 
     @Test

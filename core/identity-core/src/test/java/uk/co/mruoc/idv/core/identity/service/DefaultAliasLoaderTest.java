@@ -2,10 +2,10 @@ package uk.co.mruoc.idv.core.identity.service;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAliasType;
 
 import java.util.Collection;
 
@@ -20,7 +20,7 @@ public class DefaultAliasLoaderTest {
 
     private static final String SUPPORTED_CHANNEL_ID = "CHANNEL_ID";
     private static final Collection<String> SUPPORTED_CHANNEL_IDS = singleton(SUPPORTED_CHANNEL_ID);
-    private static final Collection<String> SUPPORTED_ALIAS_TYPES = singleton(UkcCardholderIdAliasType.NAME);
+    private static final Collection<String> SUPPORTED_ALIAS_TYPES = singleton(AliasType.Names.UKC_CARDHOLDER_ID);
 
     private final Alias supportedAlias = new UkcCardholderIdAlias("22222222");
     private final Alias unsupportedAlias = new BukCustomerIdAlias("9999999999");

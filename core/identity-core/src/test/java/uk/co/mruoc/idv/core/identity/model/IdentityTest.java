@@ -3,15 +3,10 @@ package uk.co.mruoc.idv.core.identity.model;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
-import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAliasType;
-import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.CreditCardNumberAliasType;
-import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.DebitCardNumberAliasType;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -50,7 +45,7 @@ public class IdentityTest {
         final Alias idvId = new IdvIdAlias();
         final Identity identity = Identity.withAliases(idvId);
 
-        final Throwable thrown = catchThrowable(() -> identity.removeAliases(IdvIdAliasType.NAME));
+        final Throwable thrown = catchThrowable(() -> identity.removeAliases(AliasType.Names.IDV_ID));
 
         assertThat(thrown).isInstanceOf(Identity.IdentityMustHaveExactlyOneIdvIdException.class);
     }
@@ -146,11 +141,11 @@ public class IdentityTest {
     public void hasAliasShouldWhetherIdentityHasAliasMatchingType() {
         final Identity identity = Identity.withAliases(new IdvIdAlias(), new UkcCardholderIdAlias("12345678"));
 
-        assertThat(identity.hasAlias(IdvIdAliasType.NAME)).isTrue();
-        assertThat(identity.hasAlias(UkcCardholderIdAliasType.NAME)).isTrue();
-        assertThat(identity.hasAlias(BukCustomerIdAliasType.NAME)).isFalse();
-        assertThat(identity.hasAlias(CreditCardNumberAliasType.NAME)).isFalse();
-        assertThat(identity.hasAlias(DebitCardNumberAliasType.NAME)).isFalse();
+        assertThat(identity.hasAlias(AliasType.Names.IDV_ID)).isTrue();
+        assertThat(identity.hasAlias(AliasType.Names.UKC_CARDHOLDER_ID)).isTrue();
+        assertThat(identity.hasAlias(AliasType.Names.BUK_CUSTOMER_ID)).isFalse();
+        assertThat(identity.hasAlias(AliasType.Names.CREDIT_CARD_NUMBER)).isFalse();
+        assertThat(identity.hasAlias(AliasType.Names.DEBIT_CARD_NUMBER)).isFalse();
     }
 
     @Test
@@ -164,7 +159,7 @@ public class IdentityTest {
 
     @Test
     public void shouldReturnIdvIdIfPopulatedUsingDefaultAlias() {
-        final AliasType type = new DefaultAliasType(Alias.Types.IDV_ID);
+        final AliasType type = new DefaultAliasType(AliasType.Names.IDV_ID);
         final Alias idvId = new DefaultAlias(type, Alias.Formats.CLEAR_TEXT, UUID.randomUUID().toString());
 
         final Identity identity = Identity.withAliases(idvId);
@@ -185,7 +180,7 @@ public class IdentityTest {
     public void shouldReturnEmptyCollectionIfAliasOfTypeNotFound() {
         final Identity identity = Identity.withAliases(new IdvIdAlias());
 
-        final Collection<Alias> aliases = identity.getAliasesByType(UkcCardholderIdAliasType.NAME);
+        final Collection<Alias> aliases = identity.getAliasesByType(AliasType.Names.UKC_CARDHOLDER_ID);
 
         assertThat(aliases).isEmpty();
     }
@@ -195,7 +190,7 @@ public class IdentityTest {
         final Alias idvId = new IdvIdAlias();
         final Identity identity = Identity.withAliases(idvId, new UkcCardholderIdAlias("12345678"));
 
-        final Identity identityWithoutCardholderId = identity.removeAliases(UkcCardholderIdAliasType.NAME);
+        final Identity identityWithoutCardholderId = identity.removeAliases(AliasType.Names.UKC_CARDHOLDER_ID);
 
         assertThat(identityWithoutCardholderId.getAliases()).containsExactly(idvId);
     }

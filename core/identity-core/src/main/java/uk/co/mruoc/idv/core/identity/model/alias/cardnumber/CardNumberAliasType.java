@@ -4,10 +4,8 @@ import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 
 public class CardNumberAliasType extends DefaultAliasType {
 
-    public static final String NAME = "CARD_NUMBER";
-
     public CardNumberAliasType() {
-        this(NAME);
+        this(Names.CARD_NUMBER);
     }
 
     public CardNumberAliasType(final String name) {

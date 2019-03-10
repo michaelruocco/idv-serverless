@@ -2,9 +2,9 @@ package uk.co.mruoc.idv.core.identity.model;
 
 import lombok.ToString;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAliasType;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +12,8 @@ import java.util.UUID;
 
 @ToString
 public class Identity {
+
+    private static final String IDV_ID_ALIAS_TYPE = AliasType.Names.IDV_ID;
 
     private final Aliases aliases;
 
@@ -46,7 +48,7 @@ public class Identity {
     }
 
     public Identity merge(final Identity identityToMerge) {
-        final Aliases remainingAliases = identityToMerge.aliases.removeByTypeName(IdvIdAliasType.NAME);
+        final Aliases remainingAliases = identityToMerge.aliases.removeByTypeName(AliasType.Names.IDV_ID);
         return addAliases(remainingAliases);
     }
 
@@ -68,7 +70,7 @@ public class Identity {
     }
 
     public IdvIdAlias getIdvId() {
-        Collection<Alias> aliases = getAliasesByType(IdvIdAliasType.NAME);
+        Collection<Alias> aliases = getAliasesByType(IDV_ID_ALIAS_TYPE);
         Alias alias = aliases.iterator().next();
         return new IdvIdAlias(alias.getValue());
     }
@@ -83,7 +85,7 @@ public class Identity {
     }
 
     private static void validate(final Aliases aliases) {
-        if (aliases.countByType(IdvIdAliasType.NAME) != 1) {
+        if (aliases.countByType(IDV_ID_ALIAS_TYPE) != 1) {
             throw new IdentityMustHaveExactlyOneIdvIdException();
         }
     }
