@@ -2,7 +2,10 @@ package uk.co.mruoc.idv.core.identity.model;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAliasType;
+import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
@@ -153,6 +156,16 @@ public class IdentityTest {
     @Test
     public void shouldReturnIdvId() {
         final Alias idvId = new IdvIdAlias();
+
+        final Identity identity = Identity.withAliases(idvId);
+
+        assertThat(identity.getIdvId()).isEqualTo(idvId);
+    }
+
+    @Test
+    public void shouldReturnIdvIdIfPopulatedUsingDefaultAlias() {
+        final AliasType type = new DefaultAliasType(Alias.Types.IDV_ID);
+        final Alias idvId = new DefaultAlias(type, Alias.Formats.CLEAR_TEXT, UUID.randomUUID().toString());
 
         final Identity identity = Identity.withAliases(idvId);
 

@@ -69,7 +69,8 @@ public class Identity {
 
     public IdvIdAlias getIdvId() {
         Collection<Alias> aliases = getAliasesByType(IdvIdAliasType.NAME);
-        return (IdvIdAlias) aliases.iterator().next();
+        Alias alias = aliases.iterator().next();
+        return new IdvIdAlias(alias.getValue());
     }
 
     public UUID getIdvIdValue() {

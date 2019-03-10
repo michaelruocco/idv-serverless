@@ -8,14 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
-import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.CardNumberAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.CreditCardNumberAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.DebitCardNumberAlias;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,23 +42,7 @@ public class IdentityDeserializer extends StdDeserializer<Identity> {
         final String type = extractType(aliasNode);
         final String format = extractFormat(aliasNode);
         final String value = extractValue(aliasNode);
-        switch (type) {
-            case Alias.Types.IDV_ID:
-                return new IdvIdAlias(value);
-            case Alias.Types.BUK_CUSTOMER_ID:
-                return new BukCustomerIdAlias(format, value);
-            case Alias.Types.UKC_CARDHOLDER_ID:
-                return new UkcCardholderIdAlias(format, value);
-            case Alias.Types.CREDIT_CARD_NUMBER:
-                return new CreditCardNumberAlias(format, value);
-            case Alias.Types.DEBIT_CARD_NUMBER:
-                return new DebitCardNumberAlias(format, value);
-            case Alias.Types.CARD_NUMBER:
-                return new CardNumberAlias(format, value);
-            default:
-                log.warn("unrecognised alias type name {} using default alias", type);
-                return new DefaultAlias(new DefaultAliasType(type), format, value);
-        }
+        return new DefaultAlias(new DefaultAliasType(type), format, value);
     }
 
     private static String extractType(final JsonNode aliasNode) {
