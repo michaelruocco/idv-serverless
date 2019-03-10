@@ -9,6 +9,10 @@ public interface Channel {
         public static final String AS3 = "AS3";
         public static final String RSA = "RSA";
 
+        private Ids() {
+            // utility class
+        }
+
     }
 
 }
