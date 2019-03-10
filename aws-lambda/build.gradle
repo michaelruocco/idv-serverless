@@ -2,4 +2,5 @@ dependencies {
     compile project(':json-api')
 
     compile 'com.amazonaws:aws-lambda-java-events:2.2.5'
+    compile 'io.symphonia:lambda-logging:1.0.3'
 }

@@ -33,6 +33,7 @@ public class IdentityService {
     }
 
     public Identity load(final Alias alias) {
+        log.info("loading identity using alias {}", alias);
         return dao.load(alias).orElseThrow(() -> new IdentityNotFoundException(alias));
     }
 

@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.ErrorHandlerDelegator;
 import uk.co.mruoc.idv.awslambda.RequestValidator;
 import uk.co.mruoc.idv.core.identity.model.Identity;
@@ -28,6 +29,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Builder
+@Slf4j
 public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final ObjectMapper mapper;
@@ -66,6 +68,7 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
     }
 
     private APIGatewayProxyResponseEvent handle(final APIGatewayProxyRequestEvent input) {
+        log.info("handling request {}", input);
         final Optional<JsonApiErrorDocument> errorDocument = requestValidator.validate(input);
         if (errorDocument.isPresent()) {
             return toResponse(errorDocument.get());
@@ -102,9 +105,11 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
 
     private APIGatewayProxyResponseEvent toResponse(final IdentityJsonApiDocument document) {
         try {
-            return new APIGatewayProxyResponseEvent()
+            APIGatewayProxyResponseEvent event = new APIGatewayProxyResponseEvent()
                     .withBody(mapper.writeValueAsString(document))
                     .withStatusCode(200);
+            log.info("returning response {}", event);
+            return event;
         } catch (final JsonProcessingException e) {
             throw new UncheckedIOException(e);
         }
@@ -112,9 +117,11 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
 
     private APIGatewayProxyResponseEvent toResponse(final JsonApiErrorDocument document) {
         try {
-            return new APIGatewayProxyResponseEvent()
+            APIGatewayProxyResponseEvent event = new APIGatewayProxyResponseEvent()
                     .withBody(mapper.writeValueAsString(document))
                     .withStatusCode(calculateErrorStatusCode(document));
+            log.info("returning error response {}", event);
+            return event;
         } catch (final JsonProcessingException e) {
             throw new UncheckedIOException(e);
         }
