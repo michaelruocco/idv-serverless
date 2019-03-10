@@ -1,5 +1,8 @@
 package uk.co.mruoc.idv.core.verificationcontext.model;
 
+import lombok.ToString;
+
+@ToString
 public class DefaultChannel implements Channel {
 
     private final String id;

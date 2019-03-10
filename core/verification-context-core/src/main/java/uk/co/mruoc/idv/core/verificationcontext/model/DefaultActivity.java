@@ -1,9 +1,12 @@
 package uk.co.mruoc.idv.core.verificationcontext.model;
 
+import lombok.ToString;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+@ToString
 public class DefaultActivity implements Activity {
 
     private final String type;

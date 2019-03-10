@@ -13,10 +13,10 @@ public class DefaultActivityTest {
     private static final String TYPE = "type";
     private static final Instant TIMESTAMP = Instant.now();
 
+    private final Activity activity = new DefaultActivity(TYPE, TIMESTAMP);
+
     @Test
     public void shouldReturnType() {
-        final Activity activity = new DefaultActivity(TYPE, TIMESTAMP);
-
         final String type = activity.getType();
 
         assertThat(type).isEqualTo(TYPE);
@@ -24,8 +24,6 @@ public class DefaultActivityTest {
 
     @Test
     public void shouldReturnTimestamp() {
-        final Activity activity = new DefaultActivity(TYPE, TIMESTAMP);
-
         final Instant timestamp = activity.getTimestamp();
 
         assertThat(timestamp).isEqualTo(TIMESTAMP);
@@ -33,8 +31,6 @@ public class DefaultActivityTest {
 
     @Test
     public void shouldReturnNullValueIfGenericPropertyDoesNotExist() {
-        final Activity activity = new DefaultActivity(TYPE, TIMESTAMP);
-
         final String value = activity.get("value", String.class);
 
         assertThat(value).isNull();
@@ -46,9 +42,19 @@ public class DefaultActivityTest {
         final String expectedValue = "property value";
         final Map<String, Object> genericProperties = new HashMap<>();
         genericProperties.put(genericPropertyName, expectedValue);
-        final Activity activity = new DefaultActivity(TYPE, TIMESTAMP, genericProperties);
+        final Activity activityWithProperties = new DefaultActivity(TYPE, TIMESTAMP, genericProperties);
 
-        final String value = activity.get(genericPropertyName, String.class);
+        final String value = activityWithProperties.get(genericPropertyName, String.class);
+
+        assertThat(value).isEqualTo(expectedValue);
+    }
+
+    @Test
+    public void shouldPrintValues() {
+        final String expectedValue = String.format("DefaultActivity(type=type, timestamp=%s, genericProperties={})",
+                TIMESTAMP.toString());
+
+        final String value = activity.toString();
 
         assertThat(value).isEqualTo(expectedValue);
     }
