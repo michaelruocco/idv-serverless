@@ -12,7 +12,7 @@ public interface AliasType {
             Names.DEBIT_CARD_NUMBER,
             Names.CARD_NUMBER
     );
-    
+
     String name();
 
     boolean isSensitive();

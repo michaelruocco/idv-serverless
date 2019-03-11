@@ -15,7 +15,7 @@ public interface VerificationMethod {
         public static final String PHYSICAL_PINSENTRY = "PHYSICAL_PINSENTRY";
         public static final String MOBILE_PINSENTRY = "MOBILE_PINSENTRY";
         public static final String CARD_CREDENTIALS = "CARD_CREDENTIALS";
-        public static final String ONE_TIME_PASSCODE = "ONE_TIME_PASSCODE";
+        public static final String ONE_TIME_PASSCODE_SMS = "ONE_TIME_PASSCODE_SMS";
 
         private Names() {
             // utility class
