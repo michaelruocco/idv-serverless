@@ -6,10 +6,10 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
-import uk.co.mruoc.idv.core.verificationcontext.model.Activity;
-import uk.co.mruoc.idv.core.verificationcontext.model.As3Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.LoginActivity;
+import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 

@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.core.verificationcontext.model;
+package uk.co.mruoc.idv.core.verificationcontext.model.activity;
 
 import javax.money.MonetaryAmount;
 import java.time.Instant;
@@ -8,27 +8,31 @@ import java.util.Map;
 
 public class OnlinePurchaseActivity extends DefaultActivity {
 
+    private static final String MERCHANT_PROPERTY_NAME = "merchant";
+    private static final String REFERENCE_PROPERTY_NAME = "reference";
+    private static final String COST_PROPERTY_NAME = "cost";
+
     public OnlinePurchaseActivity(final Instant timestamp, final String merchant, final String reference, final MonetaryAmount cost) {
         super(Types.ONLINE_PURCHASE, timestamp, toMap(merchant, reference, cost));
     }
 
     public String getMerchant() {
-        return get("merchant", String.class);
+        return get(MERCHANT_PROPERTY_NAME, String.class);
     }
 
     public String getReference() {
-        return get("reference", String.class);
+        return get(REFERENCE_PROPERTY_NAME, String.class);
     }
 
     public MonetaryAmount getCost() {
-        return get("cost", MonetaryAmount.class);
+        return get(COST_PROPERTY_NAME, MonetaryAmount.class);
     }
 
     private static Map<String, Object> toMap(final String merchant, final String reference, final MonetaryAmount cost) {
         final Map<String, Object> map = new HashMap<>();
-        map.put("merchant", merchant);
-        map.put("reference", reference);
-        map.put("cost", cost);
+        map.put(MERCHANT_PROPERTY_NAME, merchant);
+        map.put(REFERENCE_PROPERTY_NAME, reference);
+        map.put(COST_PROPERTY_NAME, cost);
         return Collections.unmodifiableMap(map);
     }
 

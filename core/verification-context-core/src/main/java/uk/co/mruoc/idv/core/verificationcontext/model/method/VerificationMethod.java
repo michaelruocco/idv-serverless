@@ -1,0 +1,26 @@
+package uk.co.mruoc.idv.core.verificationcontext.model.method;
+
+
+public interface VerificationMethod {
+
+    String getName();
+
+    int getDuration();
+
+    <T> T get(final String name, final Class<T> type);
+
+    class Names {
+
+        public static final String PUSH_NOTIFICATION = "PUSH_NOTIFICATION";
+        public static final String PHYSICAL_PINSENTRY = "PHYSICAL_PINSENTRY";
+        public static final String MOBILE_PINSENTRY = "MOBILE_PINSENTRY";
+        public static final String CARD_CREDENTIALS = "CARD_CREDENTIALS";
+        public static final String ONE_TIME_PASSCODE = "ONE_TIME_PASSCODE";
+
+        private Names() {
+            // utility class
+        }
+
+    }
+
+}

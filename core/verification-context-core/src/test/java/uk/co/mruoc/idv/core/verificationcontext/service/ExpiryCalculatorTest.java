@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExpiryCalculatorTest {

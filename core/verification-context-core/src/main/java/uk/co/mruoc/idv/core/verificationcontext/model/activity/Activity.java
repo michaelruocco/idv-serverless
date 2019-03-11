@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.core.verificationcontext.model;
+package uk.co.mruoc.idv.core.verificationcontext.model.activity;
 
 import java.time.Instant;
 
@@ -8,7 +8,7 @@ public interface Activity {
 
     Instant getTimestamp();
 
-    <T> T get(final String name, final Class<T> stype);
+    <T> T get(final String name, final Class<T> type);
 
     class Types {
 

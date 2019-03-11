@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.core.verificationcontext.model;
+package uk.co.mruoc.idv.core.verificationcontext.model.activity;
 
 import java.time.Instant;
 

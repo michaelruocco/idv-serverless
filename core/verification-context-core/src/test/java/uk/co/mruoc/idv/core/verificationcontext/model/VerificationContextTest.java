@@ -4,6 +4,10 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
+import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
