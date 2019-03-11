@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +42,8 @@ public class IdentityDeserializer extends StdDeserializer<Identity> {
         final String type = extractType(aliasNode);
         final String format = extractFormat(aliasNode);
         final String value = extractValue(aliasNode);
-        return new DefaultAlias(new DefaultAliasType(type), format, value);
+        final AliasType aliasType = AliasType.toAliasType(type);
+        return new DefaultAlias(aliasType, format, value);
     }
 
     private static String extractType(final JsonNode aliasNode) {

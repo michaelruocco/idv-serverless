@@ -2,9 +2,9 @@ package uk.co.mruoc.idv.dao.identity;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 
 import java.util.Collection;
 import java.util.Set;
@@ -36,7 +36,8 @@ public class AliasConverter {
         final String type = parts[0];
         final String format = parts[1];
         final String aliasValue = parts[2];
-        return new DefaultAlias(new DefaultAliasType(type), format, aliasValue);
+        final AliasType aliasType = AliasType.toAliasType(type);
+        return new DefaultAlias(aliasType, format, aliasValue);
     }
 
 }

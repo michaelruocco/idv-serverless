@@ -1,5 +1,10 @@
 package uk.co.mruoc.idv.core.identity.model.alias;
 
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.CardNumberAliasType;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 public interface AliasType {
 
     String name();
@@ -7,6 +12,23 @@ public interface AliasType {
     boolean isSensitive();
 
     boolean isCardNumber();
+
+    static AliasType toAliasType(final String type) {
+        if (AliasType.isCardNumber(type)) {
+            return new CardNumberAliasType(type);
+        }
+        return new DefaultAliasType(type);
+    }
+
+    Collection<String> CARD_NUMBER_TYPES = Arrays.asList(
+            Names.CREDIT_CARD_NUMBER,
+            Names.DEBIT_CARD_NUMBER,
+            Names.CARD_NUMBER
+    );
+
+    static boolean isCardNumber(final String type) {
+        return CARD_NUMBER_TYPES.contains(type);
+    }
 
     class Names {
 
