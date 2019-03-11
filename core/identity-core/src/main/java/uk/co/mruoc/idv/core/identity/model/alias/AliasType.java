@@ -7,6 +7,12 @@ import java.util.Collection;
 
 public interface AliasType {
 
+    Collection<String> CARD_NUMBER_TYPES = Arrays.asList(
+            Names.CREDIT_CARD_NUMBER,
+            Names.DEBIT_CARD_NUMBER,
+            Names.CARD_NUMBER
+    );
+    
     String name();
 
     boolean isSensitive();
@@ -19,12 +25,6 @@ public interface AliasType {
         }
         return new DefaultAliasType(type);
     }
-
-    Collection<String> CARD_NUMBER_TYPES = Arrays.asList(
-            Names.CREDIT_CARD_NUMBER,
-            Names.DEBIT_CARD_NUMBER,
-            Names.CARD_NUMBER
-    );
 
     static boolean isCardNumber(final String type) {
         return CARD_NUMBER_TYPES.contains(type);
