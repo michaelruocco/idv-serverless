@@ -21,4 +21,11 @@ public class CardCredentialsMethodPolicyTest {
         assertThat(policy.getDuration()).isEqualTo(DURATION);
     }
 
+    @Test
+    public void shouldReturnDefaultDurationIfNotSpecified() {
+        final VerificationMethodPolicy defaultDurationPolicy = new CardCredentialsMethodPolicy();
+
+        assertThat(defaultDurationPolicy.getDuration()).isEqualTo(VerificationMethodPolicy.DEFAULT_DURATION);
+    }
+
 }

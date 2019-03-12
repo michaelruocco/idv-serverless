@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OtpSmsMethodPolicyTest {
 
-    private static final int DURATION = 300000;
+    private static final int DURATION = 500000;
     private static final Passcode PASSCODE = Passcode.builder()
             .attempts(4)
             .length(8)
@@ -30,6 +30,13 @@ public class OtpSmsMethodPolicyTest {
     @Test
     public void shouldReturnPasscode() {
         assertThat(policy.getPasscode()).isEqualTo(PASSCODE);
+    }
+
+    @Test
+    public void shouldReturnDefaultDurationIfNotSpecified() {
+        final VerificationMethodPolicy defaultDurationPolicy = new OtpSmsMethodPolicy(PASSCODE);
+
+        assertThat(defaultDurationPolicy.getDuration()).isEqualTo(VerificationMethodPolicy.DEFAULT_DURATION);
     }
 
 }

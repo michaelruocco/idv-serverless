@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PushNotificationMethodPolicyTest {
 
-    private static final int DURATION = 300000;
+    private static final int DURATION = 500000;
 
     private final VerificationMethodPolicy policy = new PushNotificationMethodPolicy(DURATION);
 
@@ -19,6 +19,13 @@ public class PushNotificationMethodPolicyTest {
     @Test
     public void shouldReturnDuration() {
         assertThat(policy.getDuration()).isEqualTo(DURATION);
+    }
+
+    @Test
+    public void shouldReturnDefaultDurationIfNotSpecified() {
+        final VerificationMethodPolicy defaultDurationPolicy = new PushNotificationMethodPolicy();
+
+        assertThat(defaultDurationPolicy.getDuration()).isEqualTo(VerificationMethodPolicy.DEFAULT_DURATION);
     }
 
 }

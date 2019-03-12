@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VerificationMethodPolicy {
 
+    public static final int DEFAULT_DURATION = 300000;
+
     private final String methodName;
     private final int duration;
 

@@ -28,4 +28,11 @@ public class MobileNumberMethodPolicyTest {
         assertThat(policy.getFunction()).isEqualTo(FUNCTION);
     }
 
+    @Test
+    public void shouldReturnDefaultDurationIfNotSpecified() {
+        final VerificationMethodPolicy defaultDurationPolicy = new MobilePinsentryMethodPolicy(FUNCTION);
+
+        assertThat(defaultDurationPolicy.getDuration()).isEqualTo(VerificationMethodPolicy.DEFAULT_DURATION);
+    }
+
 }

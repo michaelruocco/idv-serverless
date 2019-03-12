@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PhysicalPinsentryMethodPolicyTest {
 
-    private static final int DURATION = 300000;
+    private static final int DURATION = 500000;
     private static final PinsentryFunction FUNCTION = PinsentryFunction.RESPOND;
 
     private final PhysicalPinsentryMethodPolicy policy = new PhysicalPinsentryMethodPolicy(DURATION, FUNCTION);
@@ -26,6 +26,13 @@ public class PhysicalPinsentryMethodPolicyTest {
     @Test
     public void shouldReturnFunction() {
         assertThat(policy.getFunction()).isEqualTo(FUNCTION);
+    }
+
+    @Test
+    public void shouldReturnDefaultDurationIfNotSpecified() {
+        final VerificationMethodPolicy defaultDurationPolicy = new PhysicalPinsentryMethodPolicy(FUNCTION);
+
+        assertThat(defaultDurationPolicy.getDuration()).isEqualTo(VerificationMethodPolicy.DEFAULT_DURATION);
     }
 
 }

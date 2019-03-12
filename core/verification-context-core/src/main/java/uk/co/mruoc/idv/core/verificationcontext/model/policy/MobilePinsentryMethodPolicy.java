@@ -9,6 +9,10 @@ public class MobilePinsentryMethodPolicy extends VerificationMethodPolicy {
 
     private final PinsentryFunction function;
 
+    public MobilePinsentryMethodPolicy(final PinsentryFunction function) {
+        this(DEFAULT_DURATION, function);
+    }
+
     public MobilePinsentryMethodPolicy(final int duration, final PinsentryFunction function) {
         super(VerificationMethod.Names.MOBILE_PINSENTRY, duration);
         this.function = function;

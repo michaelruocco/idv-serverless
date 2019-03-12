@@ -4,6 +4,10 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 
 public class PushNotificationMethodPolicy extends VerificationMethodPolicy {
 
+    public PushNotificationMethodPolicy() {
+        this(DEFAULT_DURATION);
+    }
+
     public PushNotificationMethodPolicy(final int duration) {
         super(VerificationMethod.Names.PUSH_NOTIFICATION, duration);
     }

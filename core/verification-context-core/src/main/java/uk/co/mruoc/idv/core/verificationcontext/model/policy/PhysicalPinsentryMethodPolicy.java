@@ -9,6 +9,10 @@ public class PhysicalPinsentryMethodPolicy extends VerificationMethodPolicy {
 
     private final PinsentryFunction function;
 
+    public PhysicalPinsentryMethodPolicy(final PinsentryFunction function) {
+        this(DEFAULT_DURATION, function);
+    }
+
     public PhysicalPinsentryMethodPolicy(final int duration, final PinsentryFunction function) {
         super(VerificationMethod.Names.PHYSICAL_PINSENTRY, duration);
         this.function = function;
