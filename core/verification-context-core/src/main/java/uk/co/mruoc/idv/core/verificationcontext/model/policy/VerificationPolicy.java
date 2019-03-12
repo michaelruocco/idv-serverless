@@ -1,12 +1,9 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.policy;
 
-import lombok.Getter;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-@Getter
 public class VerificationPolicy {
 
     private final Collection<String> activityTypes;
@@ -23,6 +20,14 @@ public class VerificationPolicy {
     public VerificationPolicy(final Collection<String> activityTypes, final Collection<VerificationMethodPolicyEntry> entries) {
         this.activityTypes = activityTypes;
         this.entries = entries;
+    }
+
+    public boolean appliesTo(final String activityType) {
+        return activityTypes.contains(activityType);
+    }
+
+    public Collection<VerificationMethodPolicyEntry> getEntries() {
+        return entries;
     }
 
 }

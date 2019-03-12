@@ -13,13 +13,22 @@ import static org.mockito.Mockito.mock;
 public class VerificationPolicyTest {
 
     @Test
-    public void shouldReturnActivityType() {
+    public void shouldApplyToActivityType() {
         final String activityType = Activity.Types.LOGIN;
         final VerificationMethodPolicyEntry entry = mock(VerificationMethodPolicyEntry.class);
 
         final VerificationPolicy policy = new VerificationPolicy(activityType, entry);
 
-        assertThat(policy.getActivityTypes()).containsExactly(activityType);
+        assertThat(policy.appliesTo(activityType)).isTrue();
+    }
+
+    @Test
+    public void shouldNotApplyToOtherActivityType() {
+        final VerificationMethodPolicyEntry entry = mock(VerificationMethodPolicyEntry.class);
+
+        final VerificationPolicy policy = new VerificationPolicy(Activity.Types.LOGIN, entry);
+
+        assertThat(policy.appliesTo(Activity.Types.ONLINE_PURCHASE)).isFalse();
     }
 
     @Test
@@ -43,13 +52,14 @@ public class VerificationPolicyTest {
     }
 
     @Test
-    public void shouldReturnActivityTypes() {
+    public void shouldApplyToAllActivityTypes() {
         final Collection<String> activityTypes = Arrays.asList(Activity.Types.LOGIN, Activity.Types.ONLINE_PURCHASE);
         final Collection<VerificationMethodPolicyEntry> entries = Collections.singleton(mock(VerificationMethodPolicyEntry.class));
 
         final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
 
-        assertThat(policy.getActivityTypes()).containsExactlyElementsOf(activityTypes);
+        assertThat(policy.appliesTo(Activity.Types.LOGIN)).isTrue();
+        assertThat(policy.appliesTo(Activity.Types.ONLINE_PURCHASE)).isTrue();
     }
 
     @Test
