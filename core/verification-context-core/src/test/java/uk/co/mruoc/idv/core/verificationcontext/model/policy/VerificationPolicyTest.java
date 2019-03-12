@@ -10,14 +10,14 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class ActivityVerificationMethodPolicyTest {
+public class VerificationPolicyTest {
 
     @Test
     public void shouldReturnActivityType() {
         final String activityType = Activity.Types.LOGIN;
         final VerificationMethodPolicyEntry entry = mock(VerificationMethodPolicyEntry.class);
 
-        final ActivityVerificationMethodPolicy policy = new ActivityVerificationMethodPolicy(activityType, entry);
+        final VerificationPolicy policy = new VerificationPolicy(activityType, entry);
 
         assertThat(policy.getActivityTypes()).containsExactly(activityType);
     }
@@ -27,7 +27,7 @@ public class ActivityVerificationMethodPolicyTest {
         final String activityType = Activity.Types.LOGIN;
         final VerificationMethodPolicyEntry entry = mock(VerificationMethodPolicyEntry.class);
 
-        final ActivityVerificationMethodPolicy policy = new ActivityVerificationMethodPolicy(activityType, entry);
+        final VerificationPolicy policy = new VerificationPolicy(activityType, entry);
 
         assertThat(policy.getEntries()).containsExactly(entry);
     }
@@ -37,7 +37,7 @@ public class ActivityVerificationMethodPolicyTest {
         final String activityType = Activity.Types.LOGIN;
         final Collection<VerificationMethodPolicyEntry> entries = Collections.singleton(mock(VerificationMethodPolicyEntry.class));
 
-        final ActivityVerificationMethodPolicy policy = new ActivityVerificationMethodPolicy(activityType, entries);
+        final VerificationPolicy policy = new VerificationPolicy(activityType, entries);
 
         assertThat(policy.getEntries()).containsExactlyElementsOf(entries);
     }
@@ -47,7 +47,7 @@ public class ActivityVerificationMethodPolicyTest {
         final Collection<String> activityTypes = Arrays.asList(Activity.Types.LOGIN, Activity.Types.ONLINE_PURCHASE);
         final Collection<VerificationMethodPolicyEntry> entries = Collections.singleton(mock(VerificationMethodPolicyEntry.class));
 
-        final ActivityVerificationMethodPolicy policy = new ActivityVerificationMethodPolicy(activityTypes, entries);
+        final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
 
         assertThat(policy.getActivityTypes()).containsExactlyElementsOf(activityTypes);
     }
@@ -57,7 +57,7 @@ public class ActivityVerificationMethodPolicyTest {
         final Collection<String> activityTypes = Arrays.asList(Activity.Types.LOGIN, Activity.Types.ONLINE_PURCHASE);
         final Collection<VerificationMethodPolicyEntry> entries = Collections.singleton(mock(VerificationMethodPolicyEntry.class));
 
-        final ActivityVerificationMethodPolicy policy = new ActivityVerificationMethodPolicy(activityTypes, entries);
+        final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
 
         assertThat(policy.getEntries()).containsExactlyElementsOf(entries);
     }
