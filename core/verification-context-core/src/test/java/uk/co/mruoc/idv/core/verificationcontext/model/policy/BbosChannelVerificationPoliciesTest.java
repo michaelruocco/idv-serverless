@@ -5,7 +5,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.As3ChannelVerificationPolicies.As3LoginVerificationPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.BbosChannelVerificationPolicies.BbosLoginVerificationPolicy;
 
 import java.util.ArrayList;
