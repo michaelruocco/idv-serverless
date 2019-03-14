@@ -8,7 +8,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 
-import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -64,7 +63,6 @@ public class EligibleMethodsRequestTest {
 
     @Test
     public void shouldPrintAllValues() {
-        final Instant timestamp = Instant.parse("2019-03-10T12:53:57.547Z");
         final Alias inputAlias = new IdvIdAlias(UUID.fromString("b0d996ae-dfa0-43a4-949c-f03e9dafd539"));
         final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
                 .channel(new As3Channel())
