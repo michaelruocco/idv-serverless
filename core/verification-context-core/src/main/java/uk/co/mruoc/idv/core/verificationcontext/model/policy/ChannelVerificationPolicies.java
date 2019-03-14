@@ -18,8 +18,8 @@ public class ChannelVerificationPolicies {
         this.policies = policies;
     }
 
-    public boolean appliesToChannel(final String channelId) {
-        return this.channelId.equals(channelId);
+    public String getChannelId() {
+        return this.channelId;
     }
 
     public Optional<VerificationPolicy> getPolicyFor(final String activityType) {

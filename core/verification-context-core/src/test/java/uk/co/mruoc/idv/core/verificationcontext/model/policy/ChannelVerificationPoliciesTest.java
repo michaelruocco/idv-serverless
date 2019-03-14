@@ -10,21 +10,19 @@ import static org.mockito.Mockito.mock;
 
 public class ChannelVerificationPoliciesTest {
 
+    private static final String CHANNEL_ID = "channelId";
     private static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
 
     @Test
     public void shouldApplyToChannel() {
-        final String channelId = "AS3";
+        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(CHANNEL_ID);
 
-        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(channelId);
-
-        assertThat(policies.appliesToChannel(channelId)).isTrue();
-        assertThat(policies.appliesToChannel("otherChannel")).isFalse();
+        assertThat(policies.getChannelId()).isEqualTo(CHANNEL_ID);
     }
 
     @Test
     public void shouldReturnEmptyOptionalIfNoPolicies() {
-        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies("channelId");
+        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(CHANNEL_ID);
 
         assertThat(policies.getPolicyFor(ACTIVITY_TYPE)).isEmpty();
     }
@@ -34,7 +32,7 @@ public class ChannelVerificationPoliciesTest {
         final VerificationPolicy policy = mock(VerificationPolicy.class);
         given(policy.appliesTo(ACTIVITY_TYPE)).willReturn(false);
 
-        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies("channelId", policy);
+        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(CHANNEL_ID, policy);
 
         assertThat(policies.getPolicyFor(ACTIVITY_TYPE)).isEmpty();
     }
@@ -44,7 +42,7 @@ public class ChannelVerificationPoliciesTest {
         final VerificationPolicy policy = mock(VerificationPolicy.class);
         given(policy.appliesTo(ACTIVITY_TYPE)).willReturn(true);
 
-        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies("channelId", policy);
+        final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(CHANNEL_ID, policy);
 
         assertThat(policies.getPolicyFor(ACTIVITY_TYPE)).isEqualTo(Optional.of(policy));
     }

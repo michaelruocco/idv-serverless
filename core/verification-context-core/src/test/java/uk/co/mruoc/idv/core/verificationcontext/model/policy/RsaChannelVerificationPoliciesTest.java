@@ -20,8 +20,7 @@ public class RsaChannelVerificationPoliciesTest {
 
     @Test
     public void shouldApplyToRsaChannel() {
-        assertThat(policies.appliesToChannel(Channel.Ids.RSA)).isTrue();
-        assertThat(policies.appliesToChannel("ANY_OTHER_CHANNEL")).isFalse();
+        assertThat(policies.getChannelId()).isEqualTo(Channel.Ids.RSA);
     }
 
     @Test

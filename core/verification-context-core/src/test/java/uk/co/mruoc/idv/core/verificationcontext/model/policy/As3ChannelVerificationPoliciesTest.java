@@ -19,8 +19,7 @@ public class As3ChannelVerificationPoliciesTest {
 
     @Test
     public void shouldApplyToAs3Channel() {
-        assertThat(policies.appliesToChannel(Channel.Ids.AS3)).isTrue();
-        assertThat(policies.appliesToChannel("ANY_OTHER_CHANNEL")).isFalse();
+        assertThat(policies.getChannelId()).isEqualTo(Channel.Ids.AS3);
     }
 
     @Test

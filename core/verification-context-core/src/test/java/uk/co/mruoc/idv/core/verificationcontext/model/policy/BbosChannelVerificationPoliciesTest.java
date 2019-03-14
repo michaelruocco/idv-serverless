@@ -19,8 +19,7 @@ public class BbosChannelVerificationPoliciesTest {
 
     @Test
     public void shouldApplyToBbosChannel() {
-        assertThat(policies.appliesToChannel(Channel.Ids.BBOS)).isTrue();
-        assertThat(policies.appliesToChannel("ANY_OTHER_CHANNEL")).isFalse();
+        assertThat(policies.getChannelId()).isEqualTo(Channel.Ids.BBOS);
     }
 
     @Test
