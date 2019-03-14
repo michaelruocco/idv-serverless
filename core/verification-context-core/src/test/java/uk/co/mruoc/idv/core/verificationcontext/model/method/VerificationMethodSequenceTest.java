@@ -5,6 +5,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -141,6 +142,16 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
 
         assertThat(sequence.getCardCredentials()).isEqualTo(method);
+    }
+
+    @Test
+    public void shouldReturnMethodByName() {
+        final VerificationMethod method = new FakeCardCredentialsVerificationMethod();
+
+        final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
+
+        assertThat(sequence.getMethod(method.getName())).isEqualTo(Optional.of(method));
+        assertThat(sequence.getMethod("otherName")).isEqualTo(Optional.empty());
     }
 
     @Test

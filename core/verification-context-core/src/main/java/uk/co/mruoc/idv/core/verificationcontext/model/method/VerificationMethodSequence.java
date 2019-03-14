@@ -1,5 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -65,7 +67,7 @@ public class VerificationMethodSequence {
         return getMethod(name).isPresent();
     }
 
-    private Optional<VerificationMethod> getMethod(final String name) {
+    public Optional<VerificationMethod> getMethod(final String name) {
         return sequence.stream().filter(method -> method.getName().equals(name)).findFirst();
     }
 

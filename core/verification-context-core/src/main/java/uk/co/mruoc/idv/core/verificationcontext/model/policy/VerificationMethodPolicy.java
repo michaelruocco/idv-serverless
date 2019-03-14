@@ -12,4 +12,8 @@ public class VerificationMethodPolicy {
     private final String methodName;
     private final int duration;
 
+    public VerificationMethodPolicy(final String name) {
+        this(name, DEFAULT_DURATION);
+    }
+
 }
