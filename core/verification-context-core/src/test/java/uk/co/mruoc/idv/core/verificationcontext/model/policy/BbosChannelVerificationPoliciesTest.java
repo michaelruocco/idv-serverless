@@ -9,7 +9,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.BbosChannelVerifica
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,18 +23,17 @@ public class BbosChannelVerificationPoliciesTest {
 
     @Test
     public void shouldReturnPolicyForLogin() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.LOGIN);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.LOGIN);
 
-        assertThat(policy.isPresent()).isTrue();
-        assertThat(policy.get()).isInstanceOf(BbosLoginVerificationPolicy.class);
-        assertThat(policy.get().getEntries()).hasSize(1);
+        assertThat(policy).isInstanceOf(BbosLoginVerificationPolicy.class);
+        assertThat(policy.getEntries()).hasSize(1);
     }
 
     @Test
     public void policyShouldContainMobilePinsentryIdentifyAsFirstEntryForLogin() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.LOGIN);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.LOGIN);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry firstEntry = entries.get(0);
         assertThat(firstEntry.getName()).isEqualTo(VerificationMethod.Names.MOBILE_PINSENTRY);

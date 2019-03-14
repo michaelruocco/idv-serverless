@@ -9,7 +9,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.As3ChannelVerificat
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,18 +23,17 @@ public class As3ChannelVerificationPoliciesTest {
 
     @Test
     public void shouldReturnPolicyForLogin() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.LOGIN);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.LOGIN);
 
-        assertThat(policy.isPresent()).isTrue();
-        assertThat(policy.get()).isInstanceOf(As3LoginVerificationPolicy.class);
-        assertThat(policy.get().getEntries()).hasSize(2);
+        assertThat(policy).isInstanceOf(As3LoginVerificationPolicy.class);
+        assertThat(policy.getEntries()).hasSize(2);
     }
 
     @Test
     public void policyShouldContainPushNotificationAsFirstEntryForLogin() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.LOGIN);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.LOGIN);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry firstEntry = entries.get(0);
         assertThat(firstEntry.getName()).isEqualTo(VerificationMethod.Names.PUSH_NOTIFICATION);
@@ -47,9 +45,9 @@ public class As3ChannelVerificationPoliciesTest {
 
     @Test
     public void policyShouldContainPhysicalPinsentryIdentifyAsSecondEntryForLogin() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.LOGIN);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.LOGIN);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry secondEntry = entries.get(1);
         assertThat(secondEntry.getName()).isEqualTo(VerificationMethod.Names.PHYSICAL_PINSENTRY);

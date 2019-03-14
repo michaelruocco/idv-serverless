@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.core.verificationcontext.model.policy;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Optional;
 
 public class ChannelVerificationPolicies {
 
@@ -22,8 +21,19 @@ public class ChannelVerificationPolicies {
         return this.channelId;
     }
 
-    public Optional<VerificationPolicy> getPolicyFor(final String activityType) {
-        return policies.stream().filter(policy -> policy.appliesTo(activityType)).findFirst();
+    public VerificationPolicy getPolicyFor(final String activityType) {
+        return policies.stream()
+                .filter(policy -> policy.appliesTo(activityType))
+                .findFirst()
+                .orElseThrow(() -> new VerificationPolicyNotConfiguredForActivityException(activityType));
+    }
+
+    public static class VerificationPolicyNotConfiguredForActivityException extends RuntimeException {
+
+        public VerificationPolicyNotConfiguredForActivityException(final String activityType) {
+            super(activityType);
+        }
+
     }
 
 }

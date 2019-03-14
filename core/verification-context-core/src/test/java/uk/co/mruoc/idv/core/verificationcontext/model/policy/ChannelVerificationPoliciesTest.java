@@ -1,10 +1,10 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.policy;
 
 import org.junit.Test;
-
-import java.util.Optional;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -21,20 +21,27 @@ public class ChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void shouldReturnEmptyOptionalIfNoPolicies() {
+    public void shouldThrowExceptionIfNoPoliciesConfigured() {
         final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(CHANNEL_ID);
 
-        assertThat(policies.getPolicyFor(ACTIVITY_TYPE)).isEmpty();
+        final Throwable thrown = catchThrowable(() -> policies.getPolicyFor(ACTIVITY_TYPE));
+
+        assertThat(thrown)
+                .isInstanceOf(VerificationPolicyNotConfiguredForActivityException.class)
+                .hasMessage(ACTIVITY_TYPE);
     }
 
     @Test
-    public void shouldReturnEmptyOptionalIfNoPoliciesApplyToActivity() {
+    public void shouldThrowExceptionIfNoPoliciesApplyToActivity() {
         final VerificationPolicy policy = mock(VerificationPolicy.class);
         given(policy.appliesTo(ACTIVITY_TYPE)).willReturn(false);
-
         final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(CHANNEL_ID, policy);
 
-        assertThat(policies.getPolicyFor(ACTIVITY_TYPE)).isEmpty();
+        final Throwable thrown = catchThrowable(() -> policies.getPolicyFor(ACTIVITY_TYPE));
+
+        assertThat(thrown)
+                .isInstanceOf(VerificationPolicyNotConfiguredForActivityException.class)
+                .hasMessage(ACTIVITY_TYPE);
     }
 
     @Test
@@ -44,7 +51,7 @@ public class ChannelVerificationPoliciesTest {
 
         final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(CHANNEL_ID, policy);
 
-        assertThat(policies.getPolicyFor(ACTIVITY_TYPE)).isEqualTo(Optional.of(policy));
+        assertThat(policies.getPolicyFor(ACTIVITY_TYPE)).isEqualTo(policy);
     }
 
 }

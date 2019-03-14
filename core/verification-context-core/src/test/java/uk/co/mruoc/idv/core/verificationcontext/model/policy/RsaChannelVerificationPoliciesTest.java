@@ -10,7 +10,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.RsaChannelVerificat
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,19 +24,17 @@ public class RsaChannelVerificationPoliciesTest {
 
     @Test
     public void shouldReturnPolicyForOnlinePurchase() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
-        assertThat(policy.isPresent()).isTrue();
-        final VerificationPolicy policyValue = policy.get();
-        assertThat(policyValue).isInstanceOf(RsaOnlinePurchaseVerificationPolicy.class);
-        assertThat(policyValue.getEntries()).hasSize(2);
+        assertThat(policy).isInstanceOf(RsaOnlinePurchaseVerificationPolicy.class);
+        assertThat(policy.getEntries()).hasSize(2);
     }
 
     @Test
     public void policyShouldContainPhysicalPinsentryRespondAsFirstEntryForOnlinePurchase() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry firstEntry = entries.get(0);
         assertThat(firstEntry.getName()).isEqualTo(VerificationMethod.Names.PHYSICAL_PINSENTRY);
@@ -52,9 +49,9 @@ public class RsaChannelVerificationPoliciesTest {
 
     @Test
     public void policyShouldContainCardCredentialsOtpSmsAsSecondEntryForOnlinePurchase() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry secondEntry = entries.get(1);
         assertThat(secondEntry.getName()).isEqualTo("OTP_SMS");
@@ -63,9 +60,9 @@ public class RsaChannelVerificationPoliciesTest {
 
     @Test
     public void policyShouldContainCardCredentialsAsFirstOtpSmsMethodForOnlinePurchase() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry secondEntry = entries.get(1);
         final List<VerificationMethodPolicy> methodPolicies = new ArrayList<>(secondEntry.getMethods());
@@ -76,9 +73,9 @@ public class RsaChannelVerificationPoliciesTest {
 
     @Test
     public void policyShouldContainOneTimePasscodeSmsAsSecondOtpSmsMethodForOnlinePurchase() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry secondEntry = entries.get(1);
         final List<VerificationMethodPolicy> methodPolicies = new ArrayList<>(secondEntry.getMethods());
@@ -89,9 +86,9 @@ public class RsaChannelVerificationPoliciesTest {
 
     @Test
     public void policyShouldContainCorrectOneTimePasscodeSettingsForOnlinePurchase() {
-        final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
+        final VerificationPolicy policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
+        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
 
         final VerificationMethodPolicyEntry secondEntry = entries.get(1);
         final List<VerificationMethodPolicy> methodPolicies = new ArrayList<>(secondEntry.getMethods());
