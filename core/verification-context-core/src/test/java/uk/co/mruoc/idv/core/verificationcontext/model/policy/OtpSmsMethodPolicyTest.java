@@ -5,15 +5,12 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class OtpSmsMethodPolicyTest {
 
     private static final int DURATION = 500000;
-    private static final Passcode PASSCODE = Passcode.builder()
-            .attempts(4)
-            .length(8)
-            .duration(150000)
-            .build();
+    private static final Passcode PASSCODE = mock(Passcode.class);
 
     private final OtpSmsMethodPolicy policy = new OtpSmsMethodPolicy(DURATION, PASSCODE);
 

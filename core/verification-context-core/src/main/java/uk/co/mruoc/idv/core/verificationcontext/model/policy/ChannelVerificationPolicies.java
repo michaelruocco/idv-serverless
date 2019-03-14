@@ -18,7 +18,7 @@ public class ChannelVerificationPolicies {
         this.policies = policies;
     }
 
-    public boolean isForChannel(final String channelId) {
+    public boolean appliesToChannel(final String channelId) {
         return this.channelId.equals(channelId);
     }
 

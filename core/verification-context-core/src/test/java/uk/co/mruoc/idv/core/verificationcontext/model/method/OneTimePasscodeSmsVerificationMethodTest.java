@@ -8,16 +8,12 @@ import java.util.Collection;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class OneTimePasscodeSmsVerificationMethodTest {
 
     private static final int DURATION = 300000;
-
-    private static final Passcode PASSCODE = Passcode.builder()
-            .length(8)
-            .duration(30000)
-            .attempts(3)
-            .build();
+    private static final Passcode PASSCODE = mock(Passcode.class);
 
     private static final Collection<MobileNumber> MOBILE_NUMBERS = Arrays.asList(
             MobileNumber.builder().id(UUID.randomUUID()).masked("********111").build(),

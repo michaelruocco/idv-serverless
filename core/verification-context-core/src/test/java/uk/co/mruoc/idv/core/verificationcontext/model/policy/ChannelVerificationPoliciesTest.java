@@ -18,8 +18,8 @@ public class ChannelVerificationPoliciesTest {
 
         final ChannelVerificationPolicies policies = new ChannelVerificationPolicies(channelId);
 
-        assertThat(policies.isForChannel(channelId)).isTrue();
-        assertThat(policies.isForChannel("otherChannel")).isFalse();
+        assertThat(policies.appliesToChannel(channelId)).isTrue();
+        assertThat(policies.appliesToChannel("otherChannel")).isFalse();
     }
 
     @Test
