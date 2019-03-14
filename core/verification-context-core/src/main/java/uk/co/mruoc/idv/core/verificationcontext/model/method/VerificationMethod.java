@@ -3,6 +3,8 @@ package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 public interface VerificationMethod {
 
+    int DEFAULT_DURATION = 300000;
+
     String getName();
 
     int getDuration();

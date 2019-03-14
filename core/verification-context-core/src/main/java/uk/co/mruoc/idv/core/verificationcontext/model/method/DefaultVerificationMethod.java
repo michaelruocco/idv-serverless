@@ -9,6 +9,10 @@ public class DefaultVerificationMethod implements VerificationMethod {
     private final int duration;
     private final Map<String, Object> genericProperties;
 
+    public DefaultVerificationMethod(final String name) {
+        this(name, DEFAULT_DURATION);
+    }
+
     public DefaultVerificationMethod(final String name, final int duration) {
         this(name, duration, new HashMap<>());
     }
