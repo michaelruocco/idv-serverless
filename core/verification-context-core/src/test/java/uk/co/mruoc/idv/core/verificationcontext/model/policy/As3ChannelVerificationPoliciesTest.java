@@ -18,7 +18,7 @@ public class As3ChannelVerificationPoliciesTest {
     private final ChannelVerificationPolicies policies = new As3ChannelVerificationPolicies();
 
     @Test
-    public void shouldApplyToRsaChannel() {
+    public void shouldApplyToAs3Channel() {
         assertThat(policies.appliesToChannel(Channel.Ids.AS3)).isTrue();
         assertThat(policies.appliesToChannel("ANY_OTHER_CHANNEL")).isFalse();
     }
@@ -33,7 +33,7 @@ public class As3ChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void policyShouldContainPushNotificationAsFirstEntry() {
+    public void policyShouldContainPushNotificationAsFirstEntryForLogin() {
         final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.LOGIN);
 
         final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
@@ -47,7 +47,7 @@ public class As3ChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void policyShouldContainPhysicalPinsentryIdentifyAsSecondEntry() {
+    public void policyShouldContainPhysicalPinsentryIdentifyAsSecondEntryForLogin() {
         final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.LOGIN);
 
         final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());

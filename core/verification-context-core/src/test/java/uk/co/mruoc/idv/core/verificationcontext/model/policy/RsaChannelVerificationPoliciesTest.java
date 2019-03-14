@@ -35,7 +35,7 @@ public class RsaChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void policyShouldContainPhysicalPinsentryRespondAsFirstEntry() {
+    public void policyShouldContainPhysicalPinsentryRespondAsFirstEntryForOnlinePurchase() {
         final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
         final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
@@ -52,7 +52,7 @@ public class RsaChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void policyShouldContainCardCredentialsOtpSmsAsSecondEntry() {
+    public void policyShouldContainCardCredentialsOtpSmsAsSecondEntryForOnlinePurchase() {
         final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
         final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
@@ -63,7 +63,7 @@ public class RsaChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void policyShouldContainCardCredentialsAsFirstOtpSmsMethod() {
+    public void policyShouldContainCardCredentialsAsFirstOtpSmsMethodForOnlinePurchase() {
         final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
         final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
@@ -76,7 +76,7 @@ public class RsaChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void policyShouldContainOneTimePasscodeSmsAsSecondOtpSmsMethod() {
+    public void policyShouldContainOneTimePasscodeSmsAsSecondOtpSmsMethodForOnlinePurchase() {
         final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
         final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
@@ -89,7 +89,7 @@ public class RsaChannelVerificationPoliciesTest {
     }
 
     @Test
-    public void policyShouldContainCorrectOneTimePasscodeSettings() {
+    public void policyShouldContainCorrectOneTimePasscodeSettingsForOnlinePurchase() {
         final Optional<VerificationPolicy> policy = policies.getPolicyFor(Activity.Types.ONLINE_PURCHASE);
 
         final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.get().getEntries());
