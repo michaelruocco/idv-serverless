@@ -45,7 +45,7 @@ public class RsaChannelVerificationPolicies extends ChannelVerificationPolicies 
 
             private static final int LENGTH = 8;
             private static final int DURATION = 150000;
-            private static final int ATTEMPTS = 4;
+            private static final int ATTEMPTS = 3;
 
             private RsaPasscode() {
                 super(LENGTH, DURATION, ATTEMPTS);
