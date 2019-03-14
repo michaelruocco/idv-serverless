@@ -1,8 +1,12 @@
-package uk.co.mruoc.idv.core.verificationcontext.model.policy;
+package uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos;
 
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 
 import java.util.Collection;
 import java.util.Collections;

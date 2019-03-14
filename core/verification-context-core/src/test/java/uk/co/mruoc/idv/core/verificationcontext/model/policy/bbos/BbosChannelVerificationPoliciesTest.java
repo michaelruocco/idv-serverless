@@ -1,11 +1,16 @@
-package uk.co.mruoc.idv.core.verificationcontext.model.policy;
+package uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.BbosChannelVerificationPolicies.BbosLoginVerificationPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos.BbosChannelVerificationPolicies.BbosLoginVerificationPolicy;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.core.verificationcontext.model.policy;
+package uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
@@ -6,7 +6,14 @@ import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.RsaChannelVerificationPolicies.RsaOnlinePurchaseVerificationPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.OtpSmsMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.PhysicalPinsentryMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa.RsaChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa.RsaChannelVerificationPolicies.RsaOnlinePurchaseVerificationPolicy;
 
 import java.util.ArrayList;
 import java.util.List;

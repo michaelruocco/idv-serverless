@@ -2,10 +2,10 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.As3ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.BbosChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos.BbosChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.RsaChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa.RsaChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.UnrecognisedChannelException;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -12,7 +12,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.As3ChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.UnrecognisedChannelException;

@@ -1,9 +1,9 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.As3ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.BbosChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos.BbosChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.RsaChannelVerificationPolicies;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa.RsaChannelVerificationPolicies;
 
 import java.util.HashMap;
 import java.util.Map;
