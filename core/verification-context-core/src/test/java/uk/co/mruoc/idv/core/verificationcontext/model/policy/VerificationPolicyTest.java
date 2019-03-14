@@ -72,4 +72,14 @@ public class VerificationPolicyTest {
         assertThat(policy.getEntries()).containsExactlyElementsOf(entries);
     }
 
+    @Test
+    public void shouldPrintValues() {
+        final Collection<String> activityTypes = Collections.singleton(Activity.Types.LOGIN);
+        final Collection<VerificationMethodPolicyEntry> entries = Collections.emptyList();
+
+        final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
+
+        assertThat(policy.toString()).isEqualTo("VerificationPolicy(activityTypes=[LOGIN], entries=[])");
+    }
+
 }

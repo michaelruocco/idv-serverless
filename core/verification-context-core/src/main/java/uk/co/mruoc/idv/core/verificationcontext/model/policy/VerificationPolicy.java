@@ -1,9 +1,12 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.policy;
 
+import lombok.ToString;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+@ToString
 public class VerificationPolicy {
 
     private final Collection<String> activityTypes;
