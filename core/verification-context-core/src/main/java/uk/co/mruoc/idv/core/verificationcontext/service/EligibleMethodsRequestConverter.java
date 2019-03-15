@@ -7,7 +7,12 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodP
 public class EligibleMethodsRequestConverter {
 
     public EligibleMethodRequest toMethodRequest(final EligibleMethodsRequest request, final VerificationMethodPolicy methodPolicy) {
-        return null;
+        return EligibleMethodRequest.builder()
+                .channel(request.getChannel())
+                .identity(request.getIdentity())
+                .inputAlias(request.getInputAlias())
+                .methodPolicy(methodPolicy)
+                .build();
     }
 
 }
