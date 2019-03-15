@@ -10,14 +10,14 @@ public class DefaultAliasLoader implements AliasLoader {
 
     private final Collection<String> supportedChannelIds;
     private final Collection<String> supportedAliasTypeNames;
-    private final AliasLoaderHandler aliasLoaderHandler;
+    private final AliasHandler aliasHandler;
 
     public DefaultAliasLoader(final Collection<String> supportedChannelIds,
                               final Collection<String> supportedAliasTypeNames,
-                              final AliasLoaderHandler aliasLoaderHandler) {
+                              final AliasHandler aliasHandler) {
         this.supportedChannelIds = supportedChannelIds;
         this.supportedAliasTypeNames = supportedAliasTypeNames;
-        this.aliasLoaderHandler = aliasLoaderHandler;
+        this.aliasHandler = aliasHandler;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class DefaultAliasLoader implements AliasLoader {
     }
 
     private Collection<Alias> loadAliases(final Alias inputAlias) {
-        return aliasLoaderHandler.loadAliases(inputAlias);
+        return aliasHandler.loadAliases(inputAlias);
     }
 
 }

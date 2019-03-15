@@ -25,7 +25,7 @@ public class DefaultAliasLoaderTest {
     private final Alias supportedAlias = new UkcCardholderIdAlias("22222222");
     private final Alias unsupportedAlias = new BukCustomerIdAlias("9999999999");
 
-    private final AliasLoaderHandler handler = mock(AliasLoaderHandler.class);
+    private final AliasHandler handler = mock(AliasHandler.class);
 
     private final AliasLoader loader = new DefaultAliasLoader(SUPPORTED_CHANNEL_IDS, SUPPORTED_ALIAS_TYPES, handler);
 

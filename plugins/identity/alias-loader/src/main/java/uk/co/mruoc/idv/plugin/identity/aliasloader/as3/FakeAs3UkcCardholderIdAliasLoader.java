@@ -13,7 +13,7 @@ public class FakeAs3UkcCardholderIdAliasLoader extends DefaultAliasLoader {
     private static final Collection<String> SUPPORTED_ALIAS_TYPES = singleton(AliasType.Names.UKC_CARDHOLDER_ID);
 
     public FakeAs3UkcCardholderIdAliasLoader() {
-        super(SUPPORTED_CHANNEL_IDS, SUPPORTED_ALIAS_TYPES, new FakeUkcCardholderIdAliasLoader());
+        super(SUPPORTED_CHANNEL_IDS, SUPPORTED_ALIAS_TYPES, new FakeUkcCardholderIdAliasHandler());
     }
 
 }

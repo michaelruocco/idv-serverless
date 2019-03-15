@@ -4,7 +4,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 
 import java.util.Collection;
 
-public interface AliasLoaderHandler {
+public interface AliasHandler {
 
     Collection<Alias> loadAliases(final Alias inputAlias);
 

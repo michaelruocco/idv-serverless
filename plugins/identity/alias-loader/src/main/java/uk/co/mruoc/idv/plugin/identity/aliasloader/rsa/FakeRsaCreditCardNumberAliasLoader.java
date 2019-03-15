@@ -13,7 +13,7 @@ public class FakeRsaCreditCardNumberAliasLoader extends DefaultAliasLoader {
     private static final Collection<String> SUPPORTED_ALIAS_TYPES = singleton(AliasType.Names.CREDIT_CARD_NUMBER);
 
     public FakeRsaCreditCardNumberAliasLoader() {
-        super(SUPPORTED_CHANNEL_IDS, SUPPORTED_ALIAS_TYPES, new FakeCreditCardNumberAliasLoader());
+        super(SUPPORTED_CHANNEL_IDS, SUPPORTED_ALIAS_TYPES, new FakeCreditCardNumberAliasHandler());
     }
 
 }
