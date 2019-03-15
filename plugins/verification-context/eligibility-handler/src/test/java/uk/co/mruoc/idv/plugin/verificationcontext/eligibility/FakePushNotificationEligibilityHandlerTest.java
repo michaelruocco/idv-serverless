@@ -38,6 +38,27 @@ public class FakePushNotificationEligibilityHandlerTest {
     }
 
     @Test
+    public void shouldReturnMethod() {
+        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        given(request.getMethodName()).willReturn(METHOD_NAME);
+
+        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+
+        assertThat(optionalMethod).isNotEmpty();
+    }
+
+    @Test
+    public void shouldReturnMethodWithCorrectName() {
+        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        given(request.getMethodName()).willReturn(METHOD_NAME);
+
+        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+
+        final VerificationMethod method = optionalMethod.get();
+        assertThat(method.getName()).isEqualTo(METHOD_NAME);
+    }
+
+    @Test
     public void shouldReturnPushNotificationWithPassedDuration() {
         final int duration = 150000;
         final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
@@ -45,9 +66,7 @@ public class FakePushNotificationEligibilityHandlerTest {
 
         final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
 
-        assertThat(optionalMethod).isNotEmpty();
         final VerificationMethod method = optionalMethod.get();
-        assertThat(method.getName()).isEqualTo(METHOD_NAME);
         assertThat(method.getDuration()).isEqualTo(duration);
     }
 

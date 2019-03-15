@@ -7,7 +7,6 @@ import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 
 @Builder
 @ToString
