@@ -24,4 +24,12 @@ public class PushNotificationVerificationMethodTest {
         assertThat(duration).isEqualTo(DURATION);
     }
 
+    @Test
+    public void shouldPrintAllValues() {
+        final String value = pushNotification.toString();
+
+        assertThat(value).isEqualTo("PushNotificationVerificationMethod(super=" +
+                "DefaultVerificationMethod(name=PUSH_NOTIFICATION, duration=300000, genericProperties={}))");
+    }
+
 }

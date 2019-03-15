@@ -68,4 +68,17 @@ public class CardNumberTest {
         assertThat(filteredCardNumber.getTokenized()).isNull();
     }
 
+    @Test
+    public void shouldPrintAllValues() {
+        final CardNumber cardNumber = CardNumber.builder()
+                .encrypted(ENCRYPTED)
+                .tokenized(TOKENIZED)
+                .masked(MASKED)
+                .build();
+
+        final String value = cardNumber.toString();
+
+        assertThat(value).isEqualTo("CardNumber(masked=************3456, tokenized=1234567890123456, encrypted=DNSNDSADNMdaeqeqd332e3da)");
+    }
+
 }

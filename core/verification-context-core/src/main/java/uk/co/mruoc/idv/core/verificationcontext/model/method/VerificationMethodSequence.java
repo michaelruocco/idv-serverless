@@ -1,9 +1,12 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
+import lombok.ToString;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
+@ToString
 public class VerificationMethodSequence {
 
     private final String name;

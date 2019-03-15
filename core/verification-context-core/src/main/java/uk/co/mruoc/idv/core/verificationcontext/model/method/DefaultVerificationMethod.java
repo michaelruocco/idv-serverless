@@ -1,8 +1,11 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
+import lombok.ToString;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@ToString
 public class DefaultVerificationMethod implements VerificationMethod {
 
     private final String name;

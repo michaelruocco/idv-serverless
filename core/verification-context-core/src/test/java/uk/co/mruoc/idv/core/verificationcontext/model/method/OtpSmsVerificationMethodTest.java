@@ -8,16 +8,19 @@ import java.util.Collection;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class OtpSmsVerificationMethodTest {
 
     private static final int DURATION = 300000;
-    private static final Passcode PASSCODE = mock(Passcode.class);
+    private static final Passcode PASSCODE = Passcode.builder()
+            .attempts(3)
+            .length(8)
+            .duration(150000)
+            .build();
 
     private static final Collection<MobileNumber> MOBILE_NUMBERS = Arrays.asList(
-            MobileNumber.builder().id(UUID.randomUUID()).masked("********111").build(),
-            MobileNumber.builder().id(UUID.randomUUID()).masked("********333").build()
+            MobileNumber.builder().id(UUID.fromString("3cc9109d-4a7c-424d-9f7b-5805636dfb2d")).masked("********111").build(),
+            MobileNumber.builder().id(UUID.fromString("03571bf0-1140-4ee6-b9a7-49b64e174730")).masked("********333").build()
     );
 
     private final OtpSmsVerificationMethod otpSms = new OtpSmsVerificationMethod(DURATION, PASSCODE, MOBILE_NUMBERS);
@@ -42,11 +45,23 @@ public class OtpSmsVerificationMethodTest {
 
         assertThat(passcode).isEqualTo(PASSCODE);
     }
+
     @Test
     public void shouldReturnMobileNumbers() {
         final Collection<MobileNumber> mobileNumbers = otpSms.getMobileNumbers();
 
         assertThat(mobileNumbers).isEqualTo(MOBILE_NUMBERS);
+    }
+
+    @Test
+    public void shouldPrintAllValues() {
+        final String value = otpSms.toString();
+
+        assertThat(value).isEqualTo("OtpSmsVerificationMethod(super=" +
+                "DefaultVerificationMethod(name=ONE_TIME_PASSCODE_SMS, duration=300000, " +
+                "genericProperties={mobileNumbers=[MobileNumber(id=3cc9109d-4a7c-424d-9f7b-5805636dfb2d, masked=********111), " +
+                "MobileNumber(id=03571bf0-1140-4ee6-b9a7-49b64e174730, masked=********333)], " +
+                "passcode=Passcode(length=8, duration=150000, attempts=3)}))");
     }
 
 }

@@ -46,4 +46,15 @@ public class PhysicalPinsentryVerificationMethodTest {
         assertThat(cardNumbers).isEqualTo(CARD_NUMBERS);
     }
 
+    @Test
+    public void shouldPrintAllValues() {
+        final String value = physicalPinsentry.toString();
+
+        assertThat(value).isEqualTo("PhysicalPinsentryVerificationMethod(" +
+                "super=DefaultVerificationMethod(" +
+                "name=PHYSICAL_PINSENTRY, duration=300000, genericProperties={" +
+                "cardNumbers=[CardNumber(masked=null, tokenized=1234567890123456, encrypted=null), " +
+                "CardNumber(masked=null, tokenized=6543210987654321, encrypted=null)], function=IDENTIFY}))");
+    }
+
 }

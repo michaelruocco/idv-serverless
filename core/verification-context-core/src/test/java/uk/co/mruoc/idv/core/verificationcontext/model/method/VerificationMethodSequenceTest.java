@@ -163,6 +163,17 @@ public class VerificationMethodSequenceTest {
         assertThat(sequence.getOneTimePasscodeSms()).isEqualTo(method);
     }
 
+    @Test
+    public void shouldPrintAllValues() {
+        final VerificationMethod method = new FakePushNotificationVerificationMethod();
+
+        final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
+
+        assertThat(sequence.toString()).isEqualTo("VerificationMethodSequence(name=PUSH_NOTIFICATION, " +
+                "sequence=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
+                "name=PUSH_NOTIFICATION, duration=0, genericProperties={}))])");
+    }
+
     private static class FakePhysicalPinsentryVerificationMethod extends PhysicalPinsentryVerificationMethod {
 
         private FakePhysicalPinsentryVerificationMethod() {

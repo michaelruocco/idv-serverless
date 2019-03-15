@@ -1,9 +1,12 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
+import lombok.ToString;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@ToString(callSuper = true)
 public class MobilePinsentryVerificationMethod extends DefaultVerificationMethod {
 
     private static final String FUNCTION_PROPERTY_NAME = "function";

@@ -1,17 +1,20 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
+import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
@@ -19,13 +22,17 @@ import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesServ
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class VerificationContextServiceTest {
 
@@ -35,6 +42,7 @@ public class VerificationContextServiceTest {
     private final TimeService timeService = mock(TimeService.class);
     private final ExpiryCalculator expiryCalculator = mock(ExpiryCalculator.class);
     private final VerificationPoliciesService policiesService = mock(VerificationPoliciesService.class);
+    private final EligibleMethodsService eligibleMethodsService = mock(EligibleMethodsService.class);
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
 
     private final VerificationContextService service = VerificationContextService.builder()
@@ -42,6 +50,7 @@ public class VerificationContextServiceTest {
             .timeService(timeService)
             .expiryCalculator(expiryCalculator)
             .policiesService(policiesService)
+            .eligibleMethodsService(eligibleMethodsService)
             .dao(dao)
             .build();
 
@@ -87,6 +96,9 @@ public class VerificationContextServiceTest {
         final Channel channel = request.getChannel();
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
+        final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
+        given(eligibleMethodsService.loadEligibleMethods(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
+
         final VerificationContext context = service.create(request);
 
         assertThat(context.getId()).isEqualTo(contextId);
@@ -96,6 +108,39 @@ public class VerificationContextServiceTest {
         assertThat(context.getActivity()).isEqualTo(request.getActivity());
         assertThat(context.getCreated()).isEqualTo(now);
         assertThat(context.getExpiry()).isEqualTo(expiry);
+        assertThat(context.getEligibleMethods()).isEqualTo(eligibleMethods);
+    }
+
+    @Test
+    public void shouldPassCorrectRequestToEligibleMethodsService() {
+        final VerificationContextRequest request = buildRequest();
+
+        final Instant now = Instant.now();
+        given(timeService.now()).willReturn(now);
+
+        final UUID contextId = UUID.randomUUID();
+        given(idGenerator.randomUuid()).willReturn(contextId);
+
+        final Instant expiry = now.plus(FIVE_MINUTES);
+        given(expiryCalculator.calculateExpiry(now)).willReturn(expiry);
+
+        final ChannelVerificationPolicies channelPolicies = new As3ChannelVerificationPolicies();
+        final Channel channel = request.getChannel();
+        given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
+
+        final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
+        given(eligibleMethodsService.loadEligibleMethods(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
+
+        final VerificationContext context = service.create(request);
+
+        final ArgumentCaptor<EligibleMethodsRequest> captor = ArgumentCaptor.forClass(EligibleMethodsRequest.class);
+
+        verify(eligibleMethodsService).loadEligibleMethods(captor.capture());
+        final EligibleMethodsRequest methodsRequest = captor.getValue();
+        assertThat(methodsRequest.getChannel()).isEqualTo(request.getChannel());
+        assertThat(methodsRequest.getInputAlias()).isEqualTo(request.getInputAlias());
+        assertThat(methodsRequest.getIdentity()).isEqualTo(request.getIdentity());
+        assertThat(methodsRequest.getPolicy()).isEqualTo(channelPolicies.getPolicyFor(request.getActivity().getType()));
     }
 
     private static VerificationContextRequest buildRequest() {

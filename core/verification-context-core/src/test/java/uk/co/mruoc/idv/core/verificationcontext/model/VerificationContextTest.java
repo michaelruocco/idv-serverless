@@ -8,9 +8,13 @@ import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,6 +106,7 @@ public class VerificationContextTest {
         final Alias alias = new IdvIdAlias(UUID.fromString("1ab2141d-a910-4bf8-99a0-efedfbf34b6a"));
         final Instant created = timestamp.plusSeconds(5);
         final Instant expiry = created.plus(5, ChronoUnit.MINUTES);
+        final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(new VerificationMethodSequence(new DefaultVerificationMethod("method")));
         final VerificationContext request = VerificationContext.builder()
                 .id(id)
                 .channel(new As3Channel())
@@ -110,6 +115,7 @@ public class VerificationContextTest {
                 .activity(new LoginActivity(timestamp))
                 .created(created)
                 .expiry(expiry)
+                .eligibleMethods(eligibleMethods)
                 .build();
 
         assertThat(request.toString()).isEqualTo("VerificationContext(" +
@@ -119,7 +125,8 @@ public class VerificationContextTest {
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a)])), " +
                 "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, genericProperties={}), " +
                 "created=2019-03-10T12:54:02.547Z, " +
-                "expiry=2019-03-10T12:59:02.547Z)");
+                "expiry=2019-03-10T12:59:02.547Z, " +
+                "eligibleMethods=[VerificationMethodSequence(name=method, sequence=[DefaultVerificationMethod(name=method, duration=300000, genericProperties={})])])");
     }
 
 }

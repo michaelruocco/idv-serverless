@@ -39,4 +39,17 @@ public class PasscodeTest {
         assertThat(passcode.getAttempts()).isEqualTo(attempts);
     }
 
+    @Test
+    public void shouldPrintAllValues() {
+        final Passcode passcode = Passcode.builder()
+                .attempts(3)
+                .length(8)
+                .duration(150000)
+                .build();
+
+        final String value = passcode.toString();
+
+        assertThat(value).isEqualTo("Passcode(length=8, duration=150000, attempts=3)");
+    }
+
 }

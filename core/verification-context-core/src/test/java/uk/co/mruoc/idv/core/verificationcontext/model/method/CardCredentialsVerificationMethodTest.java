@@ -24,4 +24,12 @@ public class CardCredentialsVerificationMethodTest {
         assertThat(duration).isEqualTo(DURATION);
     }
 
+    @Test
+    public void shouldPrintAllValues() {
+        final String value = cardCredentials.toString();
+
+        assertThat(value).isEqualTo("CardCredentialsVerificationMethod(super=" +
+                "DefaultVerificationMethod(name=CARD_CREDENTIALS, duration=300000, genericProperties={}))");
+    }
+
 }

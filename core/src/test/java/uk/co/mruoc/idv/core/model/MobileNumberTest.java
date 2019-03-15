@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MobileNumberTest {
 
-    private static final UUID ID = UUID.randomUUID();
+    private static final UUID ID = UUID.fromString("2141f495-af39-4b77-b25b-e1afed7ec7e7");
     private static final String MASKED = "*******456";
 
     @Test
@@ -44,6 +44,18 @@ public class MobileNumberTest {
                 .build();
 
         assertThat(mobileNumber.getMasked()).isEqualTo(MASKED);
+    }
+
+    @Test
+    public void shouldPrintAllValues() {
+        final MobileNumber mobileNumber = MobileNumber.builder()
+                .id(ID)
+                .masked(MASKED)
+                .build();
+
+        final String value = mobileNumber.toString();
+
+        assertThat(value).isEqualTo("MobileNumber(id=2141f495-af39-4b77-b25b-e1afed7ec7e7, masked=*******456)");
     }
 
 }

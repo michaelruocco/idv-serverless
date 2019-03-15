@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
+import lombok.ToString;
 import uk.co.mruoc.idv.core.model.CardNumber;
 
 import java.util.Collection;
@@ -7,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@ToString(callSuper = true)
 public class PhysicalPinsentryVerificationMethod extends DefaultVerificationMethod {
 
     private static final String FUNCTION_PROPERTY_NAME = "function";
