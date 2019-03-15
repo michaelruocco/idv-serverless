@@ -131,7 +131,7 @@ public class VerificationContextServiceTest {
         final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
         given(eligibleMethodsService.loadEligibleMethods(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
 
-        final VerificationContext context = service.create(request);
+        service.create(request);
 
         final ArgumentCaptor<EligibleMethodsRequest> captor = ArgumentCaptor.forClass(EligibleMethodsRequest.class);
 
