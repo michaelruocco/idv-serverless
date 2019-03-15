@@ -28,7 +28,7 @@ public class FakePushNotificationEligibilityHandlerTest {
     }
 
     @Test
-    public void shouldSupportAnyOtherMethods() {
+    public void shouldNotSupportAnyOtherMethods() {
         final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
         given(request.getMethodName()).willReturn("method");
 
