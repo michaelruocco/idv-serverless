@@ -20,7 +20,7 @@ public class EligibleMethodsRequestTest {
     public void shouldReturnChannel() {
         final Channel channel = mock(Channel.class);
 
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
                 .channel(channel)
                 .build();
 
@@ -31,7 +31,7 @@ public class EligibleMethodsRequestTest {
     public void shouldReturnInputAlias() {
         final Alias alias = mock(Alias.class);
 
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
                 .inputAlias(alias)
                 .build();
 
@@ -43,7 +43,7 @@ public class EligibleMethodsRequestTest {
     public void shouldReturnIdentity() {
         final Identity identity = mock(Identity.class);
 
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
                 .identity(identity)
                 .build();
 
