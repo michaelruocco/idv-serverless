@@ -101,6 +101,7 @@ public class VerificationContextServiceTest {
 
         final VerificationContext context = service.create(request);
 
+        verify(dao).save(context);
         assertThat(context.getId()).isEqualTo(contextId);
         assertThat(context.getChannel()).isEqualTo(request.getChannel());
         assertThat(context.getInputAlias()).isEqualTo(request.getInputAlias());

@@ -5,6 +5,7 @@ include 'core:verification-context-core'
 
 include 'dao:identity:identity-dao-fake'
 include 'dao:identity:identity-dao-dynamodb'
+include 'dao:verification-context:verification-context-dao-fake'
 
 include 'plugins:identity:alias-loader'
 include 'plugins:verification-context:eligibility-handler'
