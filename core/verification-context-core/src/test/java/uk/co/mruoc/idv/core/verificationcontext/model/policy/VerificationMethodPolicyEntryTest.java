@@ -36,4 +36,11 @@ public class VerificationMethodPolicyEntryTest {
         assertThat(entry.getMethods()).containsExactly(pushNotificationPolicy, cardCredentialsPolicy);
     }
 
+    @Test
+    public void shouldPrintAllValues() {
+        final VerificationMethodPolicy policy = new PushNotificationMethodPolicy();
+
+        assertThat(policy.toString()).isEqualTo("VerificationMethodPolicy(methodName=PUSH_NOTIFICATION, duration=300000)");
+    }
+
 }

@@ -2,9 +2,11 @@ package uk.co.mruoc.idv.core.verificationcontext.model.policy;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @RequiredArgsConstructor
+@ToString
 public class VerificationMethodPolicy {
 
     public static final int DEFAULT_DURATION = 300000;
