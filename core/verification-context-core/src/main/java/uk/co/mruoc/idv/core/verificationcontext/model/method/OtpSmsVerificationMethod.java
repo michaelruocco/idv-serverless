@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OneTimePasscodeSmsVerificationMethod extends DefaultVerificationMethod {
+public class OtpSmsVerificationMethod extends DefaultVerificationMethod {
 
     private static final String PASSCODE_PROPERTY_NAME = "passcode";
     private static final String MOBILE_NUMBERS_PROPERTY_NAME = "mobileNumbers";
 
-    public OneTimePasscodeSmsVerificationMethod(final int duration, final Passcode passcode, final Collection<MobileNumber> mobileNumbers) {
+    public OtpSmsVerificationMethod(final int duration, final Passcode passcode, final Collection<MobileNumber> mobileNumbers) {
         super(Names.ONE_TIME_PASSCODE_SMS, duration, toMap(passcode, mobileNumbers));
     }
 

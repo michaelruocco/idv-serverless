@@ -10,7 +10,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class OneTimePasscodeSmsVerificationMethodTest {
+public class OtpSmsVerificationMethodTest {
 
     private static final int DURATION = 300000;
     private static final Passcode PASSCODE = mock(Passcode.class);
@@ -20,7 +20,7 @@ public class OneTimePasscodeSmsVerificationMethodTest {
             MobileNumber.builder().id(UUID.randomUUID()).masked("********333").build()
     );
 
-    private final OneTimePasscodeSmsVerificationMethod otpSms = new OneTimePasscodeSmsVerificationMethod(DURATION, PASSCODE, MOBILE_NUMBERS);
+    private final OtpSmsVerificationMethod otpSms = new OtpSmsVerificationMethod(DURATION, PASSCODE, MOBILE_NUMBERS);
 
     @Test
     public void shouldReturnName() {

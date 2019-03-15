@@ -156,7 +156,7 @@ public class VerificationMethodSequenceTest {
 
     @Test
     public void shouldReturnOneTimePasscodeSms() {
-        final VerificationMethod method = new FakeOneTimePasscodeSmsVerificationMethod();
+        final VerificationMethod method = new FakeOtpSmsVerificationMethod();
 
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
 
@@ -195,7 +195,7 @@ public class VerificationMethodSequenceTest {
 
     }
 
-    private static class FakeOneTimePasscodeSmsVerificationMethod extends OneTimePasscodeSmsVerificationMethod {
+    private static class FakeOtpSmsVerificationMethod extends OtpSmsVerificationMethod {
 
         private static final Passcode PASSCODE = Passcode.builder()
                 .duration(0)
@@ -203,7 +203,7 @@ public class VerificationMethodSequenceTest {
                 .attempts(0)
                 .build();
 
-        private FakeOneTimePasscodeSmsVerificationMethod() {
+        private FakeOtpSmsVerificationMethod() {
             super(0, PASSCODE, Collections.emptyList());
         }
 

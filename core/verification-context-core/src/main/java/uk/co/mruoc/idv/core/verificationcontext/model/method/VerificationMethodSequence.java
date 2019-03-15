@@ -50,10 +50,10 @@ public class VerificationMethodSequence {
                 .orElseThrow(() -> new VerificationMethodNotFoundInSequenceException(methodName));
     }
 
-    public OneTimePasscodeSmsVerificationMethod getOneTimePasscodeSms() {
+    public OtpSmsVerificationMethod getOneTimePasscodeSms() {
         final String methodName = VerificationMethod.Names.ONE_TIME_PASSCODE_SMS;
         final Optional<VerificationMethod> method = getMethod(methodName);
-        return method.map(verificationMethod -> (OneTimePasscodeSmsVerificationMethod) verificationMethod)
+        return method.map(verificationMethod -> (OtpSmsVerificationMethod) verificationMethod)
                 .orElseThrow(() -> new VerificationMethodNotFoundInSequenceException(methodName));
     }
 
