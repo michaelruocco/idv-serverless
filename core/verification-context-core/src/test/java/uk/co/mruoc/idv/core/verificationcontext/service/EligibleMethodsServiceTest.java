@@ -1,6 +1,8 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
+import org.junit.Before;
 import org.junit.Test;
+import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
@@ -28,19 +30,33 @@ public class EligibleMethodsServiceTest {
     private final VerificationMethodPolicy methodPolicy = new VerificationMethodPolicy("methodName");
     private final VerificationPolicy policy = new VerificationPolicy("activity", new VerificationMethodPolicyEntry(methodPolicy));
 
+    private final EligibleMethodsRequest methodsRequest = EligibleMethodsRequest.builder()
+            .channel(channel)
+            .policy(policy)
+            .build();
+
+    private final EligibleMethodRequest methodRequest = EligibleMethodRequest.builder()
+            .channel(channel)
+            .methodPolicy(methodPolicy)
+            .build();
+
     private final EligibilityHandler handler1 = mock(EligibilityHandler.class);
     private final EligibilityHandler handler2 = mock(EligibilityHandler.class);
+    private final EligibleMethodsRequestConverter requestConverter = mock(EligibleMethodsRequestConverter.class);
 
-    private final EligibleMethodsService service = new EligibleMethodsService(Arrays.asList(handler1, handler2));
+    private final EligibleMethodsService service = EligibleMethodsService.builder()
+            .handlers(Arrays.asList(handler1, handler2))
+            .requestConverter(requestConverter)
+            .build();
+
+    @Before
+    public void setUp() {
+        given(requestConverter.toMethodRequest(methodsRequest, methodPolicy)).willReturn(methodRequest);
+    }
 
     @Test
     public void shouldThrowExceptionIfNoSupportedEligiblityHandlers() {
-        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
-                .channel(channel)
-                .policy(policy)
-                .build();
-
-        final Throwable thrown = catchThrowable(() -> service.loadEligibleMethods(request));
+        final Throwable thrown = catchThrowable(() -> service.loadEligibleMethods(methodsRequest));
 
         assertThat(thrown).isInstanceOf(EligibilityHandlerNotFoundException.class)
                 .hasMessage("eligibility handler for channel channelId and method methodName not found");
@@ -48,15 +64,11 @@ public class EligibleMethodsServiceTest {
 
     @Test
     public void shouldReturnVerificationMethodsFromSupportedEligibilityHandlers() {
-        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
-                .channel(channel)
-                .policy(policy)
-                .build();
         final VerificationMethod method = new DefaultVerificationMethod("methodName");
-        given(handler1.isSupported(channel.getId(), methodPolicy.getMethodName())).willReturn(true);
-        given(handler1.loadMethodIfEligible(request, methodPolicy)).willReturn(Optional.of(method));
+        given(handler1.isSupported(methodRequest)).willReturn(true);
+        given(handler1.loadMethodIfEligible(methodRequest)).willReturn(Optional.of(method));
 
-        final Collection<VerificationMethodSequence> sequences = service.loadEligibleMethods(request);
+        final Collection<VerificationMethodSequence> sequences = service.loadEligibleMethods(methodsRequest);
 
         assertThat(sequences).hasSize(1);
         final VerificationMethodSequence sequence = new ArrayList<>(sequences).get(0);

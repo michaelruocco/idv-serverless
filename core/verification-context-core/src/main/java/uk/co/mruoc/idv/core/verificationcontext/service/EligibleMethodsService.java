@@ -1,8 +1,9 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
@@ -15,13 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Builder
 public class EligibleMethodsService {
 
-    private Collection<EligibilityHandler> handlers;
-
-    public EligibleMethodsService(final Collection<EligibilityHandler> handlers) {
-        this.handlers = handlers;
-    }
+    private final Collection<EligibilityHandler> handlers;
+    private final EligibleMethodsRequestConverter requestConverter;
 
     public Collection<VerificationMethodSequence> loadEligibleMethods(final EligibleMethodsRequest request) {
         log.info("loading eligible methods with request {}", request);
@@ -37,16 +36,18 @@ public class EligibleMethodsService {
     private VerificationMethodSequence loadMethodsIfEligible(final EligibleMethodsRequest request, final VerificationMethodPolicyEntry entry) {
         final List<VerificationMethod> methods = new ArrayList<>();
         for (final VerificationMethodPolicy methodPolicy : entry.getMethods()) {
-            final EligibilityHandler handler = getHandler(request.getChannel(), methodPolicy.getMethodName());
-            handler.loadMethodIfEligible(request, methodPolicy).ifPresent(methods::add);
+            final EligibleMethodRequest methodRequest = requestConverter.toMethodRequest(request, methodPolicy);
+            final EligibilityHandler handler = getHandler(methodRequest);
+            handler.loadMethodIfEligible(methodRequest).ifPresent(methods::add);
         }
         return new VerificationMethodSequence(entry.getName(), methods);
     }
 
-    private EligibilityHandler getHandler(final Channel channel, final String methodName) {
-        final String channelId = channel.getId();
+    private EligibilityHandler getHandler(final EligibleMethodRequest request) {
+        final String channelId = request.getChannelId();
+        final String methodName = request.getMethodName();
         return handlers.stream()
-                .filter(handler -> handler.isSupported(channelId, methodName))
+                .filter(handler -> handler.isSupported(request))
                 .findFirst()
                 .orElseThrow(() -> new EligibilityHandlerNotFoundException(channelId, methodName));
     }
