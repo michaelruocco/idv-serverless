@@ -72,6 +72,10 @@ public class VerificationMethodSequence {
         return sequence.stream().filter(method -> method.getName().equals(name)).findFirst();
     }
 
+    public Collection<VerificationMethod> getSequence() {
+        return Collections.unmodifiableCollection(sequence);
+    }
+
     public static class VerificationMethodNotFoundInSequenceException extends RuntimeException {
 
         public VerificationMethodNotFoundInSequenceException(final String methodName) {

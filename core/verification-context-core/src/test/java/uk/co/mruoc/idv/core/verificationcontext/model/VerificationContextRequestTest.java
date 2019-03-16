@@ -77,7 +77,7 @@ public class VerificationContextRequestTest {
                 "channel=DefaultChannel(id=AS3), " +
                 "inputAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539)])), " +
-                "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, genericProperties={}))");
+                "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, properties={}))");
     }
 
 }

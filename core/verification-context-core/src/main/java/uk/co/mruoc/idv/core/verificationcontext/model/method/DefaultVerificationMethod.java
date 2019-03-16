@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import lombok.ToString;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ public class DefaultVerificationMethod implements VerificationMethod {
 
     private final String name;
     private final int duration;
-    private final Map<String, Object> genericProperties;
+    private final Map<String, Object> properties;
 
     public DefaultVerificationMethod(final String name) {
         this(name, DEFAULT_DURATION);
@@ -20,10 +21,10 @@ public class DefaultVerificationMethod implements VerificationMethod {
         this(name, duration, new HashMap<>());
     }
 
-    public DefaultVerificationMethod(final String name, final int duration, final Map<String, Object> genericProperties) {
+    public DefaultVerificationMethod(final String name, final int duration, final Map<String, Object> properties) {
         this.name = name;
         this.duration = duration;
-        this.genericProperties = genericProperties;
+        this.properties = properties;
     }
 
     @Override
@@ -37,8 +38,13 @@ public class DefaultVerificationMethod implements VerificationMethod {
     }
 
     @Override
+    public Map<String, Object> getProperties() {
+        return Collections.unmodifiableMap(properties);
+    }
+
+    @Override
     public <T> T get(String name, Class<T> type) {
-        final Object item = genericProperties.get(name);
+        final Object item = properties.get(name);
         return type.cast(item);
     }
 

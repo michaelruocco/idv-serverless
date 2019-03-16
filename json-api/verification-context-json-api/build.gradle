@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':json-api')
+    compile project(':core:verification-context-core')
+    compile project(':json-api:identity-json-api')
+}

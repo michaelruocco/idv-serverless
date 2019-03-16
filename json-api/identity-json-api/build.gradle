@@ -1,5 +1,3 @@
-group = 'com.github.michaelruocco.idv.jsonapi.identity' //assign group to work around this gradle bug: https://github.com/gradle/gradle/issues/847
-
 dependencies {
     compile project(':json-api')
     compile project(':core:identity-core')

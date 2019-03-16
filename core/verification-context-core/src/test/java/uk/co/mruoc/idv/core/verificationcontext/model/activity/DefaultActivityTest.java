@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DefaultActivityTest {
 
     private static final String TYPE = "type";
-    private static final Instant TIMESTAMP = Instant.now();
+    private static final Instant TIMESTAMP = Instant.parse("2019-03-16T23:03:36.152Z");
 
     private final Activity activity = new DefaultActivity(TYPE, TIMESTAMP);
 
@@ -51,8 +51,7 @@ public class DefaultActivityTest {
 
     @Test
     public void shouldPrintValues() {
-        final String expectedValue = String.format("DefaultActivity(type=type, timestamp=%s, genericProperties={})",
-                TIMESTAMP.toString());
+        final String expectedValue = "DefaultActivity(type=type, timestamp=2019-03-16T23:03:36.152Z, properties={})";
 
         final String value = activity.toString();
 

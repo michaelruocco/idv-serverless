@@ -52,7 +52,7 @@ public class PhysicalPinsentryVerificationMethodTest {
 
         assertThat(value).isEqualTo("PhysicalPinsentryVerificationMethod(" +
                 "super=DefaultVerificationMethod(" +
-                "name=PHYSICAL_PINSENTRY, duration=300000, genericProperties={" +
+                "name=PHYSICAL_PINSENTRY, duration=300000, properties={" +
                 "cardNumbers=[CardNumber(masked=null, tokenized=1234567890123456, encrypted=null), " +
                 "CardNumber(masked=null, tokenized=6543210987654321, encrypted=null)], function=IDENTIFY}))");
     }

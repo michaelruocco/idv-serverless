@@ -1,5 +1,8 @@
 allprojects {
     dependencies {
         compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8'
+        compile 'org.zalando:jackson-datatype-money:1.1.1'
+
     }
 }

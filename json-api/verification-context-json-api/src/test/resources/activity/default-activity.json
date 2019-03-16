@@ -1,0 +1,10 @@
+{
+  "type": "DEFAULT_ACTIVITY",
+  "timestamp": "2019-03-10T12:53:57.547Z",
+  "properties": {
+    "property": 1,
+    "anotherProperty": {
+      "subProperty": "value"
+    }
+  }
+}

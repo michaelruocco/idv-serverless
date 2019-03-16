@@ -1,0 +1,16 @@
+repositories {
+    maven { url = 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
+}
+
+dependencies {
+    compile project(':core:verification-context-core')
+    compile project(':json-api:verification-context-json-api')
+    compile project(':json-api:identity-json-api')
+    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.515'
+
+    testCompile 'com.amazonaws:DynamoDBLocal:1.11.477'
+}
+
+test {
+    systemProperty 'sqlite4java.library.path', '../../../libs/sqlite4java'
+}

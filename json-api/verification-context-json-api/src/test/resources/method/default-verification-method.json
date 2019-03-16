@@ -1,0 +1,10 @@
+{
+  "name": "DEFAULT_METHOD",
+  "duration": 300000,
+  "properties": {
+    "property": 1,
+    "anotherProperty": {
+      "subProperty": "value"
+    }
+  }
+}

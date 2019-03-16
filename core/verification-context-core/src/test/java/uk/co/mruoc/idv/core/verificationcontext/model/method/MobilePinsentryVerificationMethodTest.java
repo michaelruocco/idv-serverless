@@ -37,7 +37,7 @@ public class MobilePinsentryVerificationMethodTest {
         final String value = mobilePinsentry.toString();
 
         assertThat(value).isEqualTo("MobilePinsentryVerificationMethod(super=" +
-                "DefaultVerificationMethod(name=MOBILE_PINSENTRY, duration=300000, genericProperties={function=IDENTIFY}))");
+                "DefaultVerificationMethod(name=MOBILE_PINSENTRY, duration=300000, properties={function=IDENTIFY}))");
     }
 
 }

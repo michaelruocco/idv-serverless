@@ -1,0 +1,21 @@
+{
+  "name": "ONE_TIME_PASSCODE_SMS",
+  "duration": 300000,
+  "properties": {
+    "mobileNumbers": [
+      {
+        "id": "c3abd98d-655c-48eb-962c-5e72ee9f4257",
+        "masked": "********123"
+      },
+      {
+        "id": "77d84d3f-7924-41ae-a41b-e2a7d8881fda",
+        "masked": "********321"
+      }
+    ],
+    "passcode": {
+      "length": 8,
+      "duration": 150000,
+      "attempts": 3
+    }
+  }
+}

@@ -1,6 +1,8 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 
+import java.util.Map;
+
 public interface VerificationMethod {
 
     int DEFAULT_DURATION = 300000;
@@ -8,6 +10,8 @@ public interface VerificationMethod {
     String getName();
 
     int getDuration();
+
+    Map<String, Object> getProperties();
 
     <T> T get(final String name, final Class<T> type);
 

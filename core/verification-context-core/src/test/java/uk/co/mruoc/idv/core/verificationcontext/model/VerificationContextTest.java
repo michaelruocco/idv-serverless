@@ -123,10 +123,10 @@ public class VerificationContextTest {
                 "channel=DefaultChannel(id=AS3), " +
                 "inputAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a)])), " +
-                "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, genericProperties={}), " +
+                "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, properties={}), " +
                 "created=2019-03-10T12:54:02.547Z, " +
                 "expiry=2019-03-10T12:59:02.547Z, " +
-                "eligibleMethods=[VerificationMethodSequence(name=method, sequence=[DefaultVerificationMethod(name=method, duration=300000, genericProperties={})])])");
+                "eligibleMethods=[VerificationMethodSequence(name=method, sequence=[DefaultVerificationMethod(name=method, duration=300000, properties={})])])");
     }
 
 }

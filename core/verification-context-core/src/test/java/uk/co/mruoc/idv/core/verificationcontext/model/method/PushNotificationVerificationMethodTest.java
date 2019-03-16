@@ -29,7 +29,7 @@ public class PushNotificationVerificationMethodTest {
         final String value = pushNotification.toString();
 
         assertThat(value).isEqualTo("PushNotificationVerificationMethod(super=" +
-                "DefaultVerificationMethod(name=PUSH_NOTIFICATION, duration=300000, genericProperties={}))");
+                "DefaultVerificationMethod(name=PUSH_NOTIFICATION, duration=300000, properties={}))");
     }
 
 }

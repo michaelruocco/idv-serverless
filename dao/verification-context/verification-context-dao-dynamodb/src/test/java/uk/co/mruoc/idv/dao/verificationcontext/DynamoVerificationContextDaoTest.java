@@ -1,0 +1,132 @@
+package uk.co.mruoc.idv.dao.verificationcontext;
+
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
+import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
+import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
+import com.amazonaws.services.dynamodbv2.model.KeyType;
+import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
+import com.amazonaws.services.dynamodbv2.util.TableUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.zalando.jackson.datatype.money.MoneyModule;
+import uk.co.mruoc.idv.core.identity.model.Identity;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
+import uk.co.mruoc.idv.core.model.MobileNumber;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
+import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationMethod;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
+import uk.co.mruoc.idv.jsonapi.identity.IdvIdentityModule;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.IdvVerificationContextModule;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Slf4j
+public class DynamoVerificationContextDaoTest {
+
+    private static final String TABLE_NAME = "verification-context";
+
+    @Rule
+    public final LocalDynamoRule localDynamoRule = new LocalDynamoRule();
+
+    private VerificationContextDao dao;
+
+    @Before
+    public void setUp() throws InterruptedException {
+        final AmazonDynamoDB client = localDynamoRule.getClient();
+        createTable(client);
+        final ObjectMapper mapper = buildMapper();
+
+        dao = new DynamoVerificationContextDao(new DynamoDB(client), TABLE_NAME, mapper);
+    }
+
+    @Test
+    public void shouldSaveContextAndLoadById() {
+        final UUID id = UUID.randomUUID();
+        final Collection<MobileNumber> mobileNumbers = Collections.singleton(MobileNumber.builder().id(UUID.fromString("4b21d79e-43b5-43bb-97c9-6979553e9a16")).masked("*******123").build());
+        final Passcode passcode = Passcode.builder().duration(15000).length(8).attempts(3).build();
+        final Alias inputAlias = new UkcCardholderIdAlias("12345678");
+        final VerificationContext context = VerificationContext.builder()
+                .id(id)
+                .channel(new As3Channel())
+                .activity(new LoginActivity(Instant.now()))
+                .inputAlias(inputAlias)
+                .identity(Identity.withAliases(new IdvIdAlias(), inputAlias))
+                .created(Instant.now())
+                .expiry(Instant.now().plus(Duration.ofMinutes(5)))
+                .eligibleMethods(Collections.singleton(new VerificationMethodSequence(new OtpSmsVerificationMethod(300000, passcode, mobileNumbers))))
+                .build();
+        dao.save(context);
+
+        final Optional<VerificationContext> loadedContext = dao.load(id);
+
+        assertThat(loadedContext.isPresent()).isTrue();
+        assertThat(loadedContext.get()).isEqualToComparingFieldByFieldRecursively(context);
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalForContextIdThatDoesNotExist() {
+        final UUID id = UUID.randomUUID();
+
+        final Optional<VerificationContext> loadedContext = dao.load(id);
+
+        assertThat(loadedContext).isEmpty();
+    }
+
+    private static void createTable(final AmazonDynamoDB client) throws InterruptedException {
+        final List<KeySchemaElement> keySchema = Collections.singletonList(new KeySchemaElement()
+                .withAttributeName("id")
+                .withKeyType(KeyType.HASH));
+
+        final List<AttributeDefinition> attributeDefinitions = Collections.singletonList(new AttributeDefinition()
+                .withAttributeName("id")
+                .withAttributeType("S"));
+
+        final ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
+                .withReadCapacityUnits(1L)
+                .withWriteCapacityUnits(1L);
+
+        final CreateTableRequest request = new CreateTableRequest()
+                .withTableName(TABLE_NAME)
+                .withKeySchema(keySchema)
+                .withAttributeDefinitions(attributeDefinitions)
+                .withProvisionedThroughput(provisionedThroughput);
+
+        log.info("creating table {}", TABLE_NAME);
+        TableUtils.createTableIfNotExists(client, request);
+        log.info("waiting until table {} is active", TABLE_NAME);
+        TableUtils.waitUntilActive(client, TABLE_NAME, 60000, 5000);
+        log.info("table {} is active", TABLE_NAME);
+    }
+
+    private static ObjectMapper buildMapper() {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new IdvVerificationContextModule());
+        mapper.registerModule(new IdvIdentityModule());
+        mapper.registerModule(new JavaTimeModule());
+        mapper.registerModule(new MoneyModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
+    }
+
+}

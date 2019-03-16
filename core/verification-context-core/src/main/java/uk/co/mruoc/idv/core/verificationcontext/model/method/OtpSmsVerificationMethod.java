@@ -22,7 +22,6 @@ public class OtpSmsVerificationMethod extends DefaultVerificationMethod {
         return get(PASSCODE_PROPERTY_NAME, Passcode.class);
     }
 
-    @SuppressWarnings("unchecked")
     public Collection<MobileNumber> getMobileNumbers() {
         return get(MOBILE_NUMBERS_PROPERTY_NAME, Collection.class);
     }

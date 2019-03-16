@@ -1,0 +1,12 @@
+{
+  "type": "ONLINE_PURCHASE",
+  "timestamp": "2019-03-10T12:53:57.547Z",
+  "properties": {
+    "reference": "ABC123",
+    "cost": {
+      "amount": 10.99,
+      "currency": "GBP"
+    },
+    "merchant": "Amazon"
+  }
+}
