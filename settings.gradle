@@ -11,6 +11,9 @@ include 'dao:verification-context:verification-context-dao-dynamodb'
 include 'plugins:identity:alias-loader'
 include 'plugins:verification-context:eligibility-handler'
 
+include 'json:identity-json'
+include 'json:verification-context-json'
+
 include 'json-api'
 include 'json-api:identity-json-api'
 include 'json-api:verification-context-json-api'

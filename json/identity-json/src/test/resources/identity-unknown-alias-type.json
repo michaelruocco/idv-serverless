@@ -1,0 +1,14 @@
+{
+  "aliases": [
+    {
+      "type": "IDV_ID",
+      "format": "CLEAR_TEXT",
+      "value": "23d106b4-0003-4ad8-8fc2-7f3a601c2125"
+    },
+    {
+      "type": "UNKNOWN",
+      "format": "CLEAR_TEXT",
+      "value": "ABC123"
+    }
+  ]
+}

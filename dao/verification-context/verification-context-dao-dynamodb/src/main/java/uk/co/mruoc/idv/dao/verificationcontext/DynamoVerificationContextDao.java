@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 
@@ -13,6 +14,7 @@ import java.io.UncheckedIOException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 public class DynamoVerificationContextDao implements VerificationContextDao {
 
     private final ObjectMapper mapper;
@@ -25,24 +27,29 @@ public class DynamoVerificationContextDao implements VerificationContextDao {
 
     @Override
     public void save(final VerificationContext context) {
+        log.debug("saving verification context {}", context);
         final Item item = toItem(context);
+        log.info("putting item {}", item);
         table.putItem(item);
     }
 
     @Override
     public Optional<VerificationContext> load(final UUID id) {
+        log.info("loading verification context by id {}", id);
         final Item item = table.getItem("id", id.toString());
         if (item == null) {
+            log.debug("verifiction context not found returning empty optional");
             return Optional.empty();
         }
+        log.debug("loaded item {}", item);
         final VerificationContext context = toVerificationContext(item);
+        log.debug("returning context {}", context);
         return Optional.of(context);
     }
 
     private Item toItem(final VerificationContext context) {
         try {
             final String json = mapper.writeValueAsString(context);
-            System.out.println(json);
             return new Item()
                     .withPrimaryKey("id", context.getId().toString())
                     .withJSON("body", json);

@@ -1,5 +1,5 @@
 dependencies {
     compile project(':json-api')
-    compile project(':core:identity-core')
+    compile project(':json:identity-json')
     compile 'org.apache.commons:commons-lang3:3.8.1'
 }
