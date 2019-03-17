@@ -5,30 +5,24 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
-import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.OnlinePurchaseActivity;
-import uk.co.mruoc.idv.core.verificationcontext.model.method.CardCredentialsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.MobilePinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.ActivityDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.LoginActivityMixin;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.OnlinePurchaseActivityMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.CardCredentialsVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.CardNumberMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.DefaultVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.DefaultVerificationMethodMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.MobilePinsentryVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.MobilePinsentryVerificationMethodMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.OtpSmsVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.OtpSmsVerificationMethodMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.PhysicalPinsentryVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.PhysicalPinsentryVerificationMethodMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.PushNotificationVerificationMethodDeserializer;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.method.VerificationMethodDeserializer;
 
 public class IdvVerificationContextModule extends SimpleModule {
 
@@ -49,12 +43,7 @@ public class IdvVerificationContextModule extends SimpleModule {
     }
 
     private void setUpMethod() {
-        addDeserializer(CardCredentialsVerificationMethod.class, new CardCredentialsVerificationMethodDeserializer());
-        addDeserializer(PushNotificationVerificationMethod.class, new PushNotificationVerificationMethodDeserializer());
-        addDeserializer(OtpSmsVerificationMethod.class, new OtpSmsVerificationMethodDeserializer());
-        addDeserializer(PhysicalPinsentryVerificationMethod.class, new PhysicalPinsentryVerificationMethodDeserializer());
-        addDeserializer(MobilePinsentryVerificationMethod.class, new MobilePinsentryVerificationMethodDeserializer());
-        addDeserializer(DefaultVerificationMethod.class, new DefaultVerificationMethodDeserializer(MAPPER));
+        addDeserializer(VerificationMethod.class, new VerificationMethodDeserializer(MAPPER));
 
         setMixInAnnotation(VerificationMethodSequence.class, VerificationMethodSequenceMixin.class);
         setMixInAnnotation(DefaultVerificationMethod.class, DefaultVerificationMethodMixin.class);

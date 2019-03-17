@@ -17,12 +17,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 import uk.co.mruoc.idv.jsonapi.identity.AliasDeserializer;
 import uk.co.mruoc.idv.jsonapi.identity.IdentityDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.ActivityDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.CardCredentialsVerificationMethodDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.DefaultVerificationMethodDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.MobilePinsentryVerificationMethodDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.OtpSmsVerificationMethodDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.PhysicalPinsentryVerificationMethodDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.method.PushNotificationVerificationMethodDeserializer;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.method.VerificationMethodDeserializer;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -114,30 +109,13 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
     }
 
     private static VerificationMethod toMethod(final JsonNode methodNode) {
-        final String name = extractName(methodNode);
-        switch (name) {
-            case VerificationMethod.Names.CARD_CREDENTIALS:
-                return CardCredentialsVerificationMethodDeserializer.toCardCredentials(methodNode);
-            case VerificationMethod.Names.ONE_TIME_PASSCODE_SMS:
-                return OtpSmsVerificationMethodDeserializer.toOtpSms(methodNode);
-            case VerificationMethod.Names.PUSH_NOTIFICATION:
-                return PushNotificationVerificationMethodDeserializer.toPushNotification(methodNode);
-            case VerificationMethod.Names.PHYSICAL_PINSENTRY:
-                return PhysicalPinsentryVerificationMethodDeserializer.toPhysicalPinsentry(methodNode);
-            case VerificationMethod.Names.MOBILE_PINSENTRY:
-                return MobilePinsentryVerificationMethodDeserializer.toMobilePinsentry(methodNode);
-            default:
-                return toDefaultMethod(methodNode);
-        }
+        final VerificationMethodDeserializer deserializer = new VerificationMethodDeserializer(MAPPER);
+        return deserializer.toMethod(methodNode);
     }
 
     private static String extractName(final JsonNode node) {
         return node.get("name").asText();
     }
 
-    private static VerificationMethod toDefaultMethod(final JsonNode methodNode) {
-        final DefaultVerificationMethodDeserializer deserializer = new DefaultVerificationMethodDeserializer(MAPPER);
-        return deserializer.toDefaultMethod(methodNode);
-    }
 
 }

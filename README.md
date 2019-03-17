@@ -7,20 +7,17 @@
 
 ## To Do
 
- 1. fix coverage gaps on verification context deserializer by adding tests to cover all activity types and all
-verification methods
+ 1. add json api types for verification context request and response
 
- 2. add json api types for verification context request and response
+ 2. implement aws lambda handler for posting verification contexts
 
- 3. implement aws lambda handler for posting verification contexts
+ 3. implement aws lambda handler for getting verification contexts
 
- 4. implement aws lambda handler for getting verification contexts
-
- 5. identity merging, when create identity raise event with created identity, this can be used
+ 4. identity merging, when create identity raise event with created identity, this can be used
 for both MI reporting and to trigger an "offline" lambda event to check for matching aliases and merge
 identities if and duplicated aliases
 
- 6. figure out how to get deployed host name after serverless deploy has run and add into
+ 5. figure out how to get deployed host name after serverless deploy has run and add into
 postman environment file or pass as argument when postman tests run
 
 ## Running Unit Tests
