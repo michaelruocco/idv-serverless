@@ -10,6 +10,10 @@ public class ObjectMapperSingleton {
 
     private static final ObjectMapper MAPPER = buildMapper();
 
+    private ObjectMapperSingleton() {
+        // utility class
+    }
+
     public static ObjectMapper get() {
         return MAPPER;
     }
