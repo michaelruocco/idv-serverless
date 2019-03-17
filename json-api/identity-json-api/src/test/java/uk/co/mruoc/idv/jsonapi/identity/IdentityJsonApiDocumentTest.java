@@ -31,7 +31,7 @@ public class IdentityJsonApiDocumentTest {
     private static final String IDENTITY_JSON = loadJson("/identity.json");
     private static final IdentityJsonApiDocument DOCUMENT = buildDocument();
 
-    private static final ObjectMapper MAPPER = buildMapper();
+    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeDocument() throws JsonProcessingException {
@@ -75,12 +75,6 @@ public class IdentityJsonApiDocumentTest {
 
     private static String loadJson(final String path) {
         return deleteWhitespace(loadContentFromClasspath(path));
-    }
-
-    private static ObjectMapper buildMapper() {
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new IdvIdentityModule());
-        return mapper;
     }
 
     private static IdentityJsonApiDocument buildDocument() {

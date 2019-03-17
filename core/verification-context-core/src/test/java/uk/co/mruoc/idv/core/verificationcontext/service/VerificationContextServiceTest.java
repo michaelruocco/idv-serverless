@@ -8,12 +8,12 @@ import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextServiceRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
@@ -56,7 +56,7 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldThrowExceptionIfVerificationPolicyNotConfiguredForChannel() {
-        final VerificationContextRequest request = buildRequest();
+        final VerificationContextServiceRequest request = buildRequest();
         final Channel channel = request.getChannel();
         doThrow(UnrecognisedChannelException.class).when(policiesService).getPoliciesForChannel(channel.getId());
 
@@ -67,7 +67,7 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldThrowExceptionIfVerificationPolicyNotConfiguredForActivity() {
-        final VerificationContextRequest request = buildRequest();
+        final VerificationContextServiceRequest request = buildRequest();
         final Channel channel = request.getChannel();
         final Activity activity = request.getActivity();
         final ChannelVerificationPolicies policies = mock(ChannelVerificationPolicies.class);
@@ -81,7 +81,7 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldCreateVerificationContext() {
-        final VerificationContextRequest request = buildRequest();
+        final VerificationContextServiceRequest request = buildRequest();
 
         final Instant now = Instant.now();
         given(timeService.now()).willReturn(now);
@@ -114,7 +114,7 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldPassCorrectRequestToEligibleMethodsService() {
-        final VerificationContextRequest request = buildRequest();
+        final VerificationContextServiceRequest request = buildRequest();
 
         final Instant now = Instant.now();
         given(timeService.now()).willReturn(now);
@@ -144,13 +144,13 @@ public class VerificationContextServiceTest {
         assertThat(methodsRequest.getPolicy()).isEqualTo(channelPolicies.getPolicyFor(request.getActivity().getType()));
     }
 
-    private static VerificationContextRequest buildRequest() {
+    private static VerificationContextServiceRequest buildRequest() {
         final Instant now = Instant.now();
         final Alias providedAlias = new IdvIdAlias();
         final Channel channel = new As3Channel();
         final Identity identity = Identity.withAliases(providedAlias);
         final Activity activity = new LoginActivity(now);
-        return VerificationContextRequest.builder()
+        return VerificationContextServiceRequest.builder()
                 .channel(channel)
                 .providedAlias(providedAlias)
                 .identity(identity)

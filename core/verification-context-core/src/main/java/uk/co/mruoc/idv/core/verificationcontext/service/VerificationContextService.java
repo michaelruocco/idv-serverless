@@ -5,7 +5,7 @@ import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextServiceRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
@@ -25,13 +25,13 @@ public class VerificationContextService {
     private final EligibleMethodsService eligibleMethodsService;
     private final VerificationContextDao dao;
 
-    public VerificationContext create(final VerificationContextRequest request) {
+    public VerificationContext create(final VerificationContextServiceRequest request) {
         final VerificationContext context = buildContext(request);
         dao.save(context);
         return context;
     }
 
-    private VerificationContext buildContext(final VerificationContextRequest request) {
+    private VerificationContext buildContext(final VerificationContextServiceRequest request) {
         final Collection<VerificationMethodSequence> eligibleMethods = loadEligibleMethods(request);
         final Instant created = timeService.now();
         return VerificationContext.builder()
@@ -46,14 +46,14 @@ public class VerificationContextService {
                 .build();
     }
 
-    private VerificationPolicy loadVerificationPolicy(final VerificationContextRequest request) {
+    private VerificationPolicy loadVerificationPolicy(final VerificationContextServiceRequest request) {
         final Channel channel = request.getChannel();
         final Activity activity = request.getActivity();
         final ChannelVerificationPolicies policies = policiesService.getPoliciesForChannel(channel.getId());
         return policies.getPolicyFor(activity.getType());
     }
 
-    private Collection<VerificationMethodSequence> loadEligibleMethods(final VerificationContextRequest request) {
+    private Collection<VerificationMethodSequence> loadEligibleMethods(final VerificationContextServiceRequest request) {
         final VerificationPolicy policy = loadVerificationPolicy(request);
         final EligibleMethodsRequest methodsRequest = EligibleMethodsRequest.builder()
                 .channel(request.getChannel())

@@ -1,9 +1,0 @@
-{
-  "errors": [
-    {
-      "title": "Bad Request",
-      "detail": "Either IDV ID or aliasType and aliasValue must be provided",
-      "meta": {}
-    }
-  ]
-}

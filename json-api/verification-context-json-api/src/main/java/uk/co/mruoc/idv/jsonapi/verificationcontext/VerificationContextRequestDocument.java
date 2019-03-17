@@ -11,14 +11,14 @@ public class VerificationContextRequestDocument {
 
     private static final String TYPE = "verificationContexts";
 
-    private final JsonApiDataItem<ClientVerificationContextRequest> data;
+    private final JsonApiDataItem<VerificationContextRequest> data;
 
-    public VerificationContextRequestDocument(final ClientVerificationContextRequest request) {
+    public VerificationContextRequestDocument(final VerificationContextRequest request) {
         this.data = new JsonApiDataItem<>(TYPE, request);
     }
 
     @JsonIgnore
-    public ClientVerificationContextRequest getAttributes() {
+    public VerificationContextRequest getAttributes() {
         return data.getAttributes();
     }
 

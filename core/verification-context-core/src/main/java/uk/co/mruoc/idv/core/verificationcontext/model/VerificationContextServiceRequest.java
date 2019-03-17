@@ -1,21 +1,21 @@
-package uk.co.mruoc.idv.jsonapi.verificationcontext;
+package uk.co.mruoc.idv.core.verificationcontext.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 
 @Builder
+@ToString
 @Getter
-@RequiredArgsConstructor
-@NoArgsConstructor(force = true) // required by jackson
-public class ClientVerificationContextRequest {
+public class VerificationContextServiceRequest {
 
     private final Channel channel;
-    private final Activity activity;
     private final Alias providedAlias;
+    private final Identity identity;
+    private final Activity activity;
 
 }

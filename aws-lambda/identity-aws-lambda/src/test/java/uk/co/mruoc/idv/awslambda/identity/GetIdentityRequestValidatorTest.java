@@ -3,17 +3,16 @@ package uk.co.mruoc.idv.awslambda.identity;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.RequestValidator;
-import uk.co.mruoc.idv.awslambda.identity.GetIdentityRequestValidator.IdentityIdOrAliasNotProvidedError;
+import uk.co.mruoc.idv.awslambda.identity.GetIdentityRequestValidator.IdentityRequestInvalidException;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
-import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class GetIdentityRequestValidatorTest {
 
@@ -22,86 +21,74 @@ public class GetIdentityRequestValidatorTest {
     private final RequestValidator validator = new GetIdentityRequestValidator();
 
     @Test
-    public void shouldReturnErrorIfIdPathParametersAndQueryStringParametersAreBothNull() {
+    public void shouldThrowExceptionIfIdPathParametersAndQueryStringParametersAreBothNull() {
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
 
-        final Optional<JsonApiErrorDocument> document = validator.validate(request);
+        final Throwable cause = catchThrowable(() -> validator.validate(request));
 
-        assertThat(document.isPresent()).isTrue();
-        assertThat(document.get()).isEqualToComparingFieldByFieldRecursively(new JsonApiErrorDocument(
-                new IdentityIdOrAliasNotProvidedError())
-        );
+        assertThat(cause).isInstanceOf(IdentityRequestInvalidException.class);
     }
 
     @Test
-    public void shouldReturnErrorIfIdPathParameterIdAndAliasQueryStringParametersAreNotProvided() {
+    public void shouldThrowExceptionIfIdPathParameterIdAndAliasQueryStringParametersAreNotProvided() {
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withPathParameters(Collections.emptyMap())
                 .withQueryStringParameters(Collections.emptyMap());
 
-        final Optional<JsonApiErrorDocument> document = validator.validate(request);
+        final Throwable cause = catchThrowable(() -> validator.validate(request));
 
-        assertThat(document.isPresent()).isTrue();
-        assertThat(document.get()).isEqualToComparingFieldByFieldRecursively(new JsonApiErrorDocument(
-                new IdentityIdOrAliasNotProvidedError())
-        );
+        assertThat(cause).isInstanceOf(IdentityRequestInvalidException.class);
     }
 
     @Test
-    public void shouldReturnErrorIfIdPathParameterIdAndAliasValueQueryStringParameterIsNotProvided() {
+    public void shouldThrowExceptionIfIdPathParameterIdAndAliasValueQueryStringParameterIsNotProvided() {
         final Map<String, String> parameters = new HashMap<>();
         parameters.put("aliasType", UKC_CARDHOLDER_ID_ALIAS_TYPE);
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withPathParameters(Collections.emptyMap())
-                .withQueryStringParameters(parameters);
+                .withQueryStringParameters(Collections.unmodifiableMap(parameters));
 
-        final Optional<JsonApiErrorDocument> document = validator.validate(request);
+        final Throwable cause = catchThrowable(() -> validator.validate(request));
 
-        assertThat(document.isPresent()).isTrue();
-        assertThat(document.get()).isEqualToComparingFieldByFieldRecursively(new JsonApiErrorDocument(
-                new IdentityIdOrAliasNotProvidedError())
-        );
+        assertThat(cause).isInstanceOf(IdentityRequestInvalidException.class);
     }
 
     @Test
-    public void shouldReturnErrorIfIdPathParameterIdAndAliasTypeQueryStringParameterIsNotProvided() {
+    public void shouldThrowExceptionIfIdPathParameterIdAndAliasTypeQueryStringParameterIsNotProvided() {
         final Map<String, String> parameters = new HashMap<>();
         parameters.put("aliasValue", "12345678");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withPathParameters(Collections.emptyMap())
-                .withQueryStringParameters(parameters);
+                .withQueryStringParameters(Collections.unmodifiableMap(parameters));
 
-        final Optional<JsonApiErrorDocument> document = validator.validate(request);
+        final Throwable cause = catchThrowable(() -> validator.validate(request));
 
-        assertThat(document.isPresent()).isTrue();
-        assertThat(document.get()).isEqualToComparingFieldByFieldRecursively(new JsonApiErrorDocument(
-                new IdentityIdOrAliasNotProvidedError())
-        );
+        assertThat(cause).isInstanceOf(IdentityRequestInvalidException.class);
     }
 
     @Test
-    public void shouldNotReturnErrorIfIdPathParameterIsProvided() {
+    public void shouldReturnTrueIfIdPathParameterIsProvided() {
         final Map<String, String> parameters = new HashMap<>();
         parameters.put("id", UUID.randomUUID().toString());
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withPathParameters(parameters);
+                .withPathParameters(Collections.unmodifiableMap(parameters));
 
-        final Optional<JsonApiErrorDocument> document = validator.validate(request);
+        final boolean valid = validator.validate(request);
 
-        assertThat(document).isEmpty();
+        assertThat(valid).isTrue();
     }
 
     @Test
-    public void shouldNotReturnErrorIfAliasQueryStringParametersAreProvided() {
+    public void shouldReturnTrueIfAliasQueryStringParametersAreProvided() {
         final Map<String, String> parameters = new HashMap<>();
         parameters.put("aliasType", UKC_CARDHOLDER_ID_ALIAS_TYPE);
         parameters.put("aliasValue", "12345678");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withQueryStringParameters(parameters);
+                .withQueryStringParameters(Collections.unmodifiableMap(parameters));
 
-        final Optional<JsonApiErrorDocument> document = validator.validate(request);
+        final boolean valid = validator.validate(request);
 
-        assertThat(document).isEmpty();
+        assertThat(valid).isTrue();
     }
 
 }

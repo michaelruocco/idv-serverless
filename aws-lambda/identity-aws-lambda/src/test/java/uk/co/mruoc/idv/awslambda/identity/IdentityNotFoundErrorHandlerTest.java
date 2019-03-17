@@ -9,6 +9,8 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService.IdentityNotFoundExc
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
@@ -31,15 +33,15 @@ public class IdentityNotFoundErrorHandlerTest {
     }
 
     @Test
-    public void shouldReturnJsonApiErrorDocumentForIdentityNotFoundException() {
+    public void shouldReturnJsonApiErrorDocument() {
         final Alias alias = new UkcCardholderIdAlias("12345678");
         final Exception exception = new IdentityNotFoundException(alias);
 
         final JsonApiErrorDocument document = handler.handle(exception);
 
-        final JsonApiErrorItem expectedErrorItem = new IdentityNotFoundErrorItem(alias);
-        assertThat(document.getErrors()).hasSize(1);
-        assertThat(document.getErrors().get(0)).isEqualToComparingFieldByFieldRecursively(expectedErrorItem);
+        final List<JsonApiErrorItem> errors = document.getErrors();
+        assertThat(errors).hasSize(1);
+        assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(new IdentityNotFoundErrorItem(alias));
     }
 
 }

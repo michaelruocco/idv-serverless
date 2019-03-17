@@ -1,7 +1,6 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.jsonapi.identity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.co.mruoc.idv.jsonapi.identity.IdvIdentityModule;
 
 public class ObjectMapperSingleton {
 

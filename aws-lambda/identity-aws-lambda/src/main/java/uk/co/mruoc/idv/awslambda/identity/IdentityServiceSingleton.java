@@ -46,6 +46,4 @@ public class IdentityServiceSingleton {
         return new IdentityService(dao, aliasLoaderService, idvIdGenerator);
     }
 
-
-
 }

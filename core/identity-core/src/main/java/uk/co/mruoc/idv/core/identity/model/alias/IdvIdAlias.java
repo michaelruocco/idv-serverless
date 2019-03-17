@@ -11,7 +11,7 @@ public class IdvIdAlias extends DefaultAlias {
     }
 
     public IdvIdAlias(final String value) {
-        this(UUID.fromString(value));
+        this(toUuid(value));
     }
 
     public IdvIdAlias(final UUID value) {
@@ -20,6 +20,22 @@ public class IdvIdAlias extends DefaultAlias {
 
     public UUID getValueAsUuid() {
         return UUID.fromString(getValue());
+    }
+
+    private static UUID toUuid(final String id) {
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            throw new IdvIdNotValidUuidException(id, e);
+        }
+    }
+
+    public static class IdvIdNotValidUuidException extends RuntimeException {
+
+        public IdvIdNotValidUuidException(final String value, final Throwable cause) {
+            super(value, cause);
+        }
+
     }
 
 }

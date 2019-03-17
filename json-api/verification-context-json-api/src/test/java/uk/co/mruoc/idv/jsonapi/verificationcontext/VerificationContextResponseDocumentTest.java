@@ -8,6 +8,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext.VerificationContextBuilder;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
@@ -61,7 +62,7 @@ public class VerificationContextResponseDocumentTest {
         return new VerificationContextResponseDocument(id, request);
     }
 
-    private static VerificationContext.VerificationContextBuilder buildContext() {
+    private static VerificationContextBuilder buildContext() {
         final Instant now = Instant.parse("2019-03-10T12:53:57.547Z");
         final Activity activity = new LoginActivity(now);
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");

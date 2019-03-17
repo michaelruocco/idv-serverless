@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':json-api:verification-context-json-api')
+    compile project(':aws-lambda')
+}

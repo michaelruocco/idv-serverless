@@ -150,6 +150,48 @@
 			"response": []
 		},
 		{
+			"name": "Get Identity alias not provided",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "205180a0-738a-4c23-a26d-4dfe79ade434",
+						"exec": [
+							"pm.test(\"should return 400 status\", function () {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							"",
+							"pm.test(\"should return correct error\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.errors[0].title).to.equal(\"Bad Request\");",
+							"    pm.expect(json.errors[0].detail).to.equal(\"Either IDV ID or aliasType and aliasValue must be provided\");",
+							"    pm.expect(json.errors[0].meta).to.eql({});",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/identities",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"identities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Identity not found",
 			"event": [
 				{
@@ -254,6 +296,51 @@
 							"key": "aliasValu",
 							"value": "1111111111"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Identity with invalid idv id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c02761c1-a436-4906-84f2-f92a28a86fcf",
+						"exec": [
+							"pm.test(\"should return 400 status\", function () {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							"",
+							"pm.test(\"should return correct error\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.errors[0].title).to.equal(\"Bad Request\");",
+							"    pm.expect(json.errors[0].detail).to.equal(\"IDV ID value is invalid value it must be a valid UUID\");",
+							"    pm.expect(json.errors[0].meta).to.eql({",
+							"        \"value\": \"value\"",
+							"    });",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/identities/value",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"identities",
+						"value"
 					]
 				}
 			},

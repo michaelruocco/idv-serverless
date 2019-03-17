@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class IdvIdAliasTest {
 
@@ -63,6 +64,17 @@ public class IdvIdAliasTest {
 
         assertThat(alias.equals(sameAlias)).isTrue();
         assertThat(alias.equals(differentAlias)).isFalse();
+    }
+
+    @Test
+    public void shouldThrowExceptionIfIdIsNotValidUuid() {
+        final String id = "id";
+
+        final Throwable cause = catchThrowable(() -> new IdvIdAlias(id));
+
+        assertThat(cause).isInstanceOf(IdvIdAlias.IdvIdNotValidUuidException.class)
+                .hasCauseInstanceOf(IllegalArgumentException.class)
+                .hasMessage(id);
     }
 
 }

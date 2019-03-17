@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda;
 
 import org.junit.Before;
 import org.junit.Rule;

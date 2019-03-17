@@ -20,3 +20,4 @@ include 'json-api:verification-context-json-api'
 
 include 'aws-lambda'
 include 'aws-lambda:identity-aws-lambda'
+include 'aws-lambda:verification-context-aws-lambda'

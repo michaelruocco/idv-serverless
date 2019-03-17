@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda;
 
 public class Environment {
 

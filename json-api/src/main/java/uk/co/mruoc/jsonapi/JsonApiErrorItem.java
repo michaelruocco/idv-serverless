@@ -11,18 +11,26 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 
 @Getter
-@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@RequiredArgsConstructor
 @NoArgsConstructor(force = true) // required by jackson
-@JsonPropertyOrder({ "title", "detail", "meta" })
+@JsonPropertyOrder({ "status", "title", "detail", "meta" })
 public class JsonApiErrorItem {
 
+    private final String status;
     private final String title;
     private final String detail;
     private final Map<String, Object> meta;
 
     @JsonIgnore
     private final int statusCode;
+
+    @Builder
+    public JsonApiErrorItem(final String title, final String detail, final Map<String, Object> meta, final int statusCode) {
+        this.status = Integer.toString(statusCode);
+        this.title = title;
+        this.detail = detail;
+        this.meta = meta;
+        this.statusCode = statusCode;
+    }
 
 }

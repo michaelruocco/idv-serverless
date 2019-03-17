@@ -21,7 +21,7 @@ public class VerificationContextRequestTest {
     public void shouldReturnChannel() {
         final Channel channel = mock(Channel.class);
 
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final VerificationContextServiceRequest request = VerificationContextServiceRequest.builder()
                 .channel(channel)
                 .build();
 
@@ -32,7 +32,7 @@ public class VerificationContextRequestTest {
     public void shouldReturnProvidedAlias() {
         final Alias alias = mock(Alias.class);
 
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final VerificationContextServiceRequest request = VerificationContextServiceRequest.builder()
                 .providedAlias(alias)
                 .build();
 
@@ -44,7 +44,7 @@ public class VerificationContextRequestTest {
     public void shouldReturnIdentity() {
         final Identity identity = mock(Identity.class);
 
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final VerificationContextServiceRequest request = VerificationContextServiceRequest.builder()
                 .identity(identity)
                 .build();
 
@@ -55,7 +55,7 @@ public class VerificationContextRequestTest {
     public void shouldReturnActivity() {
         final Activity activity = mock(Activity.class);
 
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final VerificationContextServiceRequest request = VerificationContextServiceRequest.builder()
                 .activity(activity)
                 .build();
 
@@ -66,14 +66,14 @@ public class VerificationContextRequestTest {
     public void shouldPrintAllValues() {
         final Instant timestamp = Instant.parse("2019-03-10T12:53:57.547Z");
         final Alias inputAlias = new IdvIdAlias(UUID.fromString("b0d996ae-dfa0-43a4-949c-f03e9dafd539"));
-        final VerificationContextRequest request = VerificationContextRequest.builder()
+        final VerificationContextServiceRequest request = VerificationContextServiceRequest.builder()
                 .channel(new As3Channel())
                 .providedAlias(inputAlias)
                 .identity(Identity.withAliases(inputAlias))
                 .activity(new LoginActivity(timestamp))
                 .build();
 
-        assertThat(request.toString()).isEqualTo("VerificationContextRequest(" +
+        assertThat(request.toString()).isEqualTo("VerificationContextServiceRequest(" +
                 "channel=DefaultChannel(id=AS3), " +
                 "providedAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539)])), " +

@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.jsonapi.verificationcontext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -16,10 +16,15 @@ public class ObjectMapperSingletonTest {
     }
 
     @Test
-    public void shouldRegisterIdvIdentityModuleInMapper() {
+    public void shouldRegisterModules() {
         final ObjectMapper mapper = ObjectMapperSingleton.get();
 
-        assertThat(mapper.getRegisteredModuleIds()).containsExactly("uk.co.mruoc.idv.jsonapi.identity.IdvIdentityModule");
+        assertThat(mapper.getRegisteredModuleIds()).containsExactly(
+                "uk.co.mruoc.idv.jsonapi.identity.IdvIdentityModule",
+                "uk.co.mruoc.idv.jsonapi.verificationcontext.IdvVerificationContextModule",
+                "com.fasterxml.jackson.datatype.jsr310.JavaTimeModule",
+                "org.zalando.jackson.datatype.money.MoneyModule"
+        );
     }
 
 }
