@@ -3,16 +3,16 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import uk.co.mruoc.idv.core.identity.model.Identity;
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextServiceRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
+import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
@@ -38,6 +38,7 @@ public class VerificationContextServiceTest {
 
     private static final Duration FIVE_MINUTES = Duration.ofMinutes(5);
 
+    private final IdentityService identityService = mock(IdentityService.class);
     private final UuidGenerator idGenerator = mock(UuidGenerator.class);
     private final TimeService timeService = mock(TimeService.class);
     private final ExpiryCalculator expiryCalculator = mock(ExpiryCalculator.class);
@@ -46,6 +47,7 @@ public class VerificationContextServiceTest {
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
 
     private final VerificationContextService service = VerificationContextService.builder()
+            .identityService(identityService)
             .idGenerator(idGenerator)
             .timeService(timeService)
             .expiryCalculator(expiryCalculator)
@@ -56,7 +58,7 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldThrowExceptionIfVerificationPolicyNotConfiguredForChannel() {
-        final VerificationContextServiceRequest request = buildRequest();
+        final VerificationContextRequest request = buildRequest();
         final Channel channel = request.getChannel();
         doThrow(UnrecognisedChannelException.class).when(policiesService).getPoliciesForChannel(channel.getId());
 
@@ -67,7 +69,7 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldThrowExceptionIfVerificationPolicyNotConfiguredForActivity() {
-        final VerificationContextServiceRequest request = buildRequest();
+        final VerificationContextRequest request = buildRequest();
         final Channel channel = request.getChannel();
         final Activity activity = request.getActivity();
         final ChannelVerificationPolicies policies = mock(ChannelVerificationPolicies.class);
@@ -81,7 +83,10 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldCreateVerificationContext() {
-        final VerificationContextServiceRequest request = buildRequest();
+        final VerificationContextRequest request = buildRequest();
+
+        final Identity identity = mock(Identity.class);
+        given(identityService.load(request.getProvidedAlias())).willReturn(identity);
 
         final Instant now = Instant.now();
         given(timeService.now()).willReturn(now);
@@ -105,7 +110,7 @@ public class VerificationContextServiceTest {
         assertThat(context.getId()).isEqualTo(contextId);
         assertThat(context.getChannel()).isEqualTo(request.getChannel());
         assertThat(context.getProvidedAlias()).isEqualTo(request.getProvidedAlias());
-        assertThat(context.getIdentity()).isEqualTo(request.getIdentity());
+        assertThat(context.getIdentity()).isEqualTo(identity);
         assertThat(context.getActivity()).isEqualTo(request.getActivity());
         assertThat(context.getCreated()).isEqualTo(now);
         assertThat(context.getExpiry()).isEqualTo(expiry);
@@ -114,7 +119,10 @@ public class VerificationContextServiceTest {
 
     @Test
     public void shouldPassCorrectRequestToEligibleMethodsService() {
-        final VerificationContextServiceRequest request = buildRequest();
+        final VerificationContextRequest request = buildRequest();
+
+        final Identity identity = mock(Identity.class);
+        given(identityService.load(request.getProvidedAlias())).willReturn(identity);
 
         final Instant now = Instant.now();
         given(timeService.now()).willReturn(now);
@@ -140,22 +148,16 @@ public class VerificationContextServiceTest {
         final EligibleMethodsRequest methodsRequest = captor.getValue();
         assertThat(methodsRequest.getChannel()).isEqualTo(request.getChannel());
         assertThat(methodsRequest.getInputAlias()).isEqualTo(request.getProvidedAlias());
-        assertThat(methodsRequest.getIdentity()).isEqualTo(request.getIdentity());
+        assertThat(methodsRequest.getIdentity()).isEqualTo(identity);
         assertThat(methodsRequest.getPolicy()).isEqualTo(channelPolicies.getPolicyFor(request.getActivity().getType()));
     }
 
-    private static VerificationContextServiceRequest buildRequest() {
-        final Instant now = Instant.now();
-        final Alias providedAlias = new IdvIdAlias();
-        final Channel channel = new As3Channel();
-        final Identity identity = Identity.withAliases(providedAlias);
-        final Activity activity = new LoginActivity(now);
-        return VerificationContextServiceRequest.builder()
-                .channel(channel)
-                .providedAlias(providedAlias)
-                .identity(identity)
-                .activity(activity)
-                .build();
+    private static VerificationContextRequest buildRequest() {
+        final VerificationContextRequest request = mock(VerificationContextRequest.class);
+        given(request.getChannel()).willReturn(new As3Channel());
+        given(request.getProvidedAlias()).willReturn(new IdvIdAlias());
+        given(request.getActivity()).willReturn(new LoginActivity(Instant.now()));
+        return request;
     }
 
 }

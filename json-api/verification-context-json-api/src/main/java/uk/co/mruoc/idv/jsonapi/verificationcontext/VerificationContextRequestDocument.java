@@ -3,6 +3,7 @@ package uk.co.mruoc.idv.jsonapi.verificationcontext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.jsonapi.JsonApiDataItem;
 
 @Getter
@@ -11,9 +12,9 @@ public class VerificationContextRequestDocument {
 
     private static final String TYPE = "verificationContexts";
 
-    private final JsonApiDataItem<VerificationContextRequest> data;
+    private final JsonApiDataItem<DefaultVerificationContextRequest> data;
 
-    public VerificationContextRequestDocument(final VerificationContextRequest request) {
+    public VerificationContextRequestDocument(final DefaultVerificationContextRequest request) {
         this.data = new JsonApiDataItem<>(TYPE, request);
     }
 

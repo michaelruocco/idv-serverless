@@ -7,14 +7,15 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextService;
 
 @Slf4j
 @Builder
 public class PostVerificationContextHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final VerificationContextRequestExtractor requestExtractor;
-    private final Facade facade;
+    private final VerificationContextService service;
     private final VerificationContextConverter contextConverter;
 
     @Override
@@ -25,7 +26,7 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     private APIGatewayProxyResponseEvent createContext(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
         final VerificationContextRequest request = requestExtractor.extractRequest(requestEvent);
-        final VerificationContext context = facade.create(request);
+        final VerificationContext context = service.create(request);
         final APIGatewayProxyResponseEvent responseEvent = contextConverter.toResponseEvent(context);
         log.info("returning response {}", responseEvent);
         return responseEvent;

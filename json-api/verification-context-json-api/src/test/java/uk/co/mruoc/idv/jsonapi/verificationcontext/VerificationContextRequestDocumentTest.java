@@ -35,7 +35,7 @@ public class VerificationContextRequestDocumentTest {
 
     @Test
     public void shouldReturnAttributes() {
-        final VerificationContextRequest request = buildRequest();
+        final DefaultVerificationContextRequest request = buildRequest();
 
         final VerificationContextRequestDocument document = new VerificationContextRequestDocument(request);
 
@@ -43,13 +43,13 @@ public class VerificationContextRequestDocumentTest {
     }
 
     private static VerificationContextRequestDocument buildDocument() {
-        final VerificationContextRequest request = buildRequest();
+        final DefaultVerificationContextRequest request = buildRequest();
         return new VerificationContextRequestDocument(request);
     }
 
-    private static VerificationContextRequest buildRequest() {
+    private static DefaultVerificationContextRequest buildRequest() {
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
-        return VerificationContextRequest.builder()
+        return DefaultVerificationContextRequest.builder()
                 .channel(new DefaultChannel("DEFAULT"))
                 .activity(new LoginActivity(Instant.parse("2019-03-10T12:53:57.547Z")))
                 .providedAlias(providedAlias)
