@@ -53,7 +53,7 @@ public class VerificationContextResponseDocumentTest {
 
         final VerificationContextResponseDocument document = new VerificationContextResponseDocument(request);
 
-        assertThat(document.getAttributes()).isEqualTo(request);
+        assertThat(document.getContext()).isEqualTo(request);
     }
 
     private static VerificationContextResponseDocument buildDocument() {

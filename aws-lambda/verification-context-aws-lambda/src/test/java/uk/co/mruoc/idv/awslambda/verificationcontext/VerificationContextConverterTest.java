@@ -1,12 +1,11 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import uk.co.mruoc.idv.core.identity.model.Identity;
-import uk.co.mruoc.idv.jsonapi.identity.IdentityJsonApiDocument;
-
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
 import java.io.UncheckedIOException;
 
@@ -17,15 +16,15 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
-public class IdentityConverterTest {
+public class VerificationContextConverterTest {
 
     private final ObjectMapper mapper = mock(ObjectMapper.class);
 
-    private final IdentityConverter converter = new IdentityConverter(mapper);
+    private final VerificationContextConverter converter = new VerificationContextConverter(mapper);
 
     @Test
     public void shouldThrowExceptionIfDocumentCannotBeConvertedToJsonString() throws JsonProcessingException {
-        final IdentityJsonApiDocument document = mock(IdentityJsonApiDocument.class);
+        final VerificationContextResponseDocument document = mock(VerificationContextResponseDocument.class);
         doThrow(JsonProcessingException.class).when(mapper).writeValueAsString(document);
 
         final Throwable cause = catchThrowable(() -> converter.toResponseEvent(document));
@@ -36,17 +35,17 @@ public class IdentityConverterTest {
 
     @Test
     public void shouldConvertToJsonApiDocument() {
-        final Identity identity = mock(Identity.class);
+        final VerificationContext context = mock(VerificationContext.class);
 
-        final IdentityJsonApiDocument document = converter.toJsonApiDocument(identity);
+        final VerificationContextResponseDocument document = converter.toResponseDocument(context);
 
-        assertThat(document.getIdentity()).isEqualTo(identity);
+        assertThat(document.getContext()).isEqualTo(context);
     }
 
     @Test
     public void shouldPopulateJsonApiDocumentBodyToResponseEvent() throws JsonProcessingException {
         final String body = "body";
-        final IdentityJsonApiDocument document = mock(IdentityJsonApiDocument.class);
+        final VerificationContextResponseDocument document = mock(VerificationContextResponseDocument.class);
         given(mapper.writeValueAsString(document)).willReturn(body);
 
         final APIGatewayProxyResponseEvent event = converter.toResponseEvent(document);
@@ -57,17 +56,17 @@ public class IdentityConverterTest {
     @Test
     public void shouldConvertIdentityToResponse() throws JsonProcessingException {
         final String body = "body";
-        final Identity identity = mock(Identity.class);
-        given(mapper.writeValueAsString(any(IdentityJsonApiDocument.class))).willReturn(body);
+        final VerificationContext context = mock(VerificationContext.class);
+        given(mapper.writeValueAsString(any(VerificationContextResponseDocument.class))).willReturn(body);
 
-        final APIGatewayProxyResponseEvent event = converter.toResponseEvent(identity);
+        final APIGatewayProxyResponseEvent event = converter.toResponseEvent(context);
 
         assertThat(event.getBody()).isEqualTo(body);
     }
 
     @Test
     public void shouldPopulateOkStatusCode() {
-        final IdentityJsonApiDocument document = mock(IdentityJsonApiDocument.class);
+        final VerificationContextResponseDocument document = mock(VerificationContextResponseDocument.class);
 
         final APIGatewayProxyResponseEvent event = converter.toResponseEvent(document);
 
@@ -76,7 +75,7 @@ public class IdentityConverterTest {
 
     @Test
     public void shouldNotPopulateHeaders() {
-        final IdentityJsonApiDocument document = mock(IdentityJsonApiDocument.class);
+        final VerificationContextResponseDocument document = mock(VerificationContextResponseDocument.class);
 
         final APIGatewayProxyResponseEvent event = converter.toResponseEvent(document);
 

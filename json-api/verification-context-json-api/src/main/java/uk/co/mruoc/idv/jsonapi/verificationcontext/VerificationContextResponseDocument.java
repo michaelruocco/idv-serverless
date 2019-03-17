@@ -25,7 +25,7 @@ public class VerificationContextResponseDocument {
     }
 
     @JsonIgnore
-    public VerificationContext getAttributes() {
+    public VerificationContext getContext() {
         return data.getAttributes();
     }
 
