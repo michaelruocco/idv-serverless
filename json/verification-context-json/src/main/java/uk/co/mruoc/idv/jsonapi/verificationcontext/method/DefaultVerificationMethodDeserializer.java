@@ -42,8 +42,8 @@ public class DefaultVerificationMethodDeserializer extends StdDeserializer<Defau
         return node.get("duration").asInt();
     }
 
-    private Map<String, Object> toProperties(final JsonNode activityNode) {
-        final JsonNode propertiesNode = activityNode.get("properties");
+    private Map<String, Object> toProperties(final JsonNode node) {
+        final JsonNode propertiesNode = node.get("properties");
         final Map<String, Object> properties = mapper.convertValue(propertiesNode, Map.class);
         return Collections.unmodifiableMap(properties);
     }
