@@ -9,21 +9,21 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVe
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 
 @JsonPropertyOrder({ "name", "duration", "sequence" })
-public abstract class VerificationMethodSequenceMixin {
+public interface VerificationMethodSequenceMixin {
 
     @JsonIgnore
-    public abstract PhysicalPinsentryVerificationMethod getPhysicalPinsentry();
+    PhysicalPinsentryVerificationMethod getPhysicalPinsentry();
 
     @JsonIgnore
-    public abstract MobilePinsentryVerificationMethod getMobilePinsentry();
+    MobilePinsentryVerificationMethod getMobilePinsentry();
 
     @JsonIgnore
-    public abstract PushNotificationVerificationMethod getPushNotification();
+    PushNotificationVerificationMethod getPushNotification();
 
     @JsonIgnore
-    public abstract CardCredentialsVerificationMethod getCardCredentials();
+    CardCredentialsVerificationMethod getCardCredentials();
 
     @JsonIgnore
-    public abstract OtpSmsVerificationMethod getOneTimePasscodeSms();
+    OtpSmsVerificationMethod getOneTimePasscodeSms();
 
 }

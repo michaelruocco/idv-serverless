@@ -6,12 +6,12 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 
 import java.util.Collection;
 
-public abstract class OtpSmsVerificationMethodMixin {
+public interface OtpSmsVerificationMethodMixin {
 
     @JsonIgnore
-    public abstract Passcode getPasscode();
+    Passcode getPasscode();
 
     @JsonIgnore
-    public abstract Collection<MobileNumber> getMobileNumbers();
+    Collection<MobileNumber> getMobileNumbers();
 
 }

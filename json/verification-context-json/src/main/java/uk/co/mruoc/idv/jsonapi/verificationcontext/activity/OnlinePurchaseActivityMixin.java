@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "type", "timestamp", "properties" })
-public abstract class OnlinePurchaseActivityMixin {
+public interface OnlinePurchaseActivityMixin {
 
     @JsonIgnore
-    public abstract String getMerchant();
+    String getMerchant();
 
     @JsonIgnore
-    public abstract String getReference();
+    String getReference();
 
     @JsonIgnore
-    public abstract String getCost();
+    String getCost();
 
 }

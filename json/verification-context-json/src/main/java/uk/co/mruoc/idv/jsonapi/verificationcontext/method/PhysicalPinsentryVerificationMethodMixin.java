@@ -6,12 +6,12 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 
 import java.util.Collection;
 
-public abstract class PhysicalPinsentryVerificationMethodMixin {
+public interface PhysicalPinsentryVerificationMethodMixin {
 
     @JsonIgnore
-    public abstract PinsentryFunction getFunction();
+    PinsentryFunction getFunction();
 
     @JsonIgnore
-    public abstract Collection<CardNumber> getCardNumbers();
+    Collection<CardNumber> getCardNumbers();
 
 }

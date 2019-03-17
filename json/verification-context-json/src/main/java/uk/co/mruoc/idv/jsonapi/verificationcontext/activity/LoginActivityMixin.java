@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({ "type", "timestamp" })
-public abstract class LoginActivityMixin {
+public interface LoginActivityMixin {
 
     // intentionally blank
 
