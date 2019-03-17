@@ -25,6 +25,11 @@ public class DynamoVerificationContextDao implements VerificationContextDao {
         this.mapper = mapper;
     }
 
+    public DynamoVerificationContextDao(final Table table, final ObjectMapper mapper) {
+        this.table = table;
+        this.mapper = mapper;
+    }
+
     @Override
     public void save(final VerificationContext context) {
         log.debug("saving verification context {}", context);
