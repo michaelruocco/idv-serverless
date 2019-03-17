@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.jsonapi.JsonApiDataItemWithId;
 
+import java.util.UUID;
+
 @Getter
 @NoArgsConstructor(force = true) //required by jackson
 public class VerificationContextResponseDocument {
@@ -14,7 +16,11 @@ public class VerificationContextResponseDocument {
     private final JsonApiDataItemWithId<VerificationContext> data;
 
     public VerificationContextResponseDocument(final VerificationContext context) {
-        this.data = new JsonApiDataItemWithId<>(context.getId(), TYPE, context);
+        this(context.getId(), context);
+    }
+
+    public VerificationContextResponseDocument(final UUID id, final VerificationContext context) {
+        this.data = new JsonApiDataItemWithId<>(id, TYPE, context);
     }
 
 }

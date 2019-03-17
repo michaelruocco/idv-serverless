@@ -3,7 +3,6 @@
     "id": "21b4d9e0-11c3-4e84-aa87-dc37d7f59e23",
     "type": "verificationContexts",
     "attributes": {
-      "id": "21b4d9e0-11c3-4e84-aa87-dc37d7f59e23",
       "channel": {
         "id": "DEFAULT"
       },

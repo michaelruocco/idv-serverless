@@ -52,7 +52,10 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
     }
 
     private static UUID extractId(final JsonNode node) {
-        return UUID.fromString(node.get("id").asText());
+        if (node.has("id")) {
+            return UUID.fromString(node.get("id").asText());
+        }
+        return null;
     }
 
     private static Channel extractChannel(final JsonNode contextNode) {

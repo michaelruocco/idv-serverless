@@ -33,8 +33,7 @@ public class IdvVerificationContextModule extends SimpleModule {
         setUpActivity();
         setUpMethod();
         setUpChannel();
-
-        addDeserializer(VerificationContext.class, new VerificationContextDeserializer());
+        setUpContext();
     }
 
     private void setUpActivity() {
@@ -57,6 +56,12 @@ public class IdvVerificationContextModule extends SimpleModule {
 
     private void setUpChannel() {
         addDeserializer(Channel.class, new ChannelDeserializer());
+    }
+
+    private void setUpContext() {
+        addDeserializer(VerificationContext.class, new VerificationContextDeserializer());
+
+        setMixInAnnotation(VerificationContext.class, VerificationContextMixin.class);
     }
 
 }

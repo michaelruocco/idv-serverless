@@ -46,7 +46,8 @@ public class VerificationContextResponseDocumentTest {
 
     private static VerificationContextResponseDocument buildDocument() {
         final VerificationContext request = buildContext();
-        return new VerificationContextResponseDocument(request);
+        final UUID id = UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23");
+        return new VerificationContextResponseDocument(id, request);
     }
 
     private static VerificationContext buildContext() {
@@ -54,7 +55,6 @@ public class VerificationContextResponseDocumentTest {
         final Activity activity = new LoginActivity(now);
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
         return VerificationContext.builder()
-                .id(UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23"))
                 .channel(new DefaultChannel("DEFAULT"))
                 .providedAlias(providedAlias)
                 .identity(buildIdentity(providedAlias))
