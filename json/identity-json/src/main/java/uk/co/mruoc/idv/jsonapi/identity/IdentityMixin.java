@@ -5,15 +5,15 @@ import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 
 import java.util.UUID;
 
-public abstract class IdentityMixin {
+public interface IdentityMixin {
 
     @JsonIgnore
-    public abstract UUID getIdvIdValue();
+    UUID getIdvIdValue();
 
     @JsonIgnore
-    public abstract IdvIdAlias getIdvId();
+    IdvIdAlias getIdvId();
 
     @JsonIgnore
-    public abstract int getAliasCount();
+    int getAliasCount();
 
 }

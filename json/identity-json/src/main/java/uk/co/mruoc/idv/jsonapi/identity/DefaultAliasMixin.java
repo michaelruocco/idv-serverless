@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "type", "format", "value" })
-public abstract class DefaultAliasMixin {
+public interface DefaultAliasMixin {
 
     @JsonProperty("type")
-    public abstract String getTypeName();
+    String getTypeName();
 
     @JsonIgnore
-    public abstract boolean isCardNumber();
+    boolean isCardNumber();
 
     @JsonIgnore
-    public abstract boolean isSensitive();
+    boolean isSensitive();
 
 }

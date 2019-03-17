@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.UUID;
 
-public abstract class IdvIdAliasMixin {
+public interface IdvIdAliasMixin {
 
     @JsonIgnore
-    public abstract UUID getValueAsUuid();
+    UUID getValueAsUuid();
 
 }
