@@ -13,10 +13,10 @@ import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VerificationContextRequestJsonApiDocumentTest {
+public class VerificationContextRequestDocumentTest {
 
     private static final String JSON = JsonLoader.loadJson("/verification-context-request-document.json");
-    private static final VerificationContextRequestJsonApiDocument DOCUMENT = buildDocument();
+    private static final VerificationContextRequestDocument DOCUMENT = buildDocument();
     private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
 
     @Test
@@ -28,7 +28,7 @@ public class VerificationContextRequestJsonApiDocumentTest {
 
     @Test
     public void shouldDeserializeDocument() throws IOException {
-        final VerificationContextRequestJsonApiDocument document = MAPPER.readValue(JSON, VerificationContextRequestJsonApiDocument.class);
+        final VerificationContextRequestDocument document = MAPPER.readValue(JSON, VerificationContextRequestDocument.class);
 
         assertThat(document).isEqualToComparingFieldByFieldRecursively(DOCUMENT);
     }
@@ -37,14 +37,14 @@ public class VerificationContextRequestJsonApiDocumentTest {
     public void shouldReturnAttributes() {
         final ClientVerificationContextRequest request = buildRequest();
 
-        final VerificationContextRequestJsonApiDocument document = new VerificationContextRequestJsonApiDocument(request);
+        final VerificationContextRequestDocument document = new VerificationContextRequestDocument(request);
 
         assertThat(document.getAttributes()).isEqualTo(request);
     }
 
-    private static VerificationContextRequestJsonApiDocument buildDocument() {
+    private static VerificationContextRequestDocument buildDocument() {
         final ClientVerificationContextRequest request = buildRequest();
-        return new VerificationContextRequestJsonApiDocument(request);
+        return new VerificationContextRequestDocument(request);
     }
 
     private static ClientVerificationContextRequest buildRequest() {
