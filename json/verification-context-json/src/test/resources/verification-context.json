@@ -3,7 +3,7 @@
   "channel": {
     "id": "DEFAULT"
   },
-  "inputAlias": {
+  "providedAlias": {
     "type": "CREDIT_CARD_NUMBER",
     "format": "TOKENIZED",
     "value": "3489347343788005"

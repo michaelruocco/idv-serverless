@@ -47,12 +47,12 @@ public class VerificationContextDeserializerTest {
     private static VerificationContext buildContext() {
         final Instant now = Instant.parse("2019-03-10T12:53:57.547Z");
         final Activity activity = new LoginActivity(now);
-        final Alias inputAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
+        final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
         return VerificationContext.builder()
                 .id(UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23"))
                 .channel(new DefaultChannel("DEFAULT"))
-                .inputAlias(inputAlias)
-                .identity(buildIdentity(inputAlias))
+                .providedAlias(providedAlias)
+                .identity(buildIdentity(providedAlias))
                 .activity(activity)
                 .created(now)
                 .expiry(buildExpiry(now))
@@ -60,9 +60,9 @@ public class VerificationContextDeserializerTest {
                 .build();
     }
 
-    private static Identity buildIdentity(final Alias inputAlias) {
+    private static Identity buildIdentity(final Alias providedAlias) {
         final Alias idvId = new IdvIdAlias(UUID.fromString("d98aa22c-a06e-4db5-8dc1-9ea83716ac12"));
-        return Identity.withAliases(idvId, inputAlias);
+        return Identity.withAliases(idvId, providedAlias);
     }
 
     private static Collection<VerificationMethodSequence> buildEligibleMethods() {

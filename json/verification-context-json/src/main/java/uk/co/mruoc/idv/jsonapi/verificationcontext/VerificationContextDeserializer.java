@@ -42,7 +42,7 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
         return VerificationContext.builder()
                 .id(extractId(contextNode))
                 .channel(extractChannel(contextNode))
-                .inputAlias(extractInputAlias(contextNode))
+                .providedAlias(extractProvidedAlias(contextNode))
                 .identity(extractIdentity(contextNode))
                 .activity(extractActivity(contextNode))
                 .created(extractCreated(contextNode))
@@ -61,8 +61,8 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
         return new DefaultChannel(id);
     }
 
-    private static Alias extractInputAlias(final JsonNode contextNode) {
-        final JsonNode inputAliasNode = contextNode.get("inputAlias");
+    private static Alias extractProvidedAlias(final JsonNode contextNode) {
+        final JsonNode inputAliasNode = contextNode.get("providedAlias");
         return AliasDeserializer.toAlias(inputAliasNode);
     }
 

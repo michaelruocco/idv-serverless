@@ -104,7 +104,7 @@ public class VerificationContextServiceTest {
         verify(dao).save(context);
         assertThat(context.getId()).isEqualTo(contextId);
         assertThat(context.getChannel()).isEqualTo(request.getChannel());
-        assertThat(context.getInputAlias()).isEqualTo(request.getInputAlias());
+        assertThat(context.getProvidedAlias()).isEqualTo(request.getProvidedAlias());
         assertThat(context.getIdentity()).isEqualTo(request.getIdentity());
         assertThat(context.getActivity()).isEqualTo(request.getActivity());
         assertThat(context.getCreated()).isEqualTo(now);
@@ -139,20 +139,20 @@ public class VerificationContextServiceTest {
         verify(eligibleMethodsService).loadEligibleMethods(captor.capture());
         final EligibleMethodsRequest methodsRequest = captor.getValue();
         assertThat(methodsRequest.getChannel()).isEqualTo(request.getChannel());
-        assertThat(methodsRequest.getInputAlias()).isEqualTo(request.getInputAlias());
+        assertThat(methodsRequest.getInputAlias()).isEqualTo(request.getProvidedAlias());
         assertThat(methodsRequest.getIdentity()).isEqualTo(request.getIdentity());
         assertThat(methodsRequest.getPolicy()).isEqualTo(channelPolicies.getPolicyFor(request.getActivity().getType()));
     }
 
     private static VerificationContextRequest buildRequest() {
         final Instant now = Instant.now();
-        final Alias inputAlias = new IdvIdAlias();
+        final Alias providedAlias = new IdvIdAlias();
         final Channel channel = new As3Channel();
-        final Identity identity = Identity.withAliases(inputAlias);
+        final Identity identity = Identity.withAliases(providedAlias);
         final Activity activity = new LoginActivity(now);
         return VerificationContextRequest.builder()
                 .channel(channel)
-                .inputAlias(inputAlias)
+                .providedAlias(providedAlias)
                 .identity(identity)
                 .activity(activity)
                 .build();

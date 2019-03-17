@@ -20,7 +20,7 @@ public class VerificationContext {
 
     private final UUID id;
     private final Channel channel;
-    private final Alias inputAlias;
+    private final Alias providedAlias;
     private final Identity identity;
     private final Activity activity;
     private final Instant created;

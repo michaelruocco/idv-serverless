@@ -37,7 +37,7 @@ public class VerificationContextService {
         return VerificationContext.builder()
                 .id(idGenerator.randomUuid())
                 .channel(request.getChannel())
-                .inputAlias(request.getInputAlias())
+                .providedAlias(request.getProvidedAlias())
                 .identity(request.getIdentity())
                 .activity(request.getActivity())
                 .created(created)
@@ -58,7 +58,7 @@ public class VerificationContextService {
         final EligibleMethodsRequest methodsRequest = EligibleMethodsRequest.builder()
                 .channel(request.getChannel())
                 .identity(request.getIdentity())
-                .inputAlias(request.getInputAlias())
+                .inputAlias(request.getProvidedAlias())
                 .policy(policy)
                 .build();
         return eligibleMethodsService.loadEligibleMethods(methodsRequest);

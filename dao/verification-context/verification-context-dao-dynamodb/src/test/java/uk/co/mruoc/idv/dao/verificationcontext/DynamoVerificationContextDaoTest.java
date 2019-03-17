@@ -162,13 +162,13 @@ public class DynamoVerificationContextDaoTest {
         final UUID id = UUID.randomUUID();
         final Collection<MobileNumber> mobileNumbers = Collections.singleton(MobileNumber.builder().id(UUID.fromString("4b21d79e-43b5-43bb-97c9-6979553e9a16")).masked("*******123").build());
         final Passcode passcode = Passcode.builder().duration(15000).length(8).attempts(3).build();
-        final Alias inputAlias = new UkcCardholderIdAlias("12345678");
+        final Alias providedAlias = new UkcCardholderIdAlias("12345678");
         return VerificationContext.builder()
                 .id(id)
                 .channel(new As3Channel())
                 .activity(new LoginActivity(Instant.now()))
-                .inputAlias(inputAlias)
-                .identity(Identity.withAliases(new IdvIdAlias(), inputAlias))
+                .providedAlias(providedAlias)
+                .identity(Identity.withAliases(new IdvIdAlias(), providedAlias))
                 .created(Instant.now())
                 .expiry(Instant.now().plus(Duration.ofMinutes(5)))
                 .eligibleMethods(Collections.singleton(new VerificationMethodSequence(new OtpSmsVerificationMethod(300000, passcode, mobileNumbers))))

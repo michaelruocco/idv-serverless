@@ -45,14 +45,14 @@ public class VerificationContextTest {
     }
 
     @Test
-    public void shouldReturnInputAlias() {
-        final Alias inputAlias = mock(Alias.class);
+    public void shouldReturnProvidedAlias() {
+        final Alias providedAlias = mock(Alias.class);
 
         final VerificationContext context = VerificationContext.builder()
-                .inputAlias(inputAlias)
+                .providedAlias(providedAlias)
                 .build();
 
-        assertThat(context.getInputAlias()).isEqualTo(inputAlias);
+        assertThat(context.getProvidedAlias()).isEqualTo(providedAlias);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class VerificationContextTest {
         final VerificationContext request = VerificationContext.builder()
                 .id(id)
                 .channel(new As3Channel())
-                .inputAlias(alias)
+                .providedAlias(alias)
                 .identity(Identity.withAliases(alias))
                 .activity(new LoginActivity(timestamp))
                 .created(created)
@@ -121,7 +121,7 @@ public class VerificationContextTest {
         assertThat(request.toString()).isEqualTo("VerificationContext(" +
                 "id=cbe28548-edc5-492b-94d4-6f013b92cece, " +
                 "channel=DefaultChannel(id=AS3), " +
-                "inputAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a), " +
+                "providedAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a)])), " +
                 "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, properties={}), " +
                 "created=2019-03-10T12:54:02.547Z, " +

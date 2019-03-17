@@ -1,0 +1,19 @@
+{
+  "data": {
+    "type": "verificationContexts",
+    "attributes": {
+      "channel": {
+        "id": "DEFAULT"
+      },
+      "activity": {
+        "type": "LOGIN",
+        "timestamp": "2019-03-10T12:53:57.547Z"
+      },
+      "providedAlias": {
+        "type": "CREDIT_CARD_NUMBER",
+        "format": "TOKENIZED",
+        "value": "3489347343788005"
+      }
+    }
+  }
+}
