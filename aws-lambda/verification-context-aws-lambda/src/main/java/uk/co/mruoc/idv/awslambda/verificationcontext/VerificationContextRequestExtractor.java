@@ -17,7 +17,7 @@ public class VerificationContextRequestExtractor {
     public VerificationContextRequest extractRequest(final APIGatewayProxyRequestEvent input) {
         try {
             final VerificationContextRequestDocument document = mapper.readValue(input.getBody(), VerificationContextRequestDocument.class);
-            return document.getAttributes();
+            return document.getRequest();
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }
