@@ -26,9 +26,15 @@ public class VerificationContextService {
     private final VerificationContextDao dao;
 
     public VerificationContext create(final VerificationContextRequest request) {
+        final VerificationContext context = buildContext(request);
+        dao.save(context);
+        return context;
+    }
+
+    private VerificationContext buildContext(final VerificationContextRequest request) {
         final Collection<VerificationMethodSequence> eligibleMethods = loadEligibleMethods(request);
         final Instant created = timeService.now();
-        final VerificationContext context = VerificationContext.builder()
+        return VerificationContext.builder()
                 .id(idGenerator.randomUuid())
                 .channel(request.getChannel())
                 .inputAlias(request.getInputAlias())
@@ -38,8 +44,6 @@ public class VerificationContextService {
                 .expiry(expiryCalculator.calculateExpiry(created))
                 .eligibleMethods(eligibleMethods)
                 .build();
-        dao.save(context);
-        return context;
     }
 
     private VerificationPolicy loadVerificationPolicy(final VerificationContextRequest request) {
