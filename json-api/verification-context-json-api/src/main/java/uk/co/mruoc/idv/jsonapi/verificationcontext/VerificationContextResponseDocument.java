@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.jsonapi.verificationcontext;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
@@ -21,6 +22,11 @@ public class VerificationContextResponseDocument {
 
     public VerificationContextResponseDocument(final UUID id, final VerificationContext context) {
         this.data = new JsonApiDataItemWithId<>(id, TYPE, context);
+    }
+
+    @JsonIgnore
+    public VerificationContext getAttributes() {
+        return data.getAttributes();
     }
 
 }

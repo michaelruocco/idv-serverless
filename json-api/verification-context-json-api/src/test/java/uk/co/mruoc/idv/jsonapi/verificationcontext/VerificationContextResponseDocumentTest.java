@@ -44,13 +44,24 @@ public class VerificationContextResponseDocumentTest {
         assertThat(document).isEqualToComparingFieldByFieldRecursively(DOCUMENT);
     }
 
+    @Test
+    public void canBeCreatedUsingIdFromContext() {
+        final VerificationContext request = buildContext()
+                .id(UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23"))
+                .build();
+
+        final VerificationContextResponseDocument document = new VerificationContextResponseDocument(request);
+
+        assertThat(document.getAttributes()).isEqualTo(request);
+    }
+
     private static VerificationContextResponseDocument buildDocument() {
-        final VerificationContext request = buildContext();
+        final VerificationContext request = buildContext().build();
         final UUID id = UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23");
         return new VerificationContextResponseDocument(id, request);
     }
 
-    private static VerificationContext buildContext() {
+    private static VerificationContext.VerificationContextBuilder buildContext() {
         final Instant now = Instant.parse("2019-03-10T12:53:57.547Z");
         final Activity activity = new LoginActivity(now);
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
@@ -61,8 +72,7 @@ public class VerificationContextResponseDocumentTest {
                 .activity(activity)
                 .created(now)
                 .expiry(buildExpiry(now))
-                .eligibleMethods(buildEligibleMethods())
-                .build();
+                .eligibleMethods(buildEligibleMethods());
     }
 
     private static Identity buildIdentity(final Alias providedAlias) {
