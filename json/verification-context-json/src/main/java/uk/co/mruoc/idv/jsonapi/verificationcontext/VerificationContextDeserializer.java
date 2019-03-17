@@ -46,23 +46,15 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
     @Override
     public VerificationContext deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
         final JsonNode contextNode = parser.readValueAsTree();
-        final UUID id = extractId(contextNode);
-        final Channel channel = extractChannel(contextNode);
-        final Alias inputAlias = extractInputAlias(contextNode);
-        final Identity identity = extractIdentity(contextNode);
-        final Activity activity = extractActivity(contextNode);
-        final Instant created = extractCreated(contextNode);
-        final Instant expiry = extractExpiry(contextNode);
-        final Collection<VerificationMethodSequence> eligibleMethods = toEligibleMethods(contextNode);
         return VerificationContext.builder()
-                .id(id)
-                .channel(channel)
-                .inputAlias(inputAlias)
-                .identity(identity)
-                .activity(activity)
-                .created(created)
-                .expiry(expiry)
-                .eligibleMethods(eligibleMethods)
+                .id(extractId(contextNode))
+                .channel(extractChannel(contextNode))
+                .inputAlias(extractInputAlias(contextNode))
+                .identity(extractIdentity(contextNode))
+                .activity(extractActivity(contextNode))
+                .created(extractCreated(contextNode))
+                .expiry(extractExpiry(contextNode))
+                .eligibleMethods(toEligibleMethods(contextNode))
                 .build();
     }
 
