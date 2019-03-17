@@ -12,6 +12,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class VerificationContextDeserializerTest {
     }
 
     @Test
-    public void shouldDeserializeContext1() throws IOException {
+    public void shouldDeserializeContext() throws IOException {
         final VerificationContext document = MAPPER.readValue(JSON, VerificationContext.class);
 
         assertThat(document).isEqualToComparingFieldByFieldRecursively(CONTEXT);
@@ -66,7 +67,8 @@ public class VerificationContextDeserializerTest {
 
     private static Collection<VerificationMethodSequence> buildEligibleMethods() {
         final int duration = 300000;
-        final VerificationMethodSequence sequence = new VerificationMethodSequence(new PushNotificationVerificationMethod(duration));
+        final VerificationMethod method = new PushNotificationVerificationMethod(duration);
+        final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
         return Collections.singleton(sequence);
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
+import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.OnlinePurchaseActivity;
@@ -14,10 +15,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationM
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.DefaultActivityDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.LoginActivityDeserializer;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.ActivityDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.LoginActivityMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.OnlinePurchaseActivityDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.OnlinePurchaseActivityMixin;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.CardCredentialsVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.CardNumberMixin;
@@ -43,9 +42,7 @@ public class IdvVerificationContextModule extends SimpleModule {
     }
 
     private void setUpActivity() {
-        addDeserializer(OnlinePurchaseActivity.class, new OnlinePurchaseActivityDeserializer());
-        addDeserializer(LoginActivity.class, new LoginActivityDeserializer());
-        addDeserializer(DefaultActivity.class, new DefaultActivityDeserializer(MAPPER));
+        addDeserializer(Activity.class, new ActivityDeserializer(MAPPER));
 
         setMixInAnnotation(OnlinePurchaseActivity.class, OnlinePurchaseActivityMixin.class);
         setMixInAnnotation(LoginActivity.class, LoginActivityMixin.class);

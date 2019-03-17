@@ -8,8 +8,7 @@
 ## To Do
 
  1. fix coverage gaps on verification context deserializer by adding tests to cover all activity types and all
-verification methods, also improve coverage on verification context json api document and dynamo verification context
-dao if possible
+verification methods
 
  2. add json api types for verification context request and response
 

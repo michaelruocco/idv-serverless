@@ -16,9 +16,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.jsonapi.identity.AliasDeserializer;
 import uk.co.mruoc.idv.jsonapi.identity.IdentityDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.DefaultActivityDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.LoginActivityDeserializer;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.OnlinePurchaseActivityDeserializer;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.activity.ActivityDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.CardCredentialsVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.DefaultVerificationMethodDeserializer;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.method.MobilePinsentryVerificationMethodDeserializer;
@@ -80,20 +78,8 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
 
     private static Activity extractActivity(final JsonNode contextNode) {
         final JsonNode activityNode = contextNode.get("activity");
-        final String type = activityNode.get("type").asText();
-        switch (type) {
-            case Activity.Types.LOGIN:
-                return LoginActivityDeserializer.toLoginActivity(activityNode);
-            case Activity.Types.ONLINE_PURCHASE:
-                return OnlinePurchaseActivityDeserializer.toOnlinePurchaseActivity(activityNode);
-            default:
-                return toDefaultActivity(activityNode);
-        }
-    }
-
-    private static Activity toDefaultActivity(final JsonNode activityNode) {
-        final DefaultActivityDeserializer deserializer = new DefaultActivityDeserializer(MAPPER);
-        return deserializer.toDefaultActivity(activityNode);
+        final ActivityDeserializer deserializer = new ActivityDeserializer(MAPPER);
+        return deserializer.toActivity(activityNode);
     }
 
     private static Instant extractCreated(final JsonNode contextNode) {
