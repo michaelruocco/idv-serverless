@@ -1,0 +1,4 @@
+dependencies {
+    compile 'com.amazonaws:aws-java-sdk-api-gateway:1.11.519'
+    compile 'commons-cli:commons-cli:1.4'
+}
