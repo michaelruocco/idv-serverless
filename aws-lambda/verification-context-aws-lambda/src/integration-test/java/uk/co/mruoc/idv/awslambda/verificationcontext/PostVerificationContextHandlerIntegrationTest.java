@@ -37,7 +37,7 @@ public class PostVerificationContextHandlerIntegrationTest {
         final VerificationContextResponseDocument document = toDocument(response.getBody());
         final String expectedBody = loadExpectedBody(document);
         assertThat(response.getStatusCode()).isEqualTo(201);
-        JSONAssert.assertEquals(response.getBody(), expectedBody, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(expectedBody, response.getBody(), JSONCompareMode.NON_EXTENSIBLE);
     }
 
     private String loadExpectedBody(final VerificationContextResponseDocument document) {

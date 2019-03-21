@@ -38,7 +38,7 @@ public class VerificationContextDeserializerTest {
     public void shouldSerializeContext() throws JsonProcessingException, JSONException {
         final String json = MAPPER.writeValueAsString(CONTEXT);
 
-        JSONAssert.assertEquals(json, JSON, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
     }
 
     @Test

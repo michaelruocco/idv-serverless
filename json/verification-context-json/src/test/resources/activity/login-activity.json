@@ -1,4 +1,7 @@
 {
   "type": "LOGIN",
-  "timestamp": "2019-03-10T12:53:57.547Z"
+  "timestamp": "2019-03-10T12:53:57.547Z",
+  "properties": {
+    "additional": "property"
+  }
 }

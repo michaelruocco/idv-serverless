@@ -28,7 +28,7 @@ public class ChannelDeserializerTest {
         final String json = MAPPER.writeValueAsString(channel);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_CHANNEL_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test

@@ -12,6 +12,10 @@ public class OnlinePurchaseActivity extends DefaultActivity {
     private static final String REFERENCE_PROPERTY_NAME = "reference";
     private static final String COST_PROPERTY_NAME = "cost";
 
+    public OnlinePurchaseActivity(final Instant timestamp, final String merchant, final String reference, final MonetaryAmount cost, final Map<String, Object> properties) {
+        super(Types.ONLINE_PURCHASE, timestamp, toMap(merchant, reference, cost, properties));
+    }
+
     public OnlinePurchaseActivity(final Instant timestamp, final String merchant, final String reference, final MonetaryAmount cost) {
         super(Types.ONLINE_PURCHASE, timestamp, toMap(merchant, reference, cost));
     }
@@ -28,12 +32,20 @@ public class OnlinePurchaseActivity extends DefaultActivity {
         return get(COST_PROPERTY_NAME, MonetaryAmount.class);
     }
 
+    private static Map<String, Object> toMap(final String merchant, final String reference, final MonetaryAmount cost, final Map<String, Object> properties) {
+        return appendSpecificProperties(merchant, reference, cost, properties);
+    }
+
     private static Map<String, Object> toMap(final String merchant, final String reference, final MonetaryAmount cost) {
-        final Map<String, Object> map = new HashMap<>();
-        map.put(MERCHANT_PROPERTY_NAME, merchant);
-        map.put(REFERENCE_PROPERTY_NAME, reference);
-        map.put(COST_PROPERTY_NAME, cost);
-        return Collections.unmodifiableMap(map);
+        return appendSpecificProperties(merchant, reference, cost, new HashMap<>());
+    }
+
+    private static Map<String, Object> appendSpecificProperties(final String merchant, final String reference, final MonetaryAmount cost, final Map<String, Object> properties) {
+        final Map<String, Object> mergedProperties = new HashMap<>(properties);
+        mergedProperties.put(MERCHANT_PROPERTY_NAME, merchant);
+        mergedProperties.put(REFERENCE_PROPERTY_NAME, reference);
+        mergedProperties.put(COST_PROPERTY_NAME, cost);
+        return Collections.unmodifiableMap(mergedProperties);
     }
 
 }

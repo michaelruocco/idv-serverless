@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -47,18 +48,21 @@ public class ActivityDeserializer extends StdDeserializer<Activity> {
         }
     }
 
-    private static LoginActivity toLoginActivity(final JsonNode activityNode) {
+    private LoginActivity toLoginActivity(final JsonNode activityNode) {
         final Instant timestamp = extractTimestamp(activityNode);
-        return new LoginActivity(timestamp);
+        final JsonNode propertiesNode = extractPropertiesNode(activityNode);
+        final Map<String, Object> properties = toProperties(propertiesNode);
+        return new LoginActivity(timestamp, properties);
     }
 
-    private static OnlinePurchaseActivity toOnlinePurchaseActivity(final JsonNode activityNode) {
+    private OnlinePurchaseActivity toOnlinePurchaseActivity(final JsonNode activityNode) {
         final Instant timestamp = extractTimestamp(activityNode);
         final JsonNode propertiesNode = extractPropertiesNode(activityNode);
         final String merchant = propertiesNode.get("merchant").asText();
         final String reference = propertiesNode.get("reference").asText();
         final MonetaryAmount cost = extractCost(propertiesNode);
-        return new OnlinePurchaseActivity(timestamp, merchant, reference, cost);
+        final Map<String, Object> properties = toProperties(propertiesNode);
+        return new OnlinePurchaseActivity(timestamp, merchant, reference, cost, properties);
     }
 
     private static MonetaryAmount extractCost(final JsonNode propertiesNode) {
@@ -77,6 +81,13 @@ public class ActivityDeserializer extends StdDeserializer<Activity> {
 
     private Map<String, Object> extractProperties(final JsonNode activityNode) {
         final JsonNode propertiesNode = extractPropertiesNode(activityNode);
+        return toProperties(propertiesNode);
+    }
+
+    private Map<String, Object> toProperties(final JsonNode propertiesNode) {
+        if (propertiesNode == null) {
+            return new HashMap<>();
+        }
         final Map<String, Object> properties = mapper.convertValue(propertiesNode, Map.class);
         return Collections.unmodifiableMap(properties);
     }

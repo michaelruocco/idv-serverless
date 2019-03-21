@@ -50,7 +50,7 @@ public class VerificationMethodDeserializerTest {
         final String json = MAPPER.writeValueAsString(method);
 
         final String expectedJson = loadContentFromClasspath(CARD_CREDENTIALS_METHOD_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class VerificationMethodDeserializerTest {
         final String json = MAPPER.writeValueAsString(method);
 
         final String expectedJson = loadContentFromClasspath(OTP_SMS_METHOD_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class VerificationMethodDeserializerTest {
         final String json = MAPPER.writeValueAsString(method);
 
         final String expectedJson = loadContentFromClasspath(PHYSICAL_PINSENTRY_METHOD_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class VerificationMethodDeserializerTest {
         final String json = MAPPER.writeValueAsString(method);
 
         final String expectedJson = loadContentFromClasspath(MOBILE_PINSENTRY_METHOD_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class VerificationMethodDeserializerTest {
         final String json = MAPPER.writeValueAsString(method);
 
         final String expectedJson = loadContentFromClasspath(PUSH_NOTIFICATION_METHOD_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -150,7 +150,7 @@ public class VerificationMethodDeserializerTest {
         final String json = MAPPER.writeValueAsString(method);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_METHOD_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test

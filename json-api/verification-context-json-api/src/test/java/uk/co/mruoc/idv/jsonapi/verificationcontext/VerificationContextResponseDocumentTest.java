@@ -39,7 +39,7 @@ public class VerificationContextResponseDocumentTest {
     public void shouldSerializeDocument() throws JsonProcessingException, JSONException {
         final String json = MAPPER.writeValueAsString(DOCUMENT);
 
-        JSONAssert.assertEquals(json, JSON, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
     }
 
     @Test

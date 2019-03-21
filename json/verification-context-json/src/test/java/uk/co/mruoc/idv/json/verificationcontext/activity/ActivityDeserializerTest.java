@@ -38,7 +38,7 @@ public class ActivityDeserializerTest {
         final String json = MAPPER.writeValueAsString(activity);
 
         final String expectedJson = loadContentFromClasspath(ONLINE_PURCHASE_ACTIVITY_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ActivityDeserializerTest {
         final String json = MAPPER.writeValueAsString(activity);
 
         final String expectedJson = loadContentFromClasspath(LOGIN_ACTIVITY_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ActivityDeserializerTest {
         final String json = MAPPER.writeValueAsString(activity);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_ACTIVITY_PATH);
-        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -96,12 +96,12 @@ public class ActivityDeserializerTest {
         final String merchant = "Amazon";
         final String reference = "ABC123";
         final MonetaryAmount cost = Money.of(10.99, "GBP");
-        return new OnlinePurchaseActivity(timestamp, merchant, reference, cost);
+        return new OnlinePurchaseActivity(timestamp, merchant, reference, cost, buildAdditionalProperties());
     }
 
     private static Activity buildLoginActivity() {
         final Instant timestamp = Instant.parse("2019-03-10T12:53:57.547Z");
-        return new LoginActivity(timestamp);
+        return new LoginActivity(timestamp, buildAdditionalProperties());
     }
 
     private static Activity buildDefaultActivity() {
@@ -114,6 +114,12 @@ public class ActivityDeserializerTest {
 
         final Instant timestamp = Instant.parse("2019-03-10T12:53:57.547Z");
         return new DefaultActivity("DEFAULT_ACTIVITY", timestamp, Collections.unmodifiableMap(properties));
+    }
+
+    private static Map<String, Object> buildAdditionalProperties() {
+        final Map<String, Object> properties = new HashMap<>();
+        properties.put("additional", "property");
+        return Collections.unmodifiableMap(properties);
     }
 
 }

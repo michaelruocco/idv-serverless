@@ -36,7 +36,7 @@ public class IdentityDeserializerTest {
     public void shouldSerialize() throws JsonProcessingException, JSONException {
         final String json = MAPPER.writeValueAsString(IDENTITY);
 
-        JSONAssert.assertEquals(json, IDENTITY_JSON, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(IDENTITY_JSON, json, JSONCompareMode.STRICT);
     }
 
     @Test
