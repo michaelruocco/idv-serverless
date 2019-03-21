@@ -2,7 +2,10 @@ package uk.co.mruoc.idv.json.verificationcontext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
@@ -23,18 +26,19 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class VerificationContextDeserializerTest {
 
-    private static final String JSON = JsonLoader.loadJson("/verification-context.json");
+    private static final String JSON = loadContentFromClasspath("/verification-context.json");
     private static final VerificationContext CONTEXT = buildContext();
     private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
 
     @Test
-    public void shouldSerializeContext() throws JsonProcessingException {
+    public void shouldSerializeContext() throws JsonProcessingException, JSONException {
         final String json = MAPPER.writeValueAsString(CONTEXT);
 
-        assertThat(json).isEqualTo(JSON);
+        JSONAssert.assertEquals(json, JSON, JSONCompareMode.STRICT);
     }
 
     @Test

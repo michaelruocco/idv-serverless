@@ -2,7 +2,10 @@ package uk.co.mruoc.idv.json.verificationcontext.method;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.model.MobileNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.CardCredentialsVerificationMethod;
@@ -14,7 +17,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVe
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.json.verificationcontext.JsonLoader;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class VerificationMethodDeserializerTest {
 
@@ -41,18 +44,18 @@ public class VerificationMethodDeserializerTest {
     private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
 
     @Test
-    public void shouldSerializeCardCredentialsMethod() throws JsonProcessingException {
+    public void shouldSerializeCardCredentialsMethod() throws JsonProcessingException, JSONException {
         final VerificationMethod method = buildCardCredentialsMethod();
 
         final String json = MAPPER.writeValueAsString(method);
 
-        final String expectedJson = JsonLoader.loadJson(CARD_CREDENTIALS_METHOD_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(CARD_CREDENTIALS_METHOD_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializeCardCredentialsMethod() throws IOException {
-        final String json = JsonLoader.loadJson(CARD_CREDENTIALS_METHOD_PATH);
+        final String json = loadContentFromClasspath(CARD_CREDENTIALS_METHOD_PATH);
 
         final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
 
@@ -61,18 +64,18 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeOtpSmsMethod() throws JsonProcessingException {
+    public void shouldSerializeOtpSmsMethod() throws JsonProcessingException, JSONException {
         final VerificationMethod method = buildOtpSmsMethod();
 
         final String json = MAPPER.writeValueAsString(method);
 
-        final String expectedJson = JsonLoader.loadJson(OTP_SMS_METHOD_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(OTP_SMS_METHOD_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializeOtpSmsMethod() throws IOException {
-        final String json = JsonLoader.loadJson(OTP_SMS_METHOD_PATH);
+        final String json = loadContentFromClasspath(OTP_SMS_METHOD_PATH);
 
         final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
 
@@ -81,18 +84,18 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializePhysicalPinsentryMethod() throws JsonProcessingException {
+    public void shouldSerializePhysicalPinsentryMethod() throws JsonProcessingException, JSONException {
         final VerificationMethod method = buildPhysicalPinsentryMethod();
 
         final String json = MAPPER.writeValueAsString(method);
 
-        final String expectedJson = JsonLoader.loadJson(PHYSICAL_PINSENTRY_METHOD_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(PHYSICAL_PINSENTRY_METHOD_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializePhysicalPinsentryMethod() throws IOException {
-        final String json = JsonLoader.loadJson(PHYSICAL_PINSENTRY_METHOD_PATH);
+        final String json = loadContentFromClasspath(PHYSICAL_PINSENTRY_METHOD_PATH);
 
         final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
 
@@ -101,18 +104,18 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeMobilePinsentryMethod() throws JsonProcessingException {
+    public void shouldSerializeMobilePinsentryMethod() throws JsonProcessingException, JSONException {
         final VerificationMethod method = buildMobilePinsentryMethod();
 
         final String json = MAPPER.writeValueAsString(method);
 
-        final String expectedJson = JsonLoader.loadJson(MOBILE_PINSENTRY_METHOD_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(MOBILE_PINSENTRY_METHOD_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializeMobilePinsentryMethod() throws IOException {
-        final String json = JsonLoader.loadJson(MOBILE_PINSENTRY_METHOD_PATH);
+        final String json = loadContentFromClasspath(MOBILE_PINSENTRY_METHOD_PATH);
 
         final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
 
@@ -121,18 +124,18 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializePushNotificationMethod() throws JsonProcessingException {
+    public void shouldSerializePushNotificationMethod() throws JsonProcessingException, JSONException {
         final VerificationMethod method = buildPushNotificationMethod();
 
         final String json = MAPPER.writeValueAsString(method);
 
-        final String expectedJson = JsonLoader.loadJson(PUSH_NOTIFICATION_METHOD_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(PUSH_NOTIFICATION_METHOD_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializePushNotificationMethod() throws IOException {
-        final String json = JsonLoader.loadJson(PUSH_NOTIFICATION_METHOD_PATH);
+        final String json = loadContentFromClasspath(PUSH_NOTIFICATION_METHOD_PATH);
 
         final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
 
@@ -141,18 +144,18 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeDefaultMethod() throws JsonProcessingException {
+    public void shouldSerializeDefaultMethod() throws JsonProcessingException, JSONException {
         final VerificationMethod method = buildDefaultMethod();
 
         final String json = MAPPER.writeValueAsString(method);
 
-        final String expectedJson = JsonLoader.loadJson(DEFAULT_METHOD_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(DEFAULT_METHOD_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializeDefaultMethod() throws IOException {
-        final String json = JsonLoader.loadJson(DEFAULT_METHOD_PATH);
+        final String json = loadContentFromClasspath(DEFAULT_METHOD_PATH);
 
         final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
 

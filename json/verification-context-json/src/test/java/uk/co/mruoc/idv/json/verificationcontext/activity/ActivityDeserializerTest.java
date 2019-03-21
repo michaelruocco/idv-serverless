@@ -3,12 +3,14 @@ package uk.co.mruoc.idv.json.verificationcontext.activity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javamoney.moneta.Money;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.OnlinePurchaseActivity;
-import uk.co.mruoc.idv.json.verificationcontext.JsonLoader;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
 
 import javax.money.MonetaryAmount;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.mruoc.file.ContentLoader.*;
 
 public class ActivityDeserializerTest {
 
@@ -29,18 +32,18 @@ public class ActivityDeserializerTest {
     private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
 
     @Test
-    public void shouldSerializeOnlinePurchaseActivity() throws JsonProcessingException  {
+    public void shouldSerializeOnlinePurchaseActivity() throws JsonProcessingException, JSONException {
         final Activity activity = buildOnlinePurchaseActivity();
 
         final String json = MAPPER.writeValueAsString(activity);
 
-        final String expectedJson = JsonLoader.loadJson(ONLINE_PURCHASE_ACTIVITY_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(ONLINE_PURCHASE_ACTIVITY_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializeOnlinePurchaseActivity() throws IOException {
-        final String json = JsonLoader.loadJson(ONLINE_PURCHASE_ACTIVITY_PATH);
+        final String json = loadContentFromClasspath(ONLINE_PURCHASE_ACTIVITY_PATH);
 
         final Activity activity = MAPPER.readValue(json, Activity.class);
 
@@ -49,18 +52,18 @@ public class ActivityDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeLoginActivity() throws JsonProcessingException  {
+    public void shouldSerializeLoginActivity() throws JsonProcessingException, JSONException {
         final Activity activity = buildLoginActivity();
 
         final String json = MAPPER.writeValueAsString(activity);
 
-        final String expectedJson = JsonLoader.loadJson(LOGIN_ACTIVITY_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(LOGIN_ACTIVITY_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializeLoginActivity() throws IOException {
-        final String json = JsonLoader.loadJson(LOGIN_ACTIVITY_PATH);
+        final String json = loadContentFromClasspath(LOGIN_ACTIVITY_PATH);
 
         final Activity activity = MAPPER.readValue(json, Activity.class);
 
@@ -69,18 +72,18 @@ public class ActivityDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeDefaultActivity() throws JsonProcessingException  {
+    public void shouldSerializeDefaultActivity() throws JsonProcessingException, JSONException {
         final Activity activity = buildDefaultActivity();
 
         final String json = MAPPER.writeValueAsString(activity);
 
-        final String expectedJson = JsonLoader.loadJson(DEFAULT_ACTIVITY_PATH);
-        assertThat(json).isEqualTo(expectedJson);
+        final String expectedJson = loadContentFromClasspath(DEFAULT_ACTIVITY_PATH);
+        JSONAssert.assertEquals(json, expectedJson, JSONCompareMode.STRICT);
     }
 
     @Test
     public void shouldDeserializeDefaultActivity() throws IOException {
-        final String json = JsonLoader.loadJson(DEFAULT_ACTIVITY_PATH);
+        final String json = loadContentFromClasspath(DEFAULT_ACTIVITY_PATH);
 
         final Activity activity = MAPPER.readValue(json, Activity.class);
 

@@ -2,7 +2,11 @@ package uk.co.mruoc.idv.json.identity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import uk.co.mruoc.file.ContentLoader;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
@@ -21,18 +25,19 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class IdentityDeserializerTest {
 
-    private static final String IDENTITY_JSON = JsonLoader.loadJson("/identity.json");
+    private static final String IDENTITY_JSON = loadContentFromClasspath("/identity.json");
     private static final Identity IDENTITY = buildIdentity();
     private static final ObjectMapper MAPPER = IdentityObjectMapperSingleton.get();
 
     @Test
-    public void shouldSerialize() throws JsonProcessingException {
+    public void shouldSerialize() throws JsonProcessingException, JSONException {
         final String json = MAPPER.writeValueAsString(IDENTITY);
 
-        assertThat(json).isEqualTo(IDENTITY_JSON);
+        JSONAssert.assertEquals(json, IDENTITY_JSON, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -44,7 +49,7 @@ public class IdentityDeserializerTest {
 
     @Test
     public void shouldUseDefaultAliasAndDefaultAliasTypeForUnknownAliasType() throws IOException {
-        final String unknownAliasTypeJson = JsonLoader.loadJson("/identity-unknown-alias-type.json");
+        final String unknownAliasTypeJson = loadContentFromClasspath("/identity-unknown-alias-type.json");
 
         final Identity identity = MAPPER.readValue(unknownAliasTypeJson, Identity.class);
 

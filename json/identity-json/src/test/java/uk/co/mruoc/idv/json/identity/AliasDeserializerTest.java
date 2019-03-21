@@ -2,25 +2,30 @@ package uk.co.mruoc.idv.json.identity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import uk.co.mruoc.file.ContentLoader;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class AliasDeserializerTest {
 
-    private static final String JSON = JsonLoader.loadJson("/alias.json");
+    private static final String JSON = loadContentFromClasspath("/alias.json");
     private static final Alias ALIAS = buildAlias();
     private static final ObjectMapper MAPPER = IdentityObjectMapperSingleton.get();
 
     @Test
-    public void shouldSerialize() throws JsonProcessingException {
+    public void shouldSerialize() throws JsonProcessingException, JSONException {
         final String json = MAPPER.writeValueAsString(ALIAS);
 
-        assertThat(json).isEqualTo(JSON);
+        JSONAssert.assertEquals(json, JSON, JSONCompareMode.STRICT);
     }
 
     @Test
