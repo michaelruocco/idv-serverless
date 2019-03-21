@@ -15,6 +15,7 @@ deploy:
 	sls deploy -s $(env) --conceal
 
 postman:
+	$(eval HOST = $(shell java -jar tools/api-gateway/build/libs/api-gateway-*-standalone.jar -n idv -s $(env)))
 	cd postman; \
 	npm install --save-dev newman; \
-	newman run idv.postman_collection.json -e environment/idv-dev.postman_environment.json
+	newman run idv.postman_collection.json --env-var host=$(HOST)

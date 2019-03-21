@@ -9,32 +9,37 @@ import com.amazonaws.services.apigateway.model.RestApi;
 
 import java.util.List;
 
-public class ApiFinder {
+public class ApiUriFinder {
+
+    private static final String URI_FORMAT = "https://%s.execute-api.%s.amazonaws.com/%s";
 
     private final AmazonApiGateway gateway;
 
-    public ApiFinder(final String region) {
-        this(Regions.fromName(region));
-    }
-
-    public ApiFinder(final Regions region) {
+    public ApiUriFinder(final Regions region) {
         this(AmazonApiGatewayClientBuilder.standard()
                 .withRegion(region)
                 .build());
     }
 
-    public ApiFinder(final AmazonApiGateway gateway) {
+    public ApiUriFinder(final AmazonApiGateway gateway) {
         this.gateway = gateway;
     }
 
-    public String findApi(final FindApiRequest findApiRequest) {
+    public String findApiUri(final FindApiRequest request) {
+        final String apiId = findApiId(request);
+        final String region = request.getRegion();
+        final String stage = request.getStage();
+        return String.format(URI_FORMAT, apiId, region, stage);
+    }
+
+    private String findApiId(final FindApiRequest findApiRequest) {
         final GetRestApisRequest getApisRequest = new GetRestApisRequest();
         final GetRestApisResult result = gateway.getRestApis(getApisRequest);
         return extractIdForApiWithName(result, findApiRequest);
     }
 
     private static String extractIdForApiWithName(final GetRestApisResult result, final FindApiRequest request) {
-        final String nameAndStage = request.getNameAndStage();
+        final String nameAndStage = request.getStageAndName();
         final List<RestApi> apis = result.getItems();
         for (RestApi api : apis) {
             if (api.getName().equals(nameAndStage)) {

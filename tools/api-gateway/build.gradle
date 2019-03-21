@@ -2,3 +2,14 @@ dependencies {
     compile 'com.amazonaws:aws-java-sdk-api-gateway:1.11.519'
     compile 'commons-cli:commons-cli:1.4'
 }
+
+task standaloneJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'uk.co.mruoc.tools.apigateway.Application'
+    }
+    classifier = 'standalone'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+build.finalizedBy(standaloneJar)

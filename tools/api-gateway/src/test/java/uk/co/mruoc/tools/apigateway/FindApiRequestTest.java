@@ -49,7 +49,7 @@ public class FindApiRequestTest {
                 .stage(stage)
                 .build();
 
-        assertThat(request.getNameAndStage()).isEqualTo("name-stage");
+        assertThat(request.getStageAndName()).isEqualTo("stage-name");
     }
 
 }

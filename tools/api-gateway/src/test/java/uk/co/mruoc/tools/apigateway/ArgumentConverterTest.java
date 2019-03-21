@@ -1,5 +1,6 @@
 package uk.co.mruoc.tools.apigateway;
 
+import com.amazonaws.regions.Regions;
 import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import uk.co.mruoc.tools.apigateway.ArgumentConverter.InvalidArgumentsException;
@@ -58,7 +59,6 @@ public class ArgumentConverterTest {
         final String[] args = new String[] { "-n", "name", "-s", "stage", };
 
         final FindApiRequest request = converter.toFindApiRequest(args);
-
         assertThat(request.getName()).isEqualTo("name");
     }
 
@@ -69,6 +69,15 @@ public class ArgumentConverterTest {
         final FindApiRequest request = converter.toFindApiRequest(args);
 
         assertThat(request.getStage()).isEqualTo("stage");
+    }
+
+    @Test
+    public void shouldPopulateRegion() {
+        final String[] args = new String[] { "-n", "name", "-s", "stage", "-r", "region" };
+
+        final FindApiRequest request = converter.toFindApiRequest(args);
+
+        assertThat(request.getRegion()).isEqualTo("region");
     }
 
 }

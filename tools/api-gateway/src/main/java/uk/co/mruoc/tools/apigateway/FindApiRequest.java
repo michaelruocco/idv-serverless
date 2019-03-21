@@ -11,8 +11,8 @@ public class FindApiRequest {
     private final String name;
     private final String stage;
 
-    public String getNameAndStage() {
-        return String.format("%s-%s", name, stage);
+    public String getStageAndName() {
+        return String.format("%s-%s", stage, name);
     }
 
 }
