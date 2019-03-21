@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.json.identity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
