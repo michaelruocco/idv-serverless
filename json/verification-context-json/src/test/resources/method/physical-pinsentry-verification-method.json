@@ -4,12 +4,14 @@
   "properties": {
     "cardNumbers": [
       {
-        "masked": "************1234",
+        "masked": "************3333",
+        "tokenized": "4324787978543333"
+      },
+      {
         "tokenized": "4324787978541234"
       },
       {
-        "masked": "************4321",
-        "tokenized": "4324787978544321"
+        "masked": "************4321"
       }
     ],
     "function": "IDENTIFY"

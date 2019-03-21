@@ -199,21 +199,27 @@ public class VerificationMethodDeserializerTest {
         final PinsentryFunction function = PinsentryFunction.IDENTIFY;
         final Collection<CardNumber> cardNumbers = Arrays.asList(
                 buildCardNumber1(),
-                buildCardNumber2()
+                buildCardNumber2(),
+                buildCardNumber3()
         );
         return new PhysicalPinsentryVerificationMethod(DURATION, function, cardNumbers);
     }
 
     private static CardNumber buildCardNumber1() {
         return CardNumber.builder()
-                .tokenized("4324787978541234")
-                .masked("************1234")
+                .tokenized("4324787978543333")
+                .masked("************3333")
                 .build();
     }
 
     private static CardNumber buildCardNumber2() {
         return CardNumber.builder()
-                .tokenized("4324787978544321")
+                .tokenized("4324787978541234")
+                .build();
+    }
+
+    private static CardNumber buildCardNumber3() {
+        return CardNumber.builder()
                 .masked("************4321")
                 .build();
     }

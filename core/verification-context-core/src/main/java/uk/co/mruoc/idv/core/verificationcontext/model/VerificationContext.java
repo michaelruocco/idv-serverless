@@ -27,4 +27,8 @@ public class VerificationContext {
     private final Instant expiry;
     private final Collection<VerificationMethodSequence> eligibleMethods;
 
+    public UUID getIdvId() {
+        return identity.getIdvId();
+    }
+
 }

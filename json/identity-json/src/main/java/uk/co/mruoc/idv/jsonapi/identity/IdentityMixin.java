@@ -8,10 +8,10 @@ import java.util.UUID;
 public interface IdentityMixin {
 
     @JsonIgnore
-    UUID getIdvIdValue();
+    UUID getIdvId();
 
     @JsonIgnore
-    IdvIdAlias getIdvId();
+    IdvIdAlias getIdvIdAlias();
 
     @JsonIgnore
     int getAliasCount();

@@ -23,7 +23,7 @@ dependencies {
 
     compile 'com.amazonaws:aws-lambda-java-core:1.2.0'
 
-    testCompile project(':dao:identity:identity-dao-fake')
+    integrationTestCompile project(':dao:identity:identity-dao-fake')
 }
 
 task buildZip(type: Zip) {

@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
-public class IdentityServiceIntegrationTest {
+public class GetIdentityHandlerIntegrationTest {
 
     private final IdentityDao dao = new FakeIdentityDao();
     private final GetIdentityHandler handler = new GetIdentityHandler(dao);

@@ -15,7 +15,7 @@ public class IdentityJsonApiDocument {
     private final JsonApiDataItemWithId<Identity> data;
 
     public IdentityJsonApiDocument(final Identity identity) {
-        this.data = new JsonApiDataItemWithId<>(identity.getIdvIdValue(), TYPE, identity);
+        this.data = new JsonApiDataItemWithId<>(identity.getIdvId(), TYPE, identity);
     }
 
     @JsonIgnore

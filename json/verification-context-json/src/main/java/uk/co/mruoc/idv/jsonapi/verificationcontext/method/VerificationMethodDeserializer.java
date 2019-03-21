@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.model.CardNumber;
+import uk.co.mruoc.idv.core.model.CardNumber.CardNumberBuilder;
 import uk.co.mruoc.idv.core.model.MobileNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.CardCredentialsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
@@ -110,12 +111,14 @@ public class VerificationMethodDeserializer extends StdDeserializer<Verification
     }
 
     private static CardNumber toCardNumber(final JsonNode node) {
-        final String tokenized = node.get("tokenized").asText();
-        final String masked = node.get("masked").asText();
-        return CardNumber.builder()
-                .tokenized(tokenized)
-                .masked(masked)
-                .build();
+        final CardNumberBuilder builder = CardNumber.builder();
+        if (node.has("tokenized")) {
+            builder.tokenized(node.get("tokenized").asText());
+        }
+        if (node.has("masked")) {
+            builder.masked(node.get("masked").asText());
+        }
+        return builder.build();
     }
 
     private Map<String, Object> toProperties(final JsonNode node) {

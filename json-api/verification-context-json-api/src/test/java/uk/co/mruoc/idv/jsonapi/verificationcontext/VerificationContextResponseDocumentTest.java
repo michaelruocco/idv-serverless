@@ -56,6 +56,39 @@ public class VerificationContextResponseDocumentTest {
         assertThat(document.getContext()).isEqualTo(request);
     }
 
+    @Test
+    public void shouldReturnId() {
+        final UUID id = UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23");
+        final VerificationContext request = buildContext()
+                .id(id)
+                .build();
+
+        final VerificationContextResponseDocument document = new VerificationContextResponseDocument(request);
+
+        assertThat(document.getId()).isEqualTo(id);
+    }
+
+    @Test
+    public void shouldReturnIdvId() throws IOException {
+        final VerificationContextResponseDocument document = MAPPER.readValue(JSON, VerificationContextResponseDocument.class);
+
+        assertThat(document.getIdvId()).isEqualTo(UUID.fromString("d98aa22c-a06e-4db5-8dc1-9ea83716ac12"));
+    }
+
+    @Test
+    public void shouldReturnCreated() throws IOException {
+        final VerificationContextResponseDocument document = MAPPER.readValue(JSON, VerificationContextResponseDocument.class);
+
+        assertThat(document.getCreated()).isEqualTo("2019-03-10T12:53:57.547Z");
+    }
+
+    @Test
+    public void shouldReturnExpiry() throws IOException {
+        final VerificationContextResponseDocument document = MAPPER.readValue(JSON, VerificationContextResponseDocument.class);
+
+        assertThat(document.getExpiry()).isEqualTo("2019-03-10T12:58:57.547Z");
+    }
+
     private static VerificationContextResponseDocument buildDocument() {
         final VerificationContext request = buildContext().build();
         final UUID id = UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23");

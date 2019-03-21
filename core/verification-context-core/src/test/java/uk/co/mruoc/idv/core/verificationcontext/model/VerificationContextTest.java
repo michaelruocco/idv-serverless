@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 public class VerificationContextTest {
@@ -64,6 +65,19 @@ public class VerificationContextTest {
                 .build();
 
         assertThat(context.getIdentity()).isEqualTo(identity);
+    }
+
+    @Test
+    public void shouldReturnIdvId() {
+        final UUID idvId = UUID.randomUUID();
+        final Identity identity = mock(Identity.class);
+        given(identity.getIdvId()).willReturn(idvId);
+
+        final VerificationContext context = VerificationContext.builder()
+                .identity(identity)
+                .build();
+
+        assertThat(context.getIdvId()).isEqualTo(idvId);
     }
 
     @Test

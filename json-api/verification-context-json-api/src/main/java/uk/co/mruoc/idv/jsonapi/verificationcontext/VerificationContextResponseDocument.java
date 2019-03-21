@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.jsonapi.JsonApiDataItemWithId;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -27,6 +28,26 @@ public class VerificationContextResponseDocument {
     @JsonIgnore
     public VerificationContext getContext() {
         return data.getAttributes();
+    }
+
+    @JsonIgnore
+    public UUID getId() {
+        return getContext().getId();
+    }
+
+    @JsonIgnore
+    public UUID getIdvId() {
+        return getContext().getIdvId();
+    }
+
+    @JsonIgnore
+    public Instant getCreated() {
+        return getContext().getCreated();
+    }
+
+    @JsonIgnore
+    public Instant getExpiry() {
+        return getContext().getExpiry();
     }
 
 }

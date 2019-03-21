@@ -32,6 +32,7 @@ public class FakePhysicalPinsentryEligibilityHandler implements EligibilityHandl
     private static Collection<CardNumber> buildCardNumbers() {
         final CardNumber cardNumber = CardNumber.builder()
                 .tokenized("3213485412348005")
+                .masked("************8005")
                 .build();
         return Collections.singleton(cardNumber);
     }

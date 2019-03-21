@@ -103,7 +103,10 @@ public class FakePhysicalPinsentryEligibilityHandlerTest {
         final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
 
         final PhysicalPinsentryVerificationMethod method = (PhysicalPinsentryVerificationMethod) optionalMethod.get();
-        final CardNumber expectedCardNumber = CardNumber.builder().tokenized("3213485412348005").build();
+        final CardNumber expectedCardNumber = CardNumber.builder()
+                .tokenized("3213485412348005")
+                .masked("************8005")
+                .build();
         assertThat(method.getCardNumbers())
                 .usingElementComparator(new CardNumberComparator())
                 .contains(expectedCardNumber);

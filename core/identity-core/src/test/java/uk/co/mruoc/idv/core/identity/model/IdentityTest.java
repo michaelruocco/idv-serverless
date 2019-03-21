@@ -154,7 +154,7 @@ public class IdentityTest {
 
         final Identity identity = Identity.withAliases(idvId);
 
-        assertThat(identity.getIdvId()).isEqualTo(idvId);
+        assertThat(identity.getIdvIdAlias()).isEqualTo(idvId);
     }
 
     @Test
@@ -164,7 +164,7 @@ public class IdentityTest {
 
         final Identity identity = Identity.withAliases(idvId);
 
-        assertThat(identity.getIdvId()).isEqualTo(idvId);
+        assertThat(identity.getIdvIdAlias()).isEqualTo(idvId);
     }
 
     @Test
@@ -173,7 +173,7 @@ public class IdentityTest {
 
         final Identity identity = Identity.withAliases(idvId);
 
-        assertThat(identity.getIdvIdValue()).isEqualTo(idvId.getValueAsUuid());
+        assertThat(identity.getIdvId()).isEqualTo(idvId.getValueAsUuid());
     }
 
     @Test

@@ -20,6 +20,10 @@ dependencies {
     compile project(':aws-lambda:identity-aws-lambda')
     compile project(':plugins:verification-context:eligibility-handler')
     compile project(':dao:verification-context:verification-context-dao-dynamodb')
+
+    integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
+    integrationTestCompile project(':dao:identity:identity-dao-fake')
+    integrationTestCompile 'org.skyscreamer:jsonassert:1.5.0'
 }
 
 task buildZip(type: Zip) {
