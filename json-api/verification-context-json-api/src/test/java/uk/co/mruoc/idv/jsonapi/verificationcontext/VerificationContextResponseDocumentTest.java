@@ -29,7 +29,7 @@ public class VerificationContextResponseDocumentTest {
 
     private static final String JSON = JsonLoader.loadJson("/verification-context-response-document.json");
     private static final VerificationContextResponseDocument DOCUMENT = buildDocument();
-    private static final ObjectMapper MAPPER = JsonApiObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = JsonApiVerificationContextObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeDocument() throws JsonProcessingException {

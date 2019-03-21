@@ -34,14 +34,10 @@ public class ArgumentConverter {
     public FindApiRequest toFindApiRequest(final String[] args) {
         final CommandLine commandLine = parse(args);
 
-        final String region = commandLine.getOptionValue(REGION_ARGUMENT, DEFAULT_REGION);
-        final String name = commandLine.getOptionValue(NAME_ARGUMENT);
-        final String stage = commandLine.getOptionValue(STAGE_ARGUMENT);
-
         return FindApiRequest.builder()
-                .region(region)
-                .name(name)
-                .stage(stage)
+                .region(commandLine.getOptionValue(REGION_ARGUMENT, DEFAULT_REGION))
+                .name(commandLine.getOptionValue(NAME_ARGUMENT))
+                .stage(commandLine.getOptionValue(STAGE_ARGUMENT))
                 .build();
     }
 
@@ -54,32 +50,38 @@ public class ArgumentConverter {
     }
 
     private static Options buildOptions() {
-        final Option regionOption = Option.builder("r")
+        final Options options = new Options();
+        options.addOption(buildRegionOption());
+        options.addOption(buildNameOption());
+        options.addOption(buildStageOption());
+        return options;
+    }
+
+    private static Option buildRegionOption() {
+        return Option.builder("r")
                 .longOpt(REGION_ARGUMENT)
                 .hasArg(true)
                 .desc("AWS region")
                 .required(false)
                 .build();
+    }
 
-        final Option nameOption = Option.builder("n")
+    private static Option buildNameOption() {
+        return Option.builder("n")
                 .longOpt(NAME_ARGUMENT)
                 .hasArg(true)
                 .desc("Name of API to find")
                 .required(true)
                 .build();
+    }
 
-        final Option stageOption = Option.builder("s")
+    private static Option buildStageOption() {
+        return Option.builder("s")
                 .longOpt(STAGE_ARGUMENT)
                 .hasArg(true)
                 .desc("Stage of API to find")
                 .required(true)
                 .build();
-
-        final Options options = new Options();
-        options.addOption(regionOption);
-        options.addOption(nameOption);
-        options.addOption(stageOption);
-        return options;
     }
 
     public static class InvalidArgumentsException extends RuntimeException {

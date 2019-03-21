@@ -6,19 +6,19 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ObjectMapperSingletonTest {
+public class VerificationContextObjectMapperSingletonTest {
 
     @Test
     public void shouldAlwaysReturnSameMapper() {
-        final ObjectMapper mapper1 = ObjectMapperSingleton.get();
-        final ObjectMapper mapper2 = ObjectMapperSingleton.get();
+        final ObjectMapper mapper1 = VerificationContextObjectMapperSingleton.get();
+        final ObjectMapper mapper2 = VerificationContextObjectMapperSingleton.get();
 
         assertThat(mapper1).isEqualTo(mapper2);
     }
 
     @Test
     public void shouldRegisterModules() {
-        final ObjectMapper mapper = ObjectMapperSingleton.get();
+        final ObjectMapper mapper = VerificationContextObjectMapperSingleton.get();
 
         assertThat(mapper.getRegisteredModuleIds()).containsExactly(
                 "uk.co.mruoc.idv.json.identity.IdvIdentityModule",
@@ -30,7 +30,7 @@ public class ObjectMapperSingletonTest {
 
     @Test
     public void shouldDisableWritingDatesAsTimestamps() {
-        final ObjectMapper mapper = ObjectMapperSingleton.get();
+        final ObjectMapper mapper = VerificationContextObjectMapperSingleton.get();
 
         assertThat(mapper.getSerializationConfig().isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)).isFalse();
     }

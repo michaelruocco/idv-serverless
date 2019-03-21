@@ -6,7 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.DynamoVerificationContextDao;
-import uk.co.mruoc.idv.json.verificationcontext.ObjectMapperSingleton;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
 
 public class VerificationContextDaoFactory {
 
@@ -20,7 +20,7 @@ public class VerificationContextDaoFactory {
 
     public static VerificationContextDao build(final AmazonDynamoDB client, final String tableName) {
         final Table table = new DynamoDB(client).getTable(tableName);
-        return new DynamoVerificationContextDao(table, ObjectMapperSingleton.get());
+        return new DynamoVerificationContextDao(table, VerificationContextObjectMapperSingleton.get());
     }
 
 }

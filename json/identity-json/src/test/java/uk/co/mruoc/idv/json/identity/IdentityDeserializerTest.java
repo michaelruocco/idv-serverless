@@ -26,7 +26,7 @@ public class IdentityDeserializerTest {
 
     private static final String IDENTITY_JSON = JsonLoader.loadJson("/identity.json");
     private static final Identity IDENTITY = buildIdentity();
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = IdentityObjectMapperSingleton.get();
 
     @Test
     public void shouldSerialize() throws JsonProcessingException {

@@ -16,7 +16,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias.IdvIdNotValidUuidExc
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.IdentityService.IdentityNotFoundException;
-import uk.co.mruoc.idv.jsonapi.identity.ObjectMapperSingleton;
+import uk.co.mruoc.idv.json.identity.IdentityObjectMapperSingleton;
 
 @Builder
 @Slf4j
@@ -78,12 +78,12 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
     }
 
     private static IdentityConverter buildIdentityConverter() {
-        final ObjectMapper mapper = ObjectMapperSingleton.get();
+        final ObjectMapper mapper = IdentityObjectMapperSingleton.get();
         return new IdentityConverter(mapper);
     }
 
     private static ExceptionConverter buildExceptionConverter() {
-        final ObjectMapper mapper = ObjectMapperSingleton.get();
+        final ObjectMapper mapper = IdentityObjectMapperSingleton.get();
         return ExceptionConverter.builder()
                 .mapper(mapper)
                 .errorHandler(new GetIdentityErrorHandlerDelegator())

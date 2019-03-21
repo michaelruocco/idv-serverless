@@ -12,7 +12,7 @@ import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiObjectMapperSingleton;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
 import java.io.IOException;
@@ -58,7 +58,7 @@ public class PostVerificationContextHandlerIntegrationTest {
     }
 
     private VerificationContextResponseDocument toDocument(final String body) throws IOException {
-        final ObjectMapper mapper = JsonApiObjectMapperSingleton.get();
+        final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
         return mapper.readValue(body, VerificationContextResponseDocument.class);
     }
 

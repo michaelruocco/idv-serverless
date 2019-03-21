@@ -17,8 +17,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.EncryptedDebitCardNu
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
-import uk.co.mruoc.idv.jsonapi.identity.IdentityJsonApiDocument;
-import uk.co.mruoc.idv.jsonapi.identity.ObjectMapperSingleton;
+import uk.co.mruoc.idv.json.identity.IdentityObjectMapperSingleton;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -33,7 +32,7 @@ public class IdentityJsonApiDocumentTest {
     private static final String IDENTITY_JSON = loadJson("/identity.json");
     private static final IdentityJsonApiDocument DOCUMENT = buildDocument();
 
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = IdentityObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeDocument() throws JsonProcessingException {

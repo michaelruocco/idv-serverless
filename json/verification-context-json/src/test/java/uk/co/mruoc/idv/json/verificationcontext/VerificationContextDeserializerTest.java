@@ -28,7 +28,7 @@ public class VerificationContextDeserializerTest {
 
     private static final String JSON = JsonLoader.loadJson("/verification-context.json");
     private static final VerificationContext CONTEXT = buildContext();
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeContext() throws JsonProcessingException {

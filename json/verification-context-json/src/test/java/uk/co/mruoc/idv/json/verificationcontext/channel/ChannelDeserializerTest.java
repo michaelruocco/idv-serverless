@@ -6,7 +6,7 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.json.verificationcontext.JsonLoader;
-import uk.co.mruoc.idv.json.verificationcontext.ObjectMapperSingleton;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
 
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ public class ChannelDeserializerTest {
 
     private static final String DEFAULT_CHANNEL_PATH = "/channel/default-channel.json";
 
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeDefaultChannel() throws JsonProcessingException {

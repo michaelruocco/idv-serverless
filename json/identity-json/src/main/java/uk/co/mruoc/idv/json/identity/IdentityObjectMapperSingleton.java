@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.json.identity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ObjectMapperSingleton {
+public class IdentityObjectMapperSingleton {
 
     private static final ObjectMapper MAPPER = buildMapper();
 

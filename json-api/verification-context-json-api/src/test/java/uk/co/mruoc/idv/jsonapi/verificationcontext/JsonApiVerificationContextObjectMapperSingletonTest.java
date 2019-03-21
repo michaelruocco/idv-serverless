@@ -6,11 +6,11 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JsonApiObjectMapperSingletonTest {
+public class JsonApiVerificationContextObjectMapperSingletonTest {
 
     @Test
     public void shouldRegisterJsonApiVerificationContextMixin() {
-        final ObjectMapper mapper = JsonApiObjectMapperSingleton.get();
+        final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
 
         final Class<?> mixinClass = mapper.findMixInClassFor(VerificationContext.class);
 

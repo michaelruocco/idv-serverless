@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.zalando.jackson.datatype.money.MoneyModule;
-import uk.co.mruoc.idv.json.identity.IdvIdentityModule;
+import uk.co.mruoc.idv.json.identity.IdentityObjectMapperSingleton;
 
-public class ObjectMapperSingleton {
+public class VerificationContextObjectMapperSingleton {
 
     private static final ObjectMapper MAPPER = buildMapper();
 
-    private ObjectMapperSingleton() {
+    private VerificationContextObjectMapperSingleton() {
         // utility class
     }
 
@@ -19,8 +19,7 @@ public class ObjectMapperSingleton {
     }
 
     private static ObjectMapper buildMapper() {
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new IdvIdentityModule());
+        final ObjectMapper mapper = IdentityObjectMapperSingleton.get();
         mapper.registerModule(new IdvVerificationContextModule());
         mapper.registerModule(new JavaTimeModule());
         mapper.registerModule(new MoneyModule());

@@ -9,7 +9,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.OnlinePurchaseActivity;
 import uk.co.mruoc.idv.json.verificationcontext.JsonLoader;
-import uk.co.mruoc.idv.json.verificationcontext.ObjectMapperSingleton;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
 
 import javax.money.MonetaryAmount;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class ActivityDeserializerTest {
     private static final String LOGIN_ACTIVITY_PATH = "/activity/login-activity.json";
     private static final String DEFAULT_ACTIVITY_PATH = "/activity/default-activity.json";
 
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeOnlinePurchaseActivity() throws JsonProcessingException  {

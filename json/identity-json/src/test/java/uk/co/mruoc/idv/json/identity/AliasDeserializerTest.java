@@ -14,7 +14,7 @@ public class AliasDeserializerTest {
 
     private static final String JSON = JsonLoader.loadJson("/alias.json");
     private static final Alias ALIAS = buildAlias();
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = IdentityObjectMapperSingleton.get();
 
     @Test
     public void shouldSerialize() throws JsonProcessingException {

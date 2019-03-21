@@ -15,7 +15,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.json.verificationcontext.JsonLoader;
-import uk.co.mruoc.idv.json.verificationcontext.ObjectMapperSingleton;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class VerificationMethodDeserializerTest {
 
     private static final int DURATION = 300000;
 
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeCardCredentialsMethod() throws JsonProcessingException {
