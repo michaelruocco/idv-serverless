@@ -27,7 +27,7 @@ public class VerificationContextConverter {
         try {
             return new APIGatewayProxyResponseEvent()
                     .withBody(mapper.writeValueAsString(document))
-                    .withStatusCode(200);
+                    .withStatusCode(201);
         } catch (final JsonProcessingException e) {
             throw new UncheckedIOException(e);
         }

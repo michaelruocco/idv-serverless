@@ -12,4 +12,6 @@ public interface VerificationContextRequest {
 
     Activity getActivity();
 
+    String getChannelId();
+
 }

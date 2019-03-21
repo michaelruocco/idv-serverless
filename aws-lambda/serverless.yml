@@ -16,10 +16,17 @@ custom:
     getIdentity:
       name: ${self:custom.stage}-get-identity
 
+    postVerificationContext:
+      name: ${self:custom.stage}-post-verification-context
+
   dynamoTables:
     identity:
       name: ${self:custom.stage}-identity
       arn: { "Fn::Join" : ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref" : "AWS::AccountId" }, ":table/${self:custom.dynamoTables.identity.name}" ] ] }
+
+    verificationContext:
+      name: ${self:custom.stage}-verification-context
+      arn: { "Fn::Join" : ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref" : "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationContext.name}" ] ] }
 
 provider:
   name: aws
@@ -32,12 +39,14 @@ provider:
     REGION: ${self:custom.region}
 
 package:
-  artifact: identity-aws-lambda/build/distributions/identity-aws-lambda-${self:custom.version}.zip
+  individually: true
 
 functions:
 
   getIdentity:
     handler: uk.co.mruoc.idv.awslambda.identity.GetIdentityHandler
+    package:
+      artifact: identity-aws-lambda/build/distributions/identity-aws-lambda-${self:custom.version}.zip
     name: ${self:custom.lambdas.getIdentity.name}
     events:
       - http:
@@ -47,6 +56,26 @@ functions:
           path: identities
           method: get
     iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:BatchWriteItem
+        Resource: ${self:custom.dynamoTables.identity.arn}
+
+  postVerificationContext:
+    handler: uk.co.mruoc.idv.awslambda.verificationcontext.PostVerificationContextHandler
+    package:
+      artifact: verification-context-aws-lambda/build/distributions/verification-context-aws-lambda-${self:custom.version}.zip
+    name: ${self:custom.lambdas.postVerificationContext.name}
+    events:
+      - http:
+          path: verificationContexts
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: ${self:custom.dynamoTables.verificationContext.arn}
       - Effect: Allow
         Action:
           - dynamodb:GetItem
@@ -70,3 +99,19 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.dynamoTables.identity.name}
+
+    verificationContextTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.dynamoTables.verificationContext.name}

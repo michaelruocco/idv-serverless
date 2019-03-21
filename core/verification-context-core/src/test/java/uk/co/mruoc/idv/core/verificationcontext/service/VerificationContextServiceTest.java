@@ -5,6 +5,7 @@ import org.mockito.ArgumentCaptor;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
+import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
@@ -38,6 +39,7 @@ public class VerificationContextServiceTest {
 
     private static final Duration FIVE_MINUTES = Duration.ofMinutes(5);
 
+    private final VerificationContextRequestConverter requestConverter = mock(VerificationContextRequestConverter.class);
     private final IdentityService identityService = mock(IdentityService.class);
     private final UuidGenerator idGenerator = mock(UuidGenerator.class);
     private final TimeService timeService = mock(TimeService.class);
@@ -47,6 +49,7 @@ public class VerificationContextServiceTest {
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
 
     private final VerificationContextService service = VerificationContextService.builder()
+            .requestConverter(requestConverter)
             .identityService(identityService)
             .idGenerator(idGenerator)
             .timeService(timeService)
@@ -85,8 +88,11 @@ public class VerificationContextServiceTest {
     public void shouldCreateVerificationContext() {
         final VerificationContextRequest request = buildRequest();
 
+        final UpsertIdentityRequest upsertIdentityRequest = mock(UpsertIdentityRequest.class);
+        given(requestConverter.toUpsertIdentityRequest(request)).willReturn(upsertIdentityRequest);
+
         final Identity identity = mock(Identity.class);
-        given(identityService.load(request.getProvidedAlias())).willReturn(identity);
+        given(identityService.upsert(upsertIdentityRequest)).willReturn(identity);
 
         final Instant now = Instant.now();
         given(timeService.now()).willReturn(now);
@@ -121,8 +127,11 @@ public class VerificationContextServiceTest {
     public void shouldPassCorrectRequestToEligibleMethodsService() {
         final VerificationContextRequest request = buildRequest();
 
+        final UpsertIdentityRequest upsertIdentityRequest = mock(UpsertIdentityRequest.class);
+        given(requestConverter.toUpsertIdentityRequest(request)).willReturn(upsertIdentityRequest);
+
         final Identity identity = mock(Identity.class);
-        given(identityService.load(request.getProvidedAlias())).willReturn(identity);
+        given(identityService.upsert(upsertIdentityRequest)).willReturn(identity);
 
         final Instant now = Instant.now();
         given(timeService.now()).willReturn(now);

@@ -3,6 +3,7 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 import lombok.Builder;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
+import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
@@ -20,6 +21,7 @@ import java.util.Collection;
 @Builder
 public class VerificationContextService {
 
+    private final VerificationContextRequestConverter requestConverter;
     private final IdentityService identityService;
     private final UuidGenerator idGenerator;
     private final TimeService timeService;
@@ -29,7 +31,8 @@ public class VerificationContextService {
     private final VerificationContextDao dao;
 
     public VerificationContext create(final VerificationContextRequest request) {
-        final Identity identity = identityService.load(request.getProvidedAlias());
+        final UpsertIdentityRequest upsertIdentityRequest = requestConverter.toUpsertIdentityRequest(request);
+        final Identity identity = identityService.upsert(upsertIdentityRequest);
         final VerificationContext context = buildContext(request, identity);
         dao.save(context);
         return context;

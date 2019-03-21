@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.jsonapi.verificationcontext;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,10 @@ public class DefaultVerificationContextRequest implements VerificationContextReq
     private final Channel channel;
     private final Activity activity;
     private final Alias providedAlias;
+
+    @JsonIgnore
+    public String getChannelId() {
+        return channel.getId();
+    }
 
 }

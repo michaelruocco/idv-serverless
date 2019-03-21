@@ -65,12 +65,12 @@ public class VerificationContextConverterTest {
     }
 
     @Test
-    public void shouldPopulateOkStatusCode() {
+    public void shouldPopulateCreatedStatusCode() {
         final VerificationContextResponseDocument document = mock(VerificationContextResponseDocument.class);
 
         final APIGatewayProxyResponseEvent event = converter.toResponseEvent(document);
 
-        assertThat(event.getStatusCode()).isEqualTo(200);
+        assertThat(event.getStatusCode()).isEqualTo(201);
     }
 
     @Test

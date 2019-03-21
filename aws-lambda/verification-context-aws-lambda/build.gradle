@@ -1,4 +1,43 @@
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
 dependencies {
     compile project(':json-api:verification-context-json-api')
     compile project(':aws-lambda')
+    compile project(':aws-lambda:identity-aws-lambda')
+    compile project(':plugins:verification-context:eligibility-handler')
+    compile project(':dao:verification-context:verification-context-dao-dynamodb')
 }
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip
+
+task integrationTest(type: Test) {
+    systemProperty 'sqlite4java.library.path', '../../libs/sqlite4java'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test

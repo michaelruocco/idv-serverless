@@ -17,11 +17,7 @@ public class PostVerificationContextHandlerTest {
     private final VerificationContextService service = mock(VerificationContextService.class);
     private final VerificationContextConverter contextConverter = mock(VerificationContextConverter.class);
 
-    private final PostVerificationContextHandler handler = PostVerificationContextHandler.builder()
-            .requestExtractor(requestExtractor)
-            .service(service)
-            .contextConverter(contextConverter)
-            .build();
+    private final PostVerificationContextHandler handler = new PostVerificationContextHandler(requestExtractor, service, contextConverter);
 
     @Test
     public void shouldPassRequestToFacade() {

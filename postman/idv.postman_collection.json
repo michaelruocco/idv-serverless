@@ -6,6 +6,114 @@
 	},
 	"item": [
 		{
+			"name": "Post verification context rsa online purchase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 201 status\", function () {",
+							"    pm.response.to.have.status(201);",
+							"})",
+							"",
+							"pm.test(\"should return physical pinsentry as first verification method\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var firstMethod = json.data.attributes.eligibleMethods[0];",
+							"    pm.expect(firstMethod.name).to.equal(\"PHYSICAL_PINSENTRY\");",
+							"})",
+							"",
+							"pm.test(\"should return otp sms as second verification method\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var firstMethod = json.data.attributes.eligibleMethods[1];",
+							"    pm.expect(firstMethod.name).to.equal(\"OTP_SMS\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"RSA\"\n            },\n            \"activity\": {\n                \"type\": \"ONLINE_PURCHASE\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\",\n                \"properties\": {\n                    \"reference\": \"ABC123\",\n                    \"cost\": {\n                        \"amount\": 10.99,\n                        \"currency\": \"GBP\"\n                    },\n                    \"merchant\": \"Amazon\"\n                }\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post verification context as3 login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 201 status\", function () {",
+							"    pm.response.to.have.status(201);",
+							"})",
+							"",
+							"pm.test(\"should return push notification as first verification method\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var firstMethod = json.data.attributes.eligibleMethods[0];",
+							"    pm.expect(firstMethod.name).to.equal(\"PUSH_NOTIFICATION\");",
+							"})",
+							"",
+							"pm.test(\"should return physical pinsentry as second verification method\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var firstMethod = json.data.attributes.eligibleMethods[1];",
+							"    pm.expect(firstMethod.name).to.equal(\"PHYSICAL_PINSENTRY\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Identity by idv id",
 			"event": [
 				{
