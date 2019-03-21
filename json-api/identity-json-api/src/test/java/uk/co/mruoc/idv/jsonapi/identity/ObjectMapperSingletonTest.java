@@ -19,7 +19,7 @@ public class ObjectMapperSingletonTest {
     public void shouldRegisterModules() {
         final ObjectMapper mapper = ObjectMapperSingleton.get();
 
-        assertThat(mapper.getRegisteredModuleIds()).containsExactly("uk.co.mruoc.idv.jsonapi.identity.IdvIdentityModule");
+        assertThat(mapper.getRegisteredModuleIds()).containsExactly("IdvIdentityModule");
     }
 
 }

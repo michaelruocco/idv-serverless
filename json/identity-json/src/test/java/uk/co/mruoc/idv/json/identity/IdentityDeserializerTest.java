@@ -1,7 +1,6 @@
-package uk.co.mruoc.idv.jsonapi.identity;
+package uk.co.mruoc.idv.json.identity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
@@ -17,70 +16,46 @@ import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.EncryptedDebitCardNu
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
-import uk.co.mruoc.idv.jsonapi.identity.IdentityJsonApiDocument;
-import uk.co.mruoc.idv.jsonapi.identity.ObjectMapperSingleton;
 
 import java.io.IOException;
 import java.util.UUID;
 
-import static org.apache.commons.lang3.StringUtils.deleteWhitespace;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
-public class IdentityJsonApiDocumentTest {
+public class IdentityDeserializerTest {
 
-    private static final String IDENTITY_JSON = loadJson("/identity.json");
-    private static final IdentityJsonApiDocument DOCUMENT = buildDocument();
-
+    private static final String IDENTITY_JSON = JsonLoader.loadJson("/identity.json");
+    private static final Identity IDENTITY = buildIdentity();
     private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
 
     @Test
-    public void shouldSerializeDocument() throws JsonProcessingException {
-        final IdentityJsonApiDocument identity = buildDocument();
-
-        final String json = MAPPER.writeValueAsString(identity);
+    public void shouldSerialize() throws JsonProcessingException {
+        final String json = MAPPER.writeValueAsString(IDENTITY);
 
         assertThat(json).isEqualTo(IDENTITY_JSON);
     }
 
     @Test
-    public void shouldDeserializeDocument() throws IOException {
-        final IdentityJsonApiDocument document = MAPPER.readValue(IDENTITY_JSON, IdentityJsonApiDocument.class);
+    public void shouldDeserialize() throws IOException {
+        final Identity identity = MAPPER.readValue(IDENTITY_JSON, Identity.class);
 
-        assertThat(document).isEqualToComparingFieldByFieldRecursively(DOCUMENT);
-    }
-
-    @Test
-    public void shouldThrowExceptionIfMandatoryFieldIsMissingFromJson() {
-        final String invalidJson = loadJson("/identity-mandatory-field-missing.json");
-
-        final Throwable thrown = catchThrowable(() -> MAPPER.readValue(invalidJson, IdentityJsonApiDocument.class));
-
-        assertThat(thrown)
-                .isInstanceOf(JsonMappingException.class)
-                .hasCauseInstanceOf(NullPointerException.class);
+        assertThat(identity).isEqualToComparingFieldByFieldRecursively(IDENTITY);
     }
 
     @Test
     public void shouldUseDefaultAliasAndDefaultAliasTypeForUnknownAliasType() throws IOException {
-        final String unknownAliasTypeJson = loadJson("/identity-unknown-alias-type.json");
+        final String unknownAliasTypeJson = JsonLoader.loadJson("/identity-unknown-alias-type.json");
 
-        final IdentityJsonApiDocument document = MAPPER.readValue(unknownAliasTypeJson, IdentityJsonApiDocument.class);
+        final Identity identity = MAPPER.readValue(unknownAliasTypeJson, Identity.class);
 
-        final Identity identity = document.getIdentity();
         assertThat(identity.getAliases()).containsExactlyInAnyOrder(
                 new IdvIdAlias(UUID.fromString("23d106b4-0003-4ad8-8fc2-7f3a601c2125")),
                 new DefaultAlias(new DefaultAliasType("UNKNOWN"), Alias.Formats.CLEAR_TEXT, "ABC123")
         );
     }
 
-    private static String loadJson(final String path) {
-        return deleteWhitespace(loadContentFromClasspath(path));
-    }
-
-    private static IdentityJsonApiDocument buildDocument() {
-        final Identity identity = Identity.withAliases(
+    private static Identity buildIdentity() {
+        return Identity.withAliases(
                 new IdvIdAlias(UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23")),
                 new BukCustomerIdAlias("11111111"),
                 new UkcCardholderIdAlias("2222222222"),
@@ -91,7 +66,6 @@ public class IdentityJsonApiDocumentTest {
                 new TokenizedCardNumberAlias("3489347343788005"),
                 new EncryptedCardNumberAlias("DAJKSDJASJKDASJcnmzcnsfrfr")
         );
-        return new IdentityJsonApiDocument(identity);
     }
 
 }

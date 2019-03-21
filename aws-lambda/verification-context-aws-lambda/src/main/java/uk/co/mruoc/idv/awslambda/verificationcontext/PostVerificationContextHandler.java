@@ -13,7 +13,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextService;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.ObjectMapperSingleton;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiObjectMapperSingleton;
 
 @Slf4j
 public class PostVerificationContextHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
@@ -28,9 +28,9 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     }
 
     public PostVerificationContextHandler(final IdentityDao identityDao, final VerificationContextDao verificationContextDao) {
-        this(new VerificationContextRequestExtractor(ObjectMapperSingleton.get()),
+        this(new VerificationContextRequestExtractor(JsonApiObjectMapperSingleton.get()),
                 VerificationContextServiceSingleton.get(IdentityServiceSingleton.get(identityDao), verificationContextDao),
-                new VerificationContextConverter(ObjectMapperSingleton.get()));
+                new VerificationContextConverter(JsonApiObjectMapperSingleton.get()));
     }
 
     public PostVerificationContextHandler(final VerificationContextRequestExtractor requestExtractor,

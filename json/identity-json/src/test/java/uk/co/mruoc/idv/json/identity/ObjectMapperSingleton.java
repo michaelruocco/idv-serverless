@@ -1,15 +1,10 @@
-package uk.co.mruoc.idv.jsonapi.identity;
+package uk.co.mruoc.idv.json.identity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.co.mruoc.idv.json.identity.IdvIdentityModule;
 
 public class ObjectMapperSingleton {
 
     private static final ObjectMapper MAPPER = buildMapper();
-
-    private ObjectMapperSingleton() {
-        // utility class
-    }
 
     public static ObjectMapper get() {
         return MAPPER;

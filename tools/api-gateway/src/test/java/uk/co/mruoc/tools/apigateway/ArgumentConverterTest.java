@@ -1,6 +1,5 @@
 package uk.co.mruoc.tools.apigateway;
 
-import com.amazonaws.regions.Regions;
 import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import uk.co.mruoc.tools.apigateway.ArgumentConverter.InvalidArgumentsException;

@@ -17,7 +17,7 @@ public class VerificationContextRequestDocumentTest {
 
     private static final String JSON = JsonLoader.loadJson("/verification-context-request-document.json");
     private static final VerificationContextRequestDocument DOCUMENT = buildDocument();
-    private static final ObjectMapper MAPPER = ObjectMapperSingleton.get();
+    private static final ObjectMapper MAPPER = JsonApiObjectMapperSingleton.get();
 
     @Test
     public void shouldSerializeDocument() throws JsonProcessingException {

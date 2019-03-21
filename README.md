@@ -7,11 +7,9 @@
 
 ## To Do
 
- 1. need to update post verification context integration test to fix duplicate id in response
+ 1. implement aws lambda handler for getting verification contexts
 
- 2. implement aws lambda handler for getting verification contexts
-
- 3. identity merging, when create identity raise event with created identity, this can be used
+ 2. identity merging, when create identity raise event with created identity, this can be used
 for both MI reporting and to trigger an "offline" lambda event to check for matching aliases and merge
 identities if and duplicated aliases
 

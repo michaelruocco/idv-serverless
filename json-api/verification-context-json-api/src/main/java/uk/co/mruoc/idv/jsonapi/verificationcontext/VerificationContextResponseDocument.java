@@ -32,7 +32,7 @@ public class VerificationContextResponseDocument {
 
     @JsonIgnore
     public UUID getId() {
-        return getContext().getId();
+        return data.getId();
     }
 
     @JsonIgnore

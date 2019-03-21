@@ -31,8 +31,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationM
 import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
-import uk.co.mruoc.idv.jsonapi.identity.IdvIdentityModule;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.IdvVerificationContextModule;
+import uk.co.mruoc.idv.json.identity.IdvIdentityModule;
+import uk.co.mruoc.idv.json.verificationcontext.IdvVerificationContextModule;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
