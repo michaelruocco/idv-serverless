@@ -15,9 +15,6 @@
 for both MI reporting and to trigger an "offline" lambda event to check for matching aliases and merge
 identities if and duplicated aliases
 
- 4. figure out how to get deployed host name after serverless deploy has run and add into
-postman environment file or pass as argument when postman tests run
-
 ## Running Unit Tests
 
 You can run the unit tests for this project by running:
