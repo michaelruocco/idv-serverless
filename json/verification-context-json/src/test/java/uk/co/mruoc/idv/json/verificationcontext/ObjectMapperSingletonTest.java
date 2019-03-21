@@ -21,8 +21,8 @@ public class ObjectMapperSingletonTest {
         final ObjectMapper mapper = ObjectMapperSingleton.get();
 
         assertThat(mapper.getRegisteredModuleIds()).containsExactly(
-                "IdvIdentityModule",
-                "IdvVerificationContextModule",
+                "uk.co.mruoc.idv.json.identity.IdvIdentityModule",
+                "uk.co.mruoc.idv.json.verificationcontext.IdvVerificationContextModule",
                 "com.fasterxml.jackson.datatype.jsr310.JavaTimeModule",
                 "org.zalando.jackson.datatype.money.MoneyModule"
         );
