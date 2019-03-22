@@ -27,7 +27,7 @@ public class ErrorHandlerDelegator {
     private JsonApiErrorHandler getHandler(final Exception e) {
         if (handlers.containsKey(e.getClass())) {
             final JsonApiErrorHandler handler = handlers.get(e.getClass());
-            log.info("got exception handler {}" + handler);
+            log.info("got exception handler {}", handler);
             return handler;
         }
         log.info("exception handler not found, returning default handler {}", defaultHandler);

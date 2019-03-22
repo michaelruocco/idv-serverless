@@ -1,12 +1,9 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda.identity.error;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.ErrorHandlerDelegator;
 import uk.co.mruoc.idv.awslambda.InternalServerErrorHandler.InternalServerErrorItem;
 import uk.co.mruoc.idv.awslambda.identity.GetIdentityRequestValidator.IdentityRequestInvalidException;
-import uk.co.mruoc.idv.awslambda.identity.IdentityNotFoundErrorHandler.IdentityNotFoundErrorItem;
-import uk.co.mruoc.idv.awslambda.identity.InvalidIdentityRequestErrorHandler.InvalidIdentityRequestErrorItem;
-import uk.co.mruoc.idv.awslambda.identity.InvalidIdvIdErrorHandler.InvalidIdvIdErrorItem;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias.IdvIdNotValidUuidException;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;

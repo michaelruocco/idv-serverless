@@ -7,7 +7,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextRequestDocument;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 @RequiredArgsConstructor
 public class VerificationContextRequestExtractor {
@@ -19,8 +18,16 @@ public class VerificationContextRequestExtractor {
             final VerificationContextRequestDocument document = mapper.readValue(input.getBody(), VerificationContextRequestDocument.class);
             return document.getRequest();
         } catch (final IOException e) {
-            throw new UncheckedIOException(e);
+            throw new InvalidVerificationContextRequestException(e);
         }
+    }
+
+    public static class InvalidVerificationContextRequestException extends RuntimeException {
+
+        public InvalidVerificationContextRequestException(final Throwable cause) {
+            super(cause);
+        }
+
     }
 
 }

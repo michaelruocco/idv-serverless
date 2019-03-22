@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda.identity.error;
 
 import uk.co.mruoc.idv.awslambda.JsonApiErrorHandler;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
@@ -20,18 +20,6 @@ public class InvalidIdentityRequestErrorHandler implements JsonApiErrorHandler {
     @Override
     public Collection<Class<?>> getSupportedExceptions() {
         return singleton(IdentityRequestInvalidException.class);
-    }
-
-    public static class InvalidIdentityRequestErrorItem extends JsonApiErrorItem {
-
-        private static final int STATUS_CODE = 400;
-        private static final String TITLE = "Bad Request";
-        private static final String DETAIL = "Either IDV ID or aliasType and aliasValue must be provided";
-
-        public InvalidIdentityRequestErrorItem() {
-            super(TITLE, DETAIL, Collections.emptyMap(), STATUS_CODE);
-        }
-
     }
 
 }

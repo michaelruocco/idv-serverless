@@ -1,9 +1,8 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda.identity.error;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.JsonApiErrorHandler;
 import uk.co.mruoc.idv.awslambda.identity.GetIdentityRequestValidator.IdentityRequestInvalidException;
-import uk.co.mruoc.idv.awslambda.identity.InvalidIdentityRequestErrorHandler.InvalidIdentityRequestErrorItem;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 

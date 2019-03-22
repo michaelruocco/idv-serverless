@@ -1,8 +1,7 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda.identity.error;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.JsonApiErrorHandler;
-import uk.co.mruoc.idv.awslambda.identity.InvalidIdvIdErrorHandler.InvalidIdvIdErrorItem;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias.IdvIdNotValidUuidException;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;

@@ -3,11 +3,11 @@ package uk.co.mruoc.idv.awslambda.verificationcontext;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextRequestDocument;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -29,7 +29,7 @@ public class VerificationContextRequestExtractorTest {
 
         final Throwable cause = catchThrowable(() -> extractor.extractRequest(event));
 
-        assertThat(cause).isInstanceOf(UncheckedIOException.class)
+        assertThat(cause).isInstanceOf(InvalidVerificationContextRequestException.class)
                 .hasCauseInstanceOf(IOException.class);
     }
 

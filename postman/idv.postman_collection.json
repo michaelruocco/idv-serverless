@@ -114,6 +114,55 @@
 			"response": []
 		},
 		{
+			"name": "Post verification context bad request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 400 status\", function () {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							"",
+							"pm.test(\"should return correct error\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.errors[0].title).to.equal(\"Bad Request\");",
+							"    pm.expect(json.errors[0].detail).to.equal(\"Verification context request is invalid: com.fasterxml.jackson.databind.JsonMappingException: (was java.lang.NullPointerException) (through reference chain: uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextRequestDocument[\\\"data\\\"]->uk.co.mruoc.jsonapi.JsonApiDataItem[\\\"attributes\\\"]->uk.co.mruoc.idv.jsonapi.verificationcontext.DefaultVerificationContextRequest[\\\"channel\\\"])\");",
+							"    pm.expect(json.errors[0].meta).to.eql({});",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"i\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Identity by idv id",
 			"event": [
 				{
@@ -423,7 +472,7 @@
 							"",
 							"pm.test(\"should return correct error\", function () {",
 							"    var json = JSON.parse(responseBody)",
-							"    pm.expect(json.errors[0].title).to.equal(\"Bad Request\");",
+							"    pm.expect(json.errors[0].title).to.equal(\"Invalid IDV ID\");",
 							"    pm.expect(json.errors[0].detail).to.equal(\"IDV ID value is invalid value it must be a valid UUID\");",
 							"    pm.expect(json.errors[0].meta).to.eql({",
 							"        \"value\": \"value\"",

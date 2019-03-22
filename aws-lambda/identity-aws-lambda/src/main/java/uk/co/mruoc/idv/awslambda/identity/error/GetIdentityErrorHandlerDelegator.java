@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.identity;
+package uk.co.mruoc.idv.awslambda.identity.error;
 
 import uk.co.mruoc.idv.awslambda.ErrorHandlerDelegator;
 import uk.co.mruoc.idv.awslambda.InternalServerErrorHandler;
