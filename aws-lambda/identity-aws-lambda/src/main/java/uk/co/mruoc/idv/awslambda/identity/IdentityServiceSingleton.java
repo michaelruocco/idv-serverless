@@ -32,20 +32,28 @@ public class IdentityServiceSingleton {
     }
 
     private static IdentityService buildService(final IdentityDao dao) {
-        dao.save(Identity.withAliases(
-                new IdvIdAlias(UUID.fromString("3713f6f6-8fa6-4686-bcbc-e348ee3b4b06")),
-                new UkcCardholderIdAlias("12345678"),
-                new BukCustomerIdAlias("1111111111"))
-        );
+        dao.save(buildDemoIdentity());
+        return IdentityService.builder()
+                .dao(dao)
+                .aliasLoaderService(buildAliasLoaderService())
+                .idvIdGenerator(new IdvIdGenerator())
+                .build();
+    }
+
+    private static AliasLoaderService buildAliasLoaderService() {
         final Collection<AliasLoader> aliasLoaders = Arrays.asList(
                 new FakeAs3UkcCardholderIdAliasLoader(),
                 new FakeRsaCreditCardNumberAliasLoader()
         );
-        return IdentityService.builder()
-                .dao(dao)
-                .aliasLoaderService(new AliasLoaderService(aliasLoaders))
-                .idvIdGenerator(new IdvIdGenerator())
-                .build();
+        return new AliasLoaderService(aliasLoaders);
+    }
+
+    private static Identity buildDemoIdentity() {
+        return Identity.withAliases(
+                new IdvIdAlias(UUID.fromString("3713f6f6-8fa6-4686-bcbc-e348ee3b4b06")),
+                new UkcCardholderIdAlias("12345678"),
+                new BukCustomerIdAlias("1111111111")
+        );
     }
 
 }
