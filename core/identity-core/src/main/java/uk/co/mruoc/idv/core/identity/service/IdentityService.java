@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.core.identity.service;
 
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
@@ -7,18 +8,13 @@ import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
 import java.util.Optional;
 
+@Builder
 @Slf4j
 public class IdentityService {
 
     private final IdentityDao dao;
     private final AliasLoaderService aliasLoaderService;
     private final IdvIdGenerator idvIdGenerator;
-
-    public IdentityService(final IdentityDao dao, final AliasLoaderService aliasLoaderService, final IdvIdGenerator idvIdGenerator) {
-        this.dao = dao;
-        this.aliasLoaderService = aliasLoaderService;
-        this.idvIdGenerator = idvIdGenerator;
-    }
 
     public Identity upsert(final UpsertIdentityRequest request) {
         log.info("upserting identity with request {}", request);

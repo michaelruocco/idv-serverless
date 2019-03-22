@@ -4,6 +4,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.identity.IdentityDaoFactory;
@@ -16,6 +18,8 @@ import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextServi
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
 
 @Slf4j
+@Builder
+@AllArgsConstructor
 public class PostVerificationContextHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final VerificationContextRequestExtractor requestExtractor;
@@ -28,17 +32,16 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     }
 
     public PostVerificationContextHandler(final IdentityDao identityDao, final VerificationContextDao verificationContextDao) {
-        this(new VerificationContextRequestExtractor(JsonApiVerificationContextObjectMapperSingleton.get()),
-                VerificationContextServiceSingleton.get(IdentityServiceSingleton.get(identityDao), verificationContextDao),
-                new VerificationContextConverter(JsonApiVerificationContextObjectMapperSingleton.get()));
+        this(builder()
+                .requestExtractor(new VerificationContextRequestExtractor(JsonApiVerificationContextObjectMapperSingleton.get()))
+                .service(VerificationContextServiceSingleton.get(IdentityServiceSingleton.get(identityDao), verificationContextDao))
+                .contextConverter(new VerificationContextConverter(JsonApiVerificationContextObjectMapperSingleton.get())));
     }
 
-    public PostVerificationContextHandler(final VerificationContextRequestExtractor requestExtractor,
-                              final VerificationContextService service,
-                              final VerificationContextConverter contextConverter) {
-        this.requestExtractor = requestExtractor;
-        this.service = service;
-        this.contextConverter = contextConverter;
+    public PostVerificationContextHandler(final PostVerificationContextHandlerBuilder builder) {
+        this.requestExtractor = builder.requestExtractor;
+        this.service = builder.service;
+        this.contextConverter = builder.contextConverter;
     }
 
     @Override

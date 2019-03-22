@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.Environment;
@@ -18,8 +19,9 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.IdentityService.IdentityNotFoundException;
 import uk.co.mruoc.idv.json.identity.IdentityObjectMapperSingleton;
 
-@Builder
 @Slf4j
+@Builder
+@AllArgsConstructor
 public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final IdentityService identityService;
@@ -33,23 +35,20 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
     }
 
     public GetIdentityHandler(final IdentityDao dao) {
-        this(IdentityServiceSingleton.get(dao),
-                new GetIdentityRequestValidator(),
-                new AliasExtractor(),
-                buildIdentityConverter(),
-                buildExceptionConverter());
+        this(builder()
+                .identityService(IdentityServiceSingleton.get(dao))
+                .requestValidator(new GetIdentityRequestValidator())
+                .aliasExtractor(new AliasExtractor())
+                .identityConverter(buildIdentityConverter())
+                .exceptionConverter(buildExceptionConverter()));
     }
 
-    public GetIdentityHandler(final IdentityService identityService,
-                              final RequestValidator requestValidator,
-                              final AliasExtractor aliasExtractor,
-                              final IdentityConverter identityConverter,
-                              final ExceptionConverter exceptionConverter) {
-        this.identityService = identityService;
-        this.requestValidator = requestValidator;
-        this.aliasExtractor = aliasExtractor;
-        this.identityConverter = identityConverter;
-        this.exceptionConverter = exceptionConverter;
+    public GetIdentityHandler(final GetIdentityHandlerBuilder builder) {
+        this.identityService = builder.identityService;
+        this.requestValidator = builder.requestValidator;
+        this.aliasExtractor = builder.aliasExtractor;
+        this.identityConverter = builder.identityConverter;
+        this.exceptionConverter = builder.exceptionConverter;
     }
 
     @Override

@@ -64,9 +64,11 @@ public class DynamoVerificationContextDaoTest {
     public void setUp() throws InterruptedException {
         final AmazonDynamoDB client = localDynamoRule.getClient();
         createTable(client);
-        final ObjectMapper mapper = buildMapper();
 
-        dao = new DynamoVerificationContextDao(new DynamoDB(client), TABLE_NAME, mapper);
+        dao = DynamoVerificationContextDao.builder()
+                .table(new DynamoDB(client).getTable(TABLE_NAME))
+                .mapper(buildMapper())
+                .build();
     }
 
     @Test
@@ -93,7 +95,10 @@ public class DynamoVerificationContextDaoTest {
     public void shouldThrowExceptionIfMapperFailsToWriteObjectToJson() throws JsonProcessingException {
         final Table table = mock(Table.class);
         final ObjectMapper mapper = mock(ObjectMapper.class);
-        final VerificationContextDao daoWithMocks = new DynamoVerificationContextDao(table, mapper);
+        final VerificationContextDao daoWithMocks = DynamoVerificationContextDao.builder()
+                .table(table)
+                .mapper(mapper)
+                .build();
 
         final VerificationContext context = buildVerificationContext();
         doThrow(JsonProcessingException.class).when(mapper).writeValueAsString(context);
@@ -108,7 +113,10 @@ public class DynamoVerificationContextDaoTest {
     public void shouldReturnThrowExceptionIfMapperFailsToReadObjectFromJson() throws IOException {
         final Table table = mock(Table.class);
         final ObjectMapper mapper = mock(ObjectMapper.class);
-        final VerificationContextDao daoWithMocks = new DynamoVerificationContextDao(table, mapper);
+        final VerificationContextDao daoWithMocks = DynamoVerificationContextDao.builder()
+                .table(table)
+                .mapper(mapper)
+                .build();
         final UUID id = UUID.randomUUID();
         final Item item = mock(Item.class);
         final String jsonBody = "{}";

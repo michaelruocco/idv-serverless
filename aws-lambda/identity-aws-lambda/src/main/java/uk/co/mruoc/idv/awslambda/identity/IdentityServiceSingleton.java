@@ -41,9 +41,11 @@ public class IdentityServiceSingleton {
                 new FakeAs3UkcCardholderIdAliasLoader(),
                 new FakeRsaCreditCardNumberAliasLoader()
         );
-        final AliasLoaderService aliasLoaderService = new AliasLoaderService(aliasLoaders);
-        final IdvIdGenerator idvIdGenerator = new IdvIdGenerator();
-        return new IdentityService(dao, aliasLoaderService, idvIdGenerator);
+        return IdentityService.builder()
+                .dao(dao)
+                .aliasLoaderService(new AliasLoaderService(aliasLoaders))
+                .idvIdGenerator(new IdvIdGenerator())
+                .build();
     }
 
 }

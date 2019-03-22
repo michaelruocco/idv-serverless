@@ -1,10 +1,10 @@
 package uk.co.mruoc.idv.dao.verificationcontext;
 
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
@@ -14,21 +14,12 @@ import java.io.UncheckedIOException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Builder
 @Slf4j
 public class DynamoVerificationContextDao implements VerificationContextDao {
 
     private final ObjectMapper mapper;
     private final Table table;
-
-    public DynamoVerificationContextDao(final DynamoDB client, final String tableName, final ObjectMapper mapper) {
-        this.table = client.getTable(tableName);
-        this.mapper = mapper;
-    }
-
-    public DynamoVerificationContextDao(final Table table, final ObjectMapper mapper) {
-        this.table = table;
-        this.mapper = mapper;
-    }
 
     @Override
     public void save(final VerificationContext context) {

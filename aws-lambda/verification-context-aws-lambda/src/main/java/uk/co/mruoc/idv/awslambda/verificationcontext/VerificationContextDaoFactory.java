@@ -19,8 +19,12 @@ public class VerificationContextDaoFactory {
     }
 
     public static VerificationContextDao build(final AmazonDynamoDB client, final String tableName) {
-        final Table table = new DynamoDB(client).getTable(tableName);
-        return new DynamoVerificationContextDao(table, VerificationContextObjectMapperSingleton.get());
+        final DynamoDB dynamoDB = new DynamoDB(client);
+        final Table table = dynamoDB.getTable(tableName);
+        return DynamoVerificationContextDao.builder()
+                .table(table)
+                .mapper(VerificationContextObjectMapperSingleton.get())
+                .build();
     }
 
 }
