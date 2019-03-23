@@ -11,7 +11,9 @@ import static org.mockito.Mockito.mock;
 public class ChannelVerificationPoliciesTest {
 
     private static final String CHANNEL_ID = "channelId";
-    private static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
+    private static final String ACTIVITY_TYPE = "activityType";
+
+    private static final String EXPECTED_ERROR_MESSAGE = "no policy configured for channel channelId and activity activityType";
 
     @Test
     public void shouldApplyToChannel() {
@@ -28,7 +30,7 @@ public class ChannelVerificationPoliciesTest {
 
         assertThat(thrown)
                 .isInstanceOf(VerificationPolicyNotConfiguredForActivityException.class)
-                .hasMessage(ACTIVITY_TYPE);
+                .hasMessage(EXPECTED_ERROR_MESSAGE);
     }
 
     @Test
@@ -41,7 +43,7 @@ public class ChannelVerificationPoliciesTest {
 
         assertThat(thrown)
                 .isInstanceOf(VerificationPolicyNotConfiguredForActivityException.class)
-                .hasMessage(ACTIVITY_TYPE);
+                .hasMessage(EXPECTED_ERROR_MESSAGE);
     }
 
     @Test

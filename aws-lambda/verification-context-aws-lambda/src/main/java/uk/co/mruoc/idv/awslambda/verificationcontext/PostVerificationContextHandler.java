@@ -12,7 +12,6 @@ import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.identity.IdentityDaoFactory;
 import uk.co.mruoc.idv.awslambda.identity.IdentityServiceSingleton;
-import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
 import uk.co.mruoc.idv.awslambda.verificationcontext.error.PostVerificationContextErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
@@ -55,7 +54,7 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {
             return createContext(input);
-        } catch (final InvalidVerificationContextRequestException e) {
+        } catch (final Exception e) {
             final APIGatewayProxyResponseEvent response = exceptionConverter.toResponse(e);
             log.info("returning response {}", response);
             return response;

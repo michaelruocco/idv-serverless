@@ -22,16 +22,16 @@ public class VerificationPoliciesService {
         if (channelPolicies.containsKey(channelId)) {
             return channelPolicies.get(channelId);
         }
-        throw new UnrecognisedChannelException(channelId);
+        throw new VerificationPolicyNotConfiguredForChannelException(channelId);
     }
 
     private void add(final ChannelVerificationPolicies policies) {
         channelPolicies.put(policies.getChannelId(), policies);
     }
 
-    public static class UnrecognisedChannelException extends RuntimeException {
+    public static class VerificationPolicyNotConfiguredForChannelException extends RuntimeException {
 
-        public UnrecognisedChannelException(final String channelId) {
+        public VerificationPolicyNotConfiguredForChannelException(final String channelId) {
             super(channelId);
         }
 

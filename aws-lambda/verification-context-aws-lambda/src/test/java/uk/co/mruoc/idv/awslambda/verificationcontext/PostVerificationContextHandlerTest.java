@@ -32,7 +32,7 @@ public class PostVerificationContextHandlerTest {
             .build();
 
     @Test
-    public void shouldReturnErrorIfRequestIsInvalid() {
+    public void shouldReturnErrorIfExceptionIsThrown() {
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
         final Exception exception = new InvalidVerificationContextRequestException(new Exception());
         doThrow(exception).when(requestExtractor).extractRequest(request);
@@ -46,7 +46,7 @@ public class PostVerificationContextHandlerTest {
     }
 
     @Test
-    public void shouldPassCreateVerificationContext() {
+    public void shouldCreateVerificationContext() {
         final APIGatewayProxyRequestEvent requestEvent = new APIGatewayProxyRequestEvent();
         final VerificationContextRequest contextRequest = mock(VerificationContextRequest.class);
         given(requestExtractor.extractRequest(requestEvent)).willReturn(contextRequest);

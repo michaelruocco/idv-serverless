@@ -25,13 +25,32 @@ public class ChannelVerificationPolicies {
         return policies.stream()
                 .filter(policy -> policy.appliesTo(activityType))
                 .findFirst()
-                .orElseThrow(() -> new VerificationPolicyNotConfiguredForActivityException(activityType));
+                .orElseThrow(() -> new VerificationPolicyNotConfiguredForActivityException(channelId, activityType));
     }
 
     public static class VerificationPolicyNotConfiguredForActivityException extends RuntimeException {
 
-        public VerificationPolicyNotConfiguredForActivityException(final String activityType) {
-            super(activityType);
+        private static final String MESSAGE_FORMAT = "no policy configured for channel %s and activity %s";
+
+        private final String channelId;
+        private final String activityType;
+
+        public VerificationPolicyNotConfiguredForActivityException(final String channelId, final String activityType) {
+            super(buildMessage(channelId, activityType));
+            this.channelId = channelId;
+            this.activityType = activityType;
+        }
+
+        public String getChannelId() {
+            return channelId;
+        }
+
+        public String getActivityType() {
+            return activityType;
+        }
+
+        private static String buildMessage(final String channelId, final String activityType) {
+            return String.format(MESSAGE_FORMAT, channelId, activityType);
         }
 
     }

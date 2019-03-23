@@ -19,7 +19,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.UnrecognisedChannelException;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -63,11 +63,11 @@ public class VerificationContextServiceTest {
     public void shouldThrowExceptionIfVerificationPolicyNotConfiguredForChannel() {
         final VerificationContextRequest request = buildRequest();
         final Channel channel = request.getChannel();
-        doThrow(UnrecognisedChannelException.class).when(policiesService).getPoliciesForChannel(channel.getId());
+        doThrow(VerificationPolicyNotConfiguredForChannelException.class).when(policiesService).getPoliciesForChannel(channel.getId());
 
         final Throwable thrown = catchThrowable(() -> service.create(request));
 
-        assertThat(thrown).isInstanceOf(UnrecognisedChannelException.class);
+        assertThat(thrown).isInstanceOf(VerificationPolicyNotConfiguredForChannelException.class);
     }
 
     @Test

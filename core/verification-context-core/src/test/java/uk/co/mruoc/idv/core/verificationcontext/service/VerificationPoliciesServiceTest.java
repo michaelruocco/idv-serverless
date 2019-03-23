@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerif
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos.BbosChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa.RsaChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.UnrecognisedChannelException;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -43,7 +43,7 @@ public class VerificationPoliciesServiceTest {
         final Throwable thrown = catchThrowable(() -> service.getPoliciesForChannel(channel));
 
         assertThat(thrown)
-                .isInstanceOf(UnrecognisedChannelException.class)
+                .isInstanceOf(VerificationPolicyNotConfiguredForChannelException.class)
                 .hasMessage(channel);
     }
 

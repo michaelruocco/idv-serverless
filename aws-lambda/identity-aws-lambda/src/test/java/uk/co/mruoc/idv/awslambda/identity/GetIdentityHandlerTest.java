@@ -10,10 +10,8 @@ import uk.co.mruoc.idv.awslambda.identity.GetIdentityRequestValidator.IdentityRe
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias.IdvIdNotValidUuidException;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
-import uk.co.mruoc.idv.core.identity.service.IdentityService.IdentityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -42,37 +40,9 @@ public class GetIdentityHandlerTest {
             .build();
 
     @Test
-    public void shouldReturnErrorIfRequestIsInvalid() {
+    public void shouldReturnErrorIfExceptionIsThrown() {
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
         final Exception exception = new IdentityRequestInvalidException();
-        doThrow(exception).when(requestValidator).validate(request);
-
-        final APIGatewayProxyResponseEvent expectedResponse = new APIGatewayProxyResponseEvent();
-        given(exceptionConverter.toResponse(exception)).willReturn(expectedResponse);
-
-        final APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
-
-        assertThat(response).isEqualTo(expectedResponse);
-    }
-
-    @Test
-    public void shouldReturnErrorIfIdentityIsNotFound() {
-        final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
-        final Exception exception = new IdentityNotFoundException(new IdvIdAlias());
-        doThrow(exception).when(requestValidator).validate(request);
-
-        final APIGatewayProxyResponseEvent expectedResponse = new APIGatewayProxyResponseEvent();
-        given(exceptionConverter.toResponse(exception)).willReturn(expectedResponse);
-
-        final APIGatewayProxyResponseEvent response = handler.handleRequest(request, context);
-
-        assertThat(response).isEqualTo(expectedResponse);
-    }
-
-    @Test
-    public void shouldReturnErrorIfIdvIdValueIsNotValidUuid() {
-        final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
-        final Exception exception = new IdvIdNotValidUuidException("value", new Exception());
         doThrow(exception).when(requestValidator).validate(request);
 
         final APIGatewayProxyResponseEvent expectedResponse = new APIGatewayProxyResponseEvent();

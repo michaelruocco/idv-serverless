@@ -11,14 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.RequestValidator;
-import uk.co.mruoc.idv.awslambda.identity.GetIdentityRequestValidator.IdentityRequestInvalidException;
 import uk.co.mruoc.idv.awslambda.identity.error.GetIdentityErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias.IdvIdNotValidUuidException;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
-import uk.co.mruoc.idv.core.identity.service.IdentityService.IdentityNotFoundException;
 import uk.co.mruoc.idv.json.identity.IdentityObjectMapperSingleton;
 
 @Slf4j
@@ -57,7 +54,7 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {
             return handle(input);
-        } catch (final IdentityNotFoundException |IdentityRequestInvalidException | IdvIdNotValidUuidException e) {
+        } catch (final Exception e) {
             final APIGatewayProxyResponseEvent response = exceptionConverter.toResponse(e);
             log.info("returning response {}", response);
             return response;
