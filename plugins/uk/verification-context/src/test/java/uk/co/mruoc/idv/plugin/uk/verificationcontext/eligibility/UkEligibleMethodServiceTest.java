@@ -152,7 +152,6 @@ public class UkEligibleMethodServiceTest {
     }
 
     private static VerificationMethodSequence buildRsaOnlinePurchaseOtpSmsSequence() {
-        final CardNumber cardNumber = buildCardNumber();
         final VerificationMethod cardCredentials = new CardCredentialsVerificationMethod(DURATION);
         final MobileNumber mobileNumber = buildMobileNumber();
         final VerificationMethod otpSms = new OtpSmsVerificationMethod(DURATION, new RsaPasscode(), Collections.singleton(mobileNumber));
