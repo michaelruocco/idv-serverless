@@ -65,7 +65,7 @@ public class AliasLoaderServiceTest {
 
     @Test
     public void shouldThrowAliasLoadFailedExceptionIfExceptionThrownFromLoader() {
-        final Throwable error = new AliasLoadFailedException("test-error");
+        final Throwable error = new AliasLoadFailedException(mock(Alias.class));
         given(loader1.supports(request)).willReturn(true);
         given(loader1.load(request)).willThrow(error);
 

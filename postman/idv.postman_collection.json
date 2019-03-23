@@ -318,6 +318,61 @@
 			"response": []
 		},
 		{
+			"name": "Post verification context alias load failed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 422 status\", function () {",
+							"    pm.response.to.have.status(422);",
+							"})",
+							"",
+							"pm.test(\"should return correct error\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.errors[0].title).to.equal(\"Failed to load alias\");",
+							"    pm.expect(json.errors[0].detail).to.equal(\"Failed to load alias DefaultAlias(type=DefaultAliasType(name=UKC_CARDHOLDER_ID), format=CLEAR_TEXT, value=12345679)\");",
+							"    pm.expect(json.errors[0].meta).to.eql({",
+							"        \"alias\": {",
+							"            \"type\": \"UKC_CARDHOLDER_ID\",",
+							"            \"format\": \"CLEAR_TEXT\",",
+							"            \"value\": \"12345679\"",
+							"        }",
+							"    });",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345679\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Identity by idv id",
 			"event": [
 				{

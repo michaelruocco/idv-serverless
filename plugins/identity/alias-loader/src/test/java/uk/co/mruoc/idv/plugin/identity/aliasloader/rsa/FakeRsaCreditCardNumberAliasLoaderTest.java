@@ -5,10 +5,12 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
+import uk.co.mruoc.idv.core.identity.service.AliasLoadFailedException;
 import uk.co.mruoc.idv.core.identity.service.AliasLoader;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class FakeRsaCreditCardNumberAliasLoaderTest {
 
@@ -26,7 +28,7 @@ public class FakeRsaCreditCardNumberAliasLoaderTest {
                 .providedAlias(supportedAlias)
                 .build();
 
-        Aliases loadedAliases = loader.load(request);
+        final Aliases loadedAliases = loader.load(request);
 
         assertThat(loadedAliases).isEmpty();
     }
@@ -38,9 +40,23 @@ public class FakeRsaCreditCardNumberAliasLoaderTest {
                 .providedAlias(unsupportedAlias)
                 .build();
 
-        Aliases loadedAliases = loader.load(request);
+        final Aliases loadedAliases = loader.load(request);
 
         assertThat(loadedAliases).isEmpty();
+    }
+
+    @Test
+    public void shouldThrowExceptionIfAliasValueEndsWithNine() {
+        final Alias failureAlias = new TokenizedCreditCardNumberAlias("4327432895438009");
+        final AliasLoaderRequest request = AliasLoaderRequest.builder()
+                .channelId(SUPPORTED_CHANNEL_ID)
+                .providedAlias(failureAlias)
+                .build();
+
+        final Throwable exception = catchThrowable(() -> loader.load(request));
+
+        assertThat(exception).isInstanceOf(AliasLoadFailedException.class)
+                .hasMessageEndingWith(failureAlias.toString());
     }
 
     @Test

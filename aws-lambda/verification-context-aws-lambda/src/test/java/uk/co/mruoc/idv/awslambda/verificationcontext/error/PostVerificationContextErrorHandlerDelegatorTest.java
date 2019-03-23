@@ -3,8 +3,11 @@ package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.ErrorHandlerDelegator;
 import uk.co.mruoc.idv.awslambda.InternalServerErrorHandler.InternalServerErrorItem;
+import uk.co.mruoc.idv.awslambda.identity.error.AliasLoadFailedErrorItem;
 import uk.co.mruoc.idv.awslambda.identity.error.AliasTypeNotSupportedErrorItem;
 import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.service.AliasLoadFailedException;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderService.AliasTypeNotSupportedException;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
@@ -14,6 +17,7 @@ import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class PostVerificationContextErrorHandlerDelegatorTest {
 
@@ -69,6 +73,19 @@ public class PostVerificationContextErrorHandlerDelegatorTest {
         final List<JsonApiErrorItem> errors = document.getErrors();
         assertThat(errors).hasSize(1);
         final JsonApiErrorItem item = new AliasTypeNotSupportedErrorItem(aliasTypeName, channelId);
+        assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(item);
+    }
+
+    @Test
+    public void shouldConvertAliasLoadFailedExceptionToErrorDocument() {
+        final Alias alias = mock(Alias.class);
+        final Exception exception = new AliasLoadFailedException(alias);
+
+        final JsonApiErrorDocument document = delegator.toDocument(exception);
+
+        final List<JsonApiErrorItem> errors = document.getErrors();
+        assertThat(errors).hasSize(1);
+        final JsonApiErrorItem item = new AliasLoadFailedErrorItem(alias);
         assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(item);
     }
 
