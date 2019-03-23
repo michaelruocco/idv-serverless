@@ -4,7 +4,6 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -28,11 +27,8 @@ public class VerificationContextRequestConverterTest {
     @Test
     public void shouldConvertChannelId() {
         final String channelId = "CHANNEL_ID";
-        final Channel channel = mock(Channel.class);
-        given(channel.getId()).willReturn(channelId);
-
         final VerificationContextRequest contextRequest = mock(VerificationContextRequest.class);
-        given(contextRequest.getChannel()).willReturn(channel);
+        given(contextRequest.getChannelId()).willReturn(channelId);
 
         final UpsertIdentityRequest upsertRequest = converter.toUpsertIdentityRequest(contextRequest);
 
