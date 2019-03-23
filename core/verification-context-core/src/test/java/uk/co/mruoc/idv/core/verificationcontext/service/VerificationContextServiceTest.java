@@ -106,7 +106,7 @@ public class VerificationContextServiceTest {
         final Instant expiry = now.plus(FIVE_MINUTES);
         given(expiryCalculator.calculateExpiry(now)).willReturn(expiry);
 
-        final ChannelVerificationPolicies channelPolicies = new ChannelVerificationPolicies("CHANNEL", Collections.singleton(new VerificationPolicy(Activity.Types.LOGIN, Collections.singleton(new VerificationMethodPolicyEntry(new PushNotificationMethodPolicy())))));
+        final ChannelVerificationPolicies channelPolicies = buildChannelPolicies();
         final Channel channel = request.getChannel();
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
@@ -145,7 +145,7 @@ public class VerificationContextServiceTest {
         final Instant expiry = now.plus(FIVE_MINUTES);
         given(expiryCalculator.calculateExpiry(now)).willReturn(expiry);
 
-        final ChannelVerificationPolicies channelPolicies = new ChannelVerificationPolicies("CHANNEL", Collections.singleton(new VerificationPolicy(Activity.Types.LOGIN, Collections.emptyList())));
+        final ChannelVerificationPolicies channelPolicies = buildChannelPolicies();
         final Channel channel = request.getChannel();
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
