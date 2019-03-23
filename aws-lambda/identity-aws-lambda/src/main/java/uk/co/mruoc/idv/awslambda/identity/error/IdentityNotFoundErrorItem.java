@@ -3,6 +3,7 @@ package uk.co.mruoc.idv.awslambda.identity.error;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class IdentityNotFoundErrorItem extends JsonApiErrorItem {
     private static Map<String, Object> toMeta(final Alias alias) {
         final Map<String, Object> meta = new HashMap<>();
         meta.put("alias", alias);
-        return meta; //Collections.unmodifiableMap(meta);
+        return Collections.unmodifiableMap(meta);
     }
 
 }

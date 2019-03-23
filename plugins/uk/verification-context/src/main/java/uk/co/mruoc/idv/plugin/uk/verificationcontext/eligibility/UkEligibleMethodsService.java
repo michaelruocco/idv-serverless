@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsRequestConverter;
 import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsService;
 
 import java.util.Arrays;
@@ -18,7 +17,7 @@ public class UkEligibleMethodsService extends EligibleMethodsService {
     );
 
     public UkEligibleMethodsService() {
-        super(HANDLERS, new EligibleMethodsRequestConverter());
+        super(HANDLERS);
     }
 
 }

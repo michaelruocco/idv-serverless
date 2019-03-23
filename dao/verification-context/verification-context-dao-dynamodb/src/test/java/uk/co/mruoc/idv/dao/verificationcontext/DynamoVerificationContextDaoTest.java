@@ -173,7 +173,7 @@ public class DynamoVerificationContextDaoTest {
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("1234567890123456");
         return VerificationContext.builder()
                 .id(id)
-                .channel(new DefaultChannel("CHANNEL_ID"))
+                .channel(new DefaultChannel("CHANNEL_IDx"))
                 .activity(new LoginActivity(Instant.now()))
                 .providedAlias(providedAlias)
                 .identity(Identity.withAliases(new IdvIdAlias(), providedAlias))
