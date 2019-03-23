@@ -42,4 +42,15 @@ public class AliasesTest {
         assertThat(addedAliases).containsExactlyInAnyOrder(idIdv, cardholderId);
     }
 
+    @Test
+    public void shouldCreateAliasesFromOtherAliases() {
+        final Alias idIdv = new IdvIdAlias();
+        final Alias cardholderId = new UkcCardholderIdAlias("12345678");
+        final Aliases aliases = Aliases.with(idIdv, cardholderId);
+
+        final Aliases duplicateAliases = Aliases.with(aliases);
+
+        assertThat(duplicateAliases.containsExactly(aliases)).isTrue();
+    }
+
 }
