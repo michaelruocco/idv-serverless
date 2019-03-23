@@ -28,7 +28,11 @@ public class IdentityServiceTest {
     private final IdvIdGenerator idvIdGenerator = mock(IdvIdGenerator.class);
     private final Alias alias = new TokenizedCreditCardNumberAlias("1234567890123456");
 
-    private final IdentityService service = new IdentityService(dao, aliasLoaderService, idvIdGenerator);
+    private final IdentityService service = IdentityService.builder()
+            .dao(dao)
+            .aliasLoaderService(aliasLoaderService)
+            .idvIdGenerator(idvIdGenerator)
+            .build();
 
     @Test
     public void shouldThrowExceptionIfIdentityNotLoaded() {

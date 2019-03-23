@@ -20,10 +20,6 @@ public class EligibleMethodsService {
     private final Collection<EligibilityHandler> handlers;
     private final EligibleMethodsRequestConverter requestConverter;
 
-    public EligibleMethodsService(final Collection<EligibilityHandler> handlers) {
-        this(handlers, new EligibleMethodsRequestConverter());
-    }
-
     public EligibleMethodsService(final Collection<EligibilityHandler> handlers, final EligibleMethodsRequestConverter requestConverter) {
         this.handlers = handlers;
         this.requestConverter = requestConverter;

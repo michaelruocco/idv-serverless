@@ -1,0 +1,42 @@
+{
+  "channel": {
+    "id": "DEFAULT"
+  },
+  "providedAlias": {
+    "type": "CREDIT_CARD_NUMBER",
+    "format": "TOKENIZED",
+    "value": "3489347343788005"
+  },
+  "identity": {
+    "aliases": [
+      {
+        "type": "IDV_ID",
+        "format": "CLEAR_TEXT",
+        "value": "d98aa22c-a06e-4db5-8dc1-9ea83716ac12"
+      },
+      {
+        "type": "CREDIT_CARD_NUMBER",
+        "format": "TOKENIZED",
+        "value": "3489347343788005"
+      }
+    ]
+  },
+  "activity": {
+    "type": "LOGIN",
+    "timestamp": "2019-03-10T12:53:57.547Z"
+  },
+  "created": "2019-03-10T12:53:57.547Z",
+  "expiry": "2019-03-10T12:58:57.547Z",
+  "eligibleMethods": [
+    {
+      "name": "PUSH_NOTIFICATION",
+      "duration": 300000,
+      "sequence": [
+        {
+          "name": "PUSH_NOTIFICATION",
+          "duration": 300000
+        }
+      ]
+    }
+  ]
+}

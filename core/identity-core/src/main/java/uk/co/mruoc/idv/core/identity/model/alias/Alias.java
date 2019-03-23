@@ -12,15 +12,11 @@ public interface Alias {
 
     boolean isCardNumber();
 
-    class Formats {
+    interface Formats {
 
-        public static final String CLEAR_TEXT = "CLEAR_TEXT";
-        public static final String TOKENIZED = "TOKENIZED";
-        public static final String ENCRYPTED = "ENCRYPTED";
-
-        private Formats() {
-            // utility class
-        }
+        String CLEAR_TEXT = "CLEAR_TEXT";
+        String TOKENIZED = "TOKENIZED";
+        String ENCRYPTED = "ENCRYPTED";
 
     }
 

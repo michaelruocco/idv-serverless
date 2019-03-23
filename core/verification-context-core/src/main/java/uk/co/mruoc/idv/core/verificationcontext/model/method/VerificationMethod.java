@@ -15,17 +15,13 @@ public interface VerificationMethod {
 
     <T> T get(final String name, final Class<T> type);
 
-    class Names {
+    interface Names {
 
-        public static final String PUSH_NOTIFICATION = "PUSH_NOTIFICATION";
-        public static final String PHYSICAL_PINSENTRY = "PHYSICAL_PINSENTRY";
-        public static final String MOBILE_PINSENTRY = "MOBILE_PINSENTRY";
-        public static final String CARD_CREDENTIALS = "CARD_CREDENTIALS";
-        public static final String ONE_TIME_PASSCODE_SMS = "ONE_TIME_PASSCODE_SMS";
-
-        private Names() {
-            // utility class
-        }
+        String PUSH_NOTIFICATION = "PUSH_NOTIFICATION";
+        String PHYSICAL_PINSENTRY = "PHYSICAL_PINSENTRY";
+        String MOBILE_PINSENTRY = "MOBILE_PINSENTRY";
+        String CARD_CREDENTIALS = "CARD_CREDENTIALS";
+        String ONE_TIME_PASSCODE_SMS = "ONE_TIME_PASSCODE_SMS";
 
     }
 
