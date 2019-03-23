@@ -3,8 +3,6 @@ package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 import org.junit.Test;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InvalidVerificationContextRequestErrorItemTest {
