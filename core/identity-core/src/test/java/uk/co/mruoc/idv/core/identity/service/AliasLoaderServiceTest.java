@@ -5,9 +5,9 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
+import uk.co.mruoc.idv.core.identity.service.AliasLoaderService.AliasTypeNotSupportedException;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -26,19 +26,22 @@ public class AliasLoaderServiceTest {
     private final AliasLoaderService service = new AliasLoaderService(Arrays.asList(loader1, loader2));
 
     @Test
-    public void shouldNotLoadAnyAliasesIfNoAliasLoadersConfigured() {
-        final AliasLoaderService noLoaderService = new AliasLoaderService(Collections.emptyList());
+    public void shouldThrowExceptionIfAliasIsNotSupportedByAnyAliasLoaders() {
+        final Throwable cause = catchThrowable(() -> service.loadAliases(request));
 
-        final Aliases aliases = noLoaderService.loadAliases(request);
-
-        assertThat(aliases).containsExactly(providedAlias);
+        assertThat(cause).isInstanceOf(AliasTypeNotSupportedException.class)
+                .hasMessage("alias type UKC_CARDHOLDER_ID is not supported for channel CHANNEL_ID");
     }
 
     @Test
     public void shouldReturnProvidedAliasWithLoadedAliases() {
         final Alias loadedAlias1 = new BukCustomerIdAlias("2222222222");
         final Alias loadedAlias2 = new UkcCardholderIdAlias("87654321");
+
+        given(loader1.supports(request)).willReturn(true);
         given(loader1.load(request)).willReturn(Aliases.with(loadedAlias1));
+
+        given(loader2.supports(request)).willReturn(true);
         given(loader2.load(request)).willReturn(Aliases.with(loadedAlias2));
 
         final Aliases aliases = service.loadAliases(request);
@@ -49,7 +52,10 @@ public class AliasLoaderServiceTest {
 
     @Test
     public void shouldReturnOnlyProvidedAliasIfLoadersDoNotReturnLoadedAliases() {
+        given(loader1.supports(request)).willReturn(true);
         given(loader1.load(request)).willReturn(Aliases.empty());
+
+        given(loader2.supports(request)).willReturn(true);
         given(loader2.load(request)).willReturn(Aliases.empty());
 
         final Aliases aliases = service.loadAliases(request);
@@ -60,6 +66,7 @@ public class AliasLoaderServiceTest {
     @Test
     public void shouldThrowAliasLoadFailedExceptionIfExceptionThrownFromLoader() {
         final Throwable error = new AliasLoadFailedException("test-error");
+        given(loader1.supports(request)).willReturn(true);
         given(loader1.load(request)).willThrow(error);
 
         final Throwable thrown = catchThrowable(() -> service.loadAliases(request));

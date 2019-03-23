@@ -3,7 +3,9 @@ package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.ErrorHandlerDelegator;
 import uk.co.mruoc.idv.awslambda.InternalServerErrorHandler.InternalServerErrorItem;
+import uk.co.mruoc.idv.awslambda.identity.error.AliasTypeNotSupportedErrorItem;
 import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
+import uk.co.mruoc.idv.core.identity.service.AliasLoaderService.AliasTypeNotSupportedException;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
@@ -54,6 +56,20 @@ public class PostVerificationContextErrorHandlerDelegatorTest {
         assertThat(errors).hasSize(1);
         final JsonApiErrorItem expectedItem = new VerificationPolicyNotConfiguredForActivityErrorItem(channelId, activityType);
         assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(expectedItem);
+    }
+
+    @Test
+    public void shouldConvertAliasTypeNotSupportedExceptionToErrorDocument() {
+        final String aliasTypeName = "aliasTypeName";
+        final String channelId = "channelId";
+        final Exception exception = new AliasTypeNotSupportedException(aliasTypeName, channelId);
+
+        final JsonApiErrorDocument document = delegator.toDocument(exception);
+
+        final List<JsonApiErrorItem> errors = document.getErrors();
+        assertThat(errors).hasSize(1);
+        final JsonApiErrorItem item = new AliasTypeNotSupportedErrorItem(aliasTypeName, channelId);
+        assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(item);
     }
 
     @Test

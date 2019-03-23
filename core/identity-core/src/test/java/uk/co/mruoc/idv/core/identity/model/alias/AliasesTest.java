@@ -39,7 +39,7 @@ public class AliasesTest {
 
         final Aliases addedAliases = aliases.add(cardholderId);
 
-        assertThat(addedAliases).containsExactly(idIdv, cardholderId);
+        assertThat(addedAliases).containsExactlyInAnyOrder(idIdv, cardholderId);
     }
 
 }

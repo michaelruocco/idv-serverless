@@ -20,11 +20,13 @@ public class ErrorHandlerDelegator {
     }
 
     public JsonApiErrorDocument toDocument(final Exception e) {
-        final JsonApiErrorHandler handler = getHandler(e);
+        final JsonApiErrorHandler handler = findHandler(e);
         return handler.handle(e);
     }
 
-    private JsonApiErrorHandler getHandler(final Exception e) {
+    private JsonApiErrorHandler findHandler(final Exception e) {
+        log.info("finding alias handler for exception {}", e.toString());
+        log.info("exception handler keys {}", handlers.keySet());
         if (handlers.containsKey(e.getClass())) {
             final JsonApiErrorHandler handler = handlers.get(e.getClass());
             log.info("got exception handler {}", handler);
@@ -35,6 +37,7 @@ public class ErrorHandlerDelegator {
     }
 
     private void add(final JsonApiErrorHandler handler) {
+        handler.getSupportedExceptions().forEach(exception -> log.info("adding handler {} for {}", handler, exception));
         handler.getSupportedExceptions().forEach(exception -> handlers.put(exception, handler));
     }
 

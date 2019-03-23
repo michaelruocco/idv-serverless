@@ -1,4 +1,4 @@
-.PHONY: clean build deploy postman
+.PHONY: clean build deploy remove postman
 
 env=dev
 function=
@@ -15,11 +15,11 @@ deploy:
 	npm install --save-dev serverless-iam-roles-per-function; \
 	sls deploy -s $(env) --conceal
 
-deployService:
+remove:
 	cd aws-lambda; \
 	npm install --save-dev serverless; \
 	npm install --save-dev serverless-iam-roles-per-function; \
-	sls deploy -s $(env) --conceal -f $(function)
+	sls remove -s $(env) --conceal
 
 postman:
 	$(eval HOST = $(shell java -jar tools/api-gateway/build/libs/api-gateway-*-standalone.jar -n idv -s $(env)))
