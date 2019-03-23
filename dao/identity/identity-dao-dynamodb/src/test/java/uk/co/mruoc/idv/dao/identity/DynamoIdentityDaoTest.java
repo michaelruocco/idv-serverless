@@ -13,9 +13,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
-import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
@@ -48,8 +46,8 @@ public class DynamoIdentityDaoTest {
     public void shouldSaveIdentityAndLoadByAnyAlias() {
         final Identity identity = Identity.withAliases(
                 new IdvIdAlias(),
-                new UkcCardholderIdAlias("12345678"),
-                new BukCustomerIdAlias("11111111")
+                new TokenizedCreditCardNumberAlias("1234567890123456"),
+                new TokenizedDebitCardNumberAlias("1111111111111111")
         );
 
         dao.save(identity);
@@ -61,7 +59,7 @@ public class DynamoIdentityDaoTest {
     public void identityShouldRemainSameIfSameIdentityIsSavedTwice() {
         final Identity identity = Identity.withAliases(
                 new IdvIdAlias(),
-                new UkcCardholderIdAlias("12345678"),
+                new TokenizedDebitCardNumberAlias("1234567890123456"),
                 new TokenizedCreditCardNumberAlias("4929123456789012")
         );
 
@@ -83,7 +81,7 @@ public class DynamoIdentityDaoTest {
     public void shouldDeleteIdentity() {
         final Identity identity = Identity.withAliases(
                 new IdvIdAlias(),
-                new UkcCardholderIdAlias("12345678"),
+                new TokenizedCreditCardNumberAlias("1234567890123456"),
                 new TokenizedDebitCardNumberAlias("4929123456789012")
         );
 

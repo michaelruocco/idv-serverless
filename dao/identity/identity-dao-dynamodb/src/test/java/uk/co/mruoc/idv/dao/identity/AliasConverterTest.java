@@ -4,13 +4,12 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
-import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.CreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.DebitCardNumberAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,24 +27,6 @@ public class AliasConverterTest {
         final Alias alias = AliasConverter.toAlias(value);
 
         assertThat(alias).isEqualTo(new IdvIdAlias(UUID.fromString("786fa43d-6bcd-4a0c-ab7e-21348eb77faf")));
-    }
-
-    @Test
-    public void shouldConvertCardholderId() {
-        final String value = "UKC_CARDHOLDER_ID|CLEAR_TEXT|12345678";
-
-        final Alias alias = AliasConverter.toAlias(value);
-
-        assertThat(alias).isEqualTo(new UkcCardholderIdAlias("12345678"));
-    }
-
-    @Test
-    public void shouldConvertCustomerId() {
-        final String value = "BUK_CUSTOMER_ID|CLEAR_TEXT|1111111111";
-
-        final Alias alias = AliasConverter.toAlias(value);
-
-        assertThat(alias).isEqualTo(new BukCustomerIdAlias("1111111111"));
     }
 
     @Test
@@ -80,14 +61,14 @@ public class AliasConverterTest {
     public void shouldConvertMultipleStringsToAliases() {
         final Collection<String> aliasStrings = Arrays.asList(
                 "IDV_ID|CLEAR_TEXT|786fa43d-6bcd-4a0c-ab7e-21348eb77faf",
-                "UKC_CARDHOLDER_ID|CLEAR_TEXT|12345678"
+                "CREDIT_CARD_NUMBER|TOKENIZED|1234567890123456"
         );
 
         final Collection<Alias> aliases = AliasConverter.toAliases(aliasStrings);
 
         assertThat(aliases).containsExactly(
                 new IdvIdAlias(UUID.fromString("786fa43d-6bcd-4a0c-ab7e-21348eb77faf")),
-                new UkcCardholderIdAlias("12345678")
+                new TokenizedCreditCardNumberAlias("1234567890123456")
         );
     }
 
@@ -98,24 +79,6 @@ public class AliasConverterTest {
         final String value = AliasConverter.toString(alias);
 
         assertThat(value).isEqualTo("IDV_ID|CLEAR_TEXT|786fa43d-6bcd-4a0c-ab7e-21348eb77faf");
-    }
-
-    @Test
-    public void shouldConvertCardholderIdToString() {
-        final Alias alias = new UkcCardholderIdAlias("12345678");
-
-        final String value = AliasConverter.toString(alias);
-
-        assertThat(value).isEqualTo("UKC_CARDHOLDER_ID|CLEAR_TEXT|12345678");
-    }
-
-    @Test
-    public void shouldConvertCustomerIdToString() {
-        final Alias alias = new BukCustomerIdAlias("1111111111");
-
-        final String value = AliasConverter.toString(alias);
-
-        assertThat(value).isEqualTo("BUK_CUSTOMER_ID|CLEAR_TEXT|1111111111");
     }
 
     @Test
@@ -150,14 +113,14 @@ public class AliasConverterTest {
     public void shouldConvertMultipleAliasesToStrings() {
         final Aliases aliases = Aliases.with(
                 new IdvIdAlias(UUID.fromString("786fa43d-6bcd-4a0c-ab7e-21348eb77faf")),
-                new UkcCardholderIdAlias("12345678")
+                new TokenizedCreditCardNumberAlias("1234567890123456")
         );
 
         final Set<String> aliasStrings = AliasConverter.toStrings(aliases);
 
-        assertThat(aliasStrings).containsExactly(
+        assertThat(aliasStrings).containsExactlyInAnyOrder(
                 "IDV_ID|CLEAR_TEXT|786fa43d-6bcd-4a0c-ab7e-21348eb77faf",
-                "UKC_CARDHOLDER_ID|CLEAR_TEXT|12345678"
+                "CREDIT_CARD_NUMBER|TOKENIZED|1234567890123456"
         );
     }
 

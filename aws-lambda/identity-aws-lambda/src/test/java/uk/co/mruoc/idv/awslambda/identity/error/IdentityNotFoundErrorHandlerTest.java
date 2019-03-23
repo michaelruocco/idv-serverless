@@ -3,7 +3,7 @@ package uk.co.mruoc.idv.awslambda.identity.error;
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.JsonApiErrorHandler;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService.IdentityNotFoundException;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
@@ -33,7 +33,7 @@ public class IdentityNotFoundErrorHandlerTest {
 
     @Test
     public void shouldReturnJsonApiErrorDocument() {
-        final Alias alias = new UkcCardholderIdAlias("12345678");
+        final Alias alias = new TokenizedDebitCardNumberAlias("1234567890123456");
         final Exception exception = new IdentityNotFoundException(alias);
 
         final JsonApiErrorDocument document = handler.handle(exception);

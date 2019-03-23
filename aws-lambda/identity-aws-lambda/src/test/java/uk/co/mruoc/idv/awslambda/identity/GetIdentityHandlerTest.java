@@ -10,7 +10,7 @@ import uk.co.mruoc.idv.awslambda.identity.GetIdentityRequestValidator.IdentityRe
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 public class GetIdentityHandlerTest {
 
     private static final Alias IDV_ID_ALIAS = new IdvIdAlias("3713f6f6-8fa6-4686-bcbc-e348ee3b4b06");
-    private static final Alias UKC_CARDHOLDER_ID_ALIAS = new UkcCardholderIdAlias("12345678");
+    private static final Alias CREDIT_CARD_NUMBER_ALIAS = new TokenizedCreditCardNumberAlias("1234567890123456");
 
     private final IdentityService identityService = mock(IdentityService.class);
     private final RequestValidator requestValidator = mock(RequestValidator.class);
@@ -57,7 +57,7 @@ public class GetIdentityHandlerTest {
     public void shouldLoadIdentity() {
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
         given(aliasExtractor.extractAlias(request)).willReturn(IDV_ID_ALIAS);
-        final Identity identity = Identity.withAliases(IDV_ID_ALIAS, UKC_CARDHOLDER_ID_ALIAS);
+        final Identity identity = Identity.withAliases(IDV_ID_ALIAS, CREDIT_CARD_NUMBER_ALIAS);
         given(identityService.load(IDV_ID_ALIAS)).willReturn(identity);
 
         final APIGatewayProxyResponseEvent expectedResponse = new APIGatewayProxyResponseEvent();

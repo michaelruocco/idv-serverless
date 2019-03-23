@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class GetIdentityRequestValidatorTest {
 
-    private static final String UKC_CARDHOLDER_ID_ALIAS_TYPE = AliasType.Names.UKC_CARDHOLDER_ID;
+    private static final String ALIAS_TYPE = AliasType.Names.CREDIT_CARD_NUMBER;
 
     private final RequestValidator validator = new GetIdentityRequestValidator();
 
@@ -43,7 +43,7 @@ public class GetIdentityRequestValidatorTest {
     @Test
     public void shouldThrowExceptionIfIdPathParameterIdAndAliasValueQueryStringParameterIsNotProvided() {
         final Map<String, String> parameters = new HashMap<>();
-        parameters.put("aliasType", UKC_CARDHOLDER_ID_ALIAS_TYPE);
+        parameters.put("aliasType", ALIAS_TYPE);
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withPathParameters(Collections.emptyMap())
                 .withQueryStringParameters(Collections.unmodifiableMap(parameters));
@@ -81,7 +81,7 @@ public class GetIdentityRequestValidatorTest {
     @Test
     public void shouldReturnTrueIfAliasQueryStringParametersAreProvided() {
         final Map<String, String> parameters = new HashMap<>();
-        parameters.put("aliasType", UKC_CARDHOLDER_ID_ALIAS_TYPE);
+        parameters.put("aliasType", ALIAS_TYPE);
         parameters.put("aliasValue", "12345678");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withQueryStringParameters(Collections.unmodifiableMap(parameters));

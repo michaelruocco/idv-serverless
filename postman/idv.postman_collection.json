@@ -27,7 +27,23 @@
 							"    var json = JSON.parse(responseBody)",
 							"    var firstMethod = json.data.attributes.eligibleMethods[1];",
 							"    pm.expect(firstMethod.name).to.equal(\"OTP_SMS\");",
-							"})"
+							"})",
+							"",
+							"var json = JSON.parse(responseBody);",
+							"var aliases = json.data.attributes.identity.aliases;",
+							"",
+							"let idvId = aliases.find(alias => alias.type === \"IDV_ID\");",
+							"postman.setEnvironmentVariable(\"idvId\", idvId.value);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
 						],
 						"type": "text/javascript"
 					}
@@ -45,7 +61,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"RSA\"\n            },\n            \"activity\": {\n                \"type\": \"ONLINE_PURCHASE\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\",\n                \"properties\": {\n                    \"reference\": \"ABC123\",\n                    \"cost\": {\n                        \"amount\": 10.99,\n                        \"currency\": \"GBP\"\n                    },\n                    \"merchant\": \"Amazon\"\n                }\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"RSA\"\n            },\n            \"activity\": {\n                \"type\": \"ONLINE_PURCHASE\",\n                \"timestamp\": \"{{timestampUtc}}\",\n                \"properties\": {\n                    \"reference\": \"ABC123\",\n                    \"cost\": {\n                        \"amount\": 10.99,\n                        \"currency\": \"GBP\"\n                    },\n                    \"merchant\": \"Amazon\"\n                }\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts",
@@ -85,6 +101,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b0193aa4-d8f4-448a-9fe2-4905200acb4a",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -99,7 +125,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"{{timestampUtc}}\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts",
@@ -134,6 +160,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2b6b5b44-4efe-499e-8a99-d71e28f3e652",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -148,7 +184,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"i\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"i\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"{{timestampUtc}}\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts",
@@ -185,6 +221,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "46dae525-e0a3-4382-8a62-2e6a47de8454",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -199,7 +245,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"INVALID\"\n            },\n            \"activity\": {\n                \"type\": \"ONLINE_PURCHASE\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\",\n                \"properties\": {\n                    \"reference\": \"ABC123\",\n                    \"cost\": {\n                        \"amount\": 10.99,\n                        \"currency\": \"GBP\"\n                    },\n                    \"merchant\": \"Amazon\"\n                }\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"INVALID\"\n            },\n            \"activity\": {\n                \"type\": \"ONLINE_PURCHASE\",\n                \"timestamp\": \"{{timestampUtc}}\",\n                \"properties\": {\n                    \"reference\": \"ABC123\",\n                    \"cost\": {\n                        \"amount\": 10.99,\n                        \"currency\": \"GBP\"\n                    },\n                    \"merchant\": \"Amazon\"\n                }\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts",
@@ -237,6 +283,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e848850c-c835-4002-b042-3574871e5bfb",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -251,7 +307,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"RSA\"\n            },\n            \"activity\": {\n                \"type\": \"INVALID\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"RSA\"\n            },\n            \"activity\": {\n                \"type\": \"INVALID\",\n                \"timestamp\": \"{{timestampUtc}}\"\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts",
@@ -289,6 +345,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "263ae5ab-a02e-459c-8e3c-b6ea8e9e918c",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -303,7 +369,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"INVALID\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"{{timestampUtc}}\"\n            },\n            \"providedAlias\": {\n                \"type\": \"INVALID\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts",
@@ -344,6 +410,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7919b843-8229-4c1a-b1cf-e89485481275",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -358,7 +434,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"2019-03-10T12:53:57.547Z\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345679\"\n            }\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"AS3\"\n            },\n            \"activity\": {\n                \"type\": \"LOGIN\",\n                \"timestamp\": \"{{timestampUtc}}\"\n            },\n            \"providedAlias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345679\"\n            }\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts",
@@ -387,7 +463,7 @@
 							"pm.test(\"should return correct identity\", function () {",
 							"    var json = JSON.parse(responseBody)",
 							"    var identityId = json.data.id;",
-							"    pm.expect(identityId).to.equal(\"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06\");",
+							"    pm.expect(identityId).to.equal(environment.idvId);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -402,20 +478,20 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{host}}/identities/3713f6f6-8fa6-4686-bcbc-e348ee3b4b06",
+					"raw": "{{host}}/identities/{{idvId}}",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"identities",
-						"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06"
+						"{{idvId}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get Identity by cardholder id",
+			"name": "Get Identity by alias",
 			"event": [
 				{
 					"listen": "test",
@@ -429,7 +505,7 @@
 							"pm.test(\"should return correct identity\", function () {",
 							"    var json = JSON.parse(responseBody)",
 							"    var identityId = json.data.id;",
-							"    pm.expect(identityId).to.equal(\"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06\");",
+							"    pm.expect(identityId).to.equal(environment.idvId);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -444,7 +520,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{host}}/identities?aliasType=UKC_CARDHOLDER_ID&aliasValue=12345678",
+					"raw": "{{host}}/identities?aliasType=CREDIT_CARD_NUMBER&aliasFormat=TOKENIZED&aliasValue=3489347343788005",
 					"host": [
 						"{{host}}"
 					],
@@ -454,62 +530,15 @@
 					"query": [
 						{
 							"key": "aliasType",
-							"value": "UKC_CARDHOLDER_ID"
+							"value": "CREDIT_CARD_NUMBER"
+						},
+						{
+							"key": "aliasFormat",
+							"value": "TOKENIZED"
 						},
 						{
 							"key": "aliasValue",
-							"value": "12345678"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Identity by customer id",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "c02761c1-a436-4906-84f2-f92a28a86fcf",
-						"exec": [
-							"pm.test(\"should return 200 status\", function () {",
-							"    pm.response.to.have.status(200);",
-							"})",
-							"",
-							"pm.test(\"should return correct identity\", function () {",
-							"    var json = JSON.parse(responseBody)",
-							"    var identityId = json.data.id;",
-							"    pm.expect(identityId).to.equal(\"3713f6f6-8fa6-4686-bcbc-e348ee3b4b06\");",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{host}}/identities?aliasType=BUK_CUSTOMER_ID&aliasValue=1111111111",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"identities"
-					],
-					"query": [
-						{
-							"key": "aliasType",
-							"value": "BUK_CUSTOMER_ID"
-						},
-						{
-							"key": "aliasValue",
-							"value": "1111111111"
+							"value": "3489347343788005"
 						}
 					]
 				}

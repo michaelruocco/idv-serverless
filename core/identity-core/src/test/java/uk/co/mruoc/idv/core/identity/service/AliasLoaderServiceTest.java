@@ -3,8 +3,8 @@ package uk.co.mruoc.idv.core.identity.service;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
-import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderService.AliasTypeNotSupportedException;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ public class AliasLoaderServiceTest {
 
     private static final String CHANNEL_ID = "CHANNEL_ID";
 
-    private final Alias providedAlias = new UkcCardholderIdAlias("12345678");
+    private final Alias providedAlias = new TokenizedCreditCardNumberAlias("1234567890123456");
     private final AliasLoaderRequest request = new AliasLoaderRequest(CHANNEL_ID, providedAlias);
 
     private final AliasLoader loader1 = mock(AliasLoader.class);
@@ -30,13 +30,13 @@ public class AliasLoaderServiceTest {
         final Throwable cause = catchThrowable(() -> service.loadAliases(request));
 
         assertThat(cause).isInstanceOf(AliasTypeNotSupportedException.class)
-                .hasMessage("alias type UKC_CARDHOLDER_ID is not supported for channel CHANNEL_ID");
+                .hasMessage("alias type CREDIT_CARD_NUMBER is not supported for channel CHANNEL_ID");
     }
 
     @Test
     public void shouldReturnProvidedAliasWithLoadedAliases() {
-        final Alias loadedAlias1 = new BukCustomerIdAlias("2222222222");
-        final Alias loadedAlias2 = new UkcCardholderIdAlias("87654321");
+        final Alias loadedAlias1 = new TokenizedCreditCardNumberAlias("2222222222222222");
+        final Alias loadedAlias2 = new TokenizedDebitCardNumberAlias("0987654321654321");
 
         given(loader1.supports(request)).willReturn(true);
         given(loader1.load(request)).willReturn(Aliases.with(loadedAlias1));

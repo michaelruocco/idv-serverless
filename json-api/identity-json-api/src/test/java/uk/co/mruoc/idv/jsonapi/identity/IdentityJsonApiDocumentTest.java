@@ -6,11 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.EncryptedCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.EncryptedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.EncryptedDebitCardNumberAlias;
@@ -81,8 +79,6 @@ public class IdentityJsonApiDocumentTest {
     private static IdentityJsonApiDocument buildDocument() {
         final Identity identity = Identity.withAliases(
                 new IdvIdAlias(UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23")),
-                new BukCustomerIdAlias("11111111"),
-                new UkcCardholderIdAlias("2222222222"),
                 new TokenizedCreditCardNumberAlias("3489347343788005"),
                 new EncryptedCreditCardNumberAlias("DAJKSDJASJKDASJcnmzcnsadas"),
                 new TokenizedDebitCardNumberAlias("3489347343789008"),

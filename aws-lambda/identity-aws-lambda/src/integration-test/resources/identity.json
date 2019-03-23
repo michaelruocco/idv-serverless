@@ -10,14 +10,14 @@
           "value": "3713f6f6-8fa6-4686-bcbc-e348ee3b4b06"
         },
         {
-          "type": "UKC_CARDHOLDER_ID",
-          "format": "CLEAR_TEXT",
-          "value": "12345678"
+          "type": "CREDIT_CARD_NUMBER",
+          "format": "TOKENIZED",
+          "value": "1111111111111111"
         },
         {
-          "type": "BUK_CUSTOMER_ID",
-          "format": "CLEAR_TEXT",
-          "value": "1111111111"
+          "type": "DEBIT_CARD_NUMBER",
+          "format": "TOKENIZED",
+          "value": "2222222222222222"
         }
       ]
     }

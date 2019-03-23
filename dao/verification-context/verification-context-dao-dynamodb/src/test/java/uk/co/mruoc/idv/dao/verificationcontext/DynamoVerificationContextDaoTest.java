@@ -22,7 +22,7 @@ import org.zalando.jackson.datatype.money.MoneyModule;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.model.MobileNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
@@ -170,7 +170,7 @@ public class DynamoVerificationContextDaoTest {
         final UUID id = UUID.randomUUID();
         final Collection<MobileNumber> mobileNumbers = Collections.singleton(MobileNumber.builder().id(UUID.fromString("4b21d79e-43b5-43bb-97c9-6979553e9a16")).masked("*******123").build());
         final Passcode passcode = Passcode.builder().duration(15000).length(8).attempts(3).build();
-        final Alias providedAlias = new UkcCardholderIdAlias("12345678");
+        final Alias providedAlias = new TokenizedCreditCardNumberAlias("1234567890123456");
         return VerificationContext.builder()
                 .id(id)
                 .channel(new As3Channel())

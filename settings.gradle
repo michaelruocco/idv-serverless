@@ -8,8 +8,9 @@ include 'dao:identity:identity-dao-dynamodb'
 include 'dao:verification-context:verification-context-dao-fake'
 include 'dao:verification-context:verification-context-dao-dynamodb'
 
-include 'plugins:identity:alias-loader'
-include 'plugins:verification-context:eligibility-handler'
+include 'plugins:uk:identity'
+include 'plugins:uk:identity:alias-loader'
+include 'plugins:uk:verification-context:eligibility-handler'
 
 include 'json:identity-json'
 include 'json:verification-context-json'

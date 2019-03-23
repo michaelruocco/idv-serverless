@@ -4,8 +4,8 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
-import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
 
 import java.util.Collection;
 
@@ -18,10 +18,10 @@ public class DefaultAliasLoaderTest {
 
     private static final String SUPPORTED_CHANNEL_ID = "CHANNEL_ID";
     private static final Collection<String> SUPPORTED_CHANNEL_IDS = singleton(SUPPORTED_CHANNEL_ID);
-    private static final Collection<String> SUPPORTED_ALIAS_TYPES = singleton(AliasType.Names.UKC_CARDHOLDER_ID);
+    private static final Collection<String> SUPPORTED_ALIAS_TYPES = singleton(AliasType.Names.CREDIT_CARD_NUMBER);
 
-    private final Alias supportedAlias = new UkcCardholderIdAlias("22222222");
-    private final Alias unsupportedAlias = new BukCustomerIdAlias("9999999999");
+    private final Alias supportedAlias = new TokenizedCreditCardNumberAlias("22222222");
+    private final Alias unsupportedAlias = new TokenizedDebitCardNumberAlias("9999999999");
 
     private final AliasHandler handler = mock(AliasHandler.class);
 
@@ -57,7 +57,7 @@ public class DefaultAliasLoaderTest {
                 .channelId(SUPPORTED_CHANNEL_ID)
                 .providedAlias(supportedAlias)
                 .build();
-        final Alias loadedAlias = new BukCustomerIdAlias("1111111111");
+        final Alias loadedAlias = new TokenizedCreditCardNumberAlias("1111111111");
         given(handler.loadAliases(supportedAlias)).willReturn(singleton(loadedAlias));
 
         Aliases loadedAliases = loader.load(request);
