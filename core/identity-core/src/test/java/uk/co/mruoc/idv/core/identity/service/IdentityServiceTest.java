@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class IdentityServiceTest {
@@ -55,76 +56,72 @@ public class IdentityServiceTest {
 
     @Test
     public void shouldCreateNewIdentityIfIdentityDoesNotAlreadyExist() {
-        final Alias cardholderId = new UkcCardholderIdAlias("12345678");
-        given(dao.load(cardholderId)).willReturn(Optional.empty());
+        final Alias providedAlias = new UkcCardholderIdAlias("12345678");
+        given(dao.load(providedAlias)).willReturn(Optional.empty());
         final IdvIdAlias idvId = new IdvIdAlias();
         given(idvIdGenerator.generate()).willReturn(idvId);
         given(aliasLoaderService.loadAliases(any(AliasLoaderRequest.class))).willReturn(Aliases.empty());
         final UpsertIdentityRequest request = UpsertIdentityRequest.builder()
                 .channelId(CHANNEL_ID)
-                .alias(cardholderId)
+                .providedAlias(providedAlias)
                 .build();
 
         final Identity identity = service.upsert(request);
 
-        assertThat(identity.getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
+        assertThat(identity.getAliases()).containsExactlyInAnyOrder(idvId, providedAlias);
         verify(dao).save(identity);
+    }
+
+    @Test
+    public void shouldPassChannelIdAndProvidedAliasToAliasLoaderWhenNewIdentityCreated() {
+        final Alias providedAlias = new UkcCardholderIdAlias("12345678");
+        given(dao.load(providedAlias)).willReturn(Optional.empty());
+        final IdvIdAlias idvId = new IdvIdAlias();
+        given(idvIdGenerator.generate()).willReturn(idvId);
+        given(aliasLoaderService.loadAliases(any(AliasLoaderRequest.class))).willReturn(Aliases.empty());
+        final UpsertIdentityRequest request = UpsertIdentityRequest.builder()
+                .channelId(CHANNEL_ID)
+                .providedAlias(providedAlias)
+                .build();
+        ArgumentCaptor<AliasLoaderRequest> captor = ArgumentCaptor.forClass(AliasLoaderRequest.class);
+
+        service.upsert(request);
+
+        verify(aliasLoaderService).loadAliases(captor.capture());
+        assertThat(captor.getValue().getChannelId()).isEqualTo(CHANNEL_ID);
+        assertThat(captor.getValue().getProvidedAlias()).isEqualTo(providedAlias);
     }
 
     @Test
     public void shouldLoadIdentityIfIdentityAlreadyExists() {
         final IdvIdAlias idvId = new IdvIdAlias();
-        final Alias bukCustomerId = new BukCustomerIdAlias("12345678");
-        given(dao.load(bukCustomerId)).willReturn(Optional.of(Identity.withAliases(idvId, bukCustomerId)));
-        given(aliasLoaderService.loadAliases(any(AliasLoaderRequest.class))).willReturn(Aliases.empty());
+        final Alias providedAlias = new BukCustomerIdAlias("12345678");
+        final Identity existingIdentity = Identity.withAliases(idvId, providedAlias);
+        given(dao.load(providedAlias)).willReturn(Optional.of(existingIdentity));
         final UpsertIdentityRequest request = UpsertIdentityRequest.builder()
                 .channelId(CHANNEL_ID)
-                .alias(bukCustomerId)
+                .providedAlias(providedAlias)
                 .build();
 
         final Identity identity = service.upsert(request);
 
-        assertThat(identity.getAliases()).containsExactlyInAnyOrder(idvId, bukCustomerId);
-        verify(dao).save(identity);
+        assertThat(identity).isEqualTo(existingIdentity);
     }
 
     @Test
-    public void shouldPassChannelIdAndAliasesToAliasLoaderWhenNewIdentityCreated() {
-        final Alias cardholderId = new UkcCardholderIdAlias("12345678");
-        given(dao.load(cardholderId)).willReturn(Optional.empty());
-        final IdvIdAlias idvId = new IdvIdAlias();
-        given(idvIdGenerator.generate()).willReturn(idvId);
-        given(aliasLoaderService.loadAliases(any(AliasLoaderRequest.class))).willReturn(Aliases.empty());
-        final UpsertIdentityRequest request = UpsertIdentityRequest.builder()
-                .channelId(CHANNEL_ID)
-                .alias(cardholderId)
-                .build();
-        ArgumentCaptor<AliasLoaderRequest> captor = ArgumentCaptor.forClass(AliasLoaderRequest.class);
-
-        service.upsert(request);
-
-        verify(aliasLoaderService).loadAliases(captor.capture());
-        assertThat(captor.getValue().getChannelId()).isEqualTo(CHANNEL_ID);
-        assertThat(captor.getValue().getAliases()).containsExactlyInAnyOrder(idvId, cardholderId);
-    }
-
-    @Test
-    public void shouldPassChannelIdAndAliasesToAliasLoaderWhenExistingIdentityLoaded() {
+    public void shouldNotCallAliasLoaderOrSaveIdentityWhenExistingIdentityLoaded() {
         final IdvIdAlias idvId = new IdvIdAlias();
         final Alias bukCustomerId = new BukCustomerIdAlias("12345678");
         given(dao.load(bukCustomerId)).willReturn(Optional.of(Identity.withAliases(idvId, bukCustomerId)));
-        given(aliasLoaderService.loadAliases(any(AliasLoaderRequest.class))).willReturn(Aliases.empty());
         final UpsertIdentityRequest request = UpsertIdentityRequest.builder()
                 .channelId(CHANNEL_ID)
-                .alias(bukCustomerId)
+                .providedAlias(bukCustomerId)
                 .build();
-        ArgumentCaptor<AliasLoaderRequest> captor = ArgumentCaptor.forClass(AliasLoaderRequest.class);
 
         service.upsert(request);
 
-        verify(aliasLoaderService).loadAliases(captor.capture());
-        assertThat(captor.getValue().getChannelId()).isEqualTo(CHANNEL_ID);
-        assertThat(captor.getValue().getAliases()).containsExactlyInAnyOrder(idvId, bukCustomerId);
+        verify(aliasLoaderService, never()).loadAliases(any(AliasLoaderRequest.class));
+        verify(dao, never()).save(any(Identity.class));
     }
 
 }

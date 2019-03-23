@@ -4,7 +4,6 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.identity.model.alias.BukCustomerIdAlias;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.UkcCardholderIdAlias;
 
 import java.util.Arrays;
@@ -19,11 +18,8 @@ public class AliasLoaderServiceTest {
 
     private static final String CHANNEL_ID = "CHANNEL_ID";
 
-    private final Alias idvId = new IdvIdAlias();
-    private final Alias inputAlias1 = new UkcCardholderIdAlias("12345678");
-    private final Alias inputAlias2 = new BukCustomerIdAlias("111111111");
-    private final Aliases inputAliases = Aliases.with(idvId, inputAlias1, inputAlias2);
-    private final AliasLoaderRequest request = new AliasLoaderRequest(CHANNEL_ID, inputAliases);
+    private final Alias providedAlias = new UkcCardholderIdAlias("12345678");
+    private final AliasLoaderRequest request = new AliasLoaderRequest(CHANNEL_ID, providedAlias);
 
     private final AliasLoader loader1 = mock(AliasLoader.class);
     private final AliasLoader loader2 = mock(AliasLoader.class);
@@ -35,11 +31,11 @@ public class AliasLoaderServiceTest {
 
         final Aliases aliases = noLoaderService.loadAliases(request);
 
-        assertThat(aliases).containsExactlyInAnyOrderElementsOf(inputAliases);
+        assertThat(aliases).containsExactly(providedAlias);
     }
 
     @Test
-    public void shouldReturnInputAliasesWithLoadedAliases() {
+    public void shouldReturnProvidedAliasWithLoadedAliases() {
         final Alias loadedAlias1 = new BukCustomerIdAlias("2222222222");
         final Alias loadedAlias2 = new UkcCardholderIdAlias("87654321");
         given(loader1.load(request)).willReturn(Aliases.with(loadedAlias1));
@@ -47,18 +43,18 @@ public class AliasLoaderServiceTest {
 
         final Aliases aliases = service.loadAliases(request);
 
-        final Aliases expectedAliases = Aliases.with(loadedAlias1, loadedAlias2).add(inputAliases);
+        final Aliases expectedAliases = Aliases.with(loadedAlias1, loadedAlias2).add(providedAlias);
         assertThat(aliases).containsExactlyInAnyOrderElementsOf(expectedAliases);
     }
 
     @Test
-    public void shouldReturnInputOnlyInputAliasesIfLoadersDoNotReturnLoadedAliases() {
+    public void shouldReturnOnlyProvidedAliasIfLoadersDoNotReturnLoadedAliases() {
         given(loader1.load(request)).willReturn(Aliases.empty());
         given(loader2.load(request)).willReturn(Aliases.empty());
 
         final Aliases aliases = service.loadAliases(request);
 
-        assertThat(aliases).containsExactlyInAnyOrderElementsOf(inputAliases);
+        assertThat(aliases).containsExactly(providedAlias);
     }
 
     @Test

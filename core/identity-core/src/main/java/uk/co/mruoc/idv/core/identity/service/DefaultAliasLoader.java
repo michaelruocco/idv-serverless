@@ -3,7 +3,6 @@ package uk.co.mruoc.idv.core.identity.service;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class DefaultAliasLoader implements AliasLoader {
@@ -22,27 +21,28 @@ public class DefaultAliasLoader implements AliasLoader {
 
     @Override
     public Aliases load(final AliasLoaderRequest request) {
-        if (!isChannelSupported(request.getChannelId())) {
-            return Aliases.empty();
+        if (supports(request)) {
+            return loadAliases(request.getProvidedAlias());
         }
-        return loadAliases(request.getAliases());
+        return Aliases.empty();
+    }
+
+    @Override
+    public boolean supports(AliasLoaderRequest request) {
+        return isChannelSupported(request.getChannelId()) &&
+                isAliasSupported(request.getProvidedAlias());
     }
 
     private boolean isChannelSupported(final String channelId) {
         return supportedChannelIds.contains(channelId);
     }
 
-    private Aliases loadAliases(final Aliases inputAliases) {
-        final Collection<Alias> loadedAliases = new ArrayList<>();
-        final Collection<Alias> supportedAliases = inputAliases.getByTypeNames(supportedAliasTypeNames);
-        for (final Alias supportedAlias : supportedAliases) {
-            loadedAliases.addAll(loadAliases(supportedAlias));
-        }
-        return Aliases.with(loadedAliases);
+    private boolean isAliasSupported(final Alias alias) {
+        return supportedAliasTypeNames.contains(alias.getTypeName());
     }
 
-    private Collection<Alias> loadAliases(final Alias inputAlias) {
-        return aliasHandler.loadAliases(inputAlias);
+    private Aliases loadAliases(final Alias providedAlias) {
+        return Aliases.with(aliasHandler.loadAliases(providedAlias));
     }
 
 }

@@ -31,4 +31,15 @@ public class AliasesTest {
         assertThat(size).isEqualTo(2);
     }
 
+    @Test
+    public void shouldAddAlias() {
+        final Alias idIdv = new IdvIdAlias();
+        final Alias cardholderId = new UkcCardholderIdAlias("12345678");
+        final Aliases aliases = Aliases.with(idIdv);
+
+        final Aliases addedAliases = aliases.add(cardholderId);
+
+        assertThat(addedAliases).containsExactly(idIdv, cardholderId);
+    }
+
 }

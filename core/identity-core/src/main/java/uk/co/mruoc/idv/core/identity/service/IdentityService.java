@@ -18,14 +18,7 @@ public class IdentityService {
 
     public Identity upsert(final UpsertIdentityRequest request) {
         log.info("upserting identity with request {}", request);
-        final Identity identity = loadOrCreateIdentity(request);
-        log.debug("loaded identity {}", identity);
-        final Aliases loadedAliases = loadAliases(request.getChannelId(), identity);
-        log.debug("loaded aliases {}", loadedAliases);
-        final Identity identityWithAliases = identity.addAliases(loadedAliases);
-        log.info("saving identity {}", identity);
-        dao.save(identityWithAliases);
-        return identityWithAliases;
+        return loadIdentity(request).orElseGet(() -> createNewIdentity(request));
     }
 
     public Identity load(final Alias alias) {
@@ -33,22 +26,34 @@ public class IdentityService {
         return dao.load(alias).orElseThrow(() -> new IdentityNotFoundException(alias));
     }
 
-    private Identity loadOrCreateIdentity(final UpsertIdentityRequest request) {
-        final Optional<Identity> identity = dao.load(request.getAlias());
-        return identity.orElseGet(() -> createNewIdentity(request.getAlias()));
+    private Optional<Identity> loadIdentity(final UpsertIdentityRequest request) {
+        Optional<Identity> identity = dao.load(request.getProvidedAlias());
+        if (identity.isPresent()) {
+            log.debug("loaded identity {} from request {}", identity, request);
+        }
+        return identity;
     }
 
-    private Identity createNewIdentity(final Alias requestAlias) {
+    private Identity createNewIdentity(final UpsertIdentityRequest request) {
+        log.info("creating new identity from request {}", request);
+
+        final Aliases loadedAliases = loadAliases(request);
+        log.debug("loaded aliases {}", loadedAliases);
+
         final Alias idvId = idvIdGenerator.generate();
-        final Aliases aliases = Aliases.with(idvId, requestAlias);
-        log.info("creating new identity aliases {}", aliases);
-        return Identity.withAliases(aliases);
+        log.debug("generated idv id {}", idvId);
+
+        final Aliases allAliases = Aliases.with(idvId, request.getProvidedAlias()).add(loadedAliases);
+        final Identity identity = Identity.withAliases(allAliases);
+        log.info("saving identity {}", identity);
+        dao.save(identity);
+        return identity;
     }
 
-    private Aliases loadAliases(final String channelId, final Identity identity) {
+    private Aliases loadAliases(final UpsertIdentityRequest request) {
         final AliasLoaderRequest loaderRequest = AliasLoaderRequest.builder()
-                .channelId(channelId)
-                .aliases(identity.getAliases())
+                .channelId(request.getChannelId())
+                .providedAlias(request.getProvidedAlias())
                 .build();
         log.info("loading aliases with alias loader request {}", loaderRequest);
         return aliasLoaderService.loadAliases(loaderRequest);

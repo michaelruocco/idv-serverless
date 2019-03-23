@@ -7,7 +7,7 @@ public class VerificationContextRequestConverter {
 
     public UpsertIdentityRequest toUpsertIdentityRequest(final VerificationContextRequest contextRequest) {
         return UpsertIdentityRequest.builder()
-                .alias(contextRequest.getProvidedAlias())
+                .providedAlias(contextRequest.getProvidedAlias())
                 .channelId(contextRequest.getChannelId())
                 .build();
     }

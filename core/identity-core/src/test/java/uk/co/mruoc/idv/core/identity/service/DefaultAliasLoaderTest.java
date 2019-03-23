@@ -13,8 +13,6 @@ import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 public class DefaultAliasLoaderTest {
 
@@ -33,7 +31,7 @@ public class DefaultAliasLoaderTest {
     public void shouldReturnEmptyListIfChannelIdIsNotSupported() {
         final AliasLoaderRequest request = AliasLoaderRequest.builder()
                 .channelId("UNSUPPORTED_CHANNEL_ID")
-                .aliases(Aliases.with(supportedAlias))
+                .providedAlias(supportedAlias)
                 .build();
 
         Aliases loadedAliases = loader.load(request);
@@ -45,7 +43,7 @@ public class DefaultAliasLoaderTest {
     public void shouldReturnEmptyListIfAliasTypeIsNotSupported() {
         final AliasLoaderRequest request = AliasLoaderRequest.builder()
                 .channelId(SUPPORTED_CHANNEL_ID)
-                .aliases(Aliases.with(unsupportedAlias))
+                .providedAlias(unsupportedAlias)
                 .build();
 
         Aliases loadedAliases = loader.load(request);
@@ -57,7 +55,7 @@ public class DefaultAliasLoaderTest {
     public void shouldReturnLoadedAliasesIfChannelAndAliasTypeAreSupported() {
         final AliasLoaderRequest request = AliasLoaderRequest.builder()
                 .channelId(SUPPORTED_CHANNEL_ID)
-                .aliases(Aliases.with(supportedAlias))
+                .providedAlias(supportedAlias)
                 .build();
         final Alias loadedAlias = new BukCustomerIdAlias("1111111111");
         given(handler.loadAliases(supportedAlias)).willReturn(singleton(loadedAlias));
@@ -65,19 +63,6 @@ public class DefaultAliasLoaderTest {
         Aliases loadedAliases = loader.load(request);
 
         assertThat(loadedAliases).containsExactly(loadedAlias);
-    }
-
-    @Test
-    public void shouldOnlyLoadedAliasesUsingSupportedAliases() {
-        final AliasLoaderRequest request = AliasLoaderRequest.builder()
-                .channelId(SUPPORTED_CHANNEL_ID)
-                .aliases(Aliases.with(supportedAlias, unsupportedAlias))
-                .build();
-
-        loader.load(request);
-
-        verify(handler).loadAliases(supportedAlias);
-        verify(handler, never()).loadAliases(unsupportedAlias);
     }
 
 }

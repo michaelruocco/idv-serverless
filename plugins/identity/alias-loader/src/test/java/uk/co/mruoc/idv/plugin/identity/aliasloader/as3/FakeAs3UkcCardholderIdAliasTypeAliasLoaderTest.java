@@ -23,7 +23,7 @@ public class FakeAs3UkcCardholderIdAliasTypeAliasLoaderTest {
     public void shouldReturnEmptyListIfChannelIdIsNotSupported() {
         final AliasLoaderRequest request = AliasLoaderRequest.builder()
                 .channelId("UNSUPPORTED_CHANNEL_ID")
-                .aliases(Aliases.with(supportedAlias))
+                .providedAlias(supportedAlias)
                 .build();
 
         Aliases loadedAliases = loader.load(request);
@@ -35,7 +35,7 @@ public class FakeAs3UkcCardholderIdAliasTypeAliasLoaderTest {
     public void shouldReturnEmptyListIfAliasTypeIsNotSupported() {
         final AliasLoaderRequest request = AliasLoaderRequest.builder()
                 .channelId(SUPPORTED_CHANNEL_ID)
-                .aliases(Aliases.with(unsupportedAlias))
+                .providedAlias(unsupportedAlias)
                 .build();
 
         Aliases loadedAliases = loader.load(request);
@@ -47,7 +47,7 @@ public class FakeAs3UkcCardholderIdAliasTypeAliasLoaderTest {
     public void shouldReturnHardcodedAliasIfChannelAndAliasTypeAreSupported() {
         final AliasLoaderRequest request = AliasLoaderRequest.builder()
                 .channelId(SUPPORTED_CHANNEL_ID)
-                .aliases(Aliases.with(supportedAlias))
+                .providedAlias(supportedAlias)
                 .build();
         final Alias expectedAlias = new BukCustomerIdAlias("1212121212");
 

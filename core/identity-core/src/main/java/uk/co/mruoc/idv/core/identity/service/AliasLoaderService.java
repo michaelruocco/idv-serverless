@@ -15,7 +15,7 @@ public class AliasLoaderService {
     }
 
     public Aliases loadAliases(final AliasLoaderRequest request) {
-        Aliases aggregatedAliases = Aliases.with(request.getAliases());
+        Aliases aggregatedAliases = Aliases.with(request.getProvidedAlias());
         for (final AliasLoader loader : loaders) {
             aggregatedAliases = aggregatedAliases.add(loader.load(request));
         }

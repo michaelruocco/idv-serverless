@@ -11,6 +11,6 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 public class UpsertIdentityRequest {
 
     private final String channelId;
-    private final Alias alias;
+    private final Alias providedAlias;
 
 }

@@ -4,6 +4,7 @@ import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -43,6 +44,10 @@ public class Aliases implements Iterable<Alias> {
     @Override
     public Iterator<Alias> iterator() {
         return aliases.iterator();
+    }
+
+    public Aliases add(final Alias alias) {
+        return add(Collections.singleton(alias));
     }
 
     public Aliases add(final Aliases aliases) {

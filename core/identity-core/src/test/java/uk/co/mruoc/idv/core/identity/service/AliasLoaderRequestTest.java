@@ -1,16 +1,17 @@
 package uk.co.mruoc.idv.core.identity.service;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class AliasLoaderRequestTest {
 
     private static final String CHANNEL_ID = "CHANNEL_ID";
-    private static final Aliases ALIASES = Aliases.empty();
+    private static final Alias PROVIDED_ALIAS = mock(Alias.class);
 
-    private final AliasLoaderRequest request = new AliasLoaderRequest(CHANNEL_ID, ALIASES);
+    private final AliasLoaderRequest request = new AliasLoaderRequest(CHANNEL_ID, PROVIDED_ALIAS);
 
     @Test
     public void shouldReturnChannelId() {
@@ -18,8 +19,8 @@ public class AliasLoaderRequestTest {
     }
 
     @Test
-    public void shouldReturnAliases() {
-        assertThat(request.getAliases()).isEqualTo(ALIASES);
+    public void shouldReturnProvidedAlias() {
+        assertThat(request.getProvidedAlias()).isEqualTo(PROVIDED_ALIAS);
     }
 
 }

@@ -6,4 +6,6 @@ public interface AliasLoader {
 
     Aliases load(final AliasLoaderRequest request);
 
+    boolean supports(final AliasLoaderRequest request);
+
 }
