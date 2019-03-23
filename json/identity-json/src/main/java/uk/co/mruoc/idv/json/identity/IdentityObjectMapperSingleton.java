@@ -6,6 +6,10 @@ public class IdentityObjectMapperSingleton {
 
     private static final ObjectMapper MAPPER = buildMapper();
 
+    private IdentityObjectMapperSingleton() {
+        // utility class
+    }
+
     public static ObjectMapper get() {
         return MAPPER;
     }
