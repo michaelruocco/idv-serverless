@@ -1,21 +1,17 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos.BbosChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa.RsaChannelVerificationPolicies;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class VerificationPoliciesService {
 
     private final Map<String, ChannelVerificationPolicies> channelPolicies = new HashMap<>();
 
-    public VerificationPoliciesService() {
-        add(new RsaChannelVerificationPolicies());
-        add(new As3ChannelVerificationPolicies());
-        add(new BbosChannelVerificationPolicies());
+    public VerificationPoliciesService(final List<ChannelVerificationPolicies> policies) {
+        policies.forEach(this::add);
     }
 
     public ChannelVerificationPolicies getPoliciesForChannel(final String channelId) {

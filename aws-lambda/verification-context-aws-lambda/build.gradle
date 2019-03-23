@@ -15,11 +15,11 @@ sourceSets {
 }
 
 dependencies {
-    compile project(':json-api:verification-context-json-api')
     compile project(':aws-lambda')
     compile project(':aws-lambda:identity-aws-lambda')
-    compile project(':plugins:uk:verification-context:eligibility-handler')
+    compile project(':json-api:verification-context-json-api')
     compile project(':dao:verification-context:verification-context-dao-dynamodb')
+    compile project(':plugins:uk:verification-context')
 
     integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
     integrationTestCompile project(':dao:identity:identity-dao-fake')

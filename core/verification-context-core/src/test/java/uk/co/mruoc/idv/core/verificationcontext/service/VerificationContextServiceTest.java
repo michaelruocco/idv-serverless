@@ -12,13 +12,15 @@ import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.PushNotificationMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 
 import java.time.Duration;
@@ -37,6 +39,7 @@ import static org.mockito.Mockito.verify;
 
 public class VerificationContextServiceTest {
 
+    private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final Duration FIVE_MINUTES = Duration.ofMinutes(5);
 
     private final VerificationContextRequestConverter requestConverter = mock(VerificationContextRequestConverter.class);
@@ -103,7 +106,7 @@ public class VerificationContextServiceTest {
         final Instant expiry = now.plus(FIVE_MINUTES);
         given(expiryCalculator.calculateExpiry(now)).willReturn(expiry);
 
-        final ChannelVerificationPolicies channelPolicies = new As3ChannelVerificationPolicies();
+        final ChannelVerificationPolicies channelPolicies = new ChannelVerificationPolicies("CHANNEL", Collections.singleton(new VerificationPolicy(Activity.Types.LOGIN, Collections.singleton(new VerificationMethodPolicyEntry(new PushNotificationMethodPolicy())))));
         final Channel channel = request.getChannel();
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
@@ -142,7 +145,7 @@ public class VerificationContextServiceTest {
         final Instant expiry = now.plus(FIVE_MINUTES);
         given(expiryCalculator.calculateExpiry(now)).willReturn(expiry);
 
-        final ChannelVerificationPolicies channelPolicies = new As3ChannelVerificationPolicies();
+        final ChannelVerificationPolicies channelPolicies = new ChannelVerificationPolicies("CHANNEL", Collections.singleton(new VerificationPolicy(Activity.Types.LOGIN, Collections.emptyList())));
         final Channel channel = request.getChannel();
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
@@ -163,10 +166,16 @@ public class VerificationContextServiceTest {
 
     private static VerificationContextRequest buildRequest() {
         final VerificationContextRequest request = mock(VerificationContextRequest.class);
-        given(request.getChannel()).willReturn(new As3Channel());
+        given(request.getChannel()).willReturn(new DefaultChannel(CHANNEL_ID));
         given(request.getProvidedAlias()).willReturn(new IdvIdAlias());
         given(request.getActivity()).willReturn(new LoginActivity(Instant.now()));
         return request;
+    }
+
+    private static ChannelVerificationPolicies buildChannelPolicies() {
+        final VerificationMethodPolicyEntry entry = new VerificationMethodPolicyEntry(new PushNotificationMethodPolicy());
+        final Collection<VerificationPolicy> policies = Collections.singleton(new VerificationPolicy(Activity.Types.LOGIN, Collections.singleton(entry)));
+        return new ChannelVerificationPolicies(CHANNEL_ID, policies);
     }
 
 }

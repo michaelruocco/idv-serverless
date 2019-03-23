@@ -5,8 +5,8 @@ import uk.co.mruoc.idv.core.identity.service.AliasLoaderService;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.IdvIdGenerator;
-import uk.co.mruoc.idv.plugin.uk.identity.aliasloader.as3.FakeAs3UkcCardholderIdAliasLoader;
-import uk.co.mruoc.idv.plugin.uk.identity.aliasloader.rsa.FakeRsaCreditCardNumberAliasLoader;
+import uk.co.mruoc.idv.plugin.uk.identity.service.as3.FakeAs3UkcCardholderIdAliasLoader;
+import uk.co.mruoc.idv.plugin.uk.identity.service.rsa.FakeRsaCreditCardNumberAliasLoader;
 
 import java.util.Arrays;
 import java.util.Collection;

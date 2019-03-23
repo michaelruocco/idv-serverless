@@ -26,7 +26,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardN
 import uk.co.mruoc.idv.core.model.MobileNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
@@ -173,7 +173,7 @@ public class DynamoVerificationContextDaoTest {
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("1234567890123456");
         return VerificationContext.builder()
                 .id(id)
-                .channel(new As3Channel())
+                .channel(new DefaultChannel("CHANNEL_ID"))
                 .activity(new LoginActivity(Instant.now()))
                 .providedAlias(providedAlias)
                 .identity(Identity.withAliases(new IdvIdAlias(), providedAlias))

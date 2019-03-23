@@ -4,8 +4,8 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 import java.util.UUID;
 
@@ -103,14 +103,14 @@ public class EligibleMethodRequestTest {
     public void shouldPrintAllValues() {
         final Alias inputAlias = new IdvIdAlias(UUID.fromString("b0d996ae-dfa0-43a4-949c-f03e9dafd539"));
         final EligibleMethodRequest request = EligibleMethodRequest.builder()
-                .channel(new As3Channel())
+                .channel(new DefaultChannel("CHANNEL_ID"))
                 .inputAlias(inputAlias)
                 .identity(Identity.withAliases(inputAlias))
                 .methodPolicy(new VerificationMethodPolicy("method"))
                 .build();
 
         assertThat(request.toString()).isEqualTo("EligibleMethodRequest(" +
-                "channel=DefaultChannel(id=AS3), " +
+                "channel=DefaultChannel(id=CHANNEL_ID), " +
                 "inputAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539)])), " +
                 "methodPolicy=VerificationMethodPolicy(methodName=method, duration=300000))");

@@ -1,39 +1,37 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
+import org.junit.Before;
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.as3.As3ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.bbos.BbosChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.rsa.RsaChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class VerificationPoliciesServiceTest {
 
-    private final VerificationPoliciesService service = new VerificationPoliciesService();
+    private static final String CHANNEL_ID = "CHANNEL_ID";
+
+    private final ChannelVerificationPolicies policies = mock(ChannelVerificationPolicies.class);
+
+    private VerificationPoliciesService service;
+
+    @Before
+    public void setUp() {
+        given(policies.getChannelId()).willReturn(CHANNEL_ID);
+
+        service = new VerificationPoliciesService(Collections.singletonList(policies));
+    }
 
     @Test
     public void shouldReturnRsaChannelVerificationPolicies() {
-        final ChannelVerificationPolicies policies = service.getPoliciesForChannel(Channel.Ids.RSA);
+        final ChannelVerificationPolicies policies = service.getPoliciesForChannel(CHANNEL_ID);
 
-        assertThat(policies).isInstanceOf(RsaChannelVerificationPolicies.class);
-    }
-
-    @Test
-    public void shouldReturnAs3ChannelVerificationPolicies() {
-        final ChannelVerificationPolicies policies = service.getPoliciesForChannel(Channel.Ids.AS3);
-
-        assertThat(policies).isInstanceOf(As3ChannelVerificationPolicies.class);
-    }
-
-    @Test
-    public void shouldReturnBbosChannelVerificationPolicies() {
-        final ChannelVerificationPolicies policies = service.getPoliciesForChannel(Channel.Ids.BBOS);
-
-        assertThat(policies).isInstanceOf(BbosChannelVerificationPolicies.class);
+        assertThat(policies).isEqualTo(policies);
     }
 
     @Test

@@ -6,8 +6,8 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.As3Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
+import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 
@@ -123,7 +123,7 @@ public class VerificationContextTest {
         final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(new VerificationMethodSequence(new DefaultVerificationMethod("method")));
         final VerificationContext request = VerificationContext.builder()
                 .id(id)
-                .channel(new As3Channel())
+                .channel(new DefaultChannel("CHANNEL_ID"))
                 .providedAlias(alias)
                 .identity(Identity.withAliases(alias))
                 .activity(new LoginActivity(timestamp))
@@ -134,7 +134,7 @@ public class VerificationContextTest {
 
         assertThat(request.toString()).isEqualTo("VerificationContext(" +
                 "id=cbe28548-edc5-492b-94d4-6f013b92cece, " +
-                "channel=DefaultChannel(id=AS3), " +
+                "channel=DefaultChannel(id=CHANNEL_ID), " +
                 "providedAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=1ab2141d-a910-4bf8-99a0-efedfbf34b6a)])), " +
                 "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, properties={}), " +
