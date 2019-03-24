@@ -10,8 +10,9 @@ import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDo
 import java.io.UncheckedIOException;
 
 @RequiredArgsConstructor
-public class VerificationContextConverter {
+public class VerificationContextResponseFactory {
 
+    private final int statusCode;
     private final ObjectMapper mapper;
 
     public VerificationContextResponseDocument toResponseDocument(final VerificationContext context) {
@@ -27,7 +28,7 @@ public class VerificationContextConverter {
         try {
             return new APIGatewayProxyResponseEvent()
                     .withBody(mapper.writeValueAsString(document))
-                    .withStatusCode(201);
+                    .withStatusCode(statusCode);
         } catch (final JsonProcessingException e) {
             throw new UncheckedIOException(e);
         }

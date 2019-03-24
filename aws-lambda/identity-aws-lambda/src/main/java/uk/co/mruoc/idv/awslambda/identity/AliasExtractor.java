@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.awslambda.identity;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import uk.co.mruoc.idv.awslambda.IdPathParameterExtractor;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
@@ -11,21 +12,24 @@ import java.util.Optional;
 
 public class AliasExtractor {
 
+    private final IdPathParameterExtractor idExtractor;
+
+    public AliasExtractor() {
+        this(new IdPathParameterExtractor());
+    }
+
+    public AliasExtractor(final IdPathParameterExtractor idExtractor) {
+        this.idExtractor = idExtractor;
+    }
+
     public Alias extractAlias(final APIGatewayProxyRequestEvent input) {
-        final Optional<String> id = extractId(input.getPathParameters());
+        final Optional<String> id = idExtractor.extractId(input.getPathParameters());
         return id.map(AliasExtractor::toIdvId)
                 .orElseGet(() -> toAlias(input.getQueryStringParameters()));
     }
 
     private static Alias toIdvId(final String id) {
         return new IdvIdAlias(id);
-    }
-
-    private static Optional<String> extractId(Map<String, String> pathParameters) {
-        if (pathParameters == null) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(pathParameters.get("id"));
     }
 
     private static Alias toAlias(final Map<String, String> queryStringParameters) {

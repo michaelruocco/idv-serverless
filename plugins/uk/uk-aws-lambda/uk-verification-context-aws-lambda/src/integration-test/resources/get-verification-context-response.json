@@ -1,0 +1,38 @@
+{
+  "data": {
+    "id": "%VERIFICATION_CONTEXT_ID%",
+    "type": "verificationContexts",
+    "attributes": {
+      "channel": {
+        "id": "CHANNEL"
+      },
+      "providedAlias": {
+        "type": "TYPE",
+        "format": "FORMAT",
+        "value": "VALUE"
+      },
+      "identity": {
+        "aliases": [
+          {
+            "type": "IDV_ID",
+            "format": "CLEAR_TEXT",
+            "value": "%IDV_ID%"
+          },
+          {
+            "type": "TYPE",
+            "format": "FORMAT",
+            "value": "VALUE"
+          }
+        ]
+      },
+      "activity": {
+        "type": "ACTIVITY",
+        "timestamp": "2019-03-24T22:41:50.434Z",
+        "properties": {}
+      },
+      "created": "%CREATED%",
+      "expiry": "%EXPIRY%",
+      "eligibleMethods": []
+    }
+  }
+}

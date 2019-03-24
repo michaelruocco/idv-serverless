@@ -37,7 +37,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class VerificationContextServiceTest {
+public class CreateVerificationContextServiceTest {
 
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final Duration FIVE_MINUTES = Duration.ofMinutes(5);
@@ -51,7 +51,7 @@ public class VerificationContextServiceTest {
     private final DefaultEligibleMethodsService eligibleMethodsService = mock(DefaultEligibleMethodsService.class);
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
 
-    private final VerificationContextService service = VerificationContextService.builder()
+    private final CreateVerificationContextService service = CreateVerificationContextService.builder()
             .requestConverter(requestConverter)
             .identityService(identityService)
             .idGenerator(idGenerator)

@@ -19,7 +19,7 @@ import java.time.Instant;
 import java.util.Collection;
 
 @Builder
-public class VerificationContextService {
+public class CreateVerificationContextService {
 
     private final VerificationContextRequestConverter requestConverter;
     private final IdentityService identityService;

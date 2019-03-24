@@ -9,32 +9,35 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
-import uk.co.mruoc.idv.awslambda.verificationcontext.error.PostVerificationContextErrorHandlerDelegator;
+import uk.co.mruoc.idv.awslambda.IdPathParameterExtractor;
+import uk.co.mruoc.idv.awslambda.verificationcontext.error.GetVerificationContextErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
-import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Builder
 @AllArgsConstructor
-public class PostVerificationContextHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class GetVerificationContextHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private final VerificationContextRequestExtractor requestExtractor;
-    private final CreateVerificationContextService service;
+    private final IdPathParameterExtractor idExtractor;
+    private final LoadVerificationContextService service;
     private final VerificationContextResponseFactory responseFactory;
     private final ExceptionConverter exceptionConverter;
 
-    public PostVerificationContextHandler(final CreateVerificationContextService service) {
+    public GetVerificationContextHandler(final LoadVerificationContextService service) {
         this(builder()
-                .requestExtractor(new VerificationContextRequestExtractor(getObjectMapper()))
+                .idExtractor(new IdPathParameterExtractor())
                 .service(service)
-                .responseFactory(new VerificationContextCreatedResponseFactory(getObjectMapper()))
+                .responseFactory(new VerificationContextOkResponseFactory(getObjectMapper()))
                 .exceptionConverter(buildExceptionConverter()));
     }
 
-    public PostVerificationContextHandler(final PostVerificationContextHandlerBuilder builder) {
-        this.requestExtractor = builder.requestExtractor;
+    public GetVerificationContextHandler(final GetVerificationContextHandler.GetVerificationContextHandlerBuilder builder) {
+        this.idExtractor = builder.idExtractor;
         this.service = builder.service;
         this.responseFactory = builder.responseFactory;
         this.exceptionConverter = builder.exceptionConverter;
@@ -43,7 +46,7 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {
-            return createContext(input);
+            return loadContext(input);
         } catch (final Exception e) {
             final APIGatewayProxyResponseEvent response = exceptionConverter.toResponse(e);
             log.info("returning response {}", response);
@@ -51,24 +54,48 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
         }
     }
 
-    private APIGatewayProxyResponseEvent createContext(final APIGatewayProxyRequestEvent requestEvent) {
+    private APIGatewayProxyResponseEvent loadContext(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
-        final VerificationContextRequest request = requestExtractor.extractRequest(requestEvent);
-        final VerificationContext context = service.create(request);
+        final UUID id = extractId(requestEvent);
+        final VerificationContext context = service.load(id);
+        log.info("loaded context {}", context);
         final APIGatewayProxyResponseEvent responseEvent = responseFactory.toResponseEvent(context);
         log.info("returning response {}", responseEvent);
         return responseEvent;
     }
 
+    private UUID extractId(final APIGatewayProxyRequestEvent requestEvent) {
+        try {
+            final Optional<String> id = idExtractor.extractId(requestEvent.getPathParameters());
+            return id.map(UUID::fromString).orElseThrow(VerificationContextIdNotProvidedException::new);
+        } catch (final IllegalArgumentException e) {
+            throw new InvalidVerificationContextIdException(e);
+        }
+    }
+
     private static ExceptionConverter buildExceptionConverter() {
         return ExceptionConverter.builder()
                 .mapper(getObjectMapper())
-                .errorHandler(new PostVerificationContextErrorHandlerDelegator())
+                .errorHandler(new GetVerificationContextErrorHandlerDelegator())
                 .build();
     }
 
     private static ObjectMapper getObjectMapper() {
         return JsonApiVerificationContextObjectMapperSingleton.get();
+    }
+
+    public static class VerificationContextIdNotProvidedException extends RuntimeException {
+
+        // intentionally blank
+
+    }
+
+    public static class InvalidVerificationContextIdException extends RuntimeException {
+
+       public InvalidVerificationContextIdException(final Throwable cause) {
+           super(cause);
+       }
+
     }
 
 }

@@ -8,7 +8,7 @@ import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -18,8 +18,8 @@ import static org.mockito.Mockito.mock;
 public class PostVerificationContextHandlerTest {
 
     private final VerificationContextRequestExtractor requestExtractor = mock(VerificationContextRequestExtractor.class);
-    private final VerificationContextService service = mock(VerificationContextService.class);
-    private final VerificationContextConverter contextConverter = mock(VerificationContextConverter.class);
+    private final CreateVerificationContextService service = mock(CreateVerificationContextService.class);
+    private final VerificationContextResponseFactory responseFactory = mock(VerificationContextResponseFactory.class);
     private final ExceptionConverter exceptionConverter = mock(ExceptionConverter.class);
 
     private final Context context = mock(Context.class);
@@ -27,7 +27,7 @@ public class PostVerificationContextHandlerTest {
     private final PostVerificationContextHandler handler = PostVerificationContextHandler.builder()
             .requestExtractor(requestExtractor)
             .service(service)
-            .contextConverter(contextConverter)
+            .responseFactory(responseFactory)
             .exceptionConverter(exceptionConverter)
             .build();
 
@@ -55,7 +55,7 @@ public class PostVerificationContextHandlerTest {
         given(service.create(contextRequest)).willReturn(context);
 
         final APIGatewayProxyResponseEvent expectedResponseEvent = new APIGatewayProxyResponseEvent();
-        given(contextConverter.toResponseEvent(context)).willReturn(expectedResponseEvent);
+        given(responseFactory.toResponseEvent(context)).willReturn(expectedResponseEvent);
 
         final APIGatewayProxyResponseEvent responseEvent = handler.handleRequest(requestEvent, null);
 
