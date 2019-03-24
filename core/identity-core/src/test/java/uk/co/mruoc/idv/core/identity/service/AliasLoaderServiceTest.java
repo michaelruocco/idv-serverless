@@ -23,7 +23,7 @@ public class AliasLoaderServiceTest {
 
     private final AliasLoader loader1 = mock(AliasLoader.class);
     private final AliasLoader loader2 = mock(AliasLoader.class);
-    private final AliasLoaderService service = new AliasLoaderService(Arrays.asList(loader1, loader2));
+    private final AliasLoaderService service = new DefaultAliasLoaderService(Arrays.asList(loader1, loader2));
 
     @Test
     public void shouldThrowExceptionIfAliasIsNotSupportedByAnyAliasLoaders() {

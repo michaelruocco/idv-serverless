@@ -24,7 +24,7 @@ public class VerificationPoliciesServiceTest {
     public void setUp() {
         given(policies.getChannelId()).willReturn(CHANNEL_ID);
 
-        service = new VerificationPoliciesService(Collections.singletonList(policies));
+        service = new DefaultVerificationPoliciesService(Collections.singletonList(policies));
     }
 
     @Test

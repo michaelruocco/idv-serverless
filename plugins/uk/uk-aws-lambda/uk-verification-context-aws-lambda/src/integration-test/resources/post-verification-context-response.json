@@ -1,0 +1,97 @@
+{
+  "data": {
+    "id": "%VERIFICATION_CONTEXT_ID%",
+    "type": "verificationContexts",
+    "attributes": {
+      "channel": {
+        "id": "RSA"
+      },
+      "providedAlias": {
+        "type": "CREDIT_CARD_NUMBER",
+        "format": "TOKENIZED",
+        "value": "3489347343788005"
+      },
+      "identity": {
+        "aliases": [
+          {
+            "type": "BUK_CUSTOMER_ID",
+            "format": "CLEAR_TEXT",
+            "value": "3333333333"
+          },
+          {
+            "type": "CREDIT_CARD_NUMBER",
+            "format": "TOKENIZED",
+            "value": "3489347343788005"
+          },
+          {
+            "type": "IDV_ID",
+            "format": "CLEAR_TEXT",
+            "value": "%IDV_ID%"
+          }
+        ]
+      },
+      "activity": {
+        "type": "ONLINE_PURCHASE",
+        "timestamp": "2019-03-10T12:53:57.547Z",
+        "properties": {
+          "reference": "ABC123",
+          "cost": {
+            "amount": 10.99,
+            "currency": "GBP"
+          },
+          "merchant": "Amazon"
+        }
+      },
+      "created": "%CREATED%",
+      "expiry": "%EXPIRY%",
+      "eligibleMethods": [
+        {
+          "name": "PHYSICAL_PINSENTRY",
+          "duration": 300000,
+          "sequence": [
+            {
+              "name": "PHYSICAL_PINSENTRY",
+              "duration": 300000,
+              "properties": {
+                "cardNumbers": [
+                  {
+                    "masked": "************8005",
+                    "tokenized": "3213485412348005"
+                  }
+                ],
+                "function": "RESPOND"
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP_SMS",
+          "duration": 600000,
+          "sequence": [
+            {
+              "name": "CARD_CREDENTIALS",
+              "duration": 300000
+            },
+            {
+              "name": "ONE_TIME_PASSCODE_SMS",
+              "duration": 300000,
+              "properties": {
+                "mobileNumbers": [
+                  {
+                    "id": "48be7f28-37c2-42b6-956c-a32241310ee6",
+                    "masked": "********789"
+                  }
+                ],
+                "passcode": {
+                  "length": 8,
+                  "duration": 150000,
+                  "attempts": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

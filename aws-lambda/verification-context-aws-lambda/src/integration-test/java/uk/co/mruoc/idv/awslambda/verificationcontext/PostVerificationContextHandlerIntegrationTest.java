@@ -8,12 +8,15 @@ import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
-import uk.co.mruoc.idv.awslambda.identity.GetIdentityHandlerConfig;
-import uk.co.mruoc.idv.awslambda.identity.UkGetIdentityHandlerConfig;
-import uk.co.mruoc.idv.core.identity.service.IdentityDaoFactory;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
-import uk.co.mruoc.idv.dao.identity.FakeIdentityDaoFactory;
-import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDaoFactory;
+import uk.co.mruoc.idv.core.identity.service.IdentityService;
+import uk.co.mruoc.idv.core.identity.service.IdvIdGenerator;
+import uk.co.mruoc.idv.core.service.DefaultTimeService;
+import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
+import uk.co.mruoc.idv.core.verificationcontext.service.FixedExpiryCalculator;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextRequestConverter;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextService;
+import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
+import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
@@ -24,12 +27,8 @@ import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class PostVerificationContextHandlerIntegrationTest {
 
-    private final IdentityDaoFactory identityDaoFactory = new FakeIdentityDaoFactory();
-    private final GetIdentityHandlerConfig identityConfig = new UkGetIdentityHandlerConfig(identityDaoFactory);
-    private final VerificationContextDaoFactory contextDaoFactory = new FakeVerificationContextDaoFactory();
-    private final PostVerificationContextHandlerConfig contextConfig = new UkVerificationContextHandlerConfig(identityConfig, contextDaoFactory);
-
-    private final PostVerificationContextHandler handler = new PostVerificationContextHandler(contextConfig);
+    private final VerificationContextService contextService = buildVerificationContextService();
+    private final PostVerificationContextHandler handler = new PostVerificationContextHandler(contextService);
 
     @Test
     public void shouldCreateVerificationContext() throws IOException, JSONException {
@@ -65,6 +64,27 @@ public class PostVerificationContextHandlerIntegrationTest {
     private VerificationContextResponseDocument toDocument(final String body) throws IOException {
         final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
         return mapper.readValue(body, VerificationContextResponseDocument.class);
+    }
+
+    private VerificationContextService buildVerificationContextService() {
+        return VerificationContextService.builder()
+                .requestConverter(new VerificationContextRequestConverter())
+                .identityService(buildIdentityService())
+                .policiesService(new StubbedVerificationPoliciesService())
+                .timeService(new DefaultTimeService())
+                .eligibleMethodsService(new StubbedEligibleMethodsService())
+                .expiryCalculator(new FixedExpiryCalculator())
+                .idGenerator(new RandomUuidGenerator())
+                .dao(new FakeVerificationContextDao())
+                .build();
+    }
+
+    private IdentityService buildIdentityService() {
+        return IdentityService.builder()
+                .dao(new FakeIdentityDao())
+                .idvIdGenerator(new IdvIdGenerator())
+                .aliasLoaderService(new StubbedAliasLoaderService())
+                .build();
     }
 
 }

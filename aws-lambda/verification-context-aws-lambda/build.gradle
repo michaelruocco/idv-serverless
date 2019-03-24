@@ -19,25 +19,13 @@ dependencies {
     compile project(':aws-lambda:identity-aws-lambda')
     compile project(':json-api:verification-context-json-api')
     compile project(':dao:verification-context:verification-context-dao-dynamodb')
-    compile project(':plugins:uk:verification-context')
 
     integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
     integrationTestCompile project(':dao:identity:identity-dao-fake')
     integrationTestCompile 'org.skyscreamer:jsonassert:1.5.0'
 }
 
-task buildZip(type: Zip) {
-    from compileJava
-    from processResources
-    into('lib') {
-        from configurations.runtime
-    }
-}
-
-build.dependsOn buildZip
-
 task integrationTest(type: Test) {
-    systemProperty 'sqlite4java.library.path', '../../libs/sqlite4java'
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     outputs.upToDateWhen { false }

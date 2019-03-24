@@ -25,14 +25,10 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     private final VerificationContextConverter contextConverter;
     private final ExceptionConverter exceptionConverter;
 
-    public PostVerificationContextHandler() {
-        this(new UkVerificationContextHandlerConfig());
-    }
-
-    public PostVerificationContextHandler(final PostVerificationContextHandlerConfig config) {
+    public PostVerificationContextHandler(final VerificationContextService service) {
         this(builder()
                 .requestExtractor(new VerificationContextRequestExtractor(getObjectMapper()))
-                .service(config.getVerificationContextService())
+                .service(service)
                 .contextConverter(new VerificationContextConverter(getObjectMapper()))
                 .exceptionConverter(buildExceptionConverter()));
     }

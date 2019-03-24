@@ -10,8 +10,9 @@ import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
-import uk.co.mruoc.idv.core.identity.service.IdentityDaoFactory;
-import uk.co.mruoc.idv.dao.identity.FakeIdentityDaoFactory;
+import uk.co.mruoc.idv.core.identity.service.IdentityService;
+import uk.co.mruoc.idv.core.identity.service.IdvIdGenerator;
+import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,16 +22,14 @@ import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class GetIdentityHandlerIntegrationTest {
 
-    private final IdentityDaoFactory daoFactory = new FakeIdentityDaoFactory();
-    private final GetIdentityHandlerConfig config = new UkGetIdentityHandlerConfig(daoFactory);
-    private final GetIdentityHandler handler = new GetIdentityHandler(config);
+    private final IdentityDao dao = new FakeIdentityDao();
+    private final GetIdentityHandler handler = new GetIdentityHandler(buildIdentityService(dao));
 
     private final IdvIdAlias idvIdAlias = new IdvIdAlias("3713f6f6-8fa6-4686-bcbc-e348ee3b4b06");
     private final Alias alias = new TokenizedCreditCardNumberAlias("1111111111111111");
 
     @Before
     public void setUp() {
-        final IdentityDao dao = daoFactory.build();
         final Identity identity = Identity.withAliases(
                 idvIdAlias,
                 alias,
@@ -67,6 +66,14 @@ public class GetIdentityHandlerIntegrationTest {
         final String expectedBody = loadContentFromClasspath("/identity.json");
         assertThat(response.getStatusCode()).isEqualTo(200);
         assertThat(response.getBody()).isEqualToIgnoringWhitespace(expectedBody);
+    }
+
+    private IdentityService buildIdentityService(final IdentityDao dao) {
+        return IdentityService.builder()
+                .dao(dao)
+                .idvIdGenerator(new IdvIdGenerator())
+                .aliasLoaderService(new StubbedAliasLoaderService())
+                .build();
     }
 
 }

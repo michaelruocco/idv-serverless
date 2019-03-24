@@ -24,7 +24,7 @@ public class IdentityServiceTest {
     private static final String CHANNEL_ID = "CHANNEL_ID";
 
     private final IdentityDao dao = mock(IdentityDao.class);
-    private final AliasLoaderService aliasLoaderService = mock(AliasLoaderService.class);
+    private final DefaultAliasLoaderService aliasLoaderService = mock(DefaultAliasLoaderService.class);
     private final IdvIdGenerator idvIdGenerator = mock(IdvIdGenerator.class);
     private final Alias alias = new TokenizedCreditCardNumberAlias("1234567890123456");
 

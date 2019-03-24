@@ -10,13 +10,13 @@ build:
 	./gradlew build
 
 deploy:
-	cd aws-lambda; \
+	cd plugins/uk/uk-aws-lambda; \
 	npm install --save-dev serverless; \
 	npm install --save-dev serverless-iam-roles-per-function; \
 	sls deploy -s $(env) --conceal
 
 remove:
-	cd aws-lambda; \
+	cd plugins/uk/uk-aws-lambda; \
 	npm install --save-dev serverless; \
 	npm install --save-dev serverless-iam-roles-per-function; \
 	sls remove -s $(env) --conceal

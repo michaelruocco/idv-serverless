@@ -27,13 +27,9 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
     private final IdentityConverter identityConverter;
     private final ExceptionConverter exceptionConverter;
 
-    public GetIdentityHandler() {
-        this(new UkGetIdentityHandlerConfig());
-    }
-
-    public GetIdentityHandler(final GetIdentityHandlerConfig config) {
+    public GetIdentityHandler(final IdentityService identityService) {
         this(builder()
-                .identityService(config.getIdentityService())
+                .identityService(identityService)
                 .requestValidator(new GetIdentityRequestValidator())
                 .aliasExtractor(new AliasExtractor())
                 .identityConverter(new IdentityConverter(IdentityObjectMapperSingleton.get()))

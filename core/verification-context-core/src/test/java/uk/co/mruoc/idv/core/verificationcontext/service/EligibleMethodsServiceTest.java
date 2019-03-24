@@ -45,7 +45,7 @@ public class EligibleMethodsServiceTest {
     private final Collection<EligibilityHandler> handlers = Arrays.asList(handler1, handler2);
     private final EligibleMethodsRequestConverter requestConverter = mock(EligibleMethodsRequestConverter.class);
 
-    private final EligibleMethodsService service = new EligibleMethodsService(handlers, requestConverter);
+    private final EligibleMethodsService service = new DefaultEligibleMethodsService(handlers, requestConverter);
 
     @Before
     public void setUp() {

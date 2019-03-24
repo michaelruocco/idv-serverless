@@ -1,0 +1,117 @@
+plugins:
+  - serverless-iam-roles-per-function
+
+service: idv
+
+custom:
+  defaultStage: dev
+  defaultRegion: eu-west-1
+  defaultVersion: 1.0.0-SNAPSHOT
+
+  stage: ${opt:stage, self:custom.defaultStage}
+  region: ${opt:region, self:custom.defaultRegion}
+  version: ${opt:version, self:custom.defaultVersion}
+
+  lambdas:
+    getIdentity:
+      name: ${self:custom.stage}-get-identity
+
+    postVerificationContext:
+      name: ${self:custom.stage}-post-verification-context
+
+  dynamoTables:
+    identity:
+      name: ${self:custom.stage}-identity
+      arn: { "Fn::Join" : ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref" : "AWS::AccountId" }, ":table/${self:custom.dynamoTables.identity.name}" ] ] }
+
+    verificationContext:
+      name: ${self:custom.stage}-verification-context
+      arn: { "Fn::Join" : ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref" : "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationContext.name}" ] ] }
+
+provider:
+  name: aws
+  runtime: java8
+  stage: ${self:custom.stage}
+  region: ${self:custom.region}
+  timeout: 20
+  environment:
+    STAGE: ${self:custom.stage}
+    REGION: ${self:custom.region}
+
+package:
+  individually: true
+
+functions:
+
+  getIdentity:
+    handler: uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkGetIdentityHandler
+    package:
+      artifact: uk-identity-aws-lambda/build/distributions/uk-identity-aws-lambda-${self:custom.version}.zip
+    name: ${self:custom.lambdas.getIdentity.name}
+    events:
+      - http:
+          path: identities/{id}
+          method: get
+      - http:
+          path: identities
+          method: get
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:BatchWriteItem
+        Resource: ${self:custom.dynamoTables.identity.arn}
+
+  postVerificationContext:
+    handler: uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext.UkPostVerificationContextHandler
+    package:
+      artifact: uk-verification-context-aws-lambda/build/distributions/uk-verification-context-aws-lambda-${self:custom.version}.zip
+    name: ${self:custom.lambdas.postVerificationContext.name}
+    events:
+      - http:
+          path: verificationContexts
+          method: post
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: ${self:custom.dynamoTables.verificationContext.arn}
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:BatchWriteItem
+        Resource: ${self:custom.dynamoTables.identity.arn}
+
+resources:
+  Resources:
+    identityTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: alias
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: alias
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.dynamoTables.identity.name}
+
+    verificationContextTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.dynamoTables.verificationContext.name}

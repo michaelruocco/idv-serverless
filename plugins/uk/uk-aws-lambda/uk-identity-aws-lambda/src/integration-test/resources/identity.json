@@ -1,0 +1,25 @@
+{
+  "data": {
+    "id": "3713f6f6-8fa6-4686-bcbc-e348ee3b4b06",
+    "type": "identities",
+    "attributes": {
+      "aliases": [
+        {
+          "type": "IDV_ID",
+          "format": "CLEAR_TEXT",
+          "value": "3713f6f6-8fa6-4686-bcbc-e348ee3b4b06"
+        },
+        {
+          "type": "CREDIT_CARD_NUMBER",
+          "format": "TOKENIZED",
+          "value": "1111111111111111"
+        },
+        {
+          "type": "DEBIT_CARD_NUMBER",
+          "format": "TOKENIZED",
+          "value": "2222222222222222"
+        }
+      ]
+    }
+  }
+}

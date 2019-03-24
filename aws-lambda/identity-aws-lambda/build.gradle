@@ -19,25 +19,13 @@ dependencies {
     compile project(':core:identity-core')
     compile project(':json-api:identity-json-api')
     compile project(':dao:identity:identity-dao-dynamodb')
-    compile project(':plugins:uk:identity')
 
     compile 'com.amazonaws:aws-lambda-java-core:1.2.0'
 
     integrationTestCompile project(':dao:identity:identity-dao-fake')
 }
 
-task buildZip(type: Zip) {
-    from compileJava
-    from processResources
-    into('lib') {
-        from configurations.runtime
-    }
-}
-
-build.dependsOn buildZip
-
 task integrationTest(type: Test) {
-    systemProperty 'sqlite4java.library.path', '../../libs/sqlite4java'
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     outputs.upToDateWhen { false }

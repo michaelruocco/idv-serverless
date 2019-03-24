@@ -47,8 +47,8 @@ public class VerificationContextServiceTest {
     private final UuidGenerator idGenerator = mock(UuidGenerator.class);
     private final TimeService timeService = mock(TimeService.class);
     private final ExpiryCalculator expiryCalculator = mock(ExpiryCalculator.class);
-    private final VerificationPoliciesService policiesService = mock(VerificationPoliciesService.class);
-    private final EligibleMethodsService eligibleMethodsService = mock(EligibleMethodsService.class);
+    private final DefaultVerificationPoliciesService policiesService = mock(DefaultVerificationPoliciesService.class);
+    private final DefaultEligibleMethodsService eligibleMethodsService = mock(DefaultEligibleMethodsService.class);
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
 
     private final VerificationContextService service = VerificationContextService.builder()
