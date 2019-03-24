@@ -12,8 +12,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
-import uk.co.mruoc.idv.core.identity.service.IdentityDaoFactory;
-import uk.co.mruoc.idv.dao.identity.FakeIdentityDaoFactory;
+import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,18 +20,17 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
-public class GetIdentityHandlerIntegrationTest {
+public class UkGetIdentityHandlerIntegrationTest {
 
-    private final IdentityDaoFactory daoFactory = new FakeIdentityDaoFactory();
-    private final IdentityServiceFactory factory = new UkIdentityServiceFactory(daoFactory);
-    private final GetIdentityHandler handler = new GetIdentityHandler(factory.getIdentityService());
+    private final IdentityDao dao = new FakeIdentityDao();
+    private final IdentityServiceFactory factory = new UkIdentityServiceFactory(new FakeIdentityDao());
+    private final GetIdentityHandler handler = new UkGetIdentityHandler(factory.getIdentityService());
 
     private final IdvIdAlias idvIdAlias = new IdvIdAlias("3713f6f6-8fa6-4686-bcbc-e348ee3b4b06");
     private final Alias alias = new TokenizedCreditCardNumberAlias("1111111111111111");
 
     @Before
     public void setUp() {
-        final IdentityDao dao = daoFactory.build();
         final Identity identity = Identity.withAliases(
                 idvIdAlias,
                 alias,

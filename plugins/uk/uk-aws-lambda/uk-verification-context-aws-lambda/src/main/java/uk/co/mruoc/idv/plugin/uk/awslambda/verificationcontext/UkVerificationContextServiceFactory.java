@@ -7,6 +7,7 @@ import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextServiceF
 import uk.co.mruoc.idv.core.service.DefaultTimeService;
 import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.service.FixedExpiryCalculator;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextRequestConverter;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextService;
@@ -20,16 +21,16 @@ public class UkVerificationContextServiceFactory implements VerificationContextS
 
     private static VerificationContextService CONTEXT_SERVICE;
 
-    private final IdentityServiceFactory identityHandlerConfig;
-    private final VerificationContextDaoFactory daoFactory;
+    private final IdentityServiceFactory identityServiceFactory;
+    private final VerificationContextDao dao;
 
     public UkVerificationContextServiceFactory() {
-        this(new UkIdentityServiceFactory(), buildDaoFactory());
+        this(new UkIdentityServiceFactory(), buildDao());
     }
 
-    public UkVerificationContextServiceFactory(final IdentityServiceFactory identityHandlerConfig, final VerificationContextDaoFactory daoFactory) {
-        this.identityHandlerConfig = identityHandlerConfig;
-        this.daoFactory = daoFactory;
+    public UkVerificationContextServiceFactory(final IdentityServiceFactory identityServiceFactory, final VerificationContextDao dao) {
+        this.identityServiceFactory = identityServiceFactory;
+        this.dao = dao;
     }
 
     @Override
@@ -43,19 +44,20 @@ public class UkVerificationContextServiceFactory implements VerificationContextS
     private VerificationContextService buildService() {
         return VerificationContextService.builder()
                 .requestConverter(new VerificationContextRequestConverter())
-                .identityService(identityHandlerConfig.getIdentityService())
+                .identityService(identityServiceFactory.getIdentityService())
                 .policiesService(new UkVerificationPoliciesService())
                 .timeService(new DefaultTimeService())
                 .eligibleMethodsService(new UkEligibleMethodsService())
                 .expiryCalculator(new FixedExpiryCalculator())
                 .idGenerator(new RandomUuidGenerator())
-                .dao(daoFactory.build())
+                .dao(dao)
                 .build();
     }
 
-    private static VerificationContextDaoFactory buildDaoFactory() {
+    private static VerificationContextDao buildDao() {
         final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
-        return new DynamoVerificationContextDaoFactory(new Environment(), mapper);
+        final VerificationContextDaoFactory factory = new DynamoVerificationContextDaoFactory(new Environment(), mapper);
+        return factory.build();
     }
 
 }

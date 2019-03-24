@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.identity;
 
 import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.identity.IdentityServiceFactory;
+import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.identity.service.IdentityDaoFactory;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.IdvIdGenerator;
@@ -12,14 +13,14 @@ public class UkIdentityServiceFactory implements IdentityServiceFactory {
 
     private static IdentityService IDENTITY_SERVICE;
 
-    private final IdentityDaoFactory daoFactory;
+    private final IdentityDao dao;
 
     public UkIdentityServiceFactory() {
-        this(new DynamoIdentityDaoFactory(new Environment()));
+        this(buildDao());
     }
 
-    public UkIdentityServiceFactory(final IdentityDaoFactory daoFactory) {
-        this.daoFactory = daoFactory;
+    public UkIdentityServiceFactory(final IdentityDao dao) {
+        this.dao = dao;
     }
 
     @Override
@@ -32,10 +33,15 @@ public class UkIdentityServiceFactory implements IdentityServiceFactory {
 
     private IdentityService buildService() {
         return IdentityService.builder()
-                .dao(daoFactory.build())
+                .dao(dao)
                 .aliasLoaderService(new UkAliasLoaderService())
                 .idvIdGenerator(new IdvIdGenerator())
                 .build();
+    }
+
+    private static IdentityDao buildDao() {
+        final IdentityDaoFactory factory = new DynamoIdentityDaoFactory(new Environment());
+        return factory.build();
     }
 
 }
