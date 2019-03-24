@@ -23,7 +23,7 @@ import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 public class UkGetIdentityHandlerIntegrationTest {
 
     private final IdentityDao dao = new FakeIdentityDao();
-    private final IdentityServiceFactory factory = new UkIdentityServiceFactory(new FakeIdentityDao());
+    private final IdentityServiceFactory factory = new UkIdentityServiceFactory(dao);
     private final GetIdentityHandler handler = new UkGetIdentityHandler(factory.getIdentityService());
 
     private final IdvIdAlias idvIdAlias = new IdvIdAlias("3713f6f6-8fa6-4686-bcbc-e348ee3b4b06");
