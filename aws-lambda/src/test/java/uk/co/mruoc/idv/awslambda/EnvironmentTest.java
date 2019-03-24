@@ -23,14 +23,18 @@ public class EnvironmentTest {
 
     @Test
     public void shouldLoadStage() {
-        final String stage = Environment.getStage();
+        final Environment environment = new Environment();
+
+        final String stage = environment.getStage();
 
         assertThat(stage).isEqualTo(STAGE);
     }
 
     @Test
     public void shouldLoadRegion() {
-        final String region = Environment.getRegion();
+        final Environment environment = new Environment();
+
+        final String region = environment.getRegion();
 
         assertThat(region).isEqualTo(REGION);
     }

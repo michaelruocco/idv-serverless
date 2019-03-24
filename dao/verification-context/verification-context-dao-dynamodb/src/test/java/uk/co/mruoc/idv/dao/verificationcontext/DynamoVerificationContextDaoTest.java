@@ -4,17 +4,10 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
-import com.amazonaws.services.dynamodbv2.model.KeyType;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,7 +33,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,7 +42,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
-@Slf4j
 public class DynamoVerificationContextDaoTest {
 
     private static final String TABLE_NAME = "verification-context";
@@ -58,12 +49,14 @@ public class DynamoVerificationContextDaoTest {
     @Rule
     public final LocalDynamoRule localDynamoRule = new LocalDynamoRule();
 
+    private final VerificationContextTableFactory tableFactory = new VerificationContextTableFactory(TABLE_NAME);
+
     private VerificationContextDao dao;
 
     @Before
     public void setUp() throws InterruptedException {
         final AmazonDynamoDB client = localDynamoRule.getClient();
-        createTable(client);
+        tableFactory.createTable(client);
 
         dao = DynamoVerificationContextDao.builder()
                 .table(new DynamoDB(client).getTable(TABLE_NAME))
@@ -130,32 +123,6 @@ public class DynamoVerificationContextDaoTest {
                 .hasCauseInstanceOf(IOException.class);
     }
 
-    private static void createTable(final AmazonDynamoDB client) throws InterruptedException {
-        final List<KeySchemaElement> keySchema = Collections.singletonList(new KeySchemaElement()
-                .withAttributeName("id")
-                .withKeyType(KeyType.HASH));
-
-        final List<AttributeDefinition> attributeDefinitions = Collections.singletonList(new AttributeDefinition()
-                .withAttributeName("id")
-                .withAttributeType("S"));
-
-        final ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
-                .withReadCapacityUnits(1L)
-                .withWriteCapacityUnits(1L);
-
-        final CreateTableRequest request = new CreateTableRequest()
-                .withTableName(TABLE_NAME)
-                .withKeySchema(keySchema)
-                .withAttributeDefinitions(attributeDefinitions)
-                .withProvisionedThroughput(provisionedThroughput);
-
-        log.info("creating table {}", TABLE_NAME);
-        TableUtils.createTableIfNotExists(client, request);
-        log.info("waiting until table {} is active", TABLE_NAME);
-        TableUtils.waitUntilActive(client, TABLE_NAME, 60000, 5000);
-        log.info("table {} is active", TABLE_NAME);
-    }
-
     private static ObjectMapper buildMapper() {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new IdvVerificationContextModule());
@@ -173,7 +140,7 @@ public class DynamoVerificationContextDaoTest {
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("1234567890123456");
         return VerificationContext.builder()
                 .id(id)
-                .channel(new DefaultChannel("CHANNEL_IDx"))
+                .channel(new DefaultChannel("CHANNEL_ID"))
                 .activity(new LoginActivity(Instant.now()))
                 .providedAlias(providedAlias)
                 .identity(Identity.withAliases(new IdvIdAlias(), providedAlias))

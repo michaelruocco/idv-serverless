@@ -8,10 +8,12 @@ import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
-import uk.co.mruoc.idv.core.identity.service.IdentityDao;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
-import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
-import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
+import uk.co.mruoc.idv.awslambda.identity.GetIdentityHandlerConfig;
+import uk.co.mruoc.idv.awslambda.identity.UkGetIdentityHandlerConfig;
+import uk.co.mruoc.idv.core.identity.service.IdentityDaoFactory;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
+import uk.co.mruoc.idv.dao.identity.FakeIdentityDaoFactory;
+import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDaoFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
@@ -22,9 +24,12 @@ import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class PostVerificationContextHandlerIntegrationTest {
 
-    private final VerificationContextDao verificationContextDao = new FakeVerificationContextDao();
-    private final IdentityDao identityDao = new FakeIdentityDao();
-    private final PostVerificationContextHandler handler = new PostVerificationContextHandler(identityDao, verificationContextDao);
+    private final IdentityDaoFactory identityDaoFactory = new FakeIdentityDaoFactory();
+    private final GetIdentityHandlerConfig identityConfig = new UkGetIdentityHandlerConfig(identityDaoFactory);
+    private final VerificationContextDaoFactory contextDaoFactory = new FakeVerificationContextDaoFactory();
+    private final PostVerificationContextHandlerConfig contextConfig = new UkVerificationContextHandlerConfig(identityConfig, contextDaoFactory);
+
+    private final PostVerificationContextHandler handler = new PostVerificationContextHandler(contextConfig);
 
     @Test
     public void shouldCreateVerificationContext() throws IOException, JSONException {

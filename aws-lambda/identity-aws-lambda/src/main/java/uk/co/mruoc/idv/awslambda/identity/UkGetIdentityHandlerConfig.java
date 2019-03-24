@@ -1,34 +1,43 @@
 package uk.co.mruoc.idv.awslambda.identity;
 
+import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.core.identity.service.AliasLoader;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderService;
-import uk.co.mruoc.idv.core.identity.service.IdentityDao;
+import uk.co.mruoc.idv.core.identity.service.IdentityDaoFactory;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.IdvIdGenerator;
+import uk.co.mruoc.idv.dao.identity.DynamoIdentityDaoFactory;
 import uk.co.mruoc.idv.plugin.uk.identity.service.as3.FakeAs3UkcCardholderIdAliasLoader;
 import uk.co.mruoc.idv.plugin.uk.identity.service.rsa.FakeRsaCreditCardNumberAliasLoader;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public class IdentityServiceSingleton {
+public class UkGetIdentityHandlerConfig implements GetIdentityHandlerConfig {
 
-    private static IdentityService SERVICE;
+    private static IdentityService IDENTITY_SERVICE;
 
-    private IdentityServiceSingleton() {
-        // utility class
+    private final IdentityDaoFactory daoFactory;
+
+    public UkGetIdentityHandlerConfig() {
+        this(new DynamoIdentityDaoFactory(new Environment()));
     }
 
-    public static IdentityService get(final IdentityDao dao) {
-        if (SERVICE == null) {
-            SERVICE = buildService(dao);
+    public UkGetIdentityHandlerConfig(final IdentityDaoFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
+    @Override
+    public IdentityService getIdentityService() {
+        if (IDENTITY_SERVICE == null) {
+            IDENTITY_SERVICE = buildService();
         }
-        return SERVICE;
+        return IDENTITY_SERVICE;
     }
 
-    private static IdentityService buildService(final IdentityDao dao) {
+    private IdentityService buildService() {
         return IdentityService.builder()
-                .dao(dao)
+                .dao(daoFactory.build())
                 .aliasLoaderService(buildAliasLoaderService())
                 .idvIdGenerator(new IdvIdGenerator())
                 .build();

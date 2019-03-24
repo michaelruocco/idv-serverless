@@ -8,13 +8,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.RequestValidator;
 import uk.co.mruoc.idv.awslambda.identity.error.GetIdentityErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.json.identity.IdentityObjectMapperSingleton;
 
@@ -30,16 +28,16 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
     private final ExceptionConverter exceptionConverter;
 
     public GetIdentityHandler() {
-        this(IdentityDaoFactory.build(Environment.getRegion(), Environment.getStage()));
+        this(new UkGetIdentityHandlerConfig());
     }
 
-    public GetIdentityHandler(final IdentityDao dao) {
+    public GetIdentityHandler(final GetIdentityHandlerConfig config) {
         this(builder()
-                .identityService(IdentityServiceSingleton.get(dao))
+                .identityService(config.getIdentityService())
                 .requestValidator(new GetIdentityRequestValidator())
                 .aliasExtractor(new AliasExtractor())
-                .identityConverter(buildIdentityConverter())
-                .exceptionConverter(buildExceptionConverter()));
+                .identityConverter(new IdentityConverter(IdentityObjectMapperSingleton.get()))
+                .exceptionConverter(buildExceptionConverter(IdentityObjectMapperSingleton.get())));
     }
 
     public GetIdentityHandler(final GetIdentityHandlerBuilder builder) {
@@ -75,13 +73,7 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
         return response;
     }
 
-    private static IdentityConverter buildIdentityConverter() {
-        final ObjectMapper mapper = IdentityObjectMapperSingleton.get();
-        return new IdentityConverter(mapper);
-    }
-
-    private static ExceptionConverter buildExceptionConverter() {
-        final ObjectMapper mapper = IdentityObjectMapperSingleton.get();
+    private static ExceptionConverter buildExceptionConverter(final ObjectMapper mapper) {
         return ExceptionConverter.builder()
                 .mapper(mapper)
                 .errorHandler(new GetIdentityErrorHandlerDelegator())

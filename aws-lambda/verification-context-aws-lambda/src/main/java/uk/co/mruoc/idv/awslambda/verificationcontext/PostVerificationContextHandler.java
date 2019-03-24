@@ -8,15 +8,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
-import uk.co.mruoc.idv.awslambda.identity.IdentityDaoFactory;
-import uk.co.mruoc.idv.awslambda.identity.IdentityServiceSingleton;
 import uk.co.mruoc.idv.awslambda.verificationcontext.error.PostVerificationContextErrorHandlerDelegator;
-import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextService;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
 
@@ -31,15 +26,14 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     private final ExceptionConverter exceptionConverter;
 
     public PostVerificationContextHandler() {
-        this(IdentityDaoFactory.build(Environment.getRegion(), Environment.getStage()),
-                VerificationContextDaoFactory.build(Environment.getRegion(), Environment.getStage()));
+        this(new UkVerificationContextHandlerConfig());
     }
 
-    public PostVerificationContextHandler(final IdentityDao identityDao, final VerificationContextDao verificationContextDao) {
+    public PostVerificationContextHandler(final PostVerificationContextHandlerConfig config) {
         this(builder()
-                .requestExtractor(new VerificationContextRequestExtractor(JsonApiVerificationContextObjectMapperSingleton.get()))
-                .service(VerificationContextServiceSingleton.get(IdentityServiceSingleton.get(identityDao), verificationContextDao))
-                .contextConverter(new VerificationContextConverter(JsonApiVerificationContextObjectMapperSingleton.get()))
+                .requestExtractor(new VerificationContextRequestExtractor(getObjectMapper()))
+                .service(config.getVerificationContextService())
+                .contextConverter(new VerificationContextConverter(getObjectMapper()))
                 .exceptionConverter(buildExceptionConverter()));
     }
 
@@ -71,11 +65,14 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     }
 
     private static ExceptionConverter buildExceptionConverter() {
-        final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
         return ExceptionConverter.builder()
-                .mapper(mapper)
+                .mapper(getObjectMapper())
                 .errorHandler(new PostVerificationContextErrorHandlerDelegator())
                 .build();
+    }
+
+    private static ObjectMapper getObjectMapper() {
+        return JsonApiVerificationContextObjectMapperSingleton.get();
     }
 
 }

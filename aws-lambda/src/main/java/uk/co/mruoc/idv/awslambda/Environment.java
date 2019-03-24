@@ -1,17 +1,18 @@
 package uk.co.mruoc.idv.awslambda;
 
-public class Environment {
+import uk.co.mruoc.idv.dao.dynamodb.DynamoEnvironment;
 
-    private Environment() {
-        // utility class
+public class Environment implements DynamoEnvironment {
+
+    private final String region = System.getenv("REGION");
+    private final String stage = System.getenv("STAGE");
+
+    public String getRegion() {
+        return region;
     }
 
-    public static String getRegion() {
-        return System.getenv("REGION");
-    }
-
-    public static String getStage() {
-        return System.getenv("STAGE");
+    public String getStage() {
+        return stage;
     }
 
 }
