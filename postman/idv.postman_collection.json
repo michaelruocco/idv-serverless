@@ -184,17 +184,11 @@
 					"raw": "{\n\t\"subject\": \"allow-all\",\n\t\"secondsToLive\": 60\n}"
 				},
 				"url": {
-					"raw": "https://fg5iz9iq20.execute-api.eu-west-1.amazonaws.com/dev/tokens",
-					"protocol": "https",
+					"raw": "{{token-host}}/tokens",
 					"host": [
-						"fg5iz9iq20",
-						"execute-api",
-						"eu-west-1",
-						"amazonaws",
-						"com"
+						"{{token-host}}"
 					],
 					"path": [
-						"dev",
 						"tokens"
 					]
 				}
