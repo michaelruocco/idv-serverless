@@ -30,8 +30,11 @@
 							"})",
 							"",
 							"var json = JSON.parse(responseBody);",
-							"var aliases = json.data.attributes.identity.aliases;",
 							"",
+							"var contextId = json.data.id;",
+							"postman.setEnvironmentVariable(\"contextId\", contextId);",
+							"",
+							"var aliases = json.data.attributes.identity.aliases;",
 							"let idvId = aliases.find(alias => alias.type === \"IDV_ID\");",
 							"postman.setEnvironmentVariable(\"idvId\", idvId.value);"
 						],
@@ -443,6 +446,76 @@
 					],
 					"path": [
 						"verificationContexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get verification context",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return verification context with id\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.id).to.equal(environment.contextId);",
+							"})",
+							"",
+							"pm.test(\"should return physical pinsentry as first verification method\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var firstMethod = json.data.attributes.eligibleMethods[0];",
+							"    pm.expect(firstMethod.name).to.equal(\"PHYSICAL_PINSENTRY\");",
+							"})",
+							"",
+							"pm.test(\"should return otp sms as second verification method\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    var firstMethod = json.data.attributes.eligibleMethods[1];",
+							"    pm.expect(firstMethod.name).to.equal(\"OTP_SMS\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7919b843-8229-4c1a-b1cf-e89485481275",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts/{{contextId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts",
+						"{{contextId}}"
 					]
 				}
 			},

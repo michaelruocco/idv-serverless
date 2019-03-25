@@ -7,7 +7,7 @@
 
 ## To Do
 
- 1. implement aws lambda handler for getting verification contexts
+ 1. implement aws lambda handler error handling (id not provided, id invalid or context not found) for getting verification contexts
 
  2. identity merging, when create identity raise event with created identity, this can be used
 for both MI reporting and to trigger an "offline" lambda event to check for matching aliases and merge

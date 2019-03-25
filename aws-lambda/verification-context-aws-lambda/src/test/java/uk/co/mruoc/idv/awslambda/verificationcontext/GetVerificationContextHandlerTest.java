@@ -9,7 +9,6 @@ import uk.co.mruoc.idv.awslambda.IdPathParameterExtractor;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextHandler.InvalidVerificationContextIdException;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextHandler.VerificationContextIdNotProvidedException;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
 
 import java.util.HashMap;
@@ -74,7 +73,6 @@ public class GetVerificationContextHandlerTest {
         final Map<String, String> pathParameters = new HashMap<>();
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withPathParameters(pathParameters);
-        final VerificationContextRequest contextRequest = mock(VerificationContextRequest.class);
         given(idExtractor.extractId(pathParameters)).willReturn(Optional.of(contextId.toString()));
 
         final VerificationContext context = mock(VerificationContext.class);

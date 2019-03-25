@@ -23,7 +23,7 @@ public class DynamoVerificationContextDao implements VerificationContextDao {
 
     @Override
     public void save(final VerificationContext context) {
-        log.debug("saving verification context {}", context);
+        log.info("saving verification context {}", context);
         final Item item = toItem(context);
         log.info("putting item {}", item);
         table.putItem(item);
@@ -37,15 +37,17 @@ public class DynamoVerificationContextDao implements VerificationContextDao {
             log.debug("verifiction context not found returning empty optional");
             return Optional.empty();
         }
-        log.debug("loaded item {}", item);
+        log.info("loaded item {}", item);
         final VerificationContext context = toVerificationContext(item);
-        log.debug("returning context {}", context);
+        log.info("returning context {}", context);
         return Optional.of(context);
     }
 
     private Item toItem(final VerificationContext context) {
         try {
             final String json = mapper.writeValueAsString(context);
+            log.info("using mixin {}", mapper.findMixInClassFor(VerificationContext.class));
+            log.info("writing item with body {}", json);
             return new Item()
                     .withPrimaryKey("id", context.getId().toString())
                     .withJSON("body", json);
@@ -57,6 +59,7 @@ public class DynamoVerificationContextDao implements VerificationContextDao {
     private VerificationContext toVerificationContext(final Item item) {
         try {
             final String json = item.getJSON("body");
+            log.info("loaded json {}", json);
             return mapper.readValue(json, VerificationContext.class);
         } catch (final IOException e) {
             throw new UncheckedIOException(e);

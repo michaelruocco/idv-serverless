@@ -19,6 +19,9 @@ custom:
     postVerificationContext:
       name: ${self:custom.stage}-post-verification-context
 
+    getVerificationContext:
+      name: ${self:custom.stage}-get-verification-context
+
   dynamoTables:
     identity:
       name: ${self:custom.stage}-identity
@@ -81,6 +84,21 @@ functions:
           - dynamodb:GetItem
           - dynamodb:BatchWriteItem
         Resource: ${self:custom.dynamoTables.identity.arn}
+
+  getVerificationContext:
+    handler: uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext.UkGetVerificationContextHandler
+    package:
+      artifact: uk-verification-context-aws-lambda/build/distributions/uk-verification-context-aws-lambda-${self:custom.version}.zip
+    name: ${self:custom.lambdas.getVerificationContext.name}
+    events:
+      - http:
+          path: verificationContexts/{id}
+          method: get
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamoTables.verificationContext.arn}
 
 resources:
   Resources:
