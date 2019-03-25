@@ -8,7 +8,6 @@ import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
 import uk.co.mruoc.idv.dao.verificationcontext.DynamoVerificationContextDaoFactory;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
 
 public class UkLoadVerificationContextServiceFactory implements LoadVerificationContextServiceFactory {
 
