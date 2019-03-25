@@ -181,7 +181,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"subject\": \"allow-all\"\n}"
+					"raw": "{\n\t\"subject\": \"allow-all\",\n\t\"secondsToLive\": 60\n}"
 				},
 				"url": {
 					"raw": "https://fg5iz9iq20.execute-api.eu-west-1.amazonaws.com/dev/tokens",
@@ -202,7 +202,7 @@
 			"response": []
 		},
 		{
-			"name": "Post verification context rsa online purchase Copy",
+			"name": "Post verification context rsa online purchase",
 			"event": [
 				{
 					"listen": "test",

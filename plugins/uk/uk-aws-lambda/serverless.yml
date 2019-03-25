@@ -56,10 +56,12 @@ functions:
           path: identities/{id}
           method: get
           authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          resultTtlInSeconds: 0
       - http:
           path: identities
           method: get
           authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          resultTtlInSeconds: 0
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -77,6 +79,7 @@ functions:
           path: verificationContexts
           method: post
           authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          resultTtlInSeconds: 0
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -98,6 +101,7 @@ functions:
           path: verificationContexts/{id}
           method: get
           authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          resultTtlInSeconds: 0
     iamRoleStatements:
       - Effect: Allow
         Action:
