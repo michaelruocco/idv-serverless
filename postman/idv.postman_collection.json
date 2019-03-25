@@ -6,7 +6,203 @@
 	},
 	"item": [
 		{
-			"name": "Post verification context rsa online purchase",
+			"name": "Post verification context without token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 401 status\", function () {",
+							"    pm.response.to.have.status(401);",
+							"})",
+							"",
+							"pm.test(\"should return correct message\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.message).to.equal(\"Unauthorized\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationContexts\",\n        \"attributes\": {\n            \"channel\": {\n                \"id\": \"RSA\"\n            },\n            \"activity\": {\n                \"type\": \"ONLINE_PURCHASE\",\n                \"timestamp\": \"{{timestampUtc}}\",\n                \"properties\": {\n                    \"reference\": \"ABC123\",\n                    \"cost\": {\n                        \"amount\": 10.99,\n                        \"currency\": \"GBP\"\n                    },\n                    \"merchant\": \"Amazon\"\n                }\n            },\n            \"providedAlias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get verification context without token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 401 status\", function () {",
+							"    pm.response.to.have.status(401);",
+							"})",
+							"",
+							"pm.test(\"should return correct message\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.message).to.equal(\"Unauthorized\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7919b843-8229-4c1a-b1cf-e89485481275",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts/f0e92224-a774-40c4-83b3-08c7292ad3cd",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts",
+						"f0e92224-a774-40c4-83b3-08c7292ad3cd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Identity without token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 401 status\", function () {",
+							"    pm.response.to.have.status(401);",
+							"})",
+							"",
+							"pm.test(\"should return correct message\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.message).to.equal(\"Unauthorized\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/identities/{{idvId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"identities",
+						"{{idvId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fc38e402-6b30-49df-b78c-faac11682dae",
+						"exec": [
+							"var json = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"token\", json.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"subject\": \"allow-all\"\n}"
+				},
+				"url": {
+					"raw": "https://fg5iz9iq20.execute-api.eu-west-1.amazonaws.com/dev/tokens",
+					"protocol": "https",
+					"host": [
+						"fg5iz9iq20",
+						"execute-api",
+						"eu-west-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post verification context rsa online purchase Copy",
 			"event": [
 				{
 					"listen": "test",
@@ -59,6 +255,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
 						"type": "text"
 					}
 				],
@@ -124,6 +325,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -183,6 +389,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -244,6 +455,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -306,6 +522,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -368,6 +589,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -433,6 +659,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -498,10 +729,9 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -545,7 +775,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -587,7 +823,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -643,7 +885,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -691,7 +939,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -743,7 +997,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -797,7 +1057,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
