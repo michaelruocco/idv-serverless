@@ -26,5 +26,9 @@ include 'aws-lambda:identity-aws-lambda'
 include 'aws-lambda:verification-context-aws-lambda'
 include 'aws-lambda:verification-context-aws-lambda:'
 
+include 'events'
+include 'events:sns-events'
+include 'events:fake-events'
+
 include 'tools'
 include 'tools:api-gateway'

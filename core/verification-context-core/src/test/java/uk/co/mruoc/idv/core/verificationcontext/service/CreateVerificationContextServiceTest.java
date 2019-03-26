@@ -15,6 +15,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.core.verificationcontext.model.event.VerificationContextCreatedEvent;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
@@ -22,6 +23,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.PushNotificationMet
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
+import uk.co.mruoc.idv.events.EventPublisher;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -50,6 +52,8 @@ public class CreateVerificationContextServiceTest {
     private final DefaultVerificationPoliciesService policiesService = mock(DefaultVerificationPoliciesService.class);
     private final DefaultEligibleMethodsService eligibleMethodsService = mock(DefaultEligibleMethodsService.class);
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
+    private final VerificationContextConverter contextConverter = mock(VerificationContextConverter.class);
+    private final EventPublisher eventPublisher = mock(EventPublisher.class);
 
     private final CreateVerificationContextService service = CreateVerificationContextService.builder()
             .requestConverter(requestConverter)
@@ -60,6 +64,8 @@ public class CreateVerificationContextServiceTest {
             .policiesService(policiesService)
             .eligibleMethodsService(eligibleMethodsService)
             .dao(dao)
+            .contextConverter(contextConverter)
+            .eventPublisher(eventPublisher)
             .build();
 
     @Test
@@ -113,9 +119,13 @@ public class CreateVerificationContextServiceTest {
         final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
         given(eligibleMethodsService.loadEligibleMethods(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
 
+        final VerificationContextCreatedEvent createdEvent = mock(VerificationContextCreatedEvent.class);
+        given(contextConverter.toCreatedEvent(any(VerificationContext.class))).willReturn(createdEvent);
+
         final VerificationContext context = service.create(request);
 
         verify(dao).save(context);
+        verify(eventPublisher).publish(createdEvent);
         assertThat(context.getId()).isEqualTo(contextId);
         assertThat(context.getChannel()).isEqualTo(request.getChannel());
         assertThat(context.getProvidedAlias()).isEqualTo(request.getProvidedAlias());

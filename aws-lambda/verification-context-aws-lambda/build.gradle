@@ -22,6 +22,7 @@ dependencies {
 
     integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
     integrationTestCompile project(':dao:identity:identity-dao-fake')
+    integrationTestCompile project(':events:fake-events')
     integrationTestCompile 'org.skyscreamer:jsonassert:1.5.0'
 }
 

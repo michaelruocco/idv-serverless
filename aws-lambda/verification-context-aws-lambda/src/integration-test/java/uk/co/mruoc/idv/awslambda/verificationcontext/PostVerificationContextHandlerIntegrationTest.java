@@ -11,11 +11,14 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.IdvIdGenerator;
 import uk.co.mruoc.idv.core.service.DefaultTimeService;
 import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
+import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.verificationcontext.service.FixedExpiryCalculator;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextConverter;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextRequestConverter;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
 import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
+import uk.co.mruoc.idv.events.sns.FakeEventPublisher;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
@@ -54,15 +57,18 @@ public class PostVerificationContextHandlerIntegrationTest {
     }
 
     private static CreateVerificationContextService buildVerificationContextService() {
+        final TimeService timeService = new DefaultTimeService();
         return CreateVerificationContextService.builder()
                 .requestConverter(new VerificationContextRequestConverter())
                 .identityService(buildIdentityService())
                 .policiesService(new StubbedVerificationPoliciesService())
-                .timeService(new DefaultTimeService())
+                .timeService(timeService)
                 .eligibleMethodsService(new StubbedEligibleMethodsService())
                 .expiryCalculator(new FixedExpiryCalculator())
                 .idGenerator(new RandomUuidGenerator())
                 .dao(new FakeVerificationContextDao())
+                .contextConverter(new VerificationContextConverter(timeService))
+                .eventPublisher(new FakeEventPublisher())
                 .build();
     }
 

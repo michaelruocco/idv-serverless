@@ -14,6 +14,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
+import uk.co.mruoc.idv.events.EventPublisher;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -29,12 +30,15 @@ public class CreateVerificationContextService {
     private final VerificationPoliciesService policiesService;
     private final EligibleMethodsService eligibleMethodsService;
     private final VerificationContextDao dao;
+    private final VerificationContextConverter contextConverter;
+    private final EventPublisher eventPublisher;
 
     public VerificationContext create(final VerificationContextRequest request) {
         final UpsertIdentityRequest upsertIdentityRequest = requestConverter.toUpsertIdentityRequest(request);
         final Identity identity = identityService.upsert(upsertIdentityRequest);
         final VerificationContext context = buildContext(request, identity);
         dao.save(context);
+        eventPublisher.publish(contextConverter.toCreatedEvent(context));
         return context;
     }
 

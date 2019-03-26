@@ -19,9 +19,11 @@ dependencies {
     compile project(':plugins:uk:uk-verification-context')
     compile project(':plugins:uk:uk-identity')
     compile project(':plugins:uk:uk-aws-lambda:uk-identity-aws-lambda')
+    compile project(':events:sns-events')
 
     integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
     integrationTestCompile project(':dao:identity:identity-dao-fake')
+    integrationTestCompile project(':events:fake-events')
     integrationTestCompile 'org.skyscreamer:jsonassert:1.5.0'
 }
 
