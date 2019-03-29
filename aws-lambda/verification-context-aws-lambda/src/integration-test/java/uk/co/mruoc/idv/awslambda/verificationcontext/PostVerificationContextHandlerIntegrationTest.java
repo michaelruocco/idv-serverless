@@ -17,7 +17,7 @@ import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextReque
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
 import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
-import uk.co.mruoc.idv.events.sns.FakeEventPublisher;
+import uk.co.mruoc.idv.events.sns.fake.FakeEventPublisher;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
