@@ -357,7 +357,7 @@
 							"pm.test(\"should return correct error\", function () {",
 							"    var json = JSON.parse(responseBody)",
 							"    pm.expect(json.errors[0].title).to.equal(\"Bad Request\");",
-							"    pm.expect(json.errors[0].detail).to.equal(\"Verification context request is invalid: com.fasterxml.jackson.databind.JsonMappingException: (was java.lang.NullPointerException) (through reference chain: uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextRequestDocument[\\\"data\\\"]->uk.co.mruoc.jsonapi.JsonApiDataItem[\\\"attributes\\\"]->uk.co.mruoc.idv.jsonapi.verificationcontext.DefaultVerificationContextRequest[\\\"channel\\\"])\");",
+							"    pm.expect(json.errors[0].detail).to.equal(\"Verification context request is invalid: uk.co.mruoc.idv.json.JsonConverter$JsonConversionException: com.fasterxml.jackson.databind.JsonMappingException: (was java.lang.NullPointerException) (through reference chain: uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextRequestDocument[\\\"data\\\"]->uk.co.mruoc.jsonapi.JsonApiDataItem[\\\"attributes\\\"]->uk.co.mruoc.idv.jsonapi.verificationcontext.DefaultVerificationContextRequest[\\\"channel\\\"])\");",
 							"    pm.expect(json.errors[0].meta).to.eql({});",
 							"})"
 						],
