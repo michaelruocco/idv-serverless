@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -14,12 +13,16 @@ import uk.co.mruoc.idv.awslambda.identity.error.GetIdentityErrorHandlerDelegator
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
-import uk.co.mruoc.idv.json.identity.IdentityObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.json.JsonConverterFactory;
+import uk.co.mruoc.idv.json.identity.IdentityJsonConverterFactory;
 
 @Slf4j
 @Builder
 @AllArgsConstructor
 public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new IdentityJsonConverterFactory();
 
     private final IdentityService identityService;
     private final RequestValidator requestValidator;
@@ -32,8 +35,8 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
                 .identityService(identityService)
                 .requestValidator(new GetIdentityRequestValidator())
                 .aliasExtractor(new AliasExtractor())
-                .identityConverter(new IdentityConverter(IdentityObjectMapperSingleton.get()))
-                .exceptionConverter(buildExceptionConverter(IdentityObjectMapperSingleton.get())));
+                .identityConverter(new IdentityConverter(JSON_CONVERTER_FACTORY.build()))
+                .exceptionConverter(buildExceptionConverter(JSON_CONVERTER_FACTORY.build())));
     }
 
     public GetIdentityHandler(final GetIdentityHandlerBuilder builder) {
@@ -69,9 +72,9 @@ public class GetIdentityHandler implements RequestHandler<APIGatewayProxyRequest
         return response;
     }
 
-    private static ExceptionConverter buildExceptionConverter(final ObjectMapper mapper) {
+    private static ExceptionConverter buildExceptionConverter(final JsonConverter jsonConverter) {
         return ExceptionConverter.builder()
-                .mapper(mapper)
+                .jsonConverter(jsonConverter)
                 .errorHandler(new GetIdentityErrorHandlerDelegator())
                 .build();
     }

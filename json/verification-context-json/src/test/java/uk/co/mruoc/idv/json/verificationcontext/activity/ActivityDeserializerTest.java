@@ -1,7 +1,5 @@
 package uk.co.mruoc.idv.json.verificationcontext.activity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javamoney.moneta.Money;
 import org.json.JSONException;
 import org.junit.Test;
@@ -11,17 +9,17 @@ import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.OnlinePurchaseActivity;
-import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 
 import javax.money.MonetaryAmount;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.mruoc.file.ContentLoader.*;
+import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class ActivityDeserializerTest {
 
@@ -29,63 +27,63 @@ public class ActivityDeserializerTest {
     private static final String LOGIN_ACTIVITY_PATH = "/activity/login-activity.json";
     private static final String DEFAULT_ACTIVITY_PATH = "/activity/default-activity.json";
 
-    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
+    private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeOnlinePurchaseActivity() throws JsonProcessingException, JSONException {
+    public void shouldSerializeOnlinePurchaseActivity() throws JSONException {
         final Activity activity = buildOnlinePurchaseActivity();
 
-        final String json = MAPPER.writeValueAsString(activity);
+        final String json = CONVERTER.toJson(activity);
 
         final String expectedJson = loadContentFromClasspath(ONLINE_PURCHASE_ACTIVITY_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeOnlinePurchaseActivity() throws IOException {
+    public void shouldDeserializeOnlinePurchaseActivity() {
         final String json = loadContentFromClasspath(ONLINE_PURCHASE_ACTIVITY_PATH);
 
-        final Activity activity = MAPPER.readValue(json, Activity.class);
+        final Activity activity = CONVERTER.toObject(json, Activity.class);
 
         final Activity expectedActivity = buildOnlinePurchaseActivity();
         assertThat(activity).isEqualToComparingFieldByFieldRecursively(expectedActivity);
     }
 
     @Test
-    public void shouldSerializeLoginActivity() throws JsonProcessingException, JSONException {
+    public void shouldSerializeLoginActivity() throws JSONException {
         final Activity activity = buildLoginActivity();
 
-        final String json = MAPPER.writeValueAsString(activity);
+        final String json = CONVERTER.toJson(activity);
 
         final String expectedJson = loadContentFromClasspath(LOGIN_ACTIVITY_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeLoginActivity() throws IOException {
+    public void shouldDeserializeLoginActivity() {
         final String json = loadContentFromClasspath(LOGIN_ACTIVITY_PATH);
 
-        final Activity activity = MAPPER.readValue(json, Activity.class);
+        final Activity activity = CONVERTER.toObject(json, Activity.class);
 
         final Activity expectedActivity = buildLoginActivity();
         assertThat(activity).isEqualToComparingFieldByFieldRecursively(expectedActivity);
     }
 
     @Test
-    public void shouldSerializeDefaultActivity() throws JsonProcessingException, JSONException {
+    public void shouldSerializeDefaultActivity() throws JSONException {
         final Activity activity = buildDefaultActivity();
 
-        final String json = MAPPER.writeValueAsString(activity);
+        final String json = CONVERTER.toJson(activity);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_ACTIVITY_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeDefaultActivity() throws IOException {
+    public void shouldDeserializeDefaultActivity() {
         final String json = loadContentFromClasspath(DEFAULT_ACTIVITY_PATH);
 
-        final Activity activity = MAPPER.readValue(json, Activity.class);
+        final Activity activity = CONVERTER.toObject(json, Activity.class);
 
         final Activity expectedActivity = buildDefaultActivity();
         assertThat(activity).isEqualToComparingFieldByFieldRecursively(expectedActivity);

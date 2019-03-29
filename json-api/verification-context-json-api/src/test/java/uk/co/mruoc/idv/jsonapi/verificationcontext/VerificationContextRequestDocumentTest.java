@@ -1,7 +1,5 @@
 package uk.co.mruoc.idv.jsonapi.verificationcontext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -10,8 +8,8 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.json.JsonConverter;
 
-import java.io.IOException;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,18 +19,19 @@ public class VerificationContextRequestDocumentTest {
 
     private static final String JSON = loadContentFromClasspath("/verification-context-request-document.json");
     private static final VerificationContextRequestDocument DOCUMENT = buildDocument();
-    private static final ObjectMapper MAPPER = JsonApiVerificationContextObjectMapperSingleton.get();
+
+    private static final JsonConverter CONVERTER = new JsonApiVerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDocument() throws JsonProcessingException, JSONException {
-        final String json = MAPPER.writeValueAsString(DOCUMENT);
+    public void shouldSerializeDocument() throws JSONException {
+        final String json = CONVERTER.toJson(DOCUMENT);
 
         JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeDocument() throws IOException {
-        final VerificationContextRequestDocument document = MAPPER.readValue(JSON, VerificationContextRequestDocument.class);
+    public void shouldDeserializeDocument() {
+        final VerificationContextRequestDocument document = CONVERTER.toObject(JSON, VerificationContextRequestDocument.class);
 
         assertThat(document).isEqualToComparingFieldByFieldRecursively(DOCUMENT);
     }

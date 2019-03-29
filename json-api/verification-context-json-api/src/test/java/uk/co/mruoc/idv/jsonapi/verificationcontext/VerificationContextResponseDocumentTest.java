@@ -1,7 +1,5 @@
 package uk.co.mruoc.idv.jsonapi.verificationcontext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -18,8 +16,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
+import uk.co.mruoc.idv.json.JsonConverter;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
@@ -33,18 +31,19 @@ public class VerificationContextResponseDocumentTest {
 
     private static final String JSON = loadContentFromClasspath("/verification-context-response-document.json");
     private static final VerificationContextResponseDocument DOCUMENT = buildDocument();
-    private static final ObjectMapper MAPPER = JsonApiVerificationContextObjectMapperSingleton.get();
+
+    private static final JsonConverter CONVERTER = new JsonApiVerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDocument() throws JsonProcessingException, JSONException {
-        final String json = MAPPER.writeValueAsString(DOCUMENT);
+    public void shouldSerializeDocument() throws JSONException {
+        final String json = CONVERTER.toJson(DOCUMENT);
 
         JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeDocument() throws IOException {
-        final VerificationContextResponseDocument document = MAPPER.readValue(JSON, VerificationContextResponseDocument.class);
+    public void shouldDeserializeDocument() {
+        final VerificationContextResponseDocument document = CONVERTER.toObject(JSON, VerificationContextResponseDocument.class);
 
         assertThat(document).isEqualToComparingFieldByFieldRecursively(DOCUMENT);
     }
@@ -73,22 +72,22 @@ public class VerificationContextResponseDocumentTest {
     }
 
     @Test
-    public void shouldReturnIdvId() throws IOException {
-        final VerificationContextResponseDocument document = MAPPER.readValue(JSON, VerificationContextResponseDocument.class);
+    public void shouldReturnIdvId() {
+        final VerificationContextResponseDocument document = CONVERTER.toObject(JSON, VerificationContextResponseDocument.class);
 
         assertThat(document.getIdvId()).isEqualTo(UUID.fromString("d98aa22c-a06e-4db5-8dc1-9ea83716ac12"));
     }
 
     @Test
-    public void shouldReturnCreated() throws IOException {
-        final VerificationContextResponseDocument document = MAPPER.readValue(JSON, VerificationContextResponseDocument.class);
+    public void shouldReturnCreated() {
+        final VerificationContextResponseDocument document = CONVERTER.toObject(JSON, VerificationContextResponseDocument.class);
 
         assertThat(document.getCreated()).isEqualTo("2019-03-10T12:53:57.547Z");
     }
 
     @Test
-    public void shouldReturnExpiry() throws IOException {
-        final VerificationContextResponseDocument document = MAPPER.readValue(JSON, VerificationContextResponseDocument.class);
+    public void shouldReturnExpiry() {
+        final VerificationContextResponseDocument document = CONVERTER.toObject(JSON, VerificationContextResponseDocument.class);
 
         assertThat(document.getExpiry()).isEqualTo("2019-03-10T12:58:57.547Z");
     }

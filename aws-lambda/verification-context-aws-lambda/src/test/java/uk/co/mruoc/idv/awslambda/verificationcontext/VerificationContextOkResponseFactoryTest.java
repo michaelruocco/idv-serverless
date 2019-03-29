@@ -1,8 +1,8 @@
 package uk.co.mruoc.idv.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,9 +12,9 @@ public class VerificationContextOkResponseFactoryTest {
 
     private static final int CREATED_STATUS_CODE = 200;
     
-    private final ObjectMapper mapper = mock(ObjectMapper.class);
+    private final JsonConverter converter = mock(JsonConverter.class);
 
-    private final VerificationContextResponseFactory factory = new VerificationContextOkResponseFactory(mapper);
+    private final VerificationContextResponseFactory factory = new VerificationContextOkResponseFactory(converter);
 
     @Test
     public void shouldPopulateCreatedStatusCode() {

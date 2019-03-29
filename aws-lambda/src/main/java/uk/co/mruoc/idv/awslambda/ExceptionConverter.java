@@ -1,14 +1,12 @@
 package uk.co.mruoc.idv.awslambda;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
-import java.io.UncheckedIOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,20 +14,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExceptionConverter {
 
-    private final ObjectMapper mapper;
+    private final JsonConverter jsonConverter;
     private final ErrorHandlerDelegator errorHandler;
 
     public APIGatewayProxyResponseEvent toResponse(final Exception exception) {
-        try {
-            final JsonApiErrorDocument document = errorHandler.toDocument(exception);
-            final APIGatewayProxyResponseEvent event = new APIGatewayProxyResponseEvent()
-                    .withBody(mapper.writeValueAsString(document))
-                    .withStatusCode(calculateErrorStatusCode(document));
-            log.info("returning error response {}", event);
-            return event;
-        } catch (final JsonProcessingException e) {
-            throw new UncheckedIOException(e);
-        }
+        final JsonApiErrorDocument document = errorHandler.toDocument(exception);
+        final APIGatewayProxyResponseEvent event = new APIGatewayProxyResponseEvent()
+                .withBody(jsonConverter.toJson(document))
+                .withStatusCode(calculateErrorStatusCode(document));
+        log.info("returning error response {}", event);
+        return event;
     }
 
     private static int calculateErrorStatusCode(final JsonApiErrorDocument document) {

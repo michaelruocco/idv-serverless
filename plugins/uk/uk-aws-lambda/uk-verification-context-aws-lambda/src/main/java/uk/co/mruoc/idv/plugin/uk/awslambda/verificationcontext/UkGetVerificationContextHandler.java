@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextS
 public class UkGetVerificationContextHandler extends GetVerificationContextHandler {
 
     public UkGetVerificationContextHandler() {
-        this(new UkLoadVerificationContextServiceFactory().build());
+        this(new UkGetVerificationContextServiceFactory().build());
     }
 
     public UkGetVerificationContextHandler(final LoadVerificationContextService service) {

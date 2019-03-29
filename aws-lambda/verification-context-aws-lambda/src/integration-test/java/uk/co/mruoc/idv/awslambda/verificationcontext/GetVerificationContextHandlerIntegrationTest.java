@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
 import java.io.IOException;
@@ -77,9 +77,9 @@ public class GetVerificationContextHandlerIntegrationTest {
                 .build();
     }
 
-    private static VerificationContextResponseDocument toDocument(final String body) throws IOException {
-        final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
-        return mapper.readValue(body, VerificationContextResponseDocument.class);
+    private static VerificationContextResponseDocument toDocument(final String body) {
+        final JsonConverter converter = new JsonApiVerificationContextJsonConverterFactory().build();
+        return converter.toObject(body, VerificationContextResponseDocument.class);
     }
 
     private static String loadExpectedBody(final VerificationContextResponseDocument document) {

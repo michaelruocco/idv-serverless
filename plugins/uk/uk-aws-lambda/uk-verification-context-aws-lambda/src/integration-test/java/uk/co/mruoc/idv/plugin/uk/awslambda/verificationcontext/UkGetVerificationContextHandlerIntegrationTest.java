@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,10 +19,10 @@ import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -39,7 +38,7 @@ public class UkGetVerificationContextHandlerIntegrationTest {
     private static final UUID CONTEXT_ID = UUID.randomUUID();
 
     private final VerificationContextDao contextDao = new FakeVerificationContextDao();
-    private final LoadVerificationContextServiceFactory factory = new UkLoadVerificationContextServiceFactory(contextDao);
+    private final LoadVerificationContextServiceFactory factory = new UkGetVerificationContextServiceFactory(contextDao);
     private final GetVerificationContextHandler handler = new UkGetVerificationContextHandler(factory.build());
 
     @Before
@@ -48,7 +47,7 @@ public class UkGetVerificationContextHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldLoadVerificationContext() throws IOException, JSONException {
+    public void shouldLoadVerificationContext() throws JSONException {
         final Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("id", CONTEXT_ID.toString());
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
@@ -77,9 +76,9 @@ public class UkGetVerificationContextHandlerIntegrationTest {
                 .build();
     }
 
-    private static VerificationContextResponseDocument toDocument(final String body) throws IOException {
-        final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
-        return mapper.readValue(body, VerificationContextResponseDocument.class);
+    private static VerificationContextResponseDocument toDocument(final String body) {
+        final JsonConverter converter = new JsonApiVerificationContextJsonConverterFactory().build();
+        return converter.toObject(body, VerificationContextResponseDocument.class);
     }
 
     private static String loadExpectedBody(final VerificationContextResponseDocument document) {

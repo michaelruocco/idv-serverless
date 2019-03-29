@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,8 @@ import uk.co.mruoc.idv.awslambda.IdPathParameterExtractor;
 import uk.co.mruoc.idv.awslambda.verificationcontext.error.GetVerificationContextErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverterFactory;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -22,6 +22,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 public class GetVerificationContextHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+    private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new JsonApiVerificationContextJsonConverterFactory();
 
     private final IdPathParameterExtractor idExtractor;
     private final LoadVerificationContextService service;
@@ -32,7 +34,7 @@ public class GetVerificationContextHandler implements RequestHandler<APIGatewayP
         this(builder()
                 .idExtractor(new IdPathParameterExtractor())
                 .service(service)
-                .responseFactory(new VerificationContextOkResponseFactory(getObjectMapper()))
+                .responseFactory(new VerificationContextOkResponseFactory(JSON_CONVERTER_FACTORY.build()))
                 .exceptionConverter(buildExceptionConverter()));
     }
 
@@ -75,13 +77,9 @@ public class GetVerificationContextHandler implements RequestHandler<APIGatewayP
 
     private static ExceptionConverter buildExceptionConverter() {
         return ExceptionConverter.builder()
-                .mapper(getObjectMapper())
+                .jsonConverter(JSON_CONVERTER_FACTORY.build())
                 .errorHandler(new GetVerificationContextErrorHandlerDelegator())
                 .build();
-    }
-
-    private static ObjectMapper getObjectMapper() {
-        return JsonApiVerificationContextObjectMapperSingleton.get();
     }
 
     public static class VerificationContextIdNotProvidedException extends RuntimeException {

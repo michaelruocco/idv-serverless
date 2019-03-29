@@ -1,7 +1,5 @@
 package uk.co.mruoc.idv.json.identity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -17,8 +15,8 @@ import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.EncryptedDebitCardNu
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedDebitCardNumberAlias;
+import uk.co.mruoc.idv.json.JsonConverter;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,27 +26,28 @@ public class IdentityDeserializerTest {
 
     private static final String IDENTITY_JSON = loadContentFromClasspath("/identity.json");
     private static final Identity IDENTITY = buildIdentity();
-    private static final ObjectMapper MAPPER = IdentityObjectMapperSingleton.get();
+
+    private final JsonConverter converter = new IdentityJsonConverterFactory().build();
 
     @Test
-    public void shouldSerialize() throws JsonProcessingException, JSONException {
-        final String json = MAPPER.writeValueAsString(IDENTITY);
+    public void shouldSerialize() throws JSONException {
+        final String json = converter.toJson(IDENTITY);
 
         JSONAssert.assertEquals(IDENTITY_JSON, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserialize() throws IOException {
-        final Identity identity = MAPPER.readValue(IDENTITY_JSON, Identity.class);
+    public void shouldDeserialize() {
+        final Identity identity = converter.toObject(IDENTITY_JSON, Identity.class);
 
         assertThat(identity).isEqualToComparingFieldByFieldRecursively(IDENTITY);
     }
 
     @Test
-    public void shouldUseDefaultAliasAndDefaultAliasTypeForUnknownAliasType() throws IOException {
+    public void shouldUseDefaultAliasAndDefaultAliasTypeForUnknownAliasType() {
         final String unknownAliasTypeJson = loadContentFromClasspath("/identity-unknown-alias-type.json");
 
-        final Identity identity = MAPPER.readValue(unknownAliasTypeJson, Identity.class);
+        final Identity identity = converter.toObject(unknownAliasTypeJson, Identity.class);
 
         assertThat(identity.getAliases()).containsExactlyInAnyOrder(
                 new IdvIdAlias(UUID.fromString("23d106b4-0003-4ad8-8fc2-7f3a601c2125")),

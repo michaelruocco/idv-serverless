@@ -1,41 +1,38 @@
 package uk.co.mruoc.idv.json.verificationcontext.channel;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
-import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
-
-import java.io.IOException;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.mruoc.file.ContentLoader.*;
+import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class ChannelDeserializerTest {
 
     private static final String DEFAULT_CHANNEL_PATH = "/channel/default-channel.json";
 
-    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
+    private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDefaultChannel() throws JsonProcessingException, JSONException {
+    public void shouldSerializeDefaultChannel() throws JSONException {
         final Channel channel = buildDefaultChannel();
 
-        final String json = MAPPER.writeValueAsString(channel);
+        final String json = CONVERTER.toJson(channel);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_CHANNEL_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeDefaultChannel() throws IOException {
+    public void shouldDeserializeDefaultChannel() {
         final String json = loadContentFromClasspath(DEFAULT_CHANNEL_PATH);
 
-        final Channel channel = MAPPER.readValue(json, Channel.class);
+        final Channel channel = CONVERTER.toObject(json, Channel.class);
 
         final Channel expectedChannel = buildDefaultChannel();
         assertThat(channel).isEqualToComparingFieldByFieldRecursively(expectedChannel);

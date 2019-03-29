@@ -1,25 +1,25 @@
 package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.verificationcontext.LoadVerificationContextServiceFactory;
 import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
 import uk.co.mruoc.idv.dao.verificationcontext.DynamoVerificationContextDaoFactory;
-import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 
-public class UkLoadVerificationContextServiceFactory implements LoadVerificationContextServiceFactory {
+public class UkGetVerificationContextServiceFactory implements LoadVerificationContextServiceFactory {
 
     private static LoadVerificationContextService CONTEXT_SERVICE;
 
     private final VerificationContextDao dao;
 
-    public UkLoadVerificationContextServiceFactory() {
+    public UkGetVerificationContextServiceFactory() {
         this(buildDao());
     }
 
-    public UkLoadVerificationContextServiceFactory(final VerificationContextDao dao) {
+    public UkGetVerificationContextServiceFactory(final VerificationContextDao dao) {
         this.dao = dao;
     }
 
@@ -38,8 +38,8 @@ public class UkLoadVerificationContextServiceFactory implements LoadVerification
     }
 
     private static VerificationContextDao buildDao() {
-        final ObjectMapper mapper = VerificationContextObjectMapperSingleton.get();
-        final VerificationContextDaoFactory factory = new DynamoVerificationContextDaoFactory(new Environment(), mapper);
+        final JsonConverter converter = new VerificationContextJsonConverterFactory().build();
+        final VerificationContextDaoFactory factory = new DynamoVerificationContextDaoFactory(new Environment(), converter);
         return factory.build();
     }
 

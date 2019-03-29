@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -16,11 +15,10 @@ import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.events.EventPublisher;
 import uk.co.mruoc.idv.events.sns.FakeEventPublisher;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 import uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkIdentityServiceFactory;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
@@ -31,11 +29,11 @@ public class UkPostVerificationContextHandlerIntegrationTest {
     private final VerificationContextDao contextDao = new FakeVerificationContextDao();
     private final EventPublisher eventPublisher = new FakeEventPublisher();
     private final IdentityServiceFactory serviceFactory = new UkIdentityServiceFactory(identityDao);
-    private final CreateVerificationContextServiceFactory factory = new UkCreateVerificationContextServiceFactory(serviceFactory, contextDao, eventPublisher);
+    private final CreateVerificationContextServiceFactory factory = new UkPostVerificationContextServiceFactory(serviceFactory, contextDao, eventPublisher);
     private final PostVerificationContextHandler handler = new UkPostVerificationContextHandler(factory.build());
 
     @Test
-    public void shouldCreateVerificationContext() throws IOException, JSONException {
+    public void shouldCreateVerificationContext() throws JSONException {
         final String requestBody = loadContentFromClasspath("/post-verification-context-request.json");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withBody(requestBody);
@@ -53,9 +51,9 @@ public class UkPostVerificationContextHandlerIntegrationTest {
         return BodyTemplatePopulator.populate(template, document);
     }
 
-    private VerificationContextResponseDocument toDocument(final String body) throws IOException {
-        final ObjectMapper mapper = JsonApiVerificationContextObjectMapperSingleton.get();
-        return mapper.readValue(body, VerificationContextResponseDocument.class);
+    private VerificationContextResponseDocument toDocument(final String body) {
+        final JsonConverter converter = new JsonApiVerificationContextJsonConverterFactory().build();
+        return converter.toObject(body, VerificationContextResponseDocument.class);
     }
 
 }

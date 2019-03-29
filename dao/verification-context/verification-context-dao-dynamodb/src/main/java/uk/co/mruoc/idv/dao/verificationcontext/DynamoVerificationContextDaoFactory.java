@@ -4,32 +4,32 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
 import uk.co.mruoc.idv.dao.dynamodb.DynamoEnvironment;
+import uk.co.mruoc.idv.json.JsonConverter;
 
 public class DynamoVerificationContextDaoFactory implements VerificationContextDaoFactory {
 
     private static final String TABLE_NAME_FORMAT = "%s-verification-context";
 
     private final Table table;
-    private final ObjectMapper mapper;
+    private final JsonConverter converter;
 
-    public DynamoVerificationContextDaoFactory(final DynamoEnvironment environment, final ObjectMapper mapper) {
-        this(toTable(environment), mapper);
+    public DynamoVerificationContextDaoFactory(final DynamoEnvironment environment, final JsonConverter converter) {
+        this(toTable(environment), converter);
     }
 
-    public DynamoVerificationContextDaoFactory(final Table table, final ObjectMapper mapper) {
+    public DynamoVerificationContextDaoFactory(final Table table, final JsonConverter converter) {
         this.table = table;
-        this.mapper = mapper;
+        this.converter = converter;
     }
 
     @Override
     public VerificationContextDao build() {
         return DynamoVerificationContextDao.builder()
                 .table(table)
-                .mapper(mapper)
+                .converter(converter)
                 .build();
     }
 

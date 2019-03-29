@@ -1,7 +1,5 @@
 package uk.co.mruoc.idv.json.verificationcontext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -18,8 +16,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
+import uk.co.mruoc.idv.json.JsonConverter;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
@@ -29,42 +27,45 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
-public class VerificationContextDeserializerTest {
+public class VerificationContextJsonConverterFactoryTest {
 
-    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
+    private static final String PATH_TO_CONTEXT_WITH_ID = "/verification-context-with-id.json";
+    private static final String PATH_TO_CONTEXT_WITHOUT_ID = "/verification-context-without-id.json";
+
+    private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeContextWithId() throws JsonProcessingException, JSONException {
-        final String expectedJson = loadContentFromClasspath("/verification-context-with-id.json");
+    public void shouldConvertVerificationContextWithIdToJson() throws JSONException {
+        final String expectedJson = loadContentFromClasspath(PATH_TO_CONTEXT_WITH_ID);
 
-        final String json = MAPPER.writeValueAsString(buildContextWithId());
+        final String json = CONVERTER.toJson(buildContextWithId());
 
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeContextWithId() throws IOException {
-        final String json = loadContentFromClasspath("/verification-context-with-id.json");
+    public void shouldConvertJsonToVerificationContextWithId() {
+        final String json = loadContentFromClasspath(PATH_TO_CONTEXT_WITH_ID);
 
-        final VerificationContext document = MAPPER.readValue(json, VerificationContext.class);
+        final VerificationContext document = CONVERTER.toObject(json, VerificationContext.class);
 
         assertThat(document).isEqualToComparingFieldByFieldRecursively(buildContextWithId());
     }
 
     @Test
-    public void shouldSerializeContextWithoutId() throws JsonProcessingException, JSONException {
-        final String expectedJson = loadContentFromClasspath("/verification-context-without-id.json");
+    public void shouldConvertVerificationContextWithoutIdToJson() throws JSONException {
+        final String expectedJson = loadContentFromClasspath(PATH_TO_CONTEXT_WITHOUT_ID);
 
-        final String json = MAPPER.writeValueAsString(buildContextWithoutId());
+        final String json = CONVERTER.toJson(buildContextWithoutId());
 
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeContextWithoutId() throws IOException {
-        final String json = loadContentFromClasspath("/verification-context-without-id.json");
+    public void shouldConvertJsonToVerificationContextWithoutId() {
+        final String json = loadContentFromClasspath(PATH_TO_CONTEXT_WITHOUT_ID);
 
-        final VerificationContext document = MAPPER.readValue(json, VerificationContext.class);
+        final VerificationContext document = CONVERTER.toObject(json, VerificationContext.class);
 
         assertThat(document).isEqualToComparingFieldByFieldRecursively(buildContextWithoutId());
     }

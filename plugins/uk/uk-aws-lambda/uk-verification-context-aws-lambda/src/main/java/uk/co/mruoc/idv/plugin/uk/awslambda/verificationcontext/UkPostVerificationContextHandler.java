@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContex
 public class UkPostVerificationContextHandler extends PostVerificationContextHandler {
 
     public UkPostVerificationContextHandler() {
-        this(new UkCreateVerificationContextServiceFactory().build());
+        this(new UkPostVerificationContextServiceFactory().build());
     }
 
     public UkPostVerificationContextHandler(final CreateVerificationContextService service) {

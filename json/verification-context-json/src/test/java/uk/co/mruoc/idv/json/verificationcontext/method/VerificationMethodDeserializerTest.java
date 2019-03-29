@@ -1,7 +1,5 @@
 package uk.co.mruoc.idv.json.verificationcontext.method;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -17,9 +15,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVe
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
-
-import java.io.IOException;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,123 +38,123 @@ public class VerificationMethodDeserializerTest {
 
     private static final int DURATION = 300000;
 
-    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
+    private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeCardCredentialsMethod() throws JsonProcessingException, JSONException {
+    public void shouldSerializeCardCredentialsMethod() throws JSONException {
         final VerificationMethod method = buildCardCredentialsMethod();
 
-        final String json = MAPPER.writeValueAsString(method);
+        final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(CARD_CREDENTIALS_METHOD_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeCardCredentialsMethod() throws IOException {
+    public void shouldDeserializeCardCredentialsMethod() {
         final String json = loadContentFromClasspath(CARD_CREDENTIALS_METHOD_PATH);
 
-        final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
+        final VerificationMethod method = CONVERTER.toObject(json, VerificationMethod.class);
 
         final VerificationMethod expectedMethod = buildCardCredentialsMethod();
         assertThat(method).isEqualToComparingFieldByFieldRecursively(expectedMethod);
     }
 
     @Test
-    public void shouldSerializeOtpSmsMethod() throws JsonProcessingException, JSONException {
+    public void shouldSerializeOtpSmsMethod() throws JSONException {
         final VerificationMethod method = buildOtpSmsMethod();
 
-        final String json = MAPPER.writeValueAsString(method);
+        final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(OTP_SMS_METHOD_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeOtpSmsMethod() throws IOException {
+    public void shouldDeserializeOtpSmsMethod() {
         final String json = loadContentFromClasspath(OTP_SMS_METHOD_PATH);
 
-        final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
+        final VerificationMethod method = CONVERTER.toObject(json, VerificationMethod.class);
 
         final VerificationMethod expectedMethod = buildOtpSmsMethod();
         assertThat(method).isEqualToComparingFieldByFieldRecursively(expectedMethod);
     }
 
     @Test
-    public void shouldSerializePhysicalPinsentryMethod() throws JsonProcessingException, JSONException {
+    public void shouldSerializePhysicalPinsentryMethod() throws JSONException {
         final VerificationMethod method = buildPhysicalPinsentryMethod();
 
-        final String json = MAPPER.writeValueAsString(method);
+        final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(PHYSICAL_PINSENTRY_METHOD_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializePhysicalPinsentryMethod() throws IOException {
+    public void shouldDeserializePhysicalPinsentryMethod() {
         final String json = loadContentFromClasspath(PHYSICAL_PINSENTRY_METHOD_PATH);
 
-        final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
+        final VerificationMethod method = CONVERTER.toObject(json, VerificationMethod.class);
 
         final VerificationMethod expectedMethod = buildPhysicalPinsentryMethod();
         assertThat(method).isEqualToComparingFieldByFieldRecursively(expectedMethod);
     }
 
     @Test
-    public void shouldSerializeMobilePinsentryMethod() throws JsonProcessingException, JSONException {
+    public void shouldSerializeMobilePinsentryMethod() throws JSONException {
         final VerificationMethod method = buildMobilePinsentryMethod();
 
-        final String json = MAPPER.writeValueAsString(method);
+        final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(MOBILE_PINSENTRY_METHOD_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeMobilePinsentryMethod() throws IOException {
+    public void shouldDeserializeMobilePinsentryMethod() {
         final String json = loadContentFromClasspath(MOBILE_PINSENTRY_METHOD_PATH);
 
-        final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
+        final VerificationMethod method = CONVERTER.toObject(json, VerificationMethod.class);
 
         final VerificationMethod expectedMethod = buildMobilePinsentryMethod();
         assertThat(method).isEqualToComparingFieldByFieldRecursively(expectedMethod);
     }
 
     @Test
-    public void shouldSerializePushNotificationMethod() throws JsonProcessingException, JSONException {
+    public void shouldSerializePushNotificationMethod() throws JSONException {
         final VerificationMethod method = buildPushNotificationMethod();
 
-        final String json = MAPPER.writeValueAsString(method);
+        final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(PUSH_NOTIFICATION_METHOD_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializePushNotificationMethod() throws IOException {
+    public void shouldDeserializePushNotificationMethod() {
         final String json = loadContentFromClasspath(PUSH_NOTIFICATION_METHOD_PATH);
 
-        final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
+        final VerificationMethod method = CONVERTER.toObject(json, VerificationMethod.class);
 
         final VerificationMethod expectedMethod = buildPushNotificationMethod();
         assertThat(method).isEqualToComparingFieldByFieldRecursively(expectedMethod);
     }
 
     @Test
-    public void shouldSerializeDefaultMethod() throws JsonProcessingException, JSONException {
+    public void shouldSerializeDefaultMethod() throws JSONException {
         final VerificationMethod method = buildDefaultMethod();
 
-        final String json = MAPPER.writeValueAsString(method);
+        final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_METHOD_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeDefaultMethod() throws IOException {
+    public void shouldDeserializeDefaultMethod() {
         final String json = loadContentFromClasspath(DEFAULT_METHOD_PATH);
 
-        final VerificationMethod method = MAPPER.readValue(json, VerificationMethod.class);
+        final VerificationMethod method = CONVERTER.toObject(json, VerificationMethod.class);
 
         final VerificationMethod expectedMethod = buildDefaultMethod();
         assertThat(method).isEqualToComparingFieldByFieldRecursively(expectedMethod);

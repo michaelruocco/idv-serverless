@@ -1,6 +1,5 @@
 package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.identity.IdentityServiceFactory;
@@ -17,15 +16,16 @@ import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContex
 import uk.co.mruoc.idv.dao.verificationcontext.DynamoVerificationContextDaoFactory;
 import uk.co.mruoc.idv.events.EventPublisher;
 import uk.co.mruoc.idv.events.sns.SnsEventPublisherFactory;
-import uk.co.mruoc.idv.json.verificationcontext.VerificationContextObjectMapperSingleton;
+import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkIdentityServiceFactory;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility.UkEligibleMethodsService;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.UkVerificationPoliciesService;
 
 @Slf4j
-public class UkCreateVerificationContextServiceFactory implements CreateVerificationContextServiceFactory {
+public class UkPostVerificationContextServiceFactory implements CreateVerificationContextServiceFactory {
 
-    private static final ObjectMapper MAPPER = VerificationContextObjectMapperSingleton.get();
+    private static final JsonConverter JSON_CONVERTER = new VerificationContextJsonConverterFactory().build();
     private static final Environment ENVIRONMENT = new Environment();
 
     private static CreateVerificationContextService CONTEXT_SERVICE;
@@ -34,13 +34,13 @@ public class UkCreateVerificationContextServiceFactory implements CreateVerifica
     private final VerificationContextDao dao;
     private final EventPublisher eventPublisher;
 
-    public UkCreateVerificationContextServiceFactory() {
+    public UkPostVerificationContextServiceFactory() {
         this(new UkIdentityServiceFactory(), buildDao(), buildEventPublisher());
     }
 
-    public UkCreateVerificationContextServiceFactory(final IdentityServiceFactory identityServiceFactory,
-                                                     final VerificationContextDao dao,
-                                                     final EventPublisher eventPublisher) {
+    public UkPostVerificationContextServiceFactory(final IdentityServiceFactory identityServiceFactory,
+                                                   final VerificationContextDao dao,
+                                                   final EventPublisher eventPublisher) {
         this.identityServiceFactory = identityServiceFactory;
         this.dao = dao;
         this.eventPublisher = eventPublisher;
@@ -71,12 +71,12 @@ public class UkCreateVerificationContextServiceFactory implements CreateVerifica
     }
 
     private static EventPublisher buildEventPublisher() {
-        final SnsEventPublisherFactory factory = new SnsEventPublisherFactory(ENVIRONMENT, MAPPER);
+        final SnsEventPublisherFactory factory = new SnsEventPublisherFactory(ENVIRONMENT, JSON_CONVERTER);
         return factory.build();
     }
 
     private static VerificationContextDao buildDao() {
-        final VerificationContextDaoFactory factory = new DynamoVerificationContextDaoFactory(ENVIRONMENT, MAPPER);
+        final VerificationContextDaoFactory factory = new DynamoVerificationContextDaoFactory(ENVIRONMENT, JSON_CONVERTER);
         return factory.build();
     }
 
