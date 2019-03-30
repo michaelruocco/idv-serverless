@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenAuthorizerContext {
+public class TokenAuthorizerRequest {
 
     private String type;
     private String authorizationToken;

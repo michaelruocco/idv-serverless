@@ -1,11 +1,11 @@
 package uk.co.mruoc.idv.awslambda.authorizer;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.awslambda.authorizer.model.TokenAuthorizerContext;
+import uk.co.mruoc.idv.awslambda.authorizer.model.TokenAuthorizerRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TokenAuthorizerContextTest {
+public class TokenAuthorizerRequestTest {
 
     private static final String TYPE = "TYPE";
     private static final String AUTHORIZATION_TOKEN = "authorizationToken";
@@ -13,7 +13,7 @@ public class TokenAuthorizerContextTest {
 
     @Test
     public void shouldReturnConstructorArguments() {
-        final TokenAuthorizerContext context = new TokenAuthorizerContext(TYPE, AUTHORIZATION_TOKEN, METHOD_ARN);
+        final TokenAuthorizerRequest context = new TokenAuthorizerRequest(TYPE, AUTHORIZATION_TOKEN, METHOD_ARN);
 
         assertThat(context.getType()).isEqualTo(TYPE);
         assertThat(context.getAuthorizationToken()).isEqualTo(AUTHORIZATION_TOKEN);
@@ -22,7 +22,7 @@ public class TokenAuthorizerContextTest {
 
     @Test
     public void shouldDefaultAllValuesToNullIfNotProvided() {
-        final TokenAuthorizerContext context = new TokenAuthorizerContext();
+        final TokenAuthorizerRequest context = new TokenAuthorizerRequest();
 
         assertThat(context.getType()).isNull();
         assertThat(context.getAuthorizationToken()).isNull();
@@ -31,7 +31,7 @@ public class TokenAuthorizerContextTest {
 
     @Test
     public void shouldSetType() {
-        final TokenAuthorizerContext context = new TokenAuthorizerContext();
+        final TokenAuthorizerRequest context = new TokenAuthorizerRequest();
 
         context.setType(TYPE);
 
@@ -40,7 +40,7 @@ public class TokenAuthorizerContextTest {
 
     @Test
     public void shouldSetAuthorizationToken() {
-        final TokenAuthorizerContext context = new TokenAuthorizerContext();
+        final TokenAuthorizerRequest context = new TokenAuthorizerRequest();
 
         context.setAuthorizationToken(AUTHORIZATION_TOKEN);
 
@@ -49,7 +49,7 @@ public class TokenAuthorizerContextTest {
 
     @Test
     public void shouldSetMethodArn() {
-        final TokenAuthorizerContext context = new TokenAuthorizerContext();
+        final TokenAuthorizerRequest context = new TokenAuthorizerRequest();
 
         context.setMethodArn(METHOD_ARN);
 
