@@ -1,8 +1,7 @@
-package uk.co.mruoc.idv.awslambda.authorizer.service;
+package uk.co.mruoc.idv.awslambda.authorizer.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import uk.co.mruoc.idv.awslambda.authorizer.model.ApiGatewayMethodArn;
 
 @Getter
 @Builder

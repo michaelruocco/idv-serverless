@@ -1,10 +1,10 @@
 package uk.co.mruoc.idv.awslambda.authorizer.service;
 
-import uk.co.mruoc.idv.awslambda.authorizer.model.ApiGatewayMethodArn;
+import uk.co.mruoc.idv.awslambda.authorizer.model.PolicyRequest;
 
 public interface PolicyLoader {
 
-    String load(final String principalId, final ApiGatewayMethodArn arn);
+    String load(final PolicyRequest request);
 
 
 }

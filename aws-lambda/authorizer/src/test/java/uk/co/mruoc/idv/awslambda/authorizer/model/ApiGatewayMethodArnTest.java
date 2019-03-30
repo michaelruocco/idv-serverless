@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.authorizer;
+package uk.co.mruoc.idv.awslambda.authorizer.model;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.authorizer.model.ApiGatewayMethodArn;
