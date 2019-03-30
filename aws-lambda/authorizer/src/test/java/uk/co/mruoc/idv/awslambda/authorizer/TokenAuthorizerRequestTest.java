@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TokenAuthorizerRequestTest {
 
-    private static final String TYPE = "TYPE";
+    private static final String TYPE = "type";
     private static final String AUTHORIZATION_TOKEN = "authorizationToken";
     private static final String METHOD_ARN = "methodArn";
 
