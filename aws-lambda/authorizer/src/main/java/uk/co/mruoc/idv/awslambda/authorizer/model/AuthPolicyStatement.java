@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.awslambda.authorizer.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
+@NoArgsConstructor(force = true)
 public class AuthPolicyStatement {
 
     @JsonProperty("Action")

@@ -5,17 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+import java.util.Collection;
 
 @Getter
-@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
+@NoArgsConstructor(force = true)
 public class AuthPolicyDocument {
 
     @JsonProperty("Version")
     private final String version;
 
     @JsonProperty("Statement")
-    private final List<AuthPolicyStatement> statements;
+    private final Collection<AuthPolicyStatement> statements;
 
 }

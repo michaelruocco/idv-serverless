@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.awslambda.authorizer.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.awslambda.authorizer.model.AuthPolicyResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,24 +26,6 @@ public class AuthPolicyResponseTest {
 
         assertThat(context.getPrincipalId()).isNull();
         assertThat(context.getPolicyDocument()).isNull();
-    }
-
-    @Test
-    public void shouldSetPrincipalId() {
-        final AuthPolicyResponse context = new AuthPolicyResponse();
-
-        context.setPrincipalId(PRINCIPAL_ID);
-
-        assertThat(context.getPrincipalId()).isEqualTo(PRINCIPAL_ID);
-    }
-
-    @Test
-    public void shouldSetPolicyDocument() {
-        final AuthPolicyResponse context = new AuthPolicyResponse();
-
-        context.setPolicyDocument(POLICY_DOCUMENT);
-
-        assertThat(context.getPolicyDocument()).isEqualTo(POLICY_DOCUMENT);
     }
 
 }
