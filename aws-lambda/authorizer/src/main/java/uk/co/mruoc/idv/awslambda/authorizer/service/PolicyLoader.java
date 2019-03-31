@@ -6,5 +6,4 @@ public interface PolicyLoader {
 
     String load(final PolicyRequest request);
 
-
 }
