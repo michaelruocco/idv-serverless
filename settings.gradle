@@ -11,6 +11,7 @@ include 'dao:verification-context:verification-context-dao-dynamodb'
 
 include 'plugins:uk:uk-identity'
 include 'plugins:uk:uk-verification-context'
+include 'plugins:uk:uk-aws-lambda:uk-authorizer-aws-lambda'
 include 'plugins:uk:uk-aws-lambda:uk-identity-aws-lambda'
 include 'plugins:uk:uk-aws-lambda:uk-verification-context-aws-lambda'
 

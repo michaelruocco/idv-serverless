@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.awslambda;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +22,13 @@ public class EnvironmentTest {
         environmentVariables.set("STAGE", STAGE);
         environmentVariables.set("REGION", REGION);
         environmentVariables.set("EVENT_TOPIC_ARN", EVENT_TOPIC_ARN);
+    }
+
+    @After
+    public void tearDown() {
+        environmentVariables.clear("STAGE");
+        environmentVariables.clear("REGION");
+        environmentVariables.clear("EVENT_TOPIC_ARN");
     }
 
     @Test

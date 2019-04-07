@@ -1,9 +1,8 @@
-package uk.co.mruoc.idv.awslambda.authorizer.model;
+package uk.co.mruoc.idv.awslambda.authorizer.service;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.authorizer.model.ApiGatewayMethodArn;
-import uk.co.mruoc.idv.awslambda.authorizer.model.ApiGatewayMethodArnParser;
-import uk.co.mruoc.idv.awslambda.authorizer.model.ApiGatewayMethodArnParser.InvalidApiGatewayArnException;
+import uk.co.mruoc.idv.awslambda.authorizer.service.ApiGatewayMethodArnParser.InvalidApiGatewayArnException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;

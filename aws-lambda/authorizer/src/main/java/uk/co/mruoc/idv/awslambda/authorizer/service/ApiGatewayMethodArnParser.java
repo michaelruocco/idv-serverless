@@ -1,18 +1,22 @@
-package uk.co.mruoc.idv.awslambda.authorizer.model;
+package uk.co.mruoc.idv.awslambda.authorizer.service;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.awslambda.authorizer.model.ApiGatewayMethodArn;
+import uk.co.mruoc.idv.awslambda.authorizer.model.DefaultApiGatewayMethodArn;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Getter
+@Slf4j
 public class ApiGatewayMethodArnParser {
 
     public ApiGatewayMethodArn parse(final String rawArn) {
         try {
             final String[] arnPartials = rawArn.split(ApiGatewayMethodArn.ARN_DELIMITER);
             final String[] apiPartials = arnPartials[5].split(ApiGatewayMethodArn.API_DELIMITER);
-            return DefaultApiGatewayMethodArn.builder()
+            final ApiGatewayMethodArn methodArn = DefaultApiGatewayMethodArn.builder()
                     .region(arnPartials[3])
                     .accountId(arnPartials[4])
                     .apiId(apiPartials[0])
@@ -20,6 +24,8 @@ public class ApiGatewayMethodArnParser {
                     .httpMethod(apiPartials[2])
                     .resource(extractResource(apiPartials))
                     .build();
+            log.info("converted rawArn {} into methodArn {}", rawArn, methodArn);
+            return methodArn;
         } catch (final ArrayIndexOutOfBoundsException e) {
             throw new InvalidApiGatewayArnException(rawArn, e);
         }

@@ -2,11 +2,10 @@ package uk.co.mruoc.idv.awslambda.authorizer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import uk.co.mruoc.idv.awslambda.authorizer.model.AuthPolicy;
 import uk.co.mruoc.idv.awslambda.authorizer.model.AuthPolicyResponse;
+import uk.co.mruoc.idv.json.JacksonJsonConverter;
+import uk.co.mruoc.idv.json.JsonConverter;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,30 +17,21 @@ import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class AuthPolicyConverterTest {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final JsonConverter jsonConverter = new JacksonJsonConverter(new ObjectMapper());
 
-    private final AuthPolicyConverter converter = new AuthPolicyConverter();
+    private final AuthPolicyConverter converter = new AuthPolicyConverter(jsonConverter);
 
     @Test
     public void shouldConvertAuthPolicyToAuthPolicyResponse() {
-        final AuthPolicy policy = buildAuthPolicy();
+        final String policyJson = loadContentFromClasspath("/test-policy.json");
 
-        final AuthPolicyResponse response = converter.toAuthPolicyResponse(policy);
+        final AuthPolicyResponse response = converter.toAuthPolicyResponse(policyJson);
 
         assertThat(response.getPrincipalId()).isEqualTo("testPrincipalId");
         assertThat(response.getPolicyDocument()).contains(
                 entry("Statement", buildExpectedStatements()),
                 entry("Version", "2012-10-17")
         );
-    }
-
-    private static AuthPolicy buildAuthPolicy() {
-        try {
-            final String json = loadContentFromClasspath("/test-policy.json");
-            return MAPPER.readValue(json, AuthPolicy.class);
-        } catch (final IOException e) {
-            throw new UncheckedIOException(e);
-        }
     }
 
     private static Collection<Map<String, Object>> buildExpectedStatements() {
