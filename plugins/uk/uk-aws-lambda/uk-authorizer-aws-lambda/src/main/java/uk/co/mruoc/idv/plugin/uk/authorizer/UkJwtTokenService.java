@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.authorizer;
 
-import uk.co.mruoc.idv.awslambda.authorizer.service.jwt.HsKeyProvider;
-import uk.co.mruoc.idv.awslambda.authorizer.service.jwt.JwtTokenService;
+import uk.co.mruoc.idv.core.authorizer.service.jwt.HsKeyProvider;
+import uk.co.mruoc.idv.core.authorizer.service.jwt.JwtTokenService;
 import uk.co.mruoc.idv.core.service.DefaultTimeService;
 
 public class UkJwtTokenService extends JwtTokenService {

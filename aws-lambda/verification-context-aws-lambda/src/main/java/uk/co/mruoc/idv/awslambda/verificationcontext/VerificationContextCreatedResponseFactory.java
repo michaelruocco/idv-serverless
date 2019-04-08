@@ -1,6 +1,5 @@
 package uk.co.mruoc.idv.awslambda.verificationcontext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.co.mruoc.idv.json.JsonConverter;
 
 public class VerificationContextCreatedResponseFactory extends VerificationContextResponseFactory {

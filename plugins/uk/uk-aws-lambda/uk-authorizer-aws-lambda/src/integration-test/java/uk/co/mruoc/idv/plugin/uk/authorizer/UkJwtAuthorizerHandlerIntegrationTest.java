@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.plugin.uk.authorizer;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
@@ -12,13 +13,16 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.file.ContentLoader;
 import uk.co.mruoc.idv.awslambda.authorizer.handler.JwtAuthorizerHandler;
-import uk.co.mruoc.idv.awslambda.authorizer.model.AuthPolicyResponse;
-import uk.co.mruoc.idv.awslambda.authorizer.model.TokenAuthorizerRequest;
-import uk.co.mruoc.idv.awslambda.authorizer.service.DefaultTokenRequest;
-import uk.co.mruoc.idv.awslambda.authorizer.service.jwt.JwtTokenService;
+import uk.co.mruoc.idv.core.authorizer.model.AuthPolicyResponse;
+import uk.co.mruoc.idv.core.authorizer.model.TokenAuthorizerRequest;
+import uk.co.mruoc.idv.core.authorizer.model.TokenResponse;
+import uk.co.mruoc.idv.core.authorizer.service.DefaultTokenRequest;
+import uk.co.mruoc.idv.core.authorizer.service.TokenService;
 
 import java.io.UncheckedIOException;
 import java.util.UUID;
+
+import static org.mockito.Mockito.mock;
 
 public class UkJwtAuthorizerHandlerIntegrationTest {
 
@@ -27,7 +31,8 @@ public class UkJwtAuthorizerHandlerIntegrationTest {
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
-    private final JwtTokenService tokenService = new UkJwtTokenService(SECRET_KEY);
+    private final Context context = mock(Context.class);
+    private final TokenService tokenService = new UkJwtTokenService(SECRET_KEY);
 
     private JwtAuthorizerHandler handler;
 
@@ -45,13 +50,14 @@ public class UkJwtAuthorizerHandlerIntegrationTest {
     @Test
     public void shouldReturnAllowAllPolicyForTokenForIdvTestUserPrincipalId() throws JSONException {
         final String principalId = "idv-test-user";
-        final String token = tokenService.create(DefaultTokenRequest.builder()
+        final TokenResponse tokenResponse = tokenService.create(DefaultTokenRequest.builder()
                 .id(UUID.randomUUID())
                 .subject(principalId)
                 .build());
+        final String token = tokenResponse.getToken();
         final String methodArn = "arn:aws:execute-api:eu-west-1:327122349051:8tu67utdf7/dev/GET/verificationContexts/*";
 
-        final AuthPolicyResponse response = handler.apply(new TokenAuthorizerRequest("type", token, methodArn));
+        final AuthPolicyResponse response = handler.handleRequest(new TokenAuthorizerRequest("type", token, methodArn), context);
 
         final String expectedJson = ContentLoader.loadContentFromClasspath("/allow-all-policy.json");
         JSONAssert.assertEquals(expectedJson, toJson(response), JSONCompareMode.STRICT);
@@ -60,13 +66,14 @@ public class UkJwtAuthorizerHandlerIntegrationTest {
     @Test
     public void shouldReturnDenyAllPolicyForTokenForAnyOtherPrincipalId() throws JSONException {
         final String principalId = "other-user";
-        final String token = tokenService.create(DefaultTokenRequest.builder()
+        final TokenResponse tokenResponse = tokenService.create(DefaultTokenRequest.builder()
                 .id(UUID.randomUUID())
                 .subject(principalId)
                 .build());
+        final String token = tokenResponse.getToken();
         final String methodArn = "arn:aws:execute-api:eu-west-1:327122349051:8tu67utdf7/dev/GET/verificationContexts/*";
 
-        final AuthPolicyResponse response = handler.apply(new TokenAuthorizerRequest("type", token, methodArn));
+        final AuthPolicyResponse response = handler.handleRequest(new TokenAuthorizerRequest("type", token, methodArn), context);
 
         final String expectedJson = ContentLoader.loadContentFromClasspath("/deny-all-policy.json");
         JSONAssert.assertEquals(expectedJson, toJson(response), JSONCompareMode.STRICT);

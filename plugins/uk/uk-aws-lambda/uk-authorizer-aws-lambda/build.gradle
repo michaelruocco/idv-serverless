@@ -15,7 +15,7 @@ sourceSets {
 }
 
 dependencies {
-    compile project(':aws-lambda:authorizer')
+    compile project(':aws-lambda:authorizer-aws-lambda')
     compile 'com.github.michaelruocco:file-loader:4.0.0'
 
     integrationTestCompile 'com.github.stefanbirkner:system-rules:1.19.0'

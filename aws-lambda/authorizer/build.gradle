@@ -1,7 +1,0 @@
-dependencies {
-    compile project(':json')
-    compile project(':core')
-    compile("io.jsonwebtoken:jjwt:0.9.1")
-
-    compile 'org.apache.commons:commons-lang3:3.8.1'
-}

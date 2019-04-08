@@ -1,5 +1,6 @@
 rootProject.name = 'idv'
 
+include 'core:authorizer-core'
 include 'core:identity-core'
 include 'core:verification-context-core'
 
@@ -17,13 +18,15 @@ include 'plugins:uk:uk-aws-lambda:uk-verification-context-aws-lambda'
 
 include 'json:identity-json'
 include 'json:verification-context-json'
+include 'json:authorizer-json'
 
 include 'json-api'
 include 'json-api:identity-json-api'
 include 'json-api:verification-context-json-api'
+include 'json-api:authorizer-json-api'
 
 include 'aws-lambda'
-include 'aws-lambda:authorizer'
+include 'aws-lambda:authorizer-aws-lambda'
 include 'aws-lambda:identity-aws-lambda'
 include 'aws-lambda:verification-context-aws-lambda'
 include 'aws-lambda:verification-context-aws-lambda:'

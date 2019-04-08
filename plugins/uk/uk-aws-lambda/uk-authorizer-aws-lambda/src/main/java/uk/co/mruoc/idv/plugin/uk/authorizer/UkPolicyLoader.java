@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.authorizer;
 
-import uk.co.mruoc.idv.awslambda.authorizer.service.DefaultPolicyLoader;
-import uk.co.mruoc.idv.awslambda.authorizer.service.PolicyTemplatePopulator;
+import uk.co.mruoc.idv.core.authorizer.service.DefaultPolicyLoader;
+import uk.co.mruoc.idv.core.authorizer.service.PolicyTemplatePopulator;
 
 import java.util.Collections;
 import java.util.HashMap;
