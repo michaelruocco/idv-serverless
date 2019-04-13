@@ -163,7 +163,7 @@
 						"id": "fc38e402-6b30-49df-b78c-faac11682dae",
 						"exec": [
 							"var json = JSON.parse(responseBody);",
-							"postman.setEnvironmentVariable(\"token\", json.token);"
+							"postman.setEnvironmentVariable(\"token\", json.data.attributes.token);"
 						],
 						"type": "text/javascript"
 					}
@@ -181,12 +181,12 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"subject\": \"allow-all\",\n\t\"secondsToLive\": 60\n}"
+					"raw": "{\n  \"data\": {\n    \"type\": \"tokens\",\n    \"attributes\": {\n      \"subject\": \"idv-test-user\",\n      \"validForSeconds\": 60\n    }\n  }\n}"
 				},
 				"url": {
-					"raw": "{{token-host}}/tokens",
+					"raw": "{{host}}/tokens",
 					"host": [
-						"{{token-host}}"
+						"{{host}}"
 					],
 					"path": [
 						"tokens"

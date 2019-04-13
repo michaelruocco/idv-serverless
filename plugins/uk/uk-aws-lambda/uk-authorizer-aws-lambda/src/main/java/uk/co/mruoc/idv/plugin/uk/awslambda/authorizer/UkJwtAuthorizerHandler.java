@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.authorizer;
+package uk.co.mruoc.idv.plugin.uk.awslambda.authorizer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.co.mruoc.idv.awslambda.authorizer.handler.JwtAuthorizerHandler;

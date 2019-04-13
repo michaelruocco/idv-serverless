@@ -13,6 +13,12 @@ custom:
   version: ${opt:version, self:custom.defaultVersion}
 
   lambdas:
+    postToken:
+      name: ${self:custom.stage}-post-token
+
+    authorizer:
+      name: ${self:custom.stage}-idv-authorizer
+
     getIdentity:
       name: ${self:custom.stage}-get-identity
 
@@ -46,11 +52,28 @@ provider:
     STAGE: ${self:custom.stage}
     REGION: ${self:custom.region}
     EVENT_TOPIC_ARN: ${self:custom.topics.idvEvent.arn}
+    AUTHORIZER_SECRET_KEY: idv-secret-key
 
 package:
   individually: true
 
 functions:
+
+  postToken:
+    handler: uk.co.mruoc.idv.plugin.uk.awslambda.authorizer.UkJwtPostTokensHandler
+    package:
+      artifact: uk-authorizer-aws-lambda/build/distributions/uk-authorizer-aws-lambda-${self:custom.version}.zip
+    name: ${self:custom.lambdas.postToken.name}
+    events:
+      - http:
+          path: tokens
+          method: post
+
+  authorizer:
+    handler: uk.co.mruoc.idv.plugin.uk.awslambda.authorizer.UkJwtAuthorizerHandler
+    package:
+      artifact: uk-authorizer-aws-lambda/build/distributions/uk-authorizer-aws-lambda-${self:custom.version}.zip
+    name: ${self:custom.lambdas.authorizer.name}
 
   getIdentity:
     handler: uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkGetIdentityHandler
@@ -61,12 +84,12 @@ functions:
       - http:
           path: identities/{id}
           method: get
-          authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          authorizer: authorizer
           resultTtlInSeconds: 0
       - http:
           path: identities
           method: get
-          authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          authorizer: authorizer
           resultTtlInSeconds: 0
     iamRoleStatements:
       - Effect: Allow
@@ -84,7 +107,7 @@ functions:
       - http:
           path: verificationContexts
           method: post
-          authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          authorizer: authorizer
           resultTtlInSeconds: 0
     iamRoleStatements:
       - Effect: Allow
@@ -110,7 +133,7 @@ functions:
       - http:
           path: verificationContexts/{id}
           method: get
-          authorizer: arn:aws:lambda:eu-west-1:327122349051:function:dev-idv-authorizer
+          authorizer: authorizer
           resultTtlInSeconds: 0
     iamRoleStatements:
       - Effect: Allow

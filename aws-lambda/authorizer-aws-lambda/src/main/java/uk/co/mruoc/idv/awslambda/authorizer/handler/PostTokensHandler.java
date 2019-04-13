@@ -8,10 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
+import uk.co.mruoc.idv.awslambda.authorizer.handler.error.GenerateTokenErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.authorizer.model.GenerateTokenRequest;
 import uk.co.mruoc.idv.core.authorizer.model.TokenRequest;
 import uk.co.mruoc.idv.core.authorizer.model.TokenResponse;
 import uk.co.mruoc.idv.core.authorizer.service.TokenService;
+import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
+import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.json.JsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.authorizer.GenerateTokenJsonConverterFactory;
 
@@ -21,12 +24,30 @@ import uk.co.mruoc.idv.jsonapi.authorizer.GenerateTokenJsonConverterFactory;
 public class PostTokensHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new GenerateTokenJsonConverterFactory();
+    private static final UuidGenerator UUID_GENERATOR = new RandomUuidGenerator();
 
     private final GenerateTokenRequestExtractor requestExtractor;
     private final TokenService service;
     private final GenerateTokenRequestConverter requestConverter;
     private final GenerateTokenResponseFactory responseFactory;
     private final ExceptionConverter exceptionConverter;
+
+    public PostTokensHandler(final TokenService service) {
+        this(builder()
+                .requestExtractor(new GenerateTokenRequestExtractor(JSON_CONVERTER_FACTORY.build()))
+                .service(service)
+                .requestConverter(new GenerateTokenRequestConverter(UUID_GENERATOR))
+                .responseFactory(new GenerateTokenResponseFactory(JSON_CONVERTER_FACTORY.build(), UUID_GENERATOR))
+                .exceptionConverter(buildExceptionConverter()));
+    }
+
+    public PostTokensHandler(final PostTokensHandlerBuilder builder) {
+        this.requestExtractor = builder.requestExtractor;
+        this.service = builder.service;
+        this.requestConverter = builder.requestConverter;
+        this.responseFactory = builder.responseFactory;
+        this.exceptionConverter = builder.exceptionConverter;
+    }
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
@@ -47,6 +68,13 @@ public class PostTokensHandler implements RequestHandler<APIGatewayProxyRequestE
         final APIGatewayProxyResponseEvent responseEvent = responseFactory.toResponseEvent(tokenResponse);
         log.info("returning response {}", responseEvent);
         return responseEvent;
+    }
+
+    private static ExceptionConverter buildExceptionConverter() {
+        return ExceptionConverter.builder()
+                .jsonConverter(JSON_CONVERTER_FACTORY.build())
+                .errorHandler(new GenerateTokenErrorHandlerDelegator())
+                .build();
     }
 
 }

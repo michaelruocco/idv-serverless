@@ -14,12 +14,12 @@ import static org.mockito.Mockito.mock;
 
 public class GenerateTokenResponseFactoryTest {
 
-    private static final int STATUS_CODE = 201;
+    private static final int CREATED_STATUS_CODE = 201;
 
     private final JsonConverter converter = mock(JsonConverter.class);
     private final UuidGenerator uuidGenerator = mock(UuidGenerator.class);
 
-    private final GenerateTokenResponseFactory factory = new GenerateTokenResponseFactory(STATUS_CODE, converter, uuidGenerator);
+    private final GenerateTokenResponseFactory factory = new GenerateTokenResponseFactory(converter, uuidGenerator);
 
     @Test
     public void shouldConvertToJsonApiDocument() {
@@ -58,7 +58,7 @@ public class GenerateTokenResponseFactoryTest {
 
         final APIGatewayProxyResponseEvent event = factory.toResponseEvent(document);
 
-        assertThat(event.getStatusCode()).isEqualTo(STATUS_CODE);
+        assertThat(event.getStatusCode()).isEqualTo(CREATED_STATUS_CODE);
     }
 
     @Test

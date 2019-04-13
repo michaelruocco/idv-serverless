@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.authorizer;
+package uk.co.mruoc.idv.plugin.uk.awslambda.authorizer;
 
 import uk.co.mruoc.idv.core.authorizer.service.DefaultPolicyLoader;
 import uk.co.mruoc.idv.core.authorizer.service.PolicyTemplatePopulator;

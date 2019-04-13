@@ -22,8 +22,7 @@ remove:
 	sls remove -s $(env) --conceal
 
 postman:
-	$(eval TOKEN_HOST = $(shell java -jar tools/api-gateway/build/libs/api-gateway-*-standalone.jar -n jwt-auth -s $(env)))
 	$(eval HOST = $(shell java -jar tools/api-gateway/build/libs/api-gateway-*-standalone.jar -n idv -s $(env)))
 	cd postman; \
 	npm install --save-dev newman; \
-	newman run idv.postman_collection.json --env-var token-host=$(TOKEN_HOST) --env-var host=$(HOST)
+	newman run idv.postman_collection.json --env-var host=$(HOST)

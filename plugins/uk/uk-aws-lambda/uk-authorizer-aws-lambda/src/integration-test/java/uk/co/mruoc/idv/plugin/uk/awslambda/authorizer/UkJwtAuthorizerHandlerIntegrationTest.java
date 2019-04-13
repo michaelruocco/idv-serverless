@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.authorizer;
+package uk.co.mruoc.idv.plugin.uk.awslambda.authorizer;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;

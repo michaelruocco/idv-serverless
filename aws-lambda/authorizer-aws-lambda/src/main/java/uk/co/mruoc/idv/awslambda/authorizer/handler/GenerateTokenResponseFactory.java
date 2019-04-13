@@ -12,7 +12,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GenerateTokenResponseFactory {
 
-    private final int statusCode;
+    private static final int CREATED_STATUS_CODE = 201;
+
     private final JsonConverter jsonConverter;
     private final UuidGenerator uuidGenerator;
 
@@ -29,7 +30,7 @@ public class GenerateTokenResponseFactory {
     public APIGatewayProxyResponseEvent toResponseEvent(final GenerateTokenResponseDocument document) {
         return new APIGatewayProxyResponseEvent()
                 .withBody(jsonConverter.toJson(document))
-                .withStatusCode(statusCode);
+                .withStatusCode(CREATED_STATUS_CODE);
     }
 
 }
