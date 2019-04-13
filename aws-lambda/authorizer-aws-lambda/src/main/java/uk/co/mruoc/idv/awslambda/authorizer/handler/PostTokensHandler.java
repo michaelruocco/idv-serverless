@@ -28,14 +28,6 @@ public class PostTokensHandler implements RequestHandler<APIGatewayProxyRequestE
     private final GenerateTokenResponseFactory responseFactory;
     private final ExceptionConverter exceptionConverter;
 
-    public PostTokensHandler(final PostTokensHandlerBuilder builder) {
-        this.requestExtractor = builder.requestExtractor;
-        this.service = builder.service;
-        this.requestConverter = builder.requestConverter;
-        this.responseFactory = builder.responseFactory;
-        this.exceptionConverter = builder.exceptionConverter;
-    }
-
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {
