@@ -9,7 +9,7 @@ public class AuthorizerModule extends SimpleModule {
     public AuthorizerModule() {
         setMixInAnnotation(GenerateTokenRequest.class, GenerateTokenRequestMixin.class);
 
-        addDeserializer(GenerateTokenRequest.class, new TokenRequestDeserializer());
+        addDeserializer(GenerateTokenRequest.class, new GenerateTokenRequestDeserializer());
         addDeserializer(TokenResponse.class, new TokenResponseDeserializer());
     }
 

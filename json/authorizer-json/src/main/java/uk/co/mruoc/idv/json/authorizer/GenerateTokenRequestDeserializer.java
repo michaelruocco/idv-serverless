@@ -10,9 +10,9 @@ import uk.co.mruoc.idv.core.authorizer.model.GenerateTokenRequest;
 import java.io.IOException;
 
 @Slf4j
-public class TokenRequestDeserializer extends StdDeserializer<GenerateTokenRequest> {
+public class GenerateTokenRequestDeserializer extends StdDeserializer<GenerateTokenRequest> {
 
-    public TokenRequestDeserializer() {
+    public GenerateTokenRequestDeserializer() {
         super(GenerateTokenRequest.class);
     }
 

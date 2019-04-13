@@ -11,7 +11,6 @@ import java.util.Optional;
 @Builder
 @RequiredArgsConstructor
 @Getter
-@NoArgsConstructor(force = true) // required by jackson
 public class DefaultGenerateTokenRequest implements GenerateTokenRequest {
 
     private final String subject;
