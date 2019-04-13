@@ -2,14 +2,11 @@ package uk.co.mruoc.idv.json.authorizer;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import uk.co.mruoc.idv.core.authorizer.model.GenerateTokenRequest;
 
 import java.util.Optional;
 
 @Builder
-@RequiredArgsConstructor
 @Getter
 public class DefaultGenerateTokenRequest implements GenerateTokenRequest {
 

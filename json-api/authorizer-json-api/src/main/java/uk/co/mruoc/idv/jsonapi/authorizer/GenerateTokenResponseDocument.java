@@ -3,7 +3,6 @@ package uk.co.mruoc.idv.jsonapi.authorizer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uk.co.mruoc.idv.core.authorizer.model.DefaultTokenResponse;
 import uk.co.mruoc.idv.core.authorizer.model.TokenResponse;
 import uk.co.mruoc.jsonapi.JsonApiDataItemWithId;
 
