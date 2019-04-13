@@ -1,7 +1,9 @@
 package uk.co.mruoc.idv.jsonapi.authorizer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import uk.co.mruoc.idv.core.authorizer.model.DefaultTokenResponse;
 import uk.co.mruoc.idv.core.authorizer.model.TokenResponse;
 import uk.co.mruoc.jsonapi.JsonApiDataItemWithId;
 
@@ -17,6 +19,16 @@ public class GenerateTokenResponseDocument {
 
     public GenerateTokenResponseDocument(final UUID id, final TokenResponse response) {
         this.data = new JsonApiDataItemWithId<>(id, TYPE, response);
+    }
+
+    @JsonIgnore
+    public UUID getId() {
+        return data.getId();
+    }
+
+    @JsonIgnore
+    public TokenResponse getTokenResponse() {
+        return data.getAttributes();
     }
 
 }

@@ -12,9 +12,9 @@ public class GenerateTokenRequestDocument {
 
     private static final String TYPE = "tokens";
 
-    private final JsonApiDataItem<DefaultGenerateTokenRequest> data;
+    private final JsonApiDataItem<GenerateTokenRequest> data;
 
-    public GenerateTokenRequestDocument(final DefaultGenerateTokenRequest request) {
+    public GenerateTokenRequestDocument(final GenerateTokenRequest request) {
         this.data = new JsonApiDataItem<>(TYPE, request);
     }
 

@@ -1,10 +1,8 @@
-package uk.co.mruoc.idv.core.authorizer.service;
+package uk.co.mruoc.idv.json.authorizer;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.authorizer.model.AuthPolicyResponse;
 import uk.co.mruoc.idv.json.JsonConverter;
-import uk.co.mruoc.idv.json.authorizer.AuthPolicy;
-import uk.co.mruoc.idv.json.authorizer.AuthPolicyStatement;
 
 import java.util.Collection;
 import java.util.Collections;

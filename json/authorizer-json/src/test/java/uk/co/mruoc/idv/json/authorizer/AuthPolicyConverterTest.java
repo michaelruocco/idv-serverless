@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.core.authorizer.service;
+package uk.co.mruoc.idv.json.authorizer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;

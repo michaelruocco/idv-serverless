@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.jsonapi.authorizer;
+package uk.co.mruoc.idv.json.authorizer;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import uk.co.mruoc.idv.core.authorizer.model.GenerateTokenRequest;
 import java.util.Optional;
 
 @Builder
-@Getter
 @RequiredArgsConstructor
+@Getter
 @NoArgsConstructor(force = true) // required by jackson
 public class DefaultGenerateTokenRequest implements GenerateTokenRequest {
 

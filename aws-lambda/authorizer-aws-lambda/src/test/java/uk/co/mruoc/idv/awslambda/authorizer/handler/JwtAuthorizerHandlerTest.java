@@ -9,9 +9,9 @@ import uk.co.mruoc.idv.core.authorizer.model.DecodedToken;
 import uk.co.mruoc.idv.core.authorizer.model.PolicyRequest;
 import uk.co.mruoc.idv.core.authorizer.model.TokenAuthorizerRequest;
 import uk.co.mruoc.idv.core.authorizer.service.ApiGatewayMethodArnParser;
-import uk.co.mruoc.idv.core.authorizer.service.AuthPolicyConverter;
 import uk.co.mruoc.idv.core.authorizer.service.PolicyLoader;
 import uk.co.mruoc.idv.core.authorizer.service.TokenService;
+import uk.co.mruoc.idv.json.authorizer.AuthPolicyConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

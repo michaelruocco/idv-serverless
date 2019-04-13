@@ -36,7 +36,6 @@ public class PostTokensHandler implements RequestHandler<APIGatewayProxyRequestE
         this.exceptionConverter = builder.exceptionConverter;
     }
 
-
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {

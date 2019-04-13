@@ -40,7 +40,7 @@ public class VerificationContextResponseFactoryTest {
     }
 
     @Test
-    public void shouldConvertIdentityToResponse() {
+    public void shouldConvertVerificationContextToResponse() {
         final String body = "body";
         final VerificationContext context = mock(VerificationContext.class);
         given(converter.toJson(any(VerificationContextResponseDocument.class))).willReturn(body);

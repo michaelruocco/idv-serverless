@@ -5,12 +5,12 @@ import uk.co.mruoc.idv.core.authorizer.model.GenerateTokenRequest;
 import uk.co.mruoc.idv.core.authorizer.model.TokenRequest;
 import uk.co.mruoc.idv.core.authorizer.service.DefaultTokenRequest;
 import uk.co.mruoc.idv.core.authorizer.service.DefaultTokenRequest.DefaultTokenRequestBuilder;
-import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
+import uk.co.mruoc.idv.core.service.UuidGenerator;
 
 @Builder
 public class GenerateTokenRequestConverter {
 
-    private RandomUuidGenerator uuidGenerator;
+    private UuidGenerator uuidGenerator;
 
     public TokenRequest toTokenRequest(final GenerateTokenRequest request) {
         if (request.getTimeToLiveInSeconds().isPresent()) {

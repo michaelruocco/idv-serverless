@@ -3,8 +3,8 @@ package uk.co.mruoc.idv.plugin.uk.authorizer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.co.mruoc.idv.awslambda.authorizer.handler.JwtAuthorizerHandler;
 import uk.co.mruoc.idv.core.authorizer.service.ApiGatewayMethodArnParser;
-import uk.co.mruoc.idv.core.authorizer.service.AuthPolicyConverter;
 import uk.co.mruoc.idv.json.JacksonJsonConverter;
+import uk.co.mruoc.idv.json.authorizer.AuthPolicyConverter;
 
 public class UkJwtAuthorizerHandler extends JwtAuthorizerHandler {
 

@@ -3,7 +3,7 @@ package uk.co.mruoc.idv.awslambda.authorizer.handler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import lombok.RequiredArgsConstructor;
 import uk.co.mruoc.idv.core.authorizer.model.TokenResponse;
-import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
+import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.jsonapi.authorizer.GenerateTokenResponseDocument;
 
@@ -14,7 +14,7 @@ public class GenerateTokenResponseFactory {
 
     private final int statusCode;
     private final JsonConverter jsonConverter;
-    private final RandomUuidGenerator uuidGenerator;
+    private final UuidGenerator uuidGenerator;
 
     public GenerateTokenResponseDocument toResponseDocument(final TokenResponse response) {
         final UUID id = uuidGenerator.randomUuid();

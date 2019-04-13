@@ -1,6 +1,5 @@
 dependencies {
     compile project(':core')
     compile project(':json')
-    compile project(':json:authorizer-json')
     compile("io.jsonwebtoken:jjwt:0.9.1")
 }

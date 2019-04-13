@@ -1,5 +1,6 @@
 dependencies {
     compile project(':json-api')
+    compile project(':json:authorizer-json')
     compile project(':core:authorizer-core')
 
     testCompile 'org.skyscreamer:jsonassert:1.5.0'
