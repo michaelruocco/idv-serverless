@@ -54,7 +54,7 @@ public class EligibleMethodsServiceTest {
 
     @Test
     public void shouldThrowExceptionIfNoSupportedEligiblityHandlers() {
-        final Throwable thrown = catchThrowable(() -> service.loadEligibleMethods(methodsRequest));
+        final Throwable thrown = catchThrowable(() -> service.loadEligibleMethodSequences(methodsRequest));
 
         assertThat(thrown).isInstanceOf(EligibilityHandlerNotFoundException.class)
                 .hasMessage("eligibility handler for channel channelId and method methodName not found");
@@ -66,7 +66,7 @@ public class EligibleMethodsServiceTest {
         given(handler1.isSupported(methodRequest)).willReturn(true);
         given(handler1.loadMethodIfEligible(methodRequest)).willReturn(Optional.of(method));
 
-        final Collection<VerificationMethodSequence> sequences = service.loadEligibleMethods(methodsRequest);
+        final Collection<VerificationMethodSequence> sequences = service.loadEligibleMethodSequences(methodsRequest);
 
         assertThat(sequences).hasSize(1);
         final VerificationMethodSequence sequence = new ArrayList<>(sequences).get(0);

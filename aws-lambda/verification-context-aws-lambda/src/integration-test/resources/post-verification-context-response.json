@@ -31,11 +31,11 @@
       },
       "created": "%CREATED%",
       "expiry": "%EXPIRY%",
-      "eligibleMethods": [
+      "sequences": [
         {
           "name": "PUSH_NOTIFICATION",
           "duration": 300000,
-          "sequence": [
+          "methods": [
             {
               "name": "PUSH_NOTIFICATION",
               "duration": 300000

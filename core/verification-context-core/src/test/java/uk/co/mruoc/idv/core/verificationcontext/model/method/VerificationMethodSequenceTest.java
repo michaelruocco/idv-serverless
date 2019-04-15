@@ -170,7 +170,7 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
 
         assertThat(sequence.toString()).isEqualTo("VerificationMethodSequence(name=PUSH_NOTIFICATION, " +
-                "sequence=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
+                "methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
                 "name=PUSH_NOTIFICATION, duration=0, properties={}))])");
     }
 

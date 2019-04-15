@@ -120,7 +120,7 @@ public class VerificationContextTest {
         final Alias alias = new IdvIdAlias(UUID.fromString("1ab2141d-a910-4bf8-99a0-efedfbf34b6a"));
         final Instant created = timestamp.plusSeconds(5);
         final Instant expiry = created.plus(5, ChronoUnit.MINUTES);
-        final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(new VerificationMethodSequence(new DefaultVerificationMethod("method")));
+        final Collection<VerificationMethodSequence> sequences = Collections.singleton(new VerificationMethodSequence(new DefaultVerificationMethod("method")));
         final VerificationContext request = VerificationContext.builder()
                 .id(id)
                 .channel(new DefaultChannel("CHANNEL_ID"))
@@ -129,7 +129,7 @@ public class VerificationContextTest {
                 .activity(new LoginActivity(timestamp))
                 .created(created)
                 .expiry(expiry)
-                .eligibleMethods(eligibleMethods)
+                .sequences(sequences)
                 .build();
 
         assertThat(request.toString()).isEqualTo("VerificationContext(" +
@@ -140,7 +140,7 @@ public class VerificationContextTest {
                 "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, properties={}), " +
                 "created=2019-03-10T12:54:02.547Z, " +
                 "expiry=2019-03-10T12:59:02.547Z, " +
-                "eligibleMethods=[VerificationMethodSequence(name=method, sequence=[DefaultVerificationMethod(name=method, duration=300000, properties={})])])");
+                "sequences=[VerificationMethodSequence(name=method, methods=[DefaultVerificationMethod(name=method, duration=300000, properties={})])])");
     }
 
 }

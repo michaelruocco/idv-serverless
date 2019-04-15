@@ -32,7 +32,7 @@
       },
       "created": "%CREATED%",
       "expiry": "%EXPIRY%",
-      "eligibleMethods": []
+      "sequences": []
     }
   }
 }

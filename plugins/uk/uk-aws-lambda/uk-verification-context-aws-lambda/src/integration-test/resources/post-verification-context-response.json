@@ -44,11 +44,11 @@
       },
       "created": "%CREATED%",
       "expiry": "%EXPIRY%",
-      "eligibleMethods": [
+      "sequences": [
         {
           "name": "PHYSICAL_PINSENTRY",
           "duration": 300000,
-          "sequence": [
+          "methods": [
             {
               "name": "PHYSICAL_PINSENTRY",
               "duration": 300000,
@@ -67,7 +67,7 @@
         {
           "name": "OTP_SMS",
           "duration": 600000,
-          "sequence": [
+          "methods": [
             {
               "name": "CARD_CREDENTIALS",
               "duration": 300000

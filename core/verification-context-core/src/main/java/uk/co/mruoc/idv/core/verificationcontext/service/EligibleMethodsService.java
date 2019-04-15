@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface EligibleMethodsService {
 
-    Collection<VerificationMethodSequence> loadEligibleMethods(final EligibleMethodsRequest request);
+    Collection<VerificationMethodSequence> loadEligibleMethodSequences(final EligibleMethodsRequest request);
 
     class EligibilityHandlerNotFoundException extends RuntimeException {
 

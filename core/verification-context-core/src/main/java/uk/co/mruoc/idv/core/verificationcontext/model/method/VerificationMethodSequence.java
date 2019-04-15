@@ -10,15 +10,15 @@ import java.util.Optional;
 public class VerificationMethodSequence {
 
     private final String name;
-    private final Collection<VerificationMethod> sequence;
+    private final Collection<VerificationMethod> methods;
 
     public VerificationMethodSequence(final VerificationMethod method) {
         this(method.getName(), Collections.singleton(method));
     }
 
-    public VerificationMethodSequence(final String name, final Collection<VerificationMethod> sequence) {
+    public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods) {
         this.name = name;
-        this.sequence = sequence;
+        this.methods = methods;
     }
 
     public String getName() {
@@ -61,7 +61,7 @@ public class VerificationMethodSequence {
     }
 
     public int getDuration() {
-        return sequence.stream().map(VerificationMethod::getDuration).mapToInt(i -> i).sum();
+        return methods.stream().map(VerificationMethod::getDuration).mapToInt(i -> i).sum();
     }
 
     public boolean containsMethod(final String name) {
@@ -69,11 +69,11 @@ public class VerificationMethodSequence {
     }
 
     public Optional<VerificationMethod> getMethod(final String name) {
-        return sequence.stream().filter(method -> method.getName().equals(name)).findFirst();
+        return methods.stream().filter(method -> method.getName().equals(name)).findFirst();
     }
 
-    public Collection<VerificationMethod> getSequence() {
-        return Collections.unmodifiableCollection(sequence);
+    public Collection<VerificationMethod> getMethods() {
+        return Collections.unmodifiableCollection(methods);
     }
 
     public static class VerificationMethodNotFoundInSequenceException extends RuntimeException {

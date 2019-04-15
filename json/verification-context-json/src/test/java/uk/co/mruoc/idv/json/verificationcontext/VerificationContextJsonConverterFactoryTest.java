@@ -91,7 +91,7 @@ public class VerificationContextJsonConverterFactoryTest {
                 .activity(activity)
                 .created(now)
                 .expiry(buildExpiry(now))
-                .eligibleMethods(buildEligibleMethods());
+                .sequences(buildEligibleMethodSequences());
     }
 
     private static Identity buildIdentity(final Alias providedAlias) {
@@ -99,7 +99,7 @@ public class VerificationContextJsonConverterFactoryTest {
         return Identity.withAliases(idvId, providedAlias);
     }
 
-    private static Collection<VerificationMethodSequence> buildEligibleMethods() {
+    private static Collection<VerificationMethodSequence> buildEligibleMethodSequences() {
         final int duration = 300000;
         final VerificationMethod method = new PushNotificationVerificationMethod(duration);
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);

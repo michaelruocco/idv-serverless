@@ -70,7 +70,7 @@ public class GetVerificationContextHandlerIntegrationTest {
                 .channel(new DefaultChannel("CHANNEL"))
                 .providedAlias(providedAlias)
                 .identity(Identity.withAliases(new IdvIdAlias(), providedAlias))
-                .eligibleMethods(Collections.emptyList())
+                .sequences(Collections.emptyList())
                 .activity(new DefaultActivity("ACTIVITY", Instant.parse("2019-03-24T22:41:50.434Z")))
                 .created(now)
                 .expiry(now.plus(Duration.ofMinutes(5)))

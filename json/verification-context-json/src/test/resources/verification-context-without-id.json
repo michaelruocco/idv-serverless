@@ -27,11 +27,11 @@
   },
   "created": "2019-03-10T12:53:57.547Z",
   "expiry": "2019-03-10T12:58:57.547Z",
-  "eligibleMethods": [
+  "sequences": [
     {
       "name": "PUSH_NOTIFICATION",
       "duration": 300000,
-      "sequence": [
+      "methods": [
         {
           "name": "PUSH_NOTIFICATION",
           "duration": 300000

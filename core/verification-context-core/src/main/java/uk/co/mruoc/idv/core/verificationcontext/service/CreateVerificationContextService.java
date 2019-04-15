@@ -43,7 +43,7 @@ public class CreateVerificationContextService {
     }
 
     private VerificationContext buildContext(final VerificationContextRequest request, final Identity identity) {
-        final Collection<VerificationMethodSequence> eligibleMethods = loadEligibleMethods(request, identity);
+        final Collection<VerificationMethodSequence> sequences = loadEligibleMethodSequences(request, identity);
         final Instant created = timeService.now();
         return VerificationContext.builder()
                 .id(idGenerator.randomUuid())
@@ -53,7 +53,7 @@ public class CreateVerificationContextService {
                 .activity(request.getActivity())
                 .created(created)
                 .expiry(expiryCalculator.calculateExpiry(created))
-                .eligibleMethods(eligibleMethods)
+                .sequences(sequences)
                 .build();
     }
 
@@ -64,7 +64,7 @@ public class CreateVerificationContextService {
         return policies.getPolicyFor(activity.getType());
     }
 
-    private Collection<VerificationMethodSequence> loadEligibleMethods(final VerificationContextRequest request, final Identity identity) {
+    private Collection<VerificationMethodSequence> loadEligibleMethodSequences(final VerificationContextRequest request, final Identity identity) {
         final VerificationPolicy policy = loadVerificationPolicy(request);
         final EligibleMethodsRequest methodsRequest = EligibleMethodsRequest.builder()
                 .channel(request.getChannel())
@@ -72,7 +72,7 @@ public class CreateVerificationContextService {
                 .inputAlias(request.getProvidedAlias())
                 .policy(policy)
                 .build();
-        return eligibleMethodsService.loadEligibleMethods(methodsRequest);
+        return eligibleMethodsService.loadEligibleMethodSequences(methodsRequest);
     }
 
 }

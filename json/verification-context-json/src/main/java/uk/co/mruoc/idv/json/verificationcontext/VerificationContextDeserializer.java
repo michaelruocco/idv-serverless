@@ -47,7 +47,7 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
                 .activity(extractActivity(contextNode))
                 .created(extractCreated(contextNode))
                 .expiry(extractExpiry(contextNode))
-                .eligibleMethods(toEligibleMethods(contextNode))
+                .sequences(toEligibleMethodSequences(contextNode))
                 .build();
     }
 
@@ -92,23 +92,23 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
         return Instant.parse(activityNode.get(name).asText());
     }
 
-    private static Collection<VerificationMethodSequence> toEligibleMethods(final JsonNode contextNode) {
+    private static Collection<VerificationMethodSequence> toEligibleMethodSequences(final JsonNode contextNode) {
         final List<VerificationMethodSequence> eligibleMethods = new ArrayList<>();
-        final JsonNode eligibleMethodsNode = contextNode.get("eligibleMethods");
-        for (final JsonNode eligibleMethodNode : eligibleMethodsNode) {
-            eligibleMethods.add(toEligibleMethod(eligibleMethodNode));
+        final JsonNode sequencesNode = contextNode.get("sequences");
+        for (final JsonNode sequenceNode : sequencesNode) {
+            eligibleMethods.add(toEligibleMethodSequence(sequenceNode));
         }
         return Collections.unmodifiableCollection(eligibleMethods);
     }
 
-    private static VerificationMethodSequence toEligibleMethod(final JsonNode eligibleMethodNode) {
-        final List<VerificationMethod> methodSequence = new ArrayList<>();
-        final String name = extractName(eligibleMethodNode);
-        final JsonNode methodSequenceNode = eligibleMethodNode.get("sequence");
-        for (final JsonNode methodNode : methodSequenceNode) {
-            methodSequence.add(toMethod(methodNode));
+    private static VerificationMethodSequence toEligibleMethodSequence(final JsonNode sequenceNode) {
+        final List<VerificationMethod> methods = new ArrayList<>();
+        final String name = extractName(sequenceNode);
+        final JsonNode methodsNode = sequenceNode.get("methods");
+        for (final JsonNode methodNode : methodsNode) {
+            methods.add(toMethod(methodNode));
         }
-        return new VerificationMethodSequence(name, methodSequence);
+        return new VerificationMethodSequence(name, methods);
     }
 
     private static VerificationMethod toMethod(final JsonNode methodNode) {

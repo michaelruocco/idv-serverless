@@ -40,7 +40,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnTwoMethodsForAs3Login() {
         final EligibleMethodsRequest request = buildAs3LoginRequest();
 
-        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethods(request);
+        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethodSequences(request);
 
         assertThat(methods).hasSize(2);
     }
@@ -49,7 +49,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnPushNotificationAsFirstMethodForAs3Login() {
         final EligibleMethodsRequest request = buildAs3LoginRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethods(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
 
         assertThat(methods.get(0)).isEqualToComparingFieldByFieldRecursively(buildAs3LoginPushNotificationSequence());
     }
@@ -58,7 +58,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnPhysicalPinsentryIdentifyAsSecondMethodForAs3Login() {
         final EligibleMethodsRequest request = buildAs3LoginRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethods(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
 
 
         assertThat(methods.get(1)).isEqualToComparingFieldByFieldRecursively(buildAs3LoginPhysicalPinsentrySequence());
@@ -68,7 +68,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnOneMethodForBbosLogin() {
         final EligibleMethodsRequest request = buildBbosLoginRequest();
 
-        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethods(request);
+        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethodSequences(request);
 
         assertThat(methods).hasSize(1);
     }
@@ -77,7 +77,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnMobilePinsentryIdentityForBbosLogin() {
         final EligibleMethodsRequest request = buildBbosLoginRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethods(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
 
         assertThat(methods.get(0)).isEqualToComparingFieldByFieldRecursively(buildBbosLoginMobilePinsentrySequence());
     }
@@ -86,7 +86,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnTwoMethodsForRsaOnlinePurchase() {
         final EligibleMethodsRequest request = buildRsaOnlinePurchaseRequest();
 
-        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethods(request);
+        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethodSequences(request);
 
         assertThat(methods).hasSize(2);
     }
@@ -95,7 +95,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnPhysicalPinsentryRespondForRsaOnlinePurchase() {
         final EligibleMethodsRequest request = buildRsaOnlinePurchaseRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethods(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
 
         assertThat(methods.get(0)).isEqualToComparingFieldByFieldRecursively(buildRsaOnlinePurchasePhysicalPinsentrySequence());
     }
@@ -104,7 +104,7 @@ public class UkEligibleMethodServiceTest {
     public void shouldReturnOtpSmsForRsaOnlinePurchase() {
         final EligibleMethodsRequest request = buildRsaOnlinePurchaseRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethods(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
 
         assertThat(methods.get(1)).isEqualToComparingFieldByFieldRecursively(buildRsaOnlinePurchaseOtpSmsSequence());
     }

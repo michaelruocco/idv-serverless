@@ -26,7 +26,7 @@ public class DefaultEligibleMethodsService implements EligibleMethodsService {
     }
 
     @Override
-    public Collection<VerificationMethodSequence> loadEligibleMethods(final EligibleMethodsRequest request) {
+    public Collection<VerificationMethodSequence> loadEligibleMethodSequences(final EligibleMethodsRequest request) {
         log.info("loading eligible methods with request {}", request);
         final VerificationPolicy policy = request.getPolicy();
         final Collection<VerificationMethodPolicyEntry> entries = policy.getEntries();

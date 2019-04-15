@@ -117,7 +117,7 @@ public class CreateVerificationContextServiceTest {
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
         final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
-        given(eligibleMethodsService.loadEligibleMethods(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
+        given(eligibleMethodsService.loadEligibleMethodSequences(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
 
         final VerificationContextCreatedEvent createdEvent = mock(VerificationContextCreatedEvent.class);
         given(contextConverter.toCreatedEvent(any(VerificationContext.class))).willReturn(createdEvent);
@@ -133,7 +133,7 @@ public class CreateVerificationContextServiceTest {
         assertThat(context.getActivity()).isEqualTo(request.getActivity());
         assertThat(context.getCreated()).isEqualTo(now);
         assertThat(context.getExpiry()).isEqualTo(expiry);
-        assertThat(context.getEligibleMethods()).isEqualTo(eligibleMethods);
+        assertThat(context.getSequences()).isEqualTo(eligibleMethods);
     }
 
     @Test
@@ -160,13 +160,13 @@ public class CreateVerificationContextServiceTest {
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
         final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
-        given(eligibleMethodsService.loadEligibleMethods(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
+        given(eligibleMethodsService.loadEligibleMethodSequences(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
 
         service.create(request);
 
         final ArgumentCaptor<EligibleMethodsRequest> captor = ArgumentCaptor.forClass(EligibleMethodsRequest.class);
 
-        verify(eligibleMethodsService).loadEligibleMethods(captor.capture());
+        verify(eligibleMethodsService).loadEligibleMethodSequences(captor.capture());
         final EligibleMethodsRequest methodsRequest = captor.getValue();
         assertThat(methodsRequest.getChannel()).isEqualTo(request.getChannel());
         assertThat(methodsRequest.getInputAlias()).isEqualTo(request.getProvidedAlias());

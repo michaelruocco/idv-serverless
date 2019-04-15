@@ -16,7 +16,7 @@ import java.util.List;
 public class StubbedEligibleMethodsService implements EligibleMethodsService {
 
     @Override
-    public Collection<VerificationMethodSequence> loadEligibleMethods(final EligibleMethodsRequest request) {
+    public Collection<VerificationMethodSequence> loadEligibleMethodSequences(final EligibleMethodsRequest request) {
         final VerificationMethodPolicy policy = extractFirstPolicy(request);
         final VerificationMethod method = new PushNotificationVerificationMethod(policy.getDuration());
         return Collections.singleton(new VerificationMethodSequence(method));

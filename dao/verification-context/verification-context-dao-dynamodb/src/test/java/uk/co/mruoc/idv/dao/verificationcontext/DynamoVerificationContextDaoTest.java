@@ -83,7 +83,7 @@ public class DynamoVerificationContextDaoTest {
                 .identity(Identity.withAliases(new IdvIdAlias(), providedAlias))
                 .created(Instant.now())
                 .expiry(Instant.now().plus(Duration.ofMinutes(5)))
-                .eligibleMethods(Collections.singleton(new VerificationMethodSequence(new OtpSmsVerificationMethod(300000, passcode, mobileNumbers))))
+                .sequences(Collections.singleton(new VerificationMethodSequence(new OtpSmsVerificationMethod(300000, passcode, mobileNumbers))))
                 .build();
     }
 
