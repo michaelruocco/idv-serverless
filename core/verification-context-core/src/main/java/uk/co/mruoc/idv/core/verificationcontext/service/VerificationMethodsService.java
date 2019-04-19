@@ -9,14 +9,14 @@ public interface VerificationMethodsService {
 
     Collection<VerificationMethodSequence> loadMethodSequences(final MethodSequencesRequest request);
 
-    class EligibilityHandlerNotFoundException extends RuntimeException {
+    class AvailabilityHandlerNotFoundException extends RuntimeException {
 
-        private static final String MESSAGE_FORMAT = "eligibility handler for channel %s and method %s not found";
+        private static final String MESSAGE_FORMAT = "availability handler for channel %s and method %s not found";
 
         private final String channelId;
         private final String methodName;
 
-        public EligibilityHandlerNotFoundException(final String channelId, final String methodName) {
+        public AvailabilityHandlerNotFoundException(final String channelId, final String methodName) {
             super(String.format(MESSAGE_FORMAT, channelId, methodName));
             this.channelId = channelId;
             this.methodName = methodName;

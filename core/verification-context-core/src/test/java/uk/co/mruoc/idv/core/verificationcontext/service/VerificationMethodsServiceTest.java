@@ -12,7 +12,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsService.EligibilityHandlerNotFoundException;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsService.AvailabilityHandlerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,9 +40,9 @@ public class VerificationMethodsServiceTest {
             .methodPolicy(methodPolicy)
             .build();
 
-    private final EligibilityHandler handler1 = mock(EligibilityHandler.class);
-    private final EligibilityHandler handler2 = mock(EligibilityHandler.class);
-    private final Collection<EligibilityHandler> handlers = Arrays.asList(handler1, handler2);
+    private final AvailabilityHandler handler1 = mock(AvailabilityHandler.class);
+    private final AvailabilityHandler handler2 = mock(AvailabilityHandler.class);
+    private final Collection<AvailabilityHandler> handlers = Arrays.asList(handler1, handler2);
     private final VerificationMethodsRequestConverter requestConverter = mock(VerificationMethodsRequestConverter.class);
 
     private final VerificationMethodsService service = new DefaultVerificationMethodsService(handlers, requestConverter);
@@ -56,15 +56,14 @@ public class VerificationMethodsServiceTest {
     public void shouldThrowExceptionIfNoSupportedEligiblityHandlers() {
         final Throwable thrown = catchThrowable(() -> service.loadMethodSequences(methodsRequest));
 
-        assertThat(thrown).isInstanceOf(EligibilityHandlerNotFoundException.class)
-                .hasMessage("eligibility handler for channel channelId and method methodName not found");
+        assertThat(thrown).isInstanceOf(AvailabilityHandlerNotFoundException.class);
     }
 
     @Test
     public void shouldReturnVerificationMethodsFromSupportedEligibilityHandlers() {
         final VerificationMethod method = new DefaultVerificationMethod("methodName");
         given(handler1.isSupported(methodRequest)).willReturn(true);
-        given(handler1.loadMethodIfEligible(methodRequest)).willReturn(Optional.of(method));
+        given(handler1.loadMethod(methodRequest)).willReturn(method);
 
         final Collection<VerificationMethodSequence> sequences = service.loadMethodSequences(methodsRequest);
 

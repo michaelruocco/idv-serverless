@@ -3,17 +3,15 @@ package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
-import java.util.Optional;
-
-public class FakePushNotificationEligibilityHandler implements EligibilityHandler {
+public class FakePushNotificationAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.PUSH_NOTIFICATION;
 
     @Override
-    public Optional<VerificationMethod> loadMethodIfEligible(final VerificationMethodRequest request) {
-        return Optional.of(new PushNotificationVerificationMethod(request.getDuration()));
+    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
+        return new PushNotificationVerificationMethod(request.getDuration());
     }
 
     @Override

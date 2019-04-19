@@ -1,28 +1,27 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.method.MobilePinsentryVerificationMethod;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMethodPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.PhysicalPinsentryMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
-
-import java.util.Optional;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FakeMobilePinsentryEligibilityHandlerTest {
+public class FakePhysicalPinsentryAvailabilityHandlerTest {
 
-    private static final String METHOD_NAME = VerificationMethod.Names.MOBILE_PINSENTRY;
+    private static final String METHOD_NAME = VerificationMethod.Names.PHYSICAL_PINSENTRY;
 
-    private final EligibilityHandler handler = new FakeMobilePinsentryEligibilityHandler();
+    private final AvailabilityHandler handler = new FakePhysicalPinsentryAvailabilityHandler();
 
     @Test
-    public void shouldSupportMobilePinsentryMethod() {
+    public void shouldSupportPhysicalPinsentryMethod() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
@@ -44,53 +43,67 @@ public class FakeMobilePinsentryEligibilityHandlerTest {
     @Test
     public void shouldReturnMethod() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
-        final VerificationMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
+        final VerificationMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(optionalMethod).isNotEmpty();
+        assertThat(method).isNotNull();
     }
 
     @Test
     public void shouldReturnMethodWithCorrectName() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
-        final VerificationMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
+        final VerificationMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final VerificationMethod method = optionalMethod.get();
         assertThat(method.getName()).isEqualTo(METHOD_NAME);
     }
 
     @Test
     public void shouldReturnMethodWithPassedDuration() {
         final int duration = 150000;
-        final VerificationMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
+        final VerificationMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final VerificationMethod method = optionalMethod.get();
         assertThat(method.getDuration()).isEqualTo(duration);
     }
 
     @Test
     public void shouldReturnMethodWithPassedPinsentryFunction() {
         final PinsentryFunction function = PinsentryFunction.IDENTIFY;
-        final MobilePinsentryMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
+        final PhysicalPinsentryMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         given(methodPolicy.getFunction()).willReturn(function);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final PhysicalPinsentryVerificationMethod method = (PhysicalPinsentryVerificationMethod) handler.loadMethod(request);
 
-        final MobilePinsentryVerificationMethod method = (MobilePinsentryVerificationMethod) optionalMethod.get();
         assertThat(method.getFunction()).isEqualTo(function);
+    }
+
+    @Test
+    public void shouldReturnMethodWithCardNumbers() {
+        final PhysicalPinsentryMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
+        given(request.getMethodPolicy()).willReturn(methodPolicy);
+
+        final PhysicalPinsentryVerificationMethod method = (PhysicalPinsentryVerificationMethod) handler.loadMethod(request);
+
+        final CardNumber expectedCardNumber = CardNumber.builder()
+                .tokenized("3213485412348005")
+                .masked("************8005")
+                .build();
+        assertThat(method.getCardNumbers())
+                .usingElementComparator(new CardNumberComparator())
+                .contains(expectedCardNumber);
     }
 
 }

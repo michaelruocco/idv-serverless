@@ -38,7 +38,7 @@ public class VerificationPolicyTest {
 
         final VerificationPolicy policy = new VerificationPolicy(activityType, entry);
 
-        assertThat(policy.getEntries()).containsExactly(entry);
+        assertThat(policy.getSequencePolicies()).containsExactly(entry);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class VerificationPolicyTest {
 
         final VerificationPolicy policy = new VerificationPolicy(activityType, entries);
 
-        assertThat(policy.getEntries()).containsExactlyElementsOf(entries);
+        assertThat(policy.getSequencePolicies()).containsExactlyElementsOf(entries);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class VerificationPolicyTest {
 
         final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
 
-        assertThat(policy.getEntries()).containsExactlyElementsOf(entries);
+        assertThat(policy.getSequencePolicies()).containsExactlyElementsOf(entries);
     }
 
     @Test

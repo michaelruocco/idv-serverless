@@ -3,17 +3,15 @@ package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.CardCredentialsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
-import java.util.Optional;
-
-public class FakeCardCredentialsEligibilityHandler implements EligibilityHandler {
+public class FakeCardCredentialsAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.CARD_CREDENTIALS;
 
     @Override
-    public Optional<VerificationMethod> loadMethodIfEligible(final VerificationMethodRequest request) {
-        return Optional.of(new CardCredentialsVerificationMethod(request.getDuration()));
+    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
+        return new CardCredentialsVerificationMethod(request.getDuration());
     }
 
     @Override

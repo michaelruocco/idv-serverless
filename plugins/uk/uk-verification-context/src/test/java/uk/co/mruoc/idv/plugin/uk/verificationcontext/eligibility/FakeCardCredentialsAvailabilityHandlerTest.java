@@ -3,22 +3,20 @@ package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
-
-import java.util.Optional;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FakePushNotificationEligibilityHandlerTest {
+public class FakeCardCredentialsAvailabilityHandlerTest {
 
-    private static final String METHOD_NAME = VerificationMethod.Names.PUSH_NOTIFICATION;
+    private static final String METHOD_NAME = VerificationMethod.Names.CARD_CREDENTIALS;
 
-    private final EligibilityHandler handler = new FakePushNotificationEligibilityHandler();
+    private final AvailabilityHandler handler = new FakeCardCredentialsAvailabilityHandler();
 
     @Test
-    public void shouldSupportPushNotificationMethod() {
+    public void shouldSupportCardCredentialsMethod() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
@@ -42,9 +40,9 @@ public class FakePushNotificationEligibilityHandlerTest {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(optionalMethod).isNotEmpty();
+        assertThat(method).isNotNull();
     }
 
     @Test
@@ -52,21 +50,19 @@ public class FakePushNotificationEligibilityHandlerTest {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final VerificationMethod method = optionalMethod.get();
         assertThat(method.getName()).isEqualTo(METHOD_NAME);
     }
 
     @Test
-    public void shouldReturnPushNotificationWithPassedDuration() {
+    public void shouldReturnMethodWithPassedDuration() {
         final int duration = 150000;
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final VerificationMethod method = optionalMethod.get();
         assertThat(method.getDuration()).isEqualTo(duration);
     }
 

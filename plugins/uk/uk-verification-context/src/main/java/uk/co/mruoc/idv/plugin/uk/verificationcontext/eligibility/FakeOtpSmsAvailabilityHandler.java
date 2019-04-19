@@ -6,23 +6,22 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationM
 import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.OtpSmsMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.UUID;
 
-public class FakeOtpSmsEligibilityHandler implements EligibilityHandler {
+public class FakeOtpSmsAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.ONE_TIME_PASSCODE_SMS;
 
     @Override
-    public Optional<VerificationMethod> loadMethodIfEligible(final VerificationMethodRequest request) {
+    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
         final OtpSmsMethodPolicy method = (OtpSmsMethodPolicy) request.getMethodPolicy();
         final Passcode passcode = method.getPasscode();
         final Collection<MobileNumber> mobileNumbers = buildMobileNumbers();
-        return Optional.of(new OtpSmsVerificationMethod(request.getDuration(), passcode, mobileNumbers));
+        return new OtpSmsVerificationMethod(request.getDuration(), passcode, mobileNumbers);
     }
 
     @Override

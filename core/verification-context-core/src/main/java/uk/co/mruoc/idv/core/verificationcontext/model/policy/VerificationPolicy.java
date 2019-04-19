@@ -29,7 +29,7 @@ public class VerificationPolicy {
         return activityTypes.contains(activityType);
     }
 
-    public Collection<VerificationSequencePolicy> getEntries() {
+    public Collection<VerificationSequencePolicy> getSequencePolicies() {
         return entries;
     }
 

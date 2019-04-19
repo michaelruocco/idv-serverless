@@ -5,19 +5,17 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.MobilePinsentryVeri
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
-import java.util.Optional;
-
-public class FakeMobilePinsentryEligibilityHandler implements EligibilityHandler {
+public class FakeMobilePinsentryAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.MOBILE_PINSENTRY;
 
     @Override
-    public Optional<VerificationMethod> loadMethodIfEligible(final VerificationMethodRequest request) {
+    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
         final MobilePinsentryMethodPolicy method = (MobilePinsentryMethodPolicy) request.getMethodPolicy();
         final PinsentryFunction function = method.getFunction();
-        return Optional.of(new MobilePinsentryVerificationMethod(request.getDuration(), function));
+        return new MobilePinsentryVerificationMethod(request.getDuration(), function);
     }
 
     @Override

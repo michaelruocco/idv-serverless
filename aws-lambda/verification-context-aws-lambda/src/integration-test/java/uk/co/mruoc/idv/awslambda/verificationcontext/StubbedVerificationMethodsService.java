@@ -23,7 +23,7 @@ public class StubbedVerificationMethodsService implements VerificationMethodsSer
     }
 
     private static VerificationMethodPolicy extractFirstPolicy(final MethodSequencesRequest request) {
-        final List<VerificationSequencePolicy> entries = new ArrayList<>(request.getPolicy().getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(request.getPolicy().getSequencePolicies());
         final List<VerificationMethodPolicy> policies = new ArrayList<>(entries.get(0).getMethods());
         return policies.get(0);
     }

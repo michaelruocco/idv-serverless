@@ -8,20 +8,19 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.OtpSmsMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FakeOtpSmsEligibilityHandlerTest {
+public class FakeOtpSmsAvailabilityHandlerTest {
 
     private static final String METHOD_NAME = VerificationMethod.Names.ONE_TIME_PASSCODE_SMS;
 
-    private final EligibilityHandler handler = new FakeOtpSmsEligibilityHandler();
+    private final AvailabilityHandler handler = new FakeOtpSmsAvailabilityHandler();
 
     @Test
     public void shouldSupportPhysicalPinsentryMethod() {
@@ -49,9 +48,9 @@ public class FakeOtpSmsEligibilityHandlerTest {
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(optionalMethod).isNotEmpty();
+        assertThat(method).isNotNull();
     }
 
     @Test
@@ -61,9 +60,8 @@ public class FakeOtpSmsEligibilityHandlerTest {
         given(request.getMethodName()).willReturn(METHOD_NAME);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final VerificationMethod method = optionalMethod.get();
         assertThat(method.getName()).isEqualTo(METHOD_NAME);
     }
 
@@ -75,9 +73,8 @@ public class FakeOtpSmsEligibilityHandlerTest {
         given(request.getDuration()).willReturn(duration);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final VerificationMethod method = optionalMethod.get();
         assertThat(method.getDuration()).isEqualTo(duration);
     }
 
@@ -89,9 +86,8 @@ public class FakeOtpSmsEligibilityHandlerTest {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final OtpSmsVerificationMethod method = (OtpSmsVerificationMethod) handler.loadMethod(request);
 
-        final OtpSmsVerificationMethod method = (OtpSmsVerificationMethod) optionalMethod.get();
         assertThat(method.getPasscode()).isEqualTo(passcode);
     }
 
@@ -101,9 +97,8 @@ public class FakeOtpSmsEligibilityHandlerTest {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
+        final OtpSmsVerificationMethod method = (OtpSmsVerificationMethod) handler.loadMethod(request);
 
-        final OtpSmsVerificationMethod method = (OtpSmsVerificationMethod) optionalMethod.get();
         final MobileNumber expectedMobileNumber = MobileNumber.builder()
                 .id(UUID.fromString("48be7f28-37c2-42b6-956c-a32241310ee6"))
                 .masked("********789")

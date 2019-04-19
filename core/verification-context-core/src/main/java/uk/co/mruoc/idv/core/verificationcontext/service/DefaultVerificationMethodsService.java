@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DefaultVerificationMethodsService implements VerificationMethodsService {
 
-    private final Collection<EligibilityHandler> handlers;
+    private final Collection<AvailabilityHandler> handlers;
     private final VerificationMethodsRequestConverter requestConverter;
 
-    public DefaultVerificationMethodsService(final Collection<EligibilityHandler> handlers, final VerificationMethodsRequestConverter requestConverter) {
+    public DefaultVerificationMethodsService(final Collection<AvailabilityHandler> handlers, final VerificationMethodsRequestConverter requestConverter) {
         this.handlers = handlers;
         this.requestConverter = requestConverter;
     }
@@ -29,31 +29,31 @@ public class DefaultVerificationMethodsService implements VerificationMethodsSer
     public Collection<VerificationMethodSequence> loadMethodSequences(final MethodSequencesRequest request) {
         log.info("loading methods sequences with request {}", request);
         final VerificationPolicy policy = request.getPolicy();
-        final Collection<VerificationSequencePolicy> entries = policy.getEntries();
-        final Collection<VerificationMethodSequence> methods = entries.stream()
-                .map(entry -> loadMethodsIfEligible(request, entry))
+        final Collection<VerificationSequencePolicy> sequencePolicies = policy.getSequencePolicies();
+        final Collection<VerificationMethodSequence> methods = sequencePolicies.stream()
+                .map(sequencePolicy -> loadMethodSequences(request, sequencePolicy))
                 .collect(Collectors.toList());
         log.info("loaded method sequences {}", methods);
         return methods;
     }
 
-    private VerificationMethodSequence loadMethodsIfEligible(final MethodSequencesRequest request, final VerificationSequencePolicy entry) {
+    private VerificationMethodSequence loadMethodSequences(final MethodSequencesRequest request, final VerificationSequencePolicy sequencePolicy) {
         final List<VerificationMethod> methods = new ArrayList<>();
-        for (final VerificationMethodPolicy methodPolicy : entry.getMethods()) {
+        for (final VerificationMethodPolicy methodPolicy : sequencePolicy.getMethods()) {
             final VerificationMethodRequest methodRequest = requestConverter.toMethodRequest(request, methodPolicy);
-            final EligibilityHandler handler = getHandler(methodRequest);
-            handler.loadMethodIfEligible(methodRequest).ifPresent(methods::add);
+            final AvailabilityHandler handler = getHandler(methodRequest);
+            methods.add(handler.loadMethod(methodRequest));
         }
-        return new VerificationMethodSequence(entry.getName(), methods);
+        return new VerificationMethodSequence(sequencePolicy.getName(), methods);
     }
 
-    private EligibilityHandler getHandler(final VerificationMethodRequest request) {
+    private AvailabilityHandler getHandler(final VerificationMethodRequest request) {
         final String channelId = request.getChannelId();
         final String methodName = request.getMethodName();
         return handlers.stream()
                 .filter(handler -> handler.isSupported(request))
                 .findFirst()
-                .orElseThrow(() -> new EligibilityHandlerNotFoundException(channelId, methodName));
+                .orElseThrow(() -> new AvailabilityHandlerNotFoundException(channelId, methodName));
     }
 
 }

@@ -16,21 +16,21 @@ public class As3LoginVerificationPolicyTest {
 
     @Test
     public void shouldContainTwoEntries() {
-        final Collection<VerificationSequencePolicy> entries = policy.getEntries();
+        final Collection<VerificationSequencePolicy> entries = policy.getSequencePolicies();
 
         assertThat(entries).hasSize(2);
     }
 
     @Test
     public void shouldContainAs3PushNotificationPolicyEntryAsFirstEntry() {
-        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getSequencePolicies());
 
         assertThat(entries.get(0)).isInstanceOf(As3PushNotificationSequencePolicy.class);
     }
 
     @Test
     public void shouldContainAs3PhysicalPinsentryPolicyEntryAsSecondEntry() {
-        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getSequencePolicies());
 
         assertThat(entries.get(1)).isInstanceOf(As3PhysicalPinsentrySequencePolicy.class);
     }

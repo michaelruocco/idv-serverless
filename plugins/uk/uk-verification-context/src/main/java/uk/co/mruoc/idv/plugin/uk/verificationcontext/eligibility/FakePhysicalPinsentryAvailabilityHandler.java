@@ -6,22 +6,21 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVe
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.PhysicalPinsentryMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
-public class FakePhysicalPinsentryEligibilityHandler implements EligibilityHandler {
+public class FakePhysicalPinsentryAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.PHYSICAL_PINSENTRY;
 
     @Override
-    public Optional<VerificationMethod> loadMethodIfEligible(final VerificationMethodRequest request) {
+    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
         final PhysicalPinsentryMethodPolicy method = (PhysicalPinsentryMethodPolicy) request.getMethodPolicy();
         final PinsentryFunction function = method.getFunction();
         final Collection<CardNumber> cardNumbers = buildCardNumbers();
-        return Optional.of(new PhysicalPinsentryVerificationMethod(request.getDuration(), function, cardNumbers));
+        return new PhysicalPinsentryVerificationMethod(request.getDuration(), function, cardNumbers);
     }
 
     @Override

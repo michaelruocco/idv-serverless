@@ -16,21 +16,21 @@ public class RsaOnlinePurchaseVerificationPolicyTest {
 
     @Test
     public void shouldContainTwoEntries() {
-        final Collection<VerificationSequencePolicy> entries = policy.getEntries();
+        final Collection<VerificationSequencePolicy> entries = policy.getSequencePolicies();
 
         assertThat(entries).hasSize(2);
     }
 
     @Test
     public void shouldContainRsaPhysicalPinsentryPolicyEntryAsFirstEntry() {
-        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getSequencePolicies());
 
         assertThat(entries.get(0)).isInstanceOf(RsaPhysicalPinsentrySequencePolicy.class);
     }
 
     @Test
     public void shouldContainRsaOtpSmsVerificationPolicyEntryAsSecondEntry() {
-        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getSequencePolicies());
 
         assertThat(entries.get(1)).isInstanceOf(RsaOtpSmsSequencePolicy.class);
     }
