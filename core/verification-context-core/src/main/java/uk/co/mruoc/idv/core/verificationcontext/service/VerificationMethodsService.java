@@ -1,13 +1,13 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 
 import java.util.Collection;
 
-public interface EligibleMethodsService {
+public interface VerificationMethodsService {
 
-    Collection<VerificationMethodSequence> loadEligibleMethodSequences(final EligibleMethodsRequest request);
+    Collection<VerificationMethodSequence> loadMethodSequences(final MethodSequencesRequest request);
 
     class EligibilityHandlerNotFoundException extends RuntimeException {
 

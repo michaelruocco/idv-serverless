@@ -1,13 +1,13 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
-import uk.co.mruoc.idv.core.verificationcontext.service.DefaultEligibleMethodsService;
+import uk.co.mruoc.idv.core.verificationcontext.service.DefaultVerificationMethodsService;
 import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsRequestConverter;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsRequestConverter;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public class UkEligibleMethodsService extends DefaultEligibleMethodsService {
+public class UkVerificationMethodsService extends DefaultVerificationMethodsService {
 
     private static final Collection<EligibilityHandler> HANDLERS = Arrays.asList(
             new FakePushNotificationEligibilityHandler(),
@@ -17,8 +17,8 @@ public class UkEligibleMethodsService extends DefaultEligibleMethodsService {
             new FakeOtpSmsEligibilityHandler()
     );
 
-    public UkEligibleMethodsService() {
-        super(HANDLERS, new EligibleMethodsRequestConverter());
+    public UkVerificationMethodsService() {
+        super(HANDLERS, new VerificationMethodsRequestConverter());
     }
 
 }

@@ -19,7 +19,7 @@ import uk.co.mruoc.idv.events.sns.SnsEventPublisherFactory;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkIdentityServiceFactory;
-import uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility.UkEligibleMethodsService;
+import uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility.UkVerificationMethodsService;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.UkVerificationPoliciesService;
 
 @Slf4j
@@ -61,7 +61,7 @@ public class UkPostVerificationContextServiceFactory implements CreateVerificati
                 .identityService(identityServiceFactory.getIdentityService())
                 .policiesService(new UkVerificationPoliciesService())
                 .timeService(timeService)
-                .eligibleMethodsService(new UkEligibleMethodsService())
+                .verificationMethodsService(new UkVerificationMethodsService())
                 .expiryCalculator(new FixedExpiryCalculator())
                 .idGenerator(new RandomUuidGenerator())
                 .dao(dao)

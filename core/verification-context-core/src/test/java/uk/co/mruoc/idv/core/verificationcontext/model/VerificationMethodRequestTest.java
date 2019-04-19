@@ -13,13 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class EligibleMethodRequestTest {
+public class VerificationMethodRequestTest {
 
     @Test
     public void shouldReturnChannel() {
         final Channel channel = mock(Channel.class);
 
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .channel(channel)
                 .build();
 
@@ -32,7 +32,7 @@ public class EligibleMethodRequestTest {
         final Channel channel = mock(Channel.class);
         given(channel.getId()).willReturn(channelId);
 
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .channel(channel)
                 .build();
 
@@ -43,7 +43,7 @@ public class EligibleMethodRequestTest {
     public void shouldReturnInputAlias() {
         final Alias alias = mock(Alias.class);
 
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .inputAlias(alias)
                 .build();
 
@@ -55,7 +55,7 @@ public class EligibleMethodRequestTest {
     public void shouldReturnIdentity() {
         final Identity identity = mock(Identity.class);
 
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .identity(identity)
                 .build();
 
@@ -66,7 +66,7 @@ public class EligibleMethodRequestTest {
     public void shouldReturnMethodPolicy() {
         final VerificationMethodPolicy methodPolicy = mock(VerificationMethodPolicy.class);
 
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .methodPolicy(methodPolicy)
                 .build();
 
@@ -79,7 +79,7 @@ public class EligibleMethodRequestTest {
         final VerificationMethodPolicy methodPolicy = mock(VerificationMethodPolicy.class);
         given(methodPolicy.getMethodName()).willReturn(methodName);
 
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .methodPolicy(methodPolicy)
                 .build();
 
@@ -92,7 +92,7 @@ public class EligibleMethodRequestTest {
         final VerificationMethodPolicy methodPolicy = mock(VerificationMethodPolicy.class);
         given(methodPolicy.getDuration()).willReturn(duration);
 
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .methodPolicy(methodPolicy)
                 .build();
 
@@ -102,14 +102,14 @@ public class EligibleMethodRequestTest {
     @Test
     public void shouldPrintAllValues() {
         final Alias inputAlias = new IdvIdAlias(UUID.fromString("b0d996ae-dfa0-43a4-949c-f03e9dafd539"));
-        final EligibleMethodRequest request = EligibleMethodRequest.builder()
+        final VerificationMethodRequest request = VerificationMethodRequest.builder()
                 .channel(new DefaultChannel("CHANNEL_ID"))
                 .inputAlias(inputAlias)
                 .identity(Identity.withAliases(inputAlias))
                 .methodPolicy(new VerificationMethodPolicy("method"))
                 .build();
 
-        assertThat(request.toString()).isEqualTo("EligibleMethodRequest(" +
+        assertThat(request.toString()).isEqualTo("VerificationMethodRequest(" +
                 "channel=DefaultChannel(id=CHANNEL_ID), " +
                 "inputAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539)])), " +

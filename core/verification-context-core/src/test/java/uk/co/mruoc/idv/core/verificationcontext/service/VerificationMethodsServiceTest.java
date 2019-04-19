@@ -2,8 +2,8 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
@@ -12,7 +12,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsService.EligibilityHandlerNotFoundException;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsService.EligibilityHandlerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,18 +24,18 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class EligibleMethodsServiceTest {
+public class VerificationMethodsServiceTest {
 
     private final Channel channel = new DefaultChannel("channelId");
     private final VerificationMethodPolicy methodPolicy = new VerificationMethodPolicy("methodName");
     private final VerificationPolicy policy = new VerificationPolicy("activity", new VerificationSequencePolicy(methodPolicy));
 
-    private final EligibleMethodsRequest methodsRequest = EligibleMethodsRequest.builder()
+    private final MethodSequencesRequest methodsRequest = MethodSequencesRequest.builder()
             .channel(channel)
             .policy(policy)
             .build();
 
-    private final EligibleMethodRequest methodRequest = EligibleMethodRequest.builder()
+    private final VerificationMethodRequest methodRequest = VerificationMethodRequest.builder()
             .channel(channel)
             .methodPolicy(methodPolicy)
             .build();
@@ -43,9 +43,9 @@ public class EligibleMethodsServiceTest {
     private final EligibilityHandler handler1 = mock(EligibilityHandler.class);
     private final EligibilityHandler handler2 = mock(EligibilityHandler.class);
     private final Collection<EligibilityHandler> handlers = Arrays.asList(handler1, handler2);
-    private final EligibleMethodsRequestConverter requestConverter = mock(EligibleMethodsRequestConverter.class);
+    private final VerificationMethodsRequestConverter requestConverter = mock(VerificationMethodsRequestConverter.class);
 
-    private final EligibleMethodsService service = new DefaultEligibleMethodsService(handlers, requestConverter);
+    private final VerificationMethodsService service = new DefaultVerificationMethodsService(handlers, requestConverter);
 
     @Before
     public void setUp() {
@@ -54,7 +54,7 @@ public class EligibleMethodsServiceTest {
 
     @Test
     public void shouldThrowExceptionIfNoSupportedEligiblityHandlers() {
-        final Throwable thrown = catchThrowable(() -> service.loadEligibleMethodSequences(methodsRequest));
+        final Throwable thrown = catchThrowable(() -> service.loadMethodSequences(methodsRequest));
 
         assertThat(thrown).isInstanceOf(EligibilityHandlerNotFoundException.class)
                 .hasMessage("eligibility handler for channel channelId and method methodName not found");
@@ -66,7 +66,7 @@ public class EligibleMethodsServiceTest {
         given(handler1.isSupported(methodRequest)).willReturn(true);
         given(handler1.loadMethodIfEligible(methodRequest)).willReturn(Optional.of(method));
 
-        final Collection<VerificationMethodSequence> sequences = service.loadEligibleMethodSequences(methodsRequest);
+        final Collection<VerificationMethodSequence> sequences = service.loadMethodSequences(methodsRequest);
 
         assertThat(sequences).hasSize(1);
         final VerificationMethodSequence sequence = new ArrayList<>(sequences).get(0);

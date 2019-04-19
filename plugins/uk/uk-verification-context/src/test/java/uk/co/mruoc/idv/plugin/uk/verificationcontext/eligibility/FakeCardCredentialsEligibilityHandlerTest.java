@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
 
@@ -19,7 +19,7 @@ public class FakeCardCredentialsEligibilityHandlerTest {
 
     @Test
     public void shouldSupportCardCredentialsMethod() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
         final boolean supported = handler.isSupported(request);
@@ -29,7 +29,7 @@ public class FakeCardCredentialsEligibilityHandlerTest {
 
     @Test
     public void shouldNotSupportAnyOtherMethods() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn("method");
 
         final boolean supported = handler.isSupported(request);
@@ -39,7 +39,7 @@ public class FakeCardCredentialsEligibilityHandlerTest {
 
     @Test
     public void shouldReturnMethod() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
         final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
@@ -49,7 +49,7 @@ public class FakeCardCredentialsEligibilityHandlerTest {
 
     @Test
     public void shouldReturnMethodWithCorrectName() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
         final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
@@ -61,7 +61,7 @@ public class FakeCardCredentialsEligibilityHandlerTest {
     @Test
     public void shouldReturnMethodWithPassedDuration() {
         final int duration = 150000;
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
 
         final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);

@@ -3,7 +3,7 @@ package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.model.MobileNumber;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.CardCredentialsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.MobilePinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationMethod;
@@ -12,7 +12,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsService;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsService;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.channel.As3Channel;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.channel.BbosChannel;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.channel.RsaChannel;
@@ -30,35 +30,35 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UkEligibleMethodServiceTest {
+public class UkVerificationMethodsServiceTest {
 
     private static final int DURATION = 300000;
 
-    private final EligibleMethodsService service = new UkEligibleMethodsService();
+    private final VerificationMethodsService service = new UkVerificationMethodsService();
 
     @Test
     public void shouldReturnTwoMethodsForAs3Login() {
-        final EligibleMethodsRequest request = buildAs3LoginRequest();
+        final MethodSequencesRequest request = buildAs3LoginRequest();
 
-        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethodSequences(request);
+        final Collection<VerificationMethodSequence> methods = service.loadMethodSequences(request);
 
         assertThat(methods).hasSize(2);
     }
 
     @Test
     public void shouldReturnPushNotificationAsFirstMethodForAs3Login() {
-        final EligibleMethodsRequest request = buildAs3LoginRequest();
+        final MethodSequencesRequest request = buildAs3LoginRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadMethodSequences(request));
 
         assertThat(methods.get(0)).isEqualToComparingFieldByFieldRecursively(buildAs3LoginPushNotificationSequence());
     }
 
     @Test
     public void shouldReturnPhysicalPinsentryIdentifyAsSecondMethodForAs3Login() {
-        final EligibleMethodsRequest request = buildAs3LoginRequest();
+        final MethodSequencesRequest request = buildAs3LoginRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadMethodSequences(request));
 
 
         assertThat(methods.get(1)).isEqualToComparingFieldByFieldRecursively(buildAs3LoginPhysicalPinsentrySequence());
@@ -66,65 +66,65 @@ public class UkEligibleMethodServiceTest {
 
     @Test
     public void shouldReturnOneMethodForBbosLogin() {
-        final EligibleMethodsRequest request = buildBbosLoginRequest();
+        final MethodSequencesRequest request = buildBbosLoginRequest();
 
-        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethodSequences(request);
+        final Collection<VerificationMethodSequence> methods = service.loadMethodSequences(request);
 
         assertThat(methods).hasSize(1);
     }
 
     @Test
     public void shouldReturnMobilePinsentryIdentityForBbosLogin() {
-        final EligibleMethodsRequest request = buildBbosLoginRequest();
+        final MethodSequencesRequest request = buildBbosLoginRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadMethodSequences(request));
 
         assertThat(methods.get(0)).isEqualToComparingFieldByFieldRecursively(buildBbosLoginMobilePinsentrySequence());
     }
 
     @Test
     public void shouldReturnTwoMethodsForRsaOnlinePurchase() {
-        final EligibleMethodsRequest request = buildRsaOnlinePurchaseRequest();
+        final MethodSequencesRequest request = buildRsaOnlinePurchaseRequest();
 
-        final Collection<VerificationMethodSequence> methods = service.loadEligibleMethodSequences(request);
+        final Collection<VerificationMethodSequence> methods = service.loadMethodSequences(request);
 
         assertThat(methods).hasSize(2);
     }
 
     @Test
     public void shouldReturnPhysicalPinsentryRespondForRsaOnlinePurchase() {
-        final EligibleMethodsRequest request = buildRsaOnlinePurchaseRequest();
+        final MethodSequencesRequest request = buildRsaOnlinePurchaseRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadMethodSequences(request));
 
         assertThat(methods.get(0)).isEqualToComparingFieldByFieldRecursively(buildRsaOnlinePurchasePhysicalPinsentrySequence());
     }
 
     @Test
     public void shouldReturnOtpSmsForRsaOnlinePurchase() {
-        final EligibleMethodsRequest request = buildRsaOnlinePurchaseRequest();
+        final MethodSequencesRequest request = buildRsaOnlinePurchaseRequest();
 
-        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadEligibleMethodSequences(request));
+        final List<VerificationMethodSequence> methods = new ArrayList<>(service.loadMethodSequences(request));
 
         assertThat(methods.get(1)).isEqualToComparingFieldByFieldRecursively(buildRsaOnlinePurchaseOtpSmsSequence());
     }
 
-    private static EligibleMethodsRequest buildAs3LoginRequest() {
-        return EligibleMethodsRequest.builder()
+    private static MethodSequencesRequest buildAs3LoginRequest() {
+        return MethodSequencesRequest.builder()
                 .channel(new As3Channel())
                 .policy(new As3LoginVerificationPolicy())
                 .build();
     }
 
-    private static EligibleMethodsRequest buildBbosLoginRequest() {
-        return EligibleMethodsRequest.builder()
+    private static MethodSequencesRequest buildBbosLoginRequest() {
+        return MethodSequencesRequest.builder()
                 .channel(new BbosChannel())
                 .policy(new BbosLoginVerificationPolicy())
                 .build();
     }
 
-    private static EligibleMethodsRequest buildRsaOnlinePurchaseRequest() {
-        return EligibleMethodsRequest.builder()
+    private static MethodSequencesRequest buildRsaOnlinePurchaseRequest() {
+        return MethodSequencesRequest.builder()
                 .channel(new RsaChannel())
                 .policy(new RsaOnlinePurchaseVerificationPolicy())
                 .build();

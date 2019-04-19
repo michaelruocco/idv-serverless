@@ -14,13 +14,13 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class EligibleMethodsRequestTest {
+public class MethodSequencesRequestTest {
 
     @Test
     public void shouldReturnChannel() {
         final Channel channel = mock(Channel.class);
 
-        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
+        final MethodSequencesRequest request = MethodSequencesRequest.builder()
                 .channel(channel)
                 .build();
 
@@ -31,7 +31,7 @@ public class EligibleMethodsRequestTest {
     public void shouldReturnInputAlias() {
         final Alias alias = mock(Alias.class);
 
-        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
+        final MethodSequencesRequest request = MethodSequencesRequest.builder()
                 .inputAlias(alias)
                 .build();
 
@@ -43,7 +43,7 @@ public class EligibleMethodsRequestTest {
     public void shouldReturnIdentity() {
         final Identity identity = mock(Identity.class);
 
-        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
+        final MethodSequencesRequest request = MethodSequencesRequest.builder()
                 .identity(identity)
                 .build();
 
@@ -54,7 +54,7 @@ public class EligibleMethodsRequestTest {
     public void shouldReturnPolicy() {
         final VerificationPolicy policy = mock(VerificationPolicy.class);
 
-        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
+        final MethodSequencesRequest request = MethodSequencesRequest.builder()
                 .policy(policy)
                 .build();
 
@@ -64,14 +64,14 @@ public class EligibleMethodsRequestTest {
     @Test
     public void shouldPrintAllValues() {
         final Alias inputAlias = new IdvIdAlias(UUID.fromString("b0d996ae-dfa0-43a4-949c-f03e9dafd539"));
-        final EligibleMethodsRequest request = EligibleMethodsRequest.builder()
+        final MethodSequencesRequest request = MethodSequencesRequest.builder()
                 .channel(new DefaultChannel("CHANNEL"))
                 .inputAlias(inputAlias)
                 .identity(Identity.withAliases(inputAlias))
                 .policy(new VerificationPolicy("type", Collections.emptyList()))
                 .build();
 
-        assertThat(request.toString()).isEqualTo("EligibleMethodsRequest(" +
+        assertThat(request.toString()).isEqualTo("MethodSequencesRequest(" +
                 "channel=DefaultChannel(id=CHANNEL), " +
                 "inputAlias=DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539), " +
                 "identity=Identity(aliases=Aliases(aliases=[DefaultAlias(type=DefaultAliasType(name=IDV_ID), format=CLEAR_TEXT, value=b0d996ae-dfa0-43a4-949c-f03e9dafd539)])), " +

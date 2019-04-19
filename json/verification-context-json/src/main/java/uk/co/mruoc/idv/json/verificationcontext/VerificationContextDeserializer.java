@@ -47,7 +47,7 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
                 .activity(extractActivity(contextNode))
                 .created(extractCreated(contextNode))
                 .expiry(extractExpiry(contextNode))
-                .sequences(toEligibleMethodSequences(contextNode))
+                .sequences(toVerificationMethodSequences(contextNode))
                 .build();
     }
 
@@ -92,16 +92,16 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
         return Instant.parse(activityNode.get(name).asText());
     }
 
-    private static Collection<VerificationMethodSequence> toEligibleMethodSequences(final JsonNode contextNode) {
-        final List<VerificationMethodSequence> eligibleMethods = new ArrayList<>();
+    private static Collection<VerificationMethodSequence> toVerificationMethodSequences(final JsonNode contextNode) {
+        final List<VerificationMethodSequence> methodSequences = new ArrayList<>();
         final JsonNode sequencesNode = contextNode.get("sequences");
         for (final JsonNode sequenceNode : sequencesNode) {
-            eligibleMethods.add(toEligibleMethodSequence(sequenceNode));
+            methodSequences.add(toVerificationMethodSequence(sequenceNode));
         }
-        return Collections.unmodifiableCollection(eligibleMethods);
+        return Collections.unmodifiableCollection(methodSequences);
     }
 
-    private static VerificationMethodSequence toEligibleMethodSequence(final JsonNode sequenceNode) {
+    private static VerificationMethodSequence toVerificationMethodSequence(final JsonNode sequenceNode) {
         final List<VerificationMethod> methods = new ArrayList<>();
         final String name = extractName(sequenceNode);
         final JsonNode methodsNode = sequenceNode.get("methods");

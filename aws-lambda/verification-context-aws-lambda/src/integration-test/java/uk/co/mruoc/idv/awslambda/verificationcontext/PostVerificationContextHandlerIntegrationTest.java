@@ -63,7 +63,7 @@ public class PostVerificationContextHandlerIntegrationTest {
                 .identityService(buildIdentityService())
                 .policiesService(new StubbedVerificationPoliciesService())
                 .timeService(timeService)
-                .eligibleMethodsService(new StubbedEligibleMethodsService())
+                .verificationMethodsService(new StubbedVerificationMethodsService())
                 .expiryCalculator(new FixedExpiryCalculator())
                 .idGenerator(new RandomUuidGenerator())
                 .dao(new FakeVerificationContextDao())

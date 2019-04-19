@@ -8,7 +8,7 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
@@ -50,7 +50,7 @@ public class CreateVerificationContextServiceTest {
     private final TimeService timeService = mock(TimeService.class);
     private final ExpiryCalculator expiryCalculator = mock(ExpiryCalculator.class);
     private final DefaultVerificationPoliciesService policiesService = mock(DefaultVerificationPoliciesService.class);
-    private final DefaultEligibleMethodsService eligibleMethodsService = mock(DefaultEligibleMethodsService.class);
+    private final DefaultVerificationMethodsService verificationMethodsService = mock(DefaultVerificationMethodsService.class);
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
     private final VerificationContextConverter contextConverter = mock(VerificationContextConverter.class);
     private final EventPublisher eventPublisher = mock(EventPublisher.class);
@@ -62,7 +62,7 @@ public class CreateVerificationContextServiceTest {
             .timeService(timeService)
             .expiryCalculator(expiryCalculator)
             .policiesService(policiesService)
-            .eligibleMethodsService(eligibleMethodsService)
+            .verificationMethodsService(verificationMethodsService)
             .dao(dao)
             .contextConverter(contextConverter)
             .eventPublisher(eventPublisher)
@@ -116,8 +116,8 @@ public class CreateVerificationContextServiceTest {
         final Channel channel = request.getChannel();
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
-        final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
-        given(eligibleMethodsService.loadEligibleMethodSequences(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
+        final Collection<VerificationMethodSequence> methodSequences = Collections.singleton(mock(VerificationMethodSequence.class));
+        given(verificationMethodsService.loadMethodSequences(any(MethodSequencesRequest.class))).willReturn(methodSequences);
 
         final VerificationContextCreatedEvent createdEvent = mock(VerificationContextCreatedEvent.class);
         given(contextConverter.toCreatedEvent(any(VerificationContext.class))).willReturn(createdEvent);
@@ -133,11 +133,11 @@ public class CreateVerificationContextServiceTest {
         assertThat(context.getActivity()).isEqualTo(request.getActivity());
         assertThat(context.getCreated()).isEqualTo(now);
         assertThat(context.getExpiry()).isEqualTo(expiry);
-        assertThat(context.getSequences()).isEqualTo(eligibleMethods);
+        assertThat(context.getSequences()).isEqualTo(methodSequences);
     }
 
     @Test
-    public void shouldPassCorrectRequestToEligibleMethodsService() {
+    public void shouldPassCorrectRequestToVerificationMethodsService() {
         final VerificationContextRequest request = buildRequest();
 
         final UpsertIdentityRequest upsertIdentityRequest = mock(UpsertIdentityRequest.class);
@@ -159,15 +159,15 @@ public class CreateVerificationContextServiceTest {
         final Channel channel = request.getChannel();
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(channelPolicies);
 
-        final Collection<VerificationMethodSequence> eligibleMethods = Collections.singleton(mock(VerificationMethodSequence.class));
-        given(eligibleMethodsService.loadEligibleMethodSequences(any(EligibleMethodsRequest.class))).willReturn(eligibleMethods);
+        final Collection<VerificationMethodSequence> methodSequences = Collections.singleton(mock(VerificationMethodSequence.class));
+        given(verificationMethodsService.loadMethodSequences(any(MethodSequencesRequest.class))).willReturn(methodSequences);
 
         service.create(request);
 
-        final ArgumentCaptor<EligibleMethodsRequest> captor = ArgumentCaptor.forClass(EligibleMethodsRequest.class);
+        final ArgumentCaptor<MethodSequencesRequest> captor = ArgumentCaptor.forClass(MethodSequencesRequest.class);
 
-        verify(eligibleMethodsService).loadEligibleMethodSequences(captor.capture());
-        final EligibleMethodsRequest methodsRequest = captor.getValue();
+        verify(verificationMethodsService).loadMethodSequences(captor.capture());
+        final MethodSequencesRequest methodsRequest = captor.getValue();
         assertThat(methodsRequest.getChannel()).isEqualTo(request.getChannel());
         assertThat(methodsRequest.getInputAlias()).isEqualTo(request.getProvidedAlias());
         assertThat(methodsRequest.getIdentity()).isEqualTo(identity);

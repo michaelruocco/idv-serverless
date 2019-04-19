@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.model.MobileNumber;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
@@ -25,7 +25,7 @@ public class FakeOtpSmsEligibilityHandlerTest {
 
     @Test
     public void shouldSupportPhysicalPinsentryMethod() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
         final boolean supported = handler.isSupported(request);
@@ -35,7 +35,7 @@ public class FakeOtpSmsEligibilityHandlerTest {
 
     @Test
     public void shouldNotSupportAnyOtherMethods() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn("method");
 
         final boolean supported = handler.isSupported(request);
@@ -45,7 +45,7 @@ public class FakeOtpSmsEligibilityHandlerTest {
 
     @Test
     public void shouldReturnMethod() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
@@ -56,7 +56,7 @@ public class FakeOtpSmsEligibilityHandlerTest {
 
     @Test
     public void shouldReturnMethodWithCorrectName() {
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
@@ -71,7 +71,7 @@ public class FakeOtpSmsEligibilityHandlerTest {
     public void shouldReturnMethodWithPassedDuration() {
         final int duration = 150000;
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
@@ -86,7 +86,7 @@ public class FakeOtpSmsEligibilityHandlerTest {
         final Passcode passcode = mock(Passcode.class);
         final OtpSmsMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(methodPolicy.getPasscode()).willReturn(passcode);
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
         final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);
@@ -98,7 +98,7 @@ public class FakeOtpSmsEligibilityHandlerTest {
     @Test
     public void shouldReturnMethodWithMobileNumbers() {
         final OtpSmsMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
-        final EligibleMethodRequest request = mock(EligibleMethodRequest.class);
+        final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
         final Optional<VerificationMethod> optionalMethod = handler.loadMethodIfEligible(request);

@@ -1,6 +1,6 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.MobilePinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
@@ -14,14 +14,14 @@ public class FakeMobilePinsentryEligibilityHandler implements EligibilityHandler
     private static final String METHOD_NAME = VerificationMethod.Names.MOBILE_PINSENTRY;
 
     @Override
-    public Optional<VerificationMethod> loadMethodIfEligible(final EligibleMethodRequest request) {
+    public Optional<VerificationMethod> loadMethodIfEligible(final VerificationMethodRequest request) {
         final MobilePinsentryMethodPolicy method = (MobilePinsentryMethodPolicy) request.getMethodPolicy();
         final PinsentryFunction function = method.getFunction();
         return Optional.of(new MobilePinsentryVerificationMethod(request.getDuration(), function));
     }
 
     @Override
-    public boolean isSupported(final EligibleMethodRequest request) {
+    public boolean isSupported(final VerificationMethodRequest request) {
         return METHOD_NAME.equals(request.getMethodName());
     }
 

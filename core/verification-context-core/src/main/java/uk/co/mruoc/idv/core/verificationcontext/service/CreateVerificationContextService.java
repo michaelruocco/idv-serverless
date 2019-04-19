@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
@@ -28,7 +28,7 @@ public class CreateVerificationContextService {
     private final TimeService timeService;
     private final ExpiryCalculator expiryCalculator;
     private final VerificationPoliciesService policiesService;
-    private final EligibleMethodsService eligibleMethodsService;
+    private final VerificationMethodsService verificationMethodsService;
     private final VerificationContextDao dao;
     private final VerificationContextConverter contextConverter;
     private final EventPublisher eventPublisher;
@@ -43,7 +43,7 @@ public class CreateVerificationContextService {
     }
 
     private VerificationContext buildContext(final VerificationContextRequest request, final Identity identity) {
-        final Collection<VerificationMethodSequence> sequences = loadEligibleMethodSequences(request, identity);
+        final Collection<VerificationMethodSequence> sequences = loadMethodSequences(request, identity);
         final Instant created = timeService.now();
         return VerificationContext.builder()
                 .id(idGenerator.randomUuid())
@@ -64,15 +64,15 @@ public class CreateVerificationContextService {
         return policies.getPolicyFor(activity.getType());
     }
 
-    private Collection<VerificationMethodSequence> loadEligibleMethodSequences(final VerificationContextRequest request, final Identity identity) {
+    private Collection<VerificationMethodSequence> loadMethodSequences(final VerificationContextRequest request, final Identity identity) {
         final VerificationPolicy policy = loadVerificationPolicy(request);
-        final EligibleMethodsRequest methodsRequest = EligibleMethodsRequest.builder()
+        final MethodSequencesRequest methodsRequest = MethodSequencesRequest.builder()
                 .channel(request.getChannel())
                 .identity(identity)
                 .inputAlias(request.getProvidedAlias())
                 .policy(policy)
                 .build();
-        return eligibleMethodsService.loadEligibleMethodSequences(methodsRequest);
+        return verificationMethodsService.loadMethodSequences(methodsRequest);
     }
 
 }

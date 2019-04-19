@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import uk.co.mruoc.idv.core.model.CardNumber;
-import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodRequest;
+import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
@@ -17,7 +17,7 @@ public class FakePhysicalPinsentryEligibilityHandler implements EligibilityHandl
     private static final String METHOD_NAME = VerificationMethod.Names.PHYSICAL_PINSENTRY;
 
     @Override
-    public Optional<VerificationMethod> loadMethodIfEligible(final EligibleMethodRequest request) {
+    public Optional<VerificationMethod> loadMethodIfEligible(final VerificationMethodRequest request) {
         final PhysicalPinsentryMethodPolicy method = (PhysicalPinsentryMethodPolicy) request.getMethodPolicy();
         final PinsentryFunction function = method.getFunction();
         final Collection<CardNumber> cardNumbers = buildCardNumbers();
@@ -25,7 +25,7 @@ public class FakePhysicalPinsentryEligibilityHandler implements EligibilityHandl
     }
 
     @Override
-    public boolean isSupported(final EligibleMethodRequest request) {
+    public boolean isSupported(final VerificationMethodRequest request) {
         return METHOD_NAME.equals(request.getMethodName());
     }
 

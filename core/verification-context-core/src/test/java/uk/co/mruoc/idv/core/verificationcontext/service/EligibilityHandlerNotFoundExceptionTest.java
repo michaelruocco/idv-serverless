@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsService.EligibilityHandlerNotFoundException;
+import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsService.EligibilityHandlerNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

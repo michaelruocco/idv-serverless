@@ -11,7 +11,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodP
 @Builder
 @ToString
 @Getter
-public class EligibleMethodRequest {
+public class VerificationMethodRequest {
 
     private final Channel channel;
     private final Alias inputAlias;
