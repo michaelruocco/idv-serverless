@@ -21,11 +21,6 @@ public class PhysicalPinsentryVerificationMethod extends DefaultVerificationMeth
     }
 
     public PhysicalPinsentryVerificationMethod(final int duration,
-                                               final PinsentryFunction function) {
-        this(duration, function, DEFAULT_STATUS, DEFAULT_MAX_ATTEMPTS, Collections.emptyList());
-    }
-
-    public PhysicalPinsentryVerificationMethod(final int duration,
                                                final PinsentryFunction function,
                                                final VerificationStatus status,
                                                final int maxAttempts,
