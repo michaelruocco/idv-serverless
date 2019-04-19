@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class VerificationSequencePolicyTest {
 
-    private static final SequenceFailureStrategy DEFAULT_FAILURE_STRATEGY = SequenceFailureStrategy.IMMEDIATE;
+    private static final FailureStrategy DEFAULT_FAILURE_STRATEGY = FailureStrategy.IMMEDIATE;
     private static final String CUSTOM_NAME = "CUSTOM_NAME";
 
     @Test
@@ -39,7 +39,7 @@ public class VerificationSequencePolicyTest {
     @Test
     public void shouldReturnFailureStrategyt() {
         final VerificationMethodPolicy policy = new PushNotificationMethodPolicy();
-        final SequenceFailureStrategy failureStrategy = SequenceFailureStrategy.ON_COMPLETION;
+        final FailureStrategy failureStrategy = FailureStrategy.ON_COMPLETION;
 
         final VerificationSequencePolicy entry = new VerificationSequencePolicy(CUSTOM_NAME, failureStrategy, policy);
 

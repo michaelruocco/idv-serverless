@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence.VerificationMethodNotFoundInSequenceException;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.FailureStrategy;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +20,22 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(specifiedName, Collections.emptyList());
 
         assertThat(sequence.getName()).isEqualTo(specifiedName);
+    }
+
+    @Test
+    public void shouldReturnImmediateFailureStrategyByDefault() {
+        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList());
+
+        assertThat(sequence.getFailureStrategy()).isEqualTo(FailureStrategy.IMMEDIATE);
+    }
+
+    @Test
+    public void shouldReturnSpecifiedFailureStrategy() {
+        final FailureStrategy failureStrategy = FailureStrategy.ON_COMPLETION;
+
+        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), failureStrategy);
+
+        assertThat(sequence.getFailureStrategy()).isEqualTo(failureStrategy);
     }
 
     @Test
@@ -170,7 +187,7 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
 
         assertThat(sequence.toString()).isEqualTo("VerificationMethodSequence(name=PUSH_NOTIFICATION, " +
-                "methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
+                "failureStrategy=IMMEDIATE, methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
                 "name=PUSH_NOTIFICATION, duration=0, status=AVAILABLE, maxAttempts=1, properties={}))])");
     }
 

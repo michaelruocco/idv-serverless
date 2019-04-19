@@ -49,6 +49,7 @@
           "name": "PHYSICAL_PINSENTRY",
           "duration": 300000,
           "status": "AVAILABLE",
+          "failureStrategy": "IMMEDIATE",
           "methods": [
             {
               "name": "PHYSICAL_PINSENTRY",
@@ -71,6 +72,7 @@
           "name": "OTP_SMS",
           "duration": 600000,
           "status": "AVAILABLE",
+          "failureStrategy": "IMMEDIATE",
           "methods": [
             {
               "name": "CARD_CREDENTIALS",

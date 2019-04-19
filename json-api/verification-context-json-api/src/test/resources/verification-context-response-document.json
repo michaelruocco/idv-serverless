@@ -36,6 +36,7 @@
           "name": "PUSH_NOTIFICATION",
           "duration": 300000,
           "status": "AVAILABLE",
+          "failureStrategy": "IMMEDIATE",
           "methods": [
             {
               "name": "PUSH_NOTIFICATION",

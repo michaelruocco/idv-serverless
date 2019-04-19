@@ -140,7 +140,7 @@ public class VerificationContextTest {
                 "activity=DefaultActivity(type=LOGIN, timestamp=2019-03-10T12:53:57.547Z, properties={}), " +
                 "created=2019-03-10T12:54:02.547Z, " +
                 "expiry=2019-03-10T12:59:02.547Z, " +
-                "sequences=[VerificationMethodSequence(name=method, methods=[DefaultVerificationMethod(" +
+                "sequences=[VerificationMethodSequence(name=method, failureStrategy=IMMEDIATE, methods=[DefaultVerificationMethod(" +
                 "name=method, duration=300000, status=AVAILABLE, maxAttempts=1, properties={})])])");
     }
 

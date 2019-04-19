@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import lombok.ToString;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.FailureStrategy;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -9,16 +10,28 @@ import java.util.Optional;
 @ToString
 public class VerificationMethodSequence {
 
+    private static final FailureStrategy DEFAULT_FAILURE_STRATEGY = FailureStrategy.IMMEDIATE;
+
     private final String name;
+    private final FailureStrategy failureStrategy;
     private final Collection<VerificationMethod> methods;
 
     public VerificationMethodSequence(final VerificationMethod method) {
-        this(method.getName(), Collections.singleton(method));
+        this(method, DEFAULT_FAILURE_STRATEGY);
+    }
+
+    public VerificationMethodSequence(final VerificationMethod method, final FailureStrategy failureStrategy) {
+        this(method.getName(), Collections.singleton(method), failureStrategy);
     }
 
     public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods) {
+        this(name, methods, DEFAULT_FAILURE_STRATEGY);
+    }
+
+    public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods, final FailureStrategy failureStrategy) {
         this.name = name;
         this.methods = methods;
+        this.failureStrategy = failureStrategy;
     }
 
     public String getName() {
@@ -33,6 +46,10 @@ public class VerificationMethodSequence {
             return VerificationStatus.UNAVAILABLE;
         }
         return VerificationStatus.AVAILABLE;
+    }
+
+    public FailureStrategy getFailureStrategy() {
+        return failureStrategy;
     }
 
     public PhysicalPinsentryVerificationMethod getPhysicalPinsentry() {

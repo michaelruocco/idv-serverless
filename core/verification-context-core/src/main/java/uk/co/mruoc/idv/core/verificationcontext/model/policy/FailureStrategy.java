@@ -1,6 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.policy;
 
-public enum SequenceFailureStrategy {
+public enum FailureStrategy {
 
     IMMEDIATE,
     ON_COMPLETION
