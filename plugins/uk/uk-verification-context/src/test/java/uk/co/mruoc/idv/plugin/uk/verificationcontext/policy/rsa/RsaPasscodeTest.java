@@ -25,7 +25,7 @@ public class RsaPasscodeTest {
 
     @Test
     public void shouldHaveCorrectAttempts() {
-        assertThat(passcode.getAttempts()).isEqualTo(ATTEMPTS);
+        assertThat(passcode.getMaxAttempts()).isEqualTo(ATTEMPTS);
     }
 
 }

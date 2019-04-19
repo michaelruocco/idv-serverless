@@ -13,6 +13,6 @@ public class Passcode {
 
     private final int length;
     private final int duration;
-    private final int attempts;
+    private final int maxAttempts;
 
 }

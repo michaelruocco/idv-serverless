@@ -17,7 +17,7 @@
     "passcode": {
       "length": 8,
       "duration": 150000,
-      "attempts": 3
+      "maxAttempts": 3
     }
   }
 }

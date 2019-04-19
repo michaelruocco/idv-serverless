@@ -211,7 +211,7 @@ public class VerificationMethodSequenceTest {
         private static final Passcode PASSCODE = Passcode.builder()
                 .duration(0)
                 .length(0)
-                .attempts(0)
+                .maxAttempts(0)
                 .build();
 
         private FakeOtpSmsVerificationMethod() {

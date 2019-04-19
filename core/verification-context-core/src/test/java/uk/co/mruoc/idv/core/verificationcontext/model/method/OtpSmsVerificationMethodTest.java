@@ -13,7 +13,7 @@ public class OtpSmsVerificationMethodTest {
 
     private static final int DURATION = 300000;
     private static final Passcode PASSCODE = Passcode.builder()
-            .attempts(3)
+            .maxAttempts(3)
             .length(8)
             .duration(150000)
             .build();
@@ -76,7 +76,7 @@ public class OtpSmsVerificationMethodTest {
                 "status=AVAILABLE, maxAttempts=1, " +
                 "properties={mobileNumbers=[MobileNumber(id=3cc9109d-4a7c-424d-9f7b-5805636dfb2d, masked=********111), " +
                 "MobileNumber(id=03571bf0-1140-4ee6-b9a7-49b64e174730, masked=********333)], " +
-                "passcode=Passcode(length=8, duration=150000, attempts=3)}))");
+                "passcode=Passcode(length=8, duration=150000, maxAttempts=3)}))");
     }
 
 }

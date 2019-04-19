@@ -73,7 +73,11 @@ public class DynamoVerificationContextDaoTest {
     private static VerificationContext buildVerificationContext() {
         final UUID id = UUID.randomUUID();
         final Collection<MobileNumber> mobileNumbers = Collections.singleton(MobileNumber.builder().id(UUID.fromString("4b21d79e-43b5-43bb-97c9-6979553e9a16")).masked("*******123").build());
-        final Passcode passcode = Passcode.builder().duration(15000).length(8).attempts(3).build();
+        final Passcode passcode = Passcode.builder()
+                .duration(15000)
+                .length(8)
+                .maxAttempts(3)
+                .build();
         final Alias providedAlias = new TokenizedCreditCardNumberAlias("1234567890123456");
         return VerificationContext.builder()
                 .id(id)

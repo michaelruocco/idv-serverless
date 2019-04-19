@@ -134,11 +134,11 @@ public class VerificationMethodDeserializer extends StdDeserializer<Verification
         final JsonNode passcodeNode = node.get("passcode");
         final int duration = extractDuration(passcodeNode);
         final int length = passcodeNode.get("length").asInt();
-        final int attempts = passcodeNode.get("attempts").asInt();
+        final int maxAttempts = passcodeNode.get("maxAttempts").asInt();
         return Passcode.builder()
                 .duration(duration)
                 .length(length)
-                .attempts(attempts)
+                .maxAttempts(maxAttempts)
                 .build();
     }
 

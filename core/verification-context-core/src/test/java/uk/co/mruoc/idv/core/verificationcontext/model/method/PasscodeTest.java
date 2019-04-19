@@ -29,27 +29,27 @@ public class PasscodeTest {
     }
 
     @Test
-    public void shouldReturnAttempts() {
-        final int attempts = 2;
+    public void shouldReturnMaxAttempts() {
+        final int maxAttempts = 2;
 
         final Passcode passcode = Passcode.builder()
-                .attempts(attempts)
+                .maxAttempts(maxAttempts)
                 .build();
 
-        assertThat(passcode.getAttempts()).isEqualTo(attempts);
+        assertThat(passcode.getMaxAttempts()).isEqualTo(maxAttempts);
     }
 
     @Test
     public void shouldPrintAllValues() {
         final Passcode passcode = Passcode.builder()
-                .attempts(3)
+                .maxAttempts(3)
                 .length(8)
                 .duration(150000)
                 .build();
 
         final String value = passcode.toString();
 
-        assertThat(value).isEqualTo("Passcode(length=8, duration=150000, attempts=3)");
+        assertThat(value).isEqualTo("Passcode(length=8, duration=150000, maxAttempts=3)");
     }
 
 }

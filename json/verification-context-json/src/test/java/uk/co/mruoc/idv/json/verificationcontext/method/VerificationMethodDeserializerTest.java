@@ -178,7 +178,7 @@ public class VerificationMethodDeserializerTest {
 
     private static Passcode buildPasscode() {
         return Passcode.builder()
-                .attempts(3)
+                .maxAttempts(3)
                 .duration(150000)
                 .length(8)
                 .build();
