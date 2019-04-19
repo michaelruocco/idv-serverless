@@ -4,17 +4,17 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.CardCredentialsMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.OtpSmsMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RsaOtpSmsVerificationPolicyEntryTest {
+public class RsaOtpSmsSequencePolicyTest {
 
     private static final int DURATION = 300000;
 
-    private final VerificationMethodPolicyEntry entry = new RsaOtpSmsVerificationPolicyEntry();
+    private final VerificationSequencePolicy entry = new RsaOtpSmsSequencePolicy();
 
     @Test
     public void entryShouldHaveCorrectMethodName() {

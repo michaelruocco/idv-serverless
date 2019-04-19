@@ -10,17 +10,17 @@ import java.util.Collections;
 public class VerificationPolicy {
 
     private final Collection<String> activityTypes;
-    private final Collection<VerificationMethodPolicyEntry> entries;
+    private final Collection<VerificationSequencePolicy> entries;
 
-    public VerificationPolicy(final String activityType, final VerificationMethodPolicyEntry... entries) {
+    public VerificationPolicy(final String activityType, final VerificationSequencePolicy... entries) {
         this(Collections.singleton(activityType), Arrays.asList(entries));
     }
 
-    public VerificationPolicy(final String activityType, final Collection<VerificationMethodPolicyEntry> entries) {
+    public VerificationPolicy(final String activityType, final Collection<VerificationSequencePolicy> entries) {
         this(Collections.singleton(activityType), entries);
     }
 
-    public VerificationPolicy(final Collection<String> activityTypes, final Collection<VerificationMethodPolicyEntry> entries) {
+    public VerificationPolicy(final Collection<String> activityTypes, final Collection<VerificationSequencePolicy> entries) {
         this.activityTypes = activityTypes;
         this.entries = entries;
     }
@@ -29,7 +29,7 @@ public class VerificationPolicy {
         return activityTypes.contains(activityType);
     }
 
-    public Collection<VerificationMethodPolicyEntry> getEntries() {
+    public Collection<VerificationSequencePolicy> getEntries() {
         return entries;
     }
 

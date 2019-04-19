@@ -15,7 +15,7 @@ public class VerificationPolicyTest {
     @Test
     public void shouldApplyToActivityType() {
         final String activityType = Activity.Types.LOGIN;
-        final VerificationMethodPolicyEntry entry = mock(VerificationMethodPolicyEntry.class);
+        final VerificationSequencePolicy entry = mock(VerificationSequencePolicy.class);
 
         final VerificationPolicy policy = new VerificationPolicy(activityType, entry);
 
@@ -24,7 +24,7 @@ public class VerificationPolicyTest {
 
     @Test
     public void shouldNotApplyToOtherActivityType() {
-        final VerificationMethodPolicyEntry entry = mock(VerificationMethodPolicyEntry.class);
+        final VerificationSequencePolicy entry = mock(VerificationSequencePolicy.class);
 
         final VerificationPolicy policy = new VerificationPolicy(Activity.Types.LOGIN, entry);
 
@@ -34,7 +34,7 @@ public class VerificationPolicyTest {
     @Test
     public void shouldReturnPolicyEntry() {
         final String activityType = Activity.Types.LOGIN;
-        final VerificationMethodPolicyEntry entry = mock(VerificationMethodPolicyEntry.class);
+        final VerificationSequencePolicy entry = mock(VerificationSequencePolicy.class);
 
         final VerificationPolicy policy = new VerificationPolicy(activityType, entry);
 
@@ -44,7 +44,7 @@ public class VerificationPolicyTest {
     @Test
     public void shouldReturnPolicyEntryFromCollection() {
         final String activityType = Activity.Types.LOGIN;
-        final Collection<VerificationMethodPolicyEntry> entries = Collections.singleton(mock(VerificationMethodPolicyEntry.class));
+        final Collection<VerificationSequencePolicy> entries = Collections.singleton(mock(VerificationSequencePolicy.class));
 
         final VerificationPolicy policy = new VerificationPolicy(activityType, entries);
 
@@ -54,7 +54,7 @@ public class VerificationPolicyTest {
     @Test
     public void shouldApplyToAllActivityTypes() {
         final Collection<String> activityTypes = Arrays.asList(Activity.Types.LOGIN, Activity.Types.ONLINE_PURCHASE);
-        final Collection<VerificationMethodPolicyEntry> entries = Collections.singleton(mock(VerificationMethodPolicyEntry.class));
+        final Collection<VerificationSequencePolicy> entries = Collections.singleton(mock(VerificationSequencePolicy.class));
 
         final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
 
@@ -65,7 +65,7 @@ public class VerificationPolicyTest {
     @Test
     public void shouldReturnPolicyEntries() {
         final Collection<String> activityTypes = Arrays.asList(Activity.Types.LOGIN, Activity.Types.ONLINE_PURCHASE);
-        final Collection<VerificationMethodPolicyEntry> entries = Collections.singleton(mock(VerificationMethodPolicyEntry.class));
+        final Collection<VerificationSequencePolicy> entries = Collections.singleton(mock(VerificationSequencePolicy.class));
 
         final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
 
@@ -75,7 +75,7 @@ public class VerificationPolicyTest {
     @Test
     public void shouldPrintValues() {
         final Collection<String> activityTypes = Collections.singleton(Activity.Types.LOGIN);
-        final Collection<VerificationMethodPolicyEntry> entries = Collections.emptyList();
+        final Collection<VerificationSequencePolicy> entries = Collections.emptyList();
 
         final VerificationPolicy policy = new VerificationPolicy(activityTypes, entries);
 

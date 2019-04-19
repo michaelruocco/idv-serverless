@@ -3,18 +3,18 @@ package uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.as3;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class As3PushNotificationVerificationPolicyEntryTest {
+public class As3PushNotificationSequencePolicyTest {
 
     private static final String METHOD_NAME = VerificationMethod.Names.PUSH_NOTIFICATION;
     private static final int DURATION = 300000;
 
-    private final VerificationMethodPolicyEntry entry = new As3PushNotificationPolicyEntry();
+    private final VerificationSequencePolicy entry = new As3PushNotificationSequencePolicy();
 
     @Test
     public void entryShouldHaveCorrectMethodName() {

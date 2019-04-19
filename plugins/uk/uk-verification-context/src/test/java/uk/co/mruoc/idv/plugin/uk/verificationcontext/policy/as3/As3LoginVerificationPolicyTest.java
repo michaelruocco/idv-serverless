@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.as3;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 
 import java.util.ArrayList;
@@ -16,23 +16,23 @@ public class As3LoginVerificationPolicyTest {
 
     @Test
     public void shouldContainTwoEntries() {
-        final Collection<VerificationMethodPolicyEntry> entries = policy.getEntries();
+        final Collection<VerificationSequencePolicy> entries = policy.getEntries();
 
         assertThat(entries).hasSize(2);
     }
 
     @Test
     public void shouldContainAs3PushNotificationPolicyEntryAsFirstEntry() {
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getEntries());
 
-        assertThat(entries.get(0)).isInstanceOf(As3PushNotificationPolicyEntry.class);
+        assertThat(entries.get(0)).isInstanceOf(As3PushNotificationSequencePolicy.class);
     }
 
     @Test
     public void shouldContainAs3PhysicalPinsentryPolicyEntryAsSecondEntry() {
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getEntries());
 
-        assertThat(entries.get(1)).isInstanceOf(As3PhysicalPinsentryVerificationPolicyEntry.class);
+        assertThat(entries.get(1)).isInstanceOf(As3PhysicalPinsentrySequencePolicy.class);
     }
 
 }

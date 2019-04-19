@@ -10,7 +10,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerification
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsService.EligibilityHandlerNotFoundException;
 
@@ -28,7 +28,7 @@ public class EligibleMethodsServiceTest {
 
     private final Channel channel = new DefaultChannel("channelId");
     private final VerificationMethodPolicy methodPolicy = new VerificationMethodPolicy("methodName");
-    private final VerificationPolicy policy = new VerificationPolicy("activity", new VerificationMethodPolicyEntry(methodPolicy));
+    private final VerificationPolicy policy = new VerificationPolicy("activity", new VerificationSequencePolicy(methodPolicy));
 
     private final EligibleMethodsRequest methodsRequest = EligibleMethodsRequest.builder()
             .channel(channel)

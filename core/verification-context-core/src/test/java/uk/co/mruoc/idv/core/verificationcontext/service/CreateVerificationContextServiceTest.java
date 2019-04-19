@@ -20,7 +20,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.PushNotificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.idv.events.EventPublisher;
@@ -183,7 +183,7 @@ public class CreateVerificationContextServiceTest {
     }
 
     private static ChannelVerificationPolicies buildChannelPolicies() {
-        final VerificationMethodPolicyEntry entry = new VerificationMethodPolicyEntry(new PushNotificationMethodPolicy());
+        final VerificationSequencePolicy entry = new VerificationSequencePolicy(new PushNotificationMethodPolicy());
         final Collection<VerificationPolicy> policies = Collections.singleton(new VerificationPolicy(Activity.Types.LOGIN, Collections.singleton(entry)));
         return new ChannelVerificationPolicies(CHANNEL_ID, policies);
     }

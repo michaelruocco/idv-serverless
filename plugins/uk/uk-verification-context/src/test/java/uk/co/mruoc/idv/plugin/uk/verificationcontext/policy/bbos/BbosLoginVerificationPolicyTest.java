@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.bbos;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 
 import java.util.ArrayList;
@@ -16,16 +16,16 @@ public class BbosLoginVerificationPolicyTest {
 
     @Test
     public void shouldContainOneEntry() {
-        final Collection<VerificationMethodPolicyEntry> entries = policy.getEntries();
+        final Collection<VerificationSequencePolicy> entries = policy.getEntries();
 
         assertThat(entries).hasSize(1);
     }
 
     @Test
     public void shouldContainBbosMobilePinsentryPolicyEntryAsFirstEntry() {
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(policy.getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(policy.getEntries());
 
-        assertThat(entries.get(0)).isInstanceOf(BbosMobilePinsentryVerificationPolicyEntry.class);
+        assertThat(entries.get(0)).isInstanceOf(BbosMobilePinsentrySequencePolicy.class);
     }
 
 }

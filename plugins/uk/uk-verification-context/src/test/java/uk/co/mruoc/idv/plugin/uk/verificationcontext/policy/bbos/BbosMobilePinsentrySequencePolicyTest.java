@@ -4,18 +4,18 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BbosMobilePinsentryVerificationPolicyEntryTest {
+public class BbosMobilePinsentrySequencePolicyTest {
 
     private static final String METHOD_NAME = VerificationMethod.Names.MOBILE_PINSENTRY;
     private static final int DURATION = 300000;
 
-    private final VerificationMethodPolicyEntry entry = new BbosMobilePinsentryVerificationPolicyEntry();
+    private final VerificationSequencePolicy entry = new BbosMobilePinsentrySequencePolicy();
 
     @Test
     public void entryShouldHaveCorrectMethodName() {

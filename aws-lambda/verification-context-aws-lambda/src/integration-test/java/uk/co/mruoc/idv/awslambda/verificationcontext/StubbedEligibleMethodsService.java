@@ -5,7 +5,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVer
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.EligibleMethodsService;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class StubbedEligibleMethodsService implements EligibleMethodsService {
     }
 
     private static VerificationMethodPolicy extractFirstPolicy(final EligibleMethodsRequest request) {
-        final List<VerificationMethodPolicyEntry> entries = new ArrayList<>(request.getPolicy().getEntries());
+        final List<VerificationSequencePolicy> entries = new ArrayList<>(request.getPolicy().getEntries());
         final List<VerificationMethodPolicy> policies = new ArrayList<>(entries.get(0).getMethods());
         return policies.get(0);
     }

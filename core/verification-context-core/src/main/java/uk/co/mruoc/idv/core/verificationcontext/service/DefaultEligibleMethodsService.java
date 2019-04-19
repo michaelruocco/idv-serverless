@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.EligibleMethodsRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicyEntry;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class DefaultEligibleMethodsService implements EligibleMethodsService {
     public Collection<VerificationMethodSequence> loadEligibleMethodSequences(final EligibleMethodsRequest request) {
         log.info("loading eligible methods with request {}", request);
         final VerificationPolicy policy = request.getPolicy();
-        final Collection<VerificationMethodPolicyEntry> entries = policy.getEntries();
+        final Collection<VerificationSequencePolicy> entries = policy.getEntries();
         final Collection<VerificationMethodSequence> methods = entries.stream()
                 .map(entry -> loadMethodsIfEligible(request, entry))
                 .collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class DefaultEligibleMethodsService implements EligibleMethodsService {
         return methods;
     }
 
-    private VerificationMethodSequence loadMethodsIfEligible(final EligibleMethodsRequest request, final VerificationMethodPolicyEntry entry) {
+    private VerificationMethodSequence loadMethodsIfEligible(final EligibleMethodsRequest request, final VerificationSequencePolicy entry) {
         final List<VerificationMethod> methods = new ArrayList<>();
         for (final VerificationMethodPolicy methodPolicy : entry.getMethods()) {
             final EligibleMethodRequest methodRequest = requestConverter.toMethodRequest(request, methodPolicy);
