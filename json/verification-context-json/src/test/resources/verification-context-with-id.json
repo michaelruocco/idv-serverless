@@ -35,7 +35,9 @@
       "methods": [
         {
           "name": "PUSH_NOTIFICATION",
-          "duration": 300000
+          "duration": 300000,
+          "status": "AVAILABLE",
+          "maxAttempts": 1
         }
       ]
     }

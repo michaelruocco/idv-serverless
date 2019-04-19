@@ -14,8 +14,23 @@ public class PhysicalPinsentryVerificationMethod extends DefaultVerificationMeth
     private static final String FUNCTION_PROPERTY_NAME = "function";
     private static final String CARD_NUMBERS_PROPERTY_NAME = "cardNumbers";
 
-    public PhysicalPinsentryVerificationMethod(final int duration, final PinsentryFunction function, final Collection<CardNumber> cardNumbers) {
-        super(Names.PHYSICAL_PINSENTRY, duration, toMap(function, cardNumbers));
+    public PhysicalPinsentryVerificationMethod(final int duration,
+                                               final PinsentryFunction function,
+                                               final Collection<CardNumber> cardNumbers) {
+        this(duration, function, DEFAULT_STATUS, DEFAULT_MAX_ATTEMPTS, cardNumbers);
+    }
+
+    public PhysicalPinsentryVerificationMethod(final int duration,
+                                               final PinsentryFunction function) {
+        this(duration, function, DEFAULT_STATUS, DEFAULT_MAX_ATTEMPTS, Collections.emptyList());
+    }
+
+    public PhysicalPinsentryVerificationMethod(final int duration,
+                                               final PinsentryFunction function,
+                                               final VerificationStatus status,
+                                               final int maxAttempts,
+                                               final Collection<CardNumber> cardNumbers) {
+        super(Names.PHYSICAL_PINSENTRY, duration, status, maxAttempts, toMap(function, cardNumbers));
     }
 
     public PinsentryFunction getFunction() {

@@ -25,11 +25,26 @@ public class CardCredentialsVerificationMethodTest {
     }
 
     @Test
+    public void shouldReturnStatus() {
+        final VerificationStatus status = cardCredentials.getStatus();
+
+        assertThat(status).isEqualTo(VerificationMethod.DEFAULT_STATUS);
+    }
+
+    @Test
+    public void shouldReturnMaxAttempts() {
+        final int maxAttempts = cardCredentials.getMaxAttempts();
+
+        assertThat(maxAttempts).isEqualTo(VerificationMethod.DEFAULT_MAX_ATTEMPTS);
+    }
+
+    @Test
     public void shouldPrintAllValues() {
         final String value = cardCredentials.toString();
 
         assertThat(value).isEqualTo("CardCredentialsVerificationMethod(super=" +
-                "DefaultVerificationMethod(name=CARD_CREDENTIALS, duration=300000, properties={}))");
+                "DefaultVerificationMethod(name=CARD_CREDENTIALS, duration=300000, status=AVAILABLE, " +
+                "maxAttempts=1, properties={}))");
     }
 
 }

@@ -1,6 +1,8 @@
 {
   "name": "DEFAULT_METHOD",
   "duration": 300000,
+  "status": "AVAILABLE",
+  "maxAttempts": 1,
   "properties": {
     "property": 1,
     "anotherProperty": {

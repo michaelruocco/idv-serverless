@@ -1,6 +1,8 @@
 {
   "name": "MOBILE_PINSENTRY",
   "duration": 300000,
+  "status": "AVAILABLE",
+  "maxAttempts": 1,
   "properties": {
     "function": "IDENTIFY"
   }

@@ -18,6 +18,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVe
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
+import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,8 +70,10 @@ public class VerificationMethodDeserializer extends StdDeserializer<Verification
     private DefaultVerificationMethod toDefaultMethod(final JsonNode methodNode) {
         final String name = extractName(methodNode);
         final int duration = extractDuration(methodNode);
+        final VerificationStatus status = extractStatus(methodNode);
+        final int maxAttempts = extractMaxAttempts(methodNode);
         final Map<String, Object> properties = toProperties(methodNode);
-        return new DefaultVerificationMethod(name, duration, properties);
+        return new DefaultVerificationMethod(name, duration, status, maxAttempts, properties);
     }
 
     private static OtpSmsVerificationMethod toOtpSms(final JsonNode methodNode) {
@@ -163,6 +166,14 @@ public class VerificationMethodDeserializer extends StdDeserializer<Verification
 
     private static int extractDuration(final JsonNode node) {
         return node.get("duration").asInt();
+    }
+
+    private static VerificationStatus extractStatus(final JsonNode node) {
+        return VerificationStatus.valueOf(node.get("status").asText());
+    }
+
+    private static int extractMaxAttempts(final JsonNode node) {
+        return node.get("maxAttempts").asInt();
     }
 
     private static JsonNode extractPropertiesNode(final JsonNode node) {
