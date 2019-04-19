@@ -25,6 +25,16 @@ public class VerificationMethodSequence {
         return name;
     }
 
+    public VerificationStatus getStatus() {
+        final Optional<VerificationMethod> unavailableMethod = methods.stream()
+                .filter(method -> VerificationStatus.UNAVAILABLE == method.getStatus())
+                .findFirst();
+        if (unavailableMethod.isPresent()) {
+            return VerificationStatus.UNAVAILABLE;
+        }
+        return VerificationStatus.AVAILABLE;
+    }
+
     public PhysicalPinsentryVerificationMethod getPhysicalPinsentry() {
         final String methodName = VerificationMethod.Names.PHYSICAL_PINSENTRY;
         final Optional<VerificationMethod> method = getMethod(methodName);

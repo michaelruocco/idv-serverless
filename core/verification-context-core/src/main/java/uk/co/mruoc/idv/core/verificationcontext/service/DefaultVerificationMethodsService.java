@@ -27,7 +27,7 @@ public class DefaultVerificationMethodsService implements VerificationMethodsSer
 
     @Override
     public Collection<VerificationMethodSequence> loadMethodSequences(final MethodSequencesRequest request) {
-        log.info("loading methods sequences with request {}", request);
+        log.info("loading method sequences with request {}", request);
         final VerificationPolicy policy = request.getPolicy();
         final Collection<VerificationSequencePolicy> sequencePolicies = policy.getSequencePolicies();
         final Collection<VerificationMethodSequence> methods = sequencePolicies.stream()
