@@ -23,6 +23,10 @@ public class DefaultVerificationMethod implements VerificationMethod {
         this(name, duration, DEFAULT_STATUS, DEFAULT_MAX_ATTEMPTS);
     }
 
+    public DefaultVerificationMethod(final String name, final VerificationStatus status) {
+        this(name, DEFAULT_DURATION, status, DEFAULT_MAX_ATTEMPTS);
+    }
+
     public DefaultVerificationMethod(final String name,
                                      final int duration,
                                      final VerificationStatus status,

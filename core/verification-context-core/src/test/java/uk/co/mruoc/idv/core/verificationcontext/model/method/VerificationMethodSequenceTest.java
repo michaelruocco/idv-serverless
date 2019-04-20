@@ -39,6 +39,16 @@ public class VerificationMethodSequenceTest {
     }
 
     @Test
+    public void shouldReturnUnavailableStatusIfAnyMethodsAreUnavailable() {
+        final VerificationMethod availableMethod = new DefaultVerificationMethod("availableMethod", VerificationStatus.AVAILABLE);
+        final VerificationMethod unavailableMethod = new DefaultVerificationMethod("unavailableMethod", VerificationStatus.UNAVAILABLE);
+
+        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Arrays.asList(availableMethod, unavailableMethod));
+
+        assertThat(sequence.getStatus()).isEqualTo(VerificationStatus.UNAVAILABLE);
+    }
+
+    @Test
     public void shouldReturnMethodNameIfOneMethodPassed() {
         final String name = "methodName";
         final VerificationMethod method = new DefaultVerificationMethod(name);
