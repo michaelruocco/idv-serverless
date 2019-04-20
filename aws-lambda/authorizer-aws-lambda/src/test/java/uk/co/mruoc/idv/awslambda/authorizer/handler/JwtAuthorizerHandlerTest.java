@@ -11,11 +11,13 @@ import uk.co.mruoc.idv.core.authorizer.model.TokenAuthorizerRequest;
 import uk.co.mruoc.idv.core.authorizer.service.ApiGatewayMethodArnParser;
 import uk.co.mruoc.idv.core.authorizer.service.PolicyLoader;
 import uk.co.mruoc.idv.core.authorizer.service.TokenService;
+import uk.co.mruoc.idv.core.authorizer.service.TokenService.TokenExpiredException;
 import uk.co.mruoc.idv.json.authorizer.AuthPolicyConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -74,6 +76,24 @@ public class JwtAuthorizerHandlerTest {
         final AuthPolicyResponse response = handler.handleRequest(new TokenAuthorizerRequest("type", token, rawMethodArn), context);
 
         assertThat(response).isEqualTo(expectedResponse);
+    }
+
+    @Test
+    public void shouldPassUnknownPrincipalIdAndParsedMethodArnToPolicyLoaderIfTokenExpired() {
+        final String token = "token";
+        doThrow(TokenExpiredException.class).when(tokenService).decode(token);
+
+        final String rawMethodArn = "rawMethodArn";
+        final ApiGatewayMethodArn methodArn = mock(ApiGatewayMethodArn.class);
+        given(arnParser.parse(rawMethodArn)).willReturn(methodArn);
+
+        handler.handleRequest(new TokenAuthorizerRequest("type", token, rawMethodArn), context);
+
+        final ArgumentCaptor<PolicyRequest> captor = ArgumentCaptor.forClass(PolicyRequest.class);
+        verify(policyLoader).load(captor.capture());
+        final PolicyRequest request = captor.getValue();
+        assertThat(request.getMethodArn()).isEqualTo(methodArn);
+        assertThat(request.getPrincipalId()).isEqualTo("unknown");
     }
 
 }

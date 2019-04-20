@@ -11,6 +11,7 @@ import uk.co.mruoc.idv.core.authorizer.model.TokenAuthorizerRequest;
 import uk.co.mruoc.idv.core.authorizer.service.ApiGatewayMethodArnParser;
 import uk.co.mruoc.idv.core.authorizer.service.PolicyLoader;
 import uk.co.mruoc.idv.core.authorizer.service.TokenService;
+import uk.co.mruoc.idv.core.authorizer.service.TokenService.TokenExpiredException;
 import uk.co.mruoc.idv.json.authorizer.AuthPolicyConverter;
 
 @Slf4j
@@ -34,10 +35,16 @@ public class JwtAuthorizerHandler implements RequestHandler<TokenAuthorizerReque
     }
 
     private String extractPrincipalId(final String token) {
-        final DecodedToken decodedToken = tokenService.decode(token);
-        final String principalId = decodedToken.getSubject();
-        log.info("extracted principal id {} from token {}", principalId, token);
-        return principalId;
+        try {
+            final DecodedToken decodedToken = tokenService.decode(token);
+            final String principalId = decodedToken.getSubject();
+            log.info("extracted principal id {} from token {}", principalId, token);
+            return principalId;
+        } catch (final TokenExpiredException e) {
+            log.error("failed to decode token {}", token);
+            log.debug("decode token error", e);
+            return "unknown";
+        }
     }
 
     private AuthPolicyResponse loadPolicy(final PolicyRequest request) {
