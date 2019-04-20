@@ -30,4 +30,9 @@ public class GenerateTokenResponseDocument {
         return data.getAttributes();
     }
 
+    @JsonIgnore
+    public String getToken() {
+        return data.getAttributes().getToken();
+    }
+
 }

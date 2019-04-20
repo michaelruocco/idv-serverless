@@ -1,0 +1,9 @@
+{
+  "data": {
+    "type": "tokens",
+    "attributes": {
+      "subject": "idv-test-user",
+      "validForSeconds": 60
+    }
+  }
+}
