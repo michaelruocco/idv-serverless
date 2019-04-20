@@ -4,7 +4,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.FailureStrategy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsService;
