@@ -11,6 +11,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 @Builder
@@ -29,6 +30,12 @@ public class VerificationContext {
 
     public UUID getIdvId() {
         return identity.getIdvId();
+    }
+
+    public Optional<VerificationMethodSequence> getSequence(final String name) {
+        return sequences.stream()
+                .filter(sequences -> sequences.getName().equals(name))
+                .findFirst();
     }
 
 }

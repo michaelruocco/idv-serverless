@@ -9,6 +9,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VerificationMethodResultTest {
 
     @Test
+    public void shouldReturnVerificationContextId() {
+        final UUID verificationContextId = UUID.randomUUID();
+
+        final VerificationMethodResult result = VerificationMethodResult.builder()
+                .verificationContextId(verificationContextId)
+                .build();
+
+        assertThat(result.getVerificationContextId()).isEqualTo(verificationContextId);
+    }
+
+    @Test
     public void shouldReturnSequenceName() {
         final String sequenceName = "sequenceName";
 

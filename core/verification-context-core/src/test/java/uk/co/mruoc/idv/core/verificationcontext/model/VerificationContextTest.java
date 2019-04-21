@@ -114,6 +114,53 @@ public class VerificationContextTest {
     }
 
     @Test
+    public void shouldReturnSequences() {
+        final Collection<VerificationMethodSequence> sequences = Collections.emptyList();
+
+        final VerificationContext request = VerificationContext.builder()
+                .sequences(sequences)
+                .build();
+
+        assertThat(request.getSequences()).isEmpty();
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfNoSequences() {
+        final Collection<VerificationMethodSequence> sequences = Collections.emptyList();
+
+        final VerificationContext request = VerificationContext.builder()
+                .sequences(sequences)
+                .build();
+
+        assertThat(request.getSequence("sequenceName")).isEmpty();
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfSequenceWithNameNotFound() {
+        final VerificationMethodSequence sequence = mock(VerificationMethodSequence.class);
+        given(sequence.getName()).willReturn("sequenceName");
+
+        final VerificationContext request = VerificationContext.builder()
+                .sequences(Collections.singleton(sequence))
+                .build();
+
+        assertThat(request.getSequence("otherSequenceName")).isEmpty();
+    }
+
+    @Test
+    public void shouldReturnEmptyOptionalIfSequenceWithNameFound() {
+        final String sequenceName = "sequenceName";
+        final VerificationMethodSequence sequence = mock(VerificationMethodSequence.class);
+        given(sequence.getName()).willReturn(sequenceName);
+
+        final VerificationContext request = VerificationContext.builder()
+                .sequences(Collections.singleton(sequence))
+                .build();
+
+        assertThat(request.getSequence(sequenceName)).contains(sequence);
+    }
+
+    @Test
     public void shouldPrintAllValues() {
         final UUID id = UUID.fromString("cbe28548-edc5-492b-94d4-6f013b92cece");
         final Instant timestamp = Instant.parse("2019-03-10T12:53:57.547Z");

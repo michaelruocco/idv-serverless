@@ -9,6 +9,7 @@ import java.util.UUID;
 @Builder
 public class VerificationMethodResult {
 
+    private final UUID verificationContextId;
     private final String sequenceName;
     private final String methodName;
     private final UUID verificationId;
