@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.result;
 
 import lombok.Builder;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
