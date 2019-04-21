@@ -14,7 +14,7 @@ public class VerificationContextConverter {
 
     public VerificationContextCreatedEvent toCreatedEvent(final VerificationContext context) {
         return VerificationContextCreatedEvent.builder()
-                .instant(timeService.now())
+                .timestamp(timeService.now())
                 .context(context)
                 .build();
     }

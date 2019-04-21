@@ -11,8 +11,8 @@ public class VerificationContextCreatedEvent extends DefaultEvent {
     private static final String TYPE = "VERIFICATION_CONTEXT_CREATED_EVENT";
 
     @Builder
-    public VerificationContextCreatedEvent(final Instant instant, final VerificationContext context) {
-        super(TYPE, instant, context);
+    public VerificationContextCreatedEvent(final Instant timestamp, final VerificationContext context) {
+        super(TYPE, timestamp, context);
     }
 
 }
