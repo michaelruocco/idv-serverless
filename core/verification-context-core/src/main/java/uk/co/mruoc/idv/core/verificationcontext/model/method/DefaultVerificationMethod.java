@@ -1,11 +1,13 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Collections;
 import java.util.Map;
 
 @ToString
+@Getter
 public class DefaultVerificationMethod implements VerificationMethod {
 
 
@@ -47,32 +49,12 @@ public class DefaultVerificationMethod implements VerificationMethod {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getDuration() {
-        return duration;
-    }
-
-    @Override
-    public VerificationStatus getStatus() {
-        return status;
-    }
-
-    @Override
-    public int getMaxAttempts() {
-        return maxAttempts;
-    }
-
-    @Override
     public Map<String, Object> getProperties() {
         return Collections.unmodifiableMap(properties);
     }
 
     @Override
-    public <T> T get(String name, Class<T> type) {
+    public <T> T get(final String name, final Class<T> type) {
         final Object item = properties.get(name);
         return type.cast(item);
     }

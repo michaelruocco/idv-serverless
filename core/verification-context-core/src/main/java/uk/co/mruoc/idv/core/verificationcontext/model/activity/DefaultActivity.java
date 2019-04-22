@@ -1,5 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.activity;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.Instant;
@@ -8,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ToString
+@Getter
+@RequiredArgsConstructor
 public class DefaultActivity implements Activity {
 
     private final String type;
@@ -16,22 +20,6 @@ public class DefaultActivity implements Activity {
 
     public DefaultActivity(final String type, final Instant timestamp) {
         this(type, timestamp, new HashMap<>());
-    }
-
-    public DefaultActivity(final String type, final Instant timestamp, final Map<String, Object> properties) {
-        this.type = type;
-        this.timestamp = timestamp;
-        this.properties = properties;
-    }
-
-    @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public Instant getTimestamp() {
-        return timestamp;
     }
 
     @Override
