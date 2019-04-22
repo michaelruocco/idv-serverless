@@ -14,21 +14,25 @@ public class ApiGatewayMethodArnParser {
 
     public ApiGatewayMethodArn parse(final String rawArn) {
         try {
-            final String[] arnPartials = rawArn.split(ApiGatewayMethodArn.ARN_DELIMITER);
-            final String[] apiPartials = arnPartials[5].split(ApiGatewayMethodArn.API_DELIMITER);
-            final ApiGatewayMethodArn methodArn = DefaultApiGatewayMethodArn.builder()
-                    .region(arnPartials[3])
-                    .accountId(arnPartials[4])
-                    .apiId(apiPartials[0])
-                    .stage(apiPartials[1])
-                    .httpMethod(apiPartials[2])
-                    .resource(extractResource(apiPartials))
-                    .build();
+            final ApiGatewayMethodArn methodArn = toApiGatewayMethodArn(rawArn);
             log.info("converted rawArn {} into methodArn {}", rawArn, methodArn);
             return methodArn;
         } catch (final ArrayIndexOutOfBoundsException e) {
             throw new InvalidApiGatewayArnException(rawArn, e);
         }
+    }
+
+    private ApiGatewayMethodArn toApiGatewayMethodArn(final String rawArn) {
+        final String[] arnPartials = rawArn.split(ApiGatewayMethodArn.ARN_DELIMITER);
+        final String[] apiPartials = arnPartials[5].split(ApiGatewayMethodArn.API_DELIMITER);
+        return DefaultApiGatewayMethodArn.builder()
+                .region(arnPartials[3])
+                .accountId(arnPartials[4])
+                .apiId(apiPartials[0])
+                .stage(apiPartials[1])
+                .httpMethod(apiPartials[2])
+                .resource(extractResource(apiPartials))
+                .build();
     }
 
     private static String extractResource(final String[] apiPartials) {
