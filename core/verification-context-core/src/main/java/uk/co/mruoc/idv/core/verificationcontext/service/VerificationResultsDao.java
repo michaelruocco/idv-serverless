@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodR
 import java.util.Optional;
 import java.util.UUID;
 
-public interface VerificationResultDao {
+public interface VerificationResultsDao {
 
     Optional<VerificationMethodResults> load(final UUID verificationContextId);
 

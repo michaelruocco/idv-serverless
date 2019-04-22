@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 
 public class VerificationResultServiceTest {
 
-    private final VerificationResultDao dao = mock(VerificationResultDao.class);
+    private final VerificationResultsDao dao = mock(VerificationResultsDao.class);
     private final LoadVerificationContextService loadContextService = mock(LoadVerificationContextService.class);
 
     private final VerificationResultService service = VerificationResultService.builder()

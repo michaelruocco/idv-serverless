@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class VerificationResultService {
 
-    private final VerificationResultDao dao;
+    private final VerificationResultsDao dao;
     private final LoadVerificationContextService loadContextService;
 
     public void save(final VerificationMethodResult result) {
