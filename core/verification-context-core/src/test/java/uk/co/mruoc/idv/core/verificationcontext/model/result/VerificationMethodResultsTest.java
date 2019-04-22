@@ -13,14 +13,25 @@ import static org.mockito.Mockito.mock;
 public class VerificationMethodResultsTest {
 
     @Test
-    public void shouldReturnVerificationContextId() {
-        final UUID verificationContextId = UUID.randomUUID();
+    public void shouldReturnId() {
+        final UUID id = UUID.randomUUID();
 
         final VerificationMethodResults results = VerificationMethodResults.builder()
-                .verificationContextId(verificationContextId)
+                .id(id)
                 .build();
 
-        assertThat(results.getVerificationContextId()).isEqualTo(verificationContextId);
+        assertThat(results.getId()).isEqualTo(id);
+    }
+
+    @Test
+    public void shouldReturnContextId() {
+        final UUID contextId = UUID.randomUUID();
+
+        final VerificationMethodResults results = VerificationMethodResults.builder()
+                .contextId(contextId)
+                .build();
+
+        assertThat(results.getContextId()).isEqualTo(contextId);
     }
 
     @Test
@@ -78,12 +89,18 @@ public class VerificationMethodResultsTest {
     public void shouldAddResult() {
         final VerificationMethodResult result = mock(VerificationMethodResult.class);
         given(result.getMethodName()).willReturn("methodName");
+        final UUID id = UUID.randomUUID();
+        final UUID contextId = UUID.randomUUID();
         final VerificationMethodResults results = VerificationMethodResults.builder()
+                .id(id)
+                .contextId(contextId)
                 .build();
 
         final VerificationMethodResults updatedResults = results.add(result);
 
         assertThat(updatedResults).containsExactly(result);
+        assertThat(updatedResults.getId()).isEqualTo(id);
+        assertThat(updatedResults.getContextId()).isEqualTo(contextId);
     }
 
 }

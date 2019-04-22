@@ -10,6 +10,6 @@ public interface VerificationResultsDao {
 
     Optional<VerificationMethodResults> load(final UUID verificationContextId);
 
-    void save(VerificationMethodResults results);
+    void save(final VerificationMethodResults results);
 
 }

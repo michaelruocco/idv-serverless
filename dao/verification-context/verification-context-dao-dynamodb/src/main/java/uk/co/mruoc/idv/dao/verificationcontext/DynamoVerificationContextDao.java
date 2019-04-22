@@ -31,7 +31,7 @@ public class DynamoVerificationContextDao implements VerificationContextDao {
         log.info("loading verification context by id {}", id);
         final Item item = table.getItem("id", id.toString());
         if (item == null) {
-            log.debug("verifiction context not found returning empty optional");
+            log.debug("verification context not found returning empty optional");
             return Optional.empty();
         }
         log.info("loaded item {}", item);

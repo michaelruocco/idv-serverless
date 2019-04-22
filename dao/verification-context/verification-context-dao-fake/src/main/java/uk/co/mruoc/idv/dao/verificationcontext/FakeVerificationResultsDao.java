@@ -23,7 +23,7 @@ public class FakeVerificationResultsDao implements VerificationResultsDao {
     }
 
     private void add(final VerificationMethodResults results) {
-        resultsMap.put(results.getVerificationContextId(), results);
+        resultsMap.put(results.getContextId(), results);
     }
 
 }

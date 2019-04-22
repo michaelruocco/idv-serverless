@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
@@ -27,20 +28,25 @@ public class VerificationResultServiceTest {
 
     private final VerificationResultsDao dao = mock(VerificationResultsDao.class);
     private final LoadVerificationContextService loadContextService = mock(LoadVerificationContextService.class);
+    private final UuidGenerator uuidGenerator = mock(UuidGenerator.class);
 
     private final VerificationResultService service = VerificationResultService.builder()
             .dao(dao)
             .loadContextService(loadContextService)
+            .uuidGenerator(uuidGenerator)
             .build();
 
     @Test
     public void shouldReturnEmptyResultsIfResultsNotFound() {
         final UUID contextId = UUID.randomUUID();
         given(dao.load(contextId)).willReturn(Optional.empty());
+        final UUID id = UUID.randomUUID();
+        given(uuidGenerator.randomUuid()).willReturn(id);
 
         final VerificationMethodResults results = service.loadResults(contextId);
 
-        assertThat(results.getVerificationContextId()).isEqualTo(contextId);
+        assertThat(results.getId()).isEqualTo(id);
+        assertThat(results.getContextId()).isEqualTo(contextId);
         assertThat(results).isEmpty();
     }
 
@@ -59,7 +65,7 @@ public class VerificationResultServiceTest {
     public void shouldThrowExceptionIfContextNotFound() {
         final UUID contextId = UUID.randomUUID();
         final VerificationMethodResult result = VerificationMethodResult.builder()
-                .verificationContextId(contextId)
+                .contextId(contextId)
                 .build();
         doThrow(VerificationContextNotFoundException.class).when(loadContextService).load(contextId);
 
@@ -72,7 +78,7 @@ public class VerificationResultServiceTest {
     public void shouldThrowExceptionIfContextFoundButDoesNotContainSequence() {
         final UUID contextId = UUID.fromString("786f80d3-f148-413d-bdef-4847fd3c637b");
         final VerificationMethodResult result = VerificationMethodResult.builder()
-                .verificationContextId(contextId)
+                .contextId(contextId)
                 .sequenceName("sequenceName")
                 .build();
         final VerificationMethodSequence sequence = new VerificationMethodSequence("otherSequenceName", Collections.emptyList());
@@ -92,7 +98,7 @@ public class VerificationResultServiceTest {
         final UUID contextId = UUID.fromString("786f80d3-f148-413d-bdef-4847fd3c637b");
         final String sequenceName = "sequenceName";
         final VerificationMethodResult result = VerificationMethodResult.builder()
-                .verificationContextId(contextId)
+                .contextId(contextId)
                 .sequenceName(sequenceName)
                 .methodName("methodName")
                 .build();
@@ -115,7 +121,7 @@ public class VerificationResultServiceTest {
         final String sequenceName = "sequenceName";
         final String methodName = "methodName";
         final VerificationMethodResult result = VerificationMethodResult.builder()
-                .verificationContextId(contextId)
+                .contextId(contextId)
                 .sequenceName(sequenceName)
                 .methodName(methodName)
                 .build();
@@ -126,13 +132,16 @@ public class VerificationResultServiceTest {
                 .build();
         given(loadContextService.load(contextId)).willReturn(context);
         given(dao.load(contextId)).willReturn(Optional.empty());
+        final UUID id = UUID.randomUUID();
+        given(uuidGenerator.randomUuid()).willReturn(id);
 
         service.save(result);
 
         final ArgumentCaptor<VerificationMethodResults> captor = ArgumentCaptor.forClass(VerificationMethodResults.class);
         verify(dao).save(captor.capture());
         final VerificationMethodResults results = captor.getValue();
-        assertThat(results.getVerificationContextId()).isEqualTo(contextId);
+        assertThat(results.getId()).isEqualTo(id);
+        assertThat(results.getContextId()).isEqualTo(contextId);
         assertThat(results).containsExactly(result);
     }
 
@@ -142,7 +151,7 @@ public class VerificationResultServiceTest {
         final String sequenceName = "sequenceName";
         final String methodName = "methodName";
         final VerificationMethodResult result = VerificationMethodResult.builder()
-                .verificationContextId(contextId)
+                .contextId(contextId)
                 .sequenceName(sequenceName)
                 .methodName(methodName)
                 .build();
@@ -154,7 +163,7 @@ public class VerificationResultServiceTest {
         given(loadContextService.load(contextId)).willReturn(context);
         final VerificationMethodResult existingResult = mock(VerificationMethodResult.class);
         final VerificationMethodResults existingResults = VerificationMethodResults.builder()
-                .verificationContextId(contextId)
+                .contextId(contextId)
                 .results(Collections.singleton(existingResult))
                 .build();
         given(dao.load(contextId)).willReturn(Optional.of(existingResults));
@@ -164,7 +173,7 @@ public class VerificationResultServiceTest {
         final ArgumentCaptor<VerificationMethodResults> captor = ArgumentCaptor.forClass(VerificationMethodResults.class);
         verify(dao).save(captor.capture());
         final VerificationMethodResults results = captor.getValue();
-        assertThat(results.getVerificationContextId()).isEqualTo(contextId);
+        assertThat(results.getContextId()).isEqualTo(contextId);
         assertThat(results).containsExactly(existingResult, result);
     }
 

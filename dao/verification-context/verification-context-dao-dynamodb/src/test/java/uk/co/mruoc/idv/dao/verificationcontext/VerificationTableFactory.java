@@ -13,11 +13,11 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-public class VerificationContextTableFactory {
+public class VerificationTableFactory {
 
     private final String tableName;
 
-    public VerificationContextTableFactory(final String tableName) {
+    public VerificationTableFactory(final String tableName) {
         this.tableName = tableName;
     }
 

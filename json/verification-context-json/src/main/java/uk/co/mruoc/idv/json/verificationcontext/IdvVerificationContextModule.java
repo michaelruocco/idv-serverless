@@ -14,6 +14,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationM
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
+import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
+import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.json.verificationcontext.activity.ActivityDeserializer;
 import uk.co.mruoc.idv.json.verificationcontext.activity.LoginActivityMixin;
 import uk.co.mruoc.idv.json.verificationcontext.method.CardNumberMixin;
@@ -24,6 +26,8 @@ import uk.co.mruoc.idv.json.verificationcontext.method.PhysicalPinsentryVerifica
 import uk.co.mruoc.idv.json.verificationcontext.method.VerificationMethodDeserializer;
 import uk.co.mruoc.idv.json.verificationcontext.activity.OnlinePurchaseActivityMixin;
 import uk.co.mruoc.idv.json.verificationcontext.channel.ChannelDeserializer;
+import uk.co.mruoc.idv.json.verificationcontext.result.VerificationMethodResultMixin;
+import uk.co.mruoc.idv.json.verificationcontext.result.VerificationMethodResultsDeserializer;
 
 public class IdvVerificationContextModule extends SimpleModule {
 
@@ -34,6 +38,7 @@ public class IdvVerificationContextModule extends SimpleModule {
         setUpMethod();
         setUpChannel();
         setUpContext();
+        setUpResult();
     }
 
     private void setUpActivity() {
@@ -62,6 +67,12 @@ public class IdvVerificationContextModule extends SimpleModule {
         addDeserializer(VerificationContext.class, new VerificationContextDeserializer());
 
         setMixInAnnotation(VerificationContext.class, VerificationContextMixin.class);
+    }
+
+    private void setUpResult() {
+        addDeserializer(VerificationMethodResults.class, new VerificationMethodResultsDeserializer());
+
+        setMixInAnnotation(VerificationMethodResult.class, VerificationMethodResultMixin.class);
     }
 
 }

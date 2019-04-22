@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.verificationcontext.model.result;
 
 import org.junit.Test;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,14 +10,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VerificationMethodResultTest {
 
     @Test
-    public void shouldReturnVerificationContextId() {
-        final UUID verificationContextId = UUID.randomUUID();
+    public void shouldReturnContextId() {
+        final UUID contextId = UUID.randomUUID();
 
         final VerificationMethodResult result = VerificationMethodResult.builder()
-                .verificationContextId(verificationContextId)
+                .contextId(contextId)
                 .build();
 
-        assertThat(result.getVerificationContextId()).isEqualTo(verificationContextId);
+        assertThat(result.getContextId()).isEqualTo(contextId);
     }
 
     @Test
@@ -91,6 +92,17 @@ public class VerificationMethodResultTest {
                 .build();
 
         assertThat(methodResult.isSuccessful()).isFalse();
+    }
+
+    @Test
+    public void shouldReturnTimestamp() {
+        final Instant timestamp = Instant.now();
+
+        final VerificationMethodResult result = VerificationMethodResult.builder()
+                .timestamp(timestamp)
+                .build();
+
+        assertThat(result.getTimestamp()).isEqualTo(timestamp);
     }
 
 }

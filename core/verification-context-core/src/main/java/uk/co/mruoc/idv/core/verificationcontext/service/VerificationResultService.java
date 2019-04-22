@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import lombok.Builder;
+import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
@@ -14,21 +15,22 @@ public class VerificationResultService {
 
     private final VerificationResultsDao dao;
     private final LoadVerificationContextService loadContextService;
+    private final UuidGenerator uuidGenerator;
 
     public void save(final VerificationMethodResult result) {
         validateResult(result);
-        final UUID contextId = result.getVerificationContextId();
+        final UUID contextId = result.getContextId();
         final VerificationMethodResults results = loadResults(contextId);
         final VerificationMethodResults updatedResults = results.add(result);
         dao.save(updatedResults);
     }
 
     public VerificationMethodResults loadResults(final UUID contextId) {
-        return dao.load(contextId).orElse(createNewResults(contextId));
+        return dao.load(contextId).orElseGet(() -> createNewResults(contextId));
     }
 
     private void validateResult(final VerificationMethodResult result) {
-        final UUID contextId = result.getVerificationContextId();
+        final UUID contextId = result.getContextId();
         final VerificationContext context = loadContextService.load(contextId);
         final String sequenceName = result.getSequenceName();
         final Optional<VerificationMethodSequence> sequence = context.getSequence(sequenceName);
@@ -43,7 +45,8 @@ public class VerificationResultService {
 
     private VerificationMethodResults createNewResults(final UUID contextId) {
         return VerificationMethodResults.builder()
-                .verificationContextId(contextId)
+                .id(uuidGenerator.randomUuid())
+                .contextId(contextId)
                 .build();
     }
 

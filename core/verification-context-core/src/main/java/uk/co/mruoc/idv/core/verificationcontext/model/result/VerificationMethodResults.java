@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.result;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,9 +11,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Builder
+@Getter
 public class VerificationMethodResults implements Iterable<VerificationMethodResult> {
 
-    private final UUID verificationContextId;
+    private final UUID id;
+    private final UUID contextId;
 
     @Builder.Default
     private final Collection<VerificationMethodResult> results = Collections.emptyList();
@@ -28,15 +31,12 @@ public class VerificationMethodResults implements Iterable<VerificationMethodRes
                 .findFirst();
     }
 
-    public UUID getVerificationContextId() {
-        return verificationContextId;
-    }
-
     public VerificationMethodResults add(final VerificationMethodResult result) {
         final Collection<VerificationMethodResult> updatedResults = new ArrayList<>(results);
         updatedResults.add(result);
         return VerificationMethodResults.builder()
-                .verificationContextId(verificationContextId)
+                .id(id)
+                .contextId(contextId)
                 .results(Collections.unmodifiableCollection(updatedResults))
                 .build();
     }

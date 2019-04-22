@@ -35,7 +35,7 @@ public class DynamoVerificationContextDaoTest {
     @Rule
     public final LocalDynamoRule localDynamoRule = new LocalDynamoRule();
 
-    private final VerificationContextTableFactory tableFactory = new VerificationContextTableFactory(TABLE_NAME);
+    private final VerificationTableFactory tableFactory = new VerificationTableFactory(TABLE_NAME);
 
     private VerificationContextDao dao;
 
