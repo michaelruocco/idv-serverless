@@ -16,6 +16,18 @@ public class VerificationResultService {
     private final LoadVerificationContextService loadContextService;
 
     public void save(final VerificationMethodResult result) {
+        validateResult(result);
+        final UUID contextId = result.getVerificationContextId();
+        final VerificationMethodResults results = loadResults(contextId);
+        final VerificationMethodResults updatedResults = results.add(result);
+        dao.save(updatedResults);
+    }
+
+    public VerificationMethodResults loadResults(final UUID contextId) {
+        return dao.load(contextId).orElse(createNewResults(contextId));
+    }
+
+    private void validateResult(final VerificationMethodResult result) {
         final UUID contextId = result.getVerificationContextId();
         final VerificationContext context = loadContextService.load(contextId);
         final String sequenceName = result.getSequenceName();
@@ -27,13 +39,6 @@ public class VerificationResultService {
         if (!sequence.get().containsMethod(methodName)) {
             throw new MethodNotFoundInSequenceException(contextId, sequenceName, methodName);
         }
-        final VerificationMethodResults results = loadResults(contextId);
-        final VerificationMethodResults updatedResults = results.add(result);
-        dao.save(updatedResults);
-    }
-
-    public VerificationMethodResults loadResults(final UUID contextId) {
-        return dao.load(contextId).orElse(createNewResults(contextId));
     }
 
     private VerificationMethodResults createNewResults(final UUID contextId) {
