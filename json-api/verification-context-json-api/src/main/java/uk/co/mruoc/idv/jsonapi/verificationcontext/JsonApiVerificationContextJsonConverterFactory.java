@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.zalando.jackson.datatype.money.MoneyModule;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.json.JacksonJsonConverter;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.JsonConverterFactory;
@@ -25,8 +24,8 @@ public class JsonApiVerificationContextJsonConverterFactory implements JsonConve
         mapper.registerModule(new IdvVerificationContextModule());
         mapper.registerModule(new JavaTimeModule());
         mapper.registerModule(new MoneyModule());
+        mapper.registerModule(new IdvJsonApiVerificationContextModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.addMixIn(VerificationContext.class, JsonApiVerificationContextMixin.class);
         return mapper;
     }
 
