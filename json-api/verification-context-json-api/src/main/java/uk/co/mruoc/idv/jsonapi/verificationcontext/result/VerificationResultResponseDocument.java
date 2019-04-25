@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.jsonapi.verificationcontext.result;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.jsonapi.JsonApiDataItemWithId;
 
