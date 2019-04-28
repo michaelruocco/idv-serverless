@@ -8,7 +8,7 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationResult;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDao;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 

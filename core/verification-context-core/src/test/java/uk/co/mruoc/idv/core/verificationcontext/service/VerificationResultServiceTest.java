@@ -10,8 +10,10 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodS
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService.VerificationContextNotFoundException;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultService.MethodNotFoundInSequenceException;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultService.SequenceNotFoundException;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService.MethodNotFoundInSequenceException;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService.SequenceNotFoundException;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -37,16 +39,12 @@ public class VerificationResultServiceTest {
             .build();
 
     @Test
-    public void shouldReturnEmptyResultsIfResultsNotFound() {
+    public void shouldReturnEmptyOptionalIfResultsNotFound() {
         final UUID contextId = UUID.randomUUID();
         given(dao.load(contextId)).willReturn(Optional.empty());
-        final UUID id = UUID.randomUUID();
-        given(uuidGenerator.randomUuid()).willReturn(id);
 
-        final VerificationMethodResults results = service.loadResults(contextId);
+        final Optional<VerificationMethodResults> results = service.load(contextId);
 
-        assertThat(results.getId()).isEqualTo(id);
-        assertThat(results.getContextId()).isEqualTo(contextId);
         assertThat(results).isEmpty();
     }
 
@@ -56,9 +54,9 @@ public class VerificationResultServiceTest {
         final VerificationMethodResults expectedResults = mock(VerificationMethodResults.class);
         given(dao.load(contextId)).willReturn(Optional.of(expectedResults));
 
-        final VerificationMethodResults actualResults = service.loadResults(contextId);
+        final Optional<VerificationMethodResults> actualResults = service.load(contextId);
 
-        assertThat(actualResults).isEqualTo(expectedResults);
+        assertThat(actualResults).contains(expectedResults);
     }
 
     @Test
@@ -66,10 +64,12 @@ public class VerificationResultServiceTest {
         final UUID contextId = UUID.randomUUID();
         final VerificationMethodResult result = VerificationMethodResult.builder()
                 .contextId(contextId)
+                .sequenceName("sequenceName")
                 .build();
+        final VerificationMethodResults results = toResults(result);
         doThrow(VerificationContextNotFoundException.class).when(loadContextService).load(contextId);
 
-        final Throwable cause = catchThrowable(() -> service.save(result));
+        final Throwable cause = catchThrowable(() -> service.upsert(results));
 
         assertThat(cause).isInstanceOf(VerificationContextNotFoundException.class);
     }
@@ -81,43 +81,45 @@ public class VerificationResultServiceTest {
                 .contextId(contextId)
                 .sequenceName("sequenceName")
                 .build();
+        final VerificationMethodResults results = toResults(result);
         final VerificationMethodSequence sequence = new VerificationMethodSequence("otherSequenceName", Collections.emptyList());
         final VerificationContext context = VerificationContext.builder()
                 .sequences(Collections.singleton(sequence))
                 .build();
         given(loadContextService.load(contextId)).willReturn(context);
 
-        final Throwable cause = catchThrowable(() -> service.save(result));
+        final Throwable cause = catchThrowable(() -> service.upsert(results));
 
+        final String expectedMessage = String.format("sequence sequenceName not found in verification context %s", contextId);
         assertThat(cause).isInstanceOf(SequenceNotFoundException.class)
-                .hasMessage("sequence sequenceName not found in verification context 786f80d3-f148-413d-bdef-4847fd3c637b");
+                .hasMessage(expectedMessage);
     }
 
     @Test
     public void shouldThrowExceptionIfContextFoundWithSequenceButSequenceDoesNotContainMethod() {
-        final UUID contextId = UUID.fromString("786f80d3-f148-413d-bdef-4847fd3c637b");
+        final UUID contextId = UUID.randomUUID();
         final String sequenceName = "sequenceName";
         final VerificationMethodResult result = VerificationMethodResult.builder()
                 .contextId(contextId)
                 .sequenceName(sequenceName)
                 .methodName("methodName")
                 .build();
+        final VerificationMethodResults results = toResults(result);
         final VerificationMethod method = new DefaultVerificationMethod("otherMethodName");
         final VerificationMethodSequence sequence = new VerificationMethodSequence(sequenceName, Collections.singleton(method));
-        final VerificationContext context = VerificationContext.builder()
-                .sequences(Collections.singleton(sequence))
-                .build();
+        final VerificationContext context = toContext(sequence);
         given(loadContextService.load(contextId)).willReturn(context);
 
-        final Throwable cause = catchThrowable(() -> service.save(result));
+        final Throwable cause = catchThrowable(() -> service.upsert(results));
 
+        final String expectedMessage = String.format("method methodName not found in sequence sequenceName in verification context %s", contextId);
         assertThat(cause).isInstanceOf(MethodNotFoundInSequenceException.class)
-                .hasMessage("method methodName not found in sequence sequenceName in verification context 786f80d3-f148-413d-bdef-4847fd3c637b");
+                .hasMessage(expectedMessage);
     }
 
     @Test
     public void shouldCreateNewResultsAndAddResultIfResultsDoNotExist() {
-        final UUID contextId = UUID.fromString("786f80d3-f148-413d-bdef-4847fd3c637b");
+        final UUID contextId = UUID.randomUUID();
         final String sequenceName = "sequenceName";
         final String methodName = "methodName";
         final VerificationMethodResult result = VerificationMethodResult.builder()
@@ -125,29 +127,28 @@ public class VerificationResultServiceTest {
                 .sequenceName(sequenceName)
                 .methodName(methodName)
                 .build();
+        final VerificationMethodResults results = toResults(result);
         final VerificationMethod method = new DefaultVerificationMethod(methodName);
         final VerificationMethodSequence sequence = new VerificationMethodSequence(sequenceName, Collections.singleton(method));
-        final VerificationContext context = VerificationContext.builder()
-                .sequences(Collections.singleton(sequence))
-                .build();
+        final VerificationContext context = toContext(sequence);
         given(loadContextService.load(contextId)).willReturn(context);
         given(dao.load(contextId)).willReturn(Optional.empty());
         final UUID id = UUID.randomUUID();
         given(uuidGenerator.randomUuid()).willReturn(id);
 
-        service.save(result);
+        service.upsert(results);
 
         final ArgumentCaptor<VerificationMethodResults> captor = ArgumentCaptor.forClass(VerificationMethodResults.class);
         verify(dao).save(captor.capture());
-        final VerificationMethodResults results = captor.getValue();
-        assertThat(results.getId()).isEqualTo(id);
-        assertThat(results.getContextId()).isEqualTo(contextId);
-        assertThat(results).containsExactly(result);
+        final VerificationMethodResults actualResults = captor.getValue();
+        assertThat(actualResults.getId()).isEqualTo(id);
+        assertThat(actualResults.getContextId()).isEqualTo(contextId);
+        assertThat(actualResults).containsExactly(result);
     }
 
     @Test
     public void shouldAddResultIfResultsIfResultsAlreadyExist() {
-        final UUID contextId = UUID.fromString("786f80d3-f148-413d-bdef-4847fd3c637b");
+        final UUID contextId = UUID.randomUUID();
         final String sequenceName = "sequenceName";
         final String methodName = "methodName";
         final VerificationMethodResult result = VerificationMethodResult.builder()
@@ -155,11 +156,10 @@ public class VerificationResultServiceTest {
                 .sequenceName(sequenceName)
                 .methodName(methodName)
                 .build();
+        final VerificationMethodResults results = toResults(result);
         final VerificationMethod method = new DefaultVerificationMethod(methodName);
         final VerificationMethodSequence sequence = new VerificationMethodSequence(sequenceName, Collections.singleton(method));
-        final VerificationContext context = VerificationContext.builder()
-                .sequences(Collections.singleton(sequence))
-                .build();
+        final VerificationContext context = toContext(sequence);
         given(loadContextService.load(contextId)).willReturn(context);
         final VerificationMethodResult existingResult = mock(VerificationMethodResult.class);
         final VerificationMethodResults existingResults = VerificationMethodResults.builder()
@@ -168,13 +168,26 @@ public class VerificationResultServiceTest {
                 .build();
         given(dao.load(contextId)).willReturn(Optional.of(existingResults));
 
-        service.save(result);
+        service.upsert(results);
 
         final ArgumentCaptor<VerificationMethodResults> captor = ArgumentCaptor.forClass(VerificationMethodResults.class);
         verify(dao).save(captor.capture());
-        final VerificationMethodResults results = captor.getValue();
-        assertThat(results.getContextId()).isEqualTo(contextId);
-        assertThat(results).containsExactly(existingResult, result);
+        final VerificationMethodResults actualResults = captor.getValue();
+        assertThat(actualResults.getContextId()).isEqualTo(contextId);
+        assertThat(actualResults).containsExactly(existingResult, result);
+    }
+
+    private static VerificationMethodResults toResults(final VerificationMethodResult result) {
+        return VerificationMethodResults.builder()
+                .contextId(result.getContextId())
+                .results(Collections.singleton(result))
+                .build();
+    }
+
+    private static VerificationContext toContext(final VerificationMethodSequence sequence) {
+        return VerificationContext.builder()
+                .sequences(Collections.singleton(sequence))
+                .build();
     }
 
 }

@@ -33,7 +33,7 @@ public class PostVerificationContextHandlerIntegrationTest {
     private final PostVerificationContextHandler handler = new PostVerificationContextHandler(contextService);
 
     @Test
-    public void shouldCreateVerificationContext() throws IOException, JSONException {
+    public void shouldCreateVerificationContext() throws JSONException {
         final String requestBody = loadContentFromClasspath("/post-verification-context-request.json");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withBody(requestBody);
@@ -48,7 +48,7 @@ public class PostVerificationContextHandlerIntegrationTest {
 
     private static String loadExpectedBody(final VerificationContextResponseDocument document) {
         final String template = loadContentFromClasspath("/post-verification-context-response.json");
-        return BodyTemplatePopulator.populate(template, document);
+        return VerificationContextBodyTemplatePopulator.populate(template, document);
     }
 
     private static VerificationContextResponseDocument toDocument(final String body) {

@@ -22,7 +22,6 @@ import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -48,7 +47,7 @@ public class GetVerificationContextHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldLoadVerificationContext() throws IOException, JSONException {
+    public void shouldLoadVerificationContext() throws JSONException {
         final Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("id", CONTEXT_ID.toString());
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
@@ -84,7 +83,7 @@ public class GetVerificationContextHandlerIntegrationTest {
 
     private static String loadExpectedBody(final VerificationContextResponseDocument document) {
         final String template = loadContentFromClasspath("/get-verification-context-response.json");
-        return BodyTemplatePopulator.populate(template, document);
+        return VerificationContextBodyTemplatePopulator.populate(template, document);
     }
 
     private static LoadVerificationContextService buildVerificationContextService(final VerificationContextDao dao) {

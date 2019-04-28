@@ -5,7 +5,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDao;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
 import uk.co.mruoc.idv.json.JsonConverter;
 
 import java.util.Optional;

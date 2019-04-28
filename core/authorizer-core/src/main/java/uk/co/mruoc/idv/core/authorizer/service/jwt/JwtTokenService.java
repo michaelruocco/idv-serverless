@@ -61,7 +61,6 @@ public class JwtTokenService implements TokenService {
                 .signWith(keyProvider.provideAlgorithm(), keyProvider.provideKey());
         final Optional<Long> timeToLive = tokenRequest.getTimeToLiveInSeconds();
         if (timeToLive.isPresent()) {
-            System.out.println("setting expiry");
             return builder.setExpiration(calculateExpiry(issuedAt, timeToLive.get()));
         }
         return builder;

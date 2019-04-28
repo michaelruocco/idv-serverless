@@ -1,0 +1,17 @@
+{
+  "data": {
+    "type": "verificationResults",
+    "attributes": {
+      "contextId": "b648e9a6-4a6b-416c-95fb-194d95c0bea8",
+      "results": [
+        {
+          "sequence": "PUSH_NOTIFICATION",
+          "method": "PUSH_NOTIFICATION",
+          "verificationId": "a7609223-8c80-4e31-9bf8-e75d63cb998f",
+          "timestamp": "2019-03-10T21:51:54.638Z",
+          "result": "SUCCESS"
+        }
+      ]
+    }
+  }
+}

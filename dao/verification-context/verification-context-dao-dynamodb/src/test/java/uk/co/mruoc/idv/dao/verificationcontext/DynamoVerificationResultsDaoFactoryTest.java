@@ -4,7 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDao;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
 import uk.co.mruoc.idv.dao.dynamodb.DefaultDynamoEnvironment;
 import uk.co.mruoc.idv.dao.dynamodb.DynamoEnvironment;
 import uk.co.mruoc.idv.json.JsonConverter;

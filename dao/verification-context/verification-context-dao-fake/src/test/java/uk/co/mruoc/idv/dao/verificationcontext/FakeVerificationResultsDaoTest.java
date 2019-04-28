@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.dao.verificationcontext;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDao;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
 
 import java.util.Collections;
 import java.util.Optional;

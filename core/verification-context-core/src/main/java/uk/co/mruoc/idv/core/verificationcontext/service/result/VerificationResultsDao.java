@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.core.verificationcontext.service;
+package uk.co.mruoc.idv.core.verificationcontext.service.result;
 
 
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;

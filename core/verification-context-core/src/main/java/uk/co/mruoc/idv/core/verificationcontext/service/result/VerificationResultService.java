@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.core.verificationcontext.service;
+package uk.co.mruoc.idv.core.verificationcontext.service.result;
 
 import lombok.Builder;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
@@ -6,6 +6,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
+import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,16 +18,25 @@ public class VerificationResultService {
     private final LoadVerificationContextService loadContextService;
     private final UuidGenerator uuidGenerator;
 
-    public void save(final VerificationMethodResult result) {
-        validateResult(result);
-        final UUID contextId = result.getContextId();
-        final VerificationMethodResults results = loadResults(contextId);
-        final VerificationMethodResults updatedResults = results.add(result);
+    public VerificationMethodResults upsert(final VerificationMethodResults results) {
+        validateResults(results);
+        final UUID contextId = results.getContextId();
+        final VerificationMethodResults loadedResults = loadOrCreate(contextId);
+        final VerificationMethodResults updatedResults = loadedResults.addAll(results);
         dao.save(updatedResults);
+        return updatedResults;
     }
 
-    public VerificationMethodResults loadResults(final UUID contextId) {
+    public Optional<VerificationMethodResults> load(final UUID contextId) {
+        return dao.load(contextId);
+    }
+
+    private VerificationMethodResults loadOrCreate(final UUID contextId) {
         return dao.load(contextId).orElseGet(() -> createNewResults(contextId));
+    }
+
+    private void validateResults(final VerificationMethodResults results) {
+        results.stream().forEach(this::validateResult);
     }
 
     private void validateResult(final VerificationMethodResult result) {

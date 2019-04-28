@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Builder
 @Getter
@@ -25,15 +26,31 @@ public class VerificationMethodResults implements Iterable<VerificationMethodRes
         return results.iterator();
     }
 
+    public Stream<VerificationMethodResult> stream() {
+        return results.stream();
+    }
+
     public Optional<VerificationMethodResult> getResult(final String methodName) {
         return results.stream()
                 .filter(result -> result.getMethodName().equals(methodName))
                 .findFirst();
     }
 
+    public VerificationMethodResults addAll(final VerificationMethodResults results) {
+        return addAll(results.getResults());
+    }
+
     public VerificationMethodResults add(final VerificationMethodResult result) {
+        return addAll(Collections.singleton(result));
+    }
+
+    public int size() {
+        return results.size();
+    }
+
+    private VerificationMethodResults addAll(final Collection<VerificationMethodResult> resultsToAdd) {
         final Collection<VerificationMethodResult> updatedResults = new ArrayList<>(results);
-        updatedResults.add(result);
+        updatedResults.addAll(resultsToAdd);
         return VerificationMethodResults.builder()
                 .id(id)
                 .contextId(contextId)

@@ -4,8 +4,8 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDao;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDaoFactory;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDaoFactory;
 import uk.co.mruoc.idv.dao.dynamodb.DynamoEnvironment;
 import uk.co.mruoc.idv.json.JsonConverter;
 

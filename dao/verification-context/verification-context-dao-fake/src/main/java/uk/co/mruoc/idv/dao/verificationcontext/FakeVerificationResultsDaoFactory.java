@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.dao.verificationcontext;
 
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDao;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultsDaoFactory;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDaoFactory;
 
 public class FakeVerificationResultsDaoFactory implements VerificationResultsDaoFactory {
 

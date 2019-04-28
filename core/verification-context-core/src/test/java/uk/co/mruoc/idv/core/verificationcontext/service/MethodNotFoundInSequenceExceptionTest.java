@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.verificationcontext.service.VerificationResultService.MethodNotFoundInSequenceException;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService.MethodNotFoundInSequenceException;
 
 import java.util.UUID;
 
