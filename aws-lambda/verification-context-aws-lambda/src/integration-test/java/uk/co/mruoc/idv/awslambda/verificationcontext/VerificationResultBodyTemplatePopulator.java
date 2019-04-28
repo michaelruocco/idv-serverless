@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.awslambda.verificationcontext;
 
 import org.apache.commons.lang3.StringUtils;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.result.VerificationResultResponseDocument;
 
 public class VerificationResultBodyTemplatePopulator {
