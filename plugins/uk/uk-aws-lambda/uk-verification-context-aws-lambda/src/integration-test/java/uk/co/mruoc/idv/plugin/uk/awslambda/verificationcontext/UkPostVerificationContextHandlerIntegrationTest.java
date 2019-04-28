@@ -48,7 +48,7 @@ public class UkPostVerificationContextHandlerIntegrationTest {
 
     private String loadExpectedBody(final VerificationContextResponseDocument document) {
         final String template = loadContentFromClasspath("/post-verification-context-response.json");
-        return BodyTemplatePopulator.populate(template, document);
+        return VerificationContextBodyTemplatePopulator.populate(template, document);
     }
 
     private VerificationContextResponseDocument toDocument(final String body) {

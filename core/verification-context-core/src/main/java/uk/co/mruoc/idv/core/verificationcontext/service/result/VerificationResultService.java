@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
-import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +15,7 @@ import java.util.UUID;
 public class VerificationResultService {
 
     private final VerificationResultsDao dao;
-    private final LoadVerificationContextService loadContextService;
+    private final GetVerificationContextService getContextService;
     private final UuidGenerator uuidGenerator;
 
     public VerificationMethodResults upsert(final VerificationMethodResults results) {
@@ -41,7 +41,7 @@ public class VerificationResultService {
 
     private void validateResult(final VerificationMethodResult result) {
         final UUID contextId = result.getContextId();
-        final VerificationContext context = loadContextService.load(contextId);
+        final VerificationContext context = getContextService.load(contextId);
         final String sequenceName = result.getSequenceName();
         final Optional<VerificationMethodSequence> sequence = context.getSequence(sequenceName);
         if (!sequence.isPresent()) {

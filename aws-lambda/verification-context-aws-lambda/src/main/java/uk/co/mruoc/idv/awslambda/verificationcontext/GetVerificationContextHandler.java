@@ -11,7 +11,7 @@ import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.IdPathParameterExtractor;
 import uk.co.mruoc.idv.awslambda.verificationcontext.error.GetVerificationContextErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 import uk.co.mruoc.idv.json.JsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 
@@ -26,11 +26,11 @@ public class GetVerificationContextHandler implements RequestHandler<APIGatewayP
     private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new JsonApiVerificationContextJsonConverterFactory();
 
     private final IdPathParameterExtractor idExtractor;
-    private final LoadVerificationContextService service;
+    private final GetVerificationContextService service;
     private final VerificationContextResponseFactory responseFactory;
     private final ExceptionConverter exceptionConverter;
 
-    public GetVerificationContextHandler(final LoadVerificationContextService service) {
+    public GetVerificationContextHandler(final GetVerificationContextService service) {
         this(builder()
                 .idExtractor(new IdPathParameterExtractor())
                 .service(service)

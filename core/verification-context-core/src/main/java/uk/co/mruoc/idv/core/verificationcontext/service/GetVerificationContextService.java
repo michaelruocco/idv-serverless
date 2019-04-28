@@ -5,11 +5,12 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import java.util.UUID;
 
 @Builder
-public class LoadVerificationContextService {
+public class GetVerificationContextService {
 
     private final VerificationContextDao dao;
 
     public VerificationContext load(final UUID id) {
+        System.out.println("using dao " + dao);
         return dao.load(id).orElseThrow(() -> new VerificationContextNotFoundException(id));
     }
 

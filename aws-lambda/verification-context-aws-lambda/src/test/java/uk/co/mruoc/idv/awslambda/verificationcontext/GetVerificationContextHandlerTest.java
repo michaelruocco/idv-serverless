@@ -9,7 +9,7 @@ import uk.co.mruoc.idv.awslambda.IdPathParameterExtractor;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextHandler.InvalidVerificationContextIdException;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextHandler.VerificationContextIdNotProvidedException;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 public class GetVerificationContextHandlerTest {
 
     private final IdPathParameterExtractor idExtractor = mock(IdPathParameterExtractor.class);
-    private final LoadVerificationContextService service = mock(LoadVerificationContextService.class);
+    private final GetVerificationContextService service = mock(GetVerificationContextService.class);
     private final VerificationContextResponseFactory responseFactory = mock(VerificationContextResponseFactory.class);
     private final ExceptionConverter exceptionConverter = mock(ExceptionConverter.class);
 

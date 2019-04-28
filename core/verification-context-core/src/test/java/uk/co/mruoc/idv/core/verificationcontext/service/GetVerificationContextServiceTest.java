@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService.VerificationContextNotFoundException;
+import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService.VerificationContextNotFoundException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -12,11 +12,11 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class LoadVerificationContextServiceTest {
+public class GetVerificationContextServiceTest {
 
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
 
-    private final LoadVerificationContextService service = LoadVerificationContextService.builder()
+    private final GetVerificationContextService service = GetVerificationContextService.builder()
             .dao(dao)
             .build();
 

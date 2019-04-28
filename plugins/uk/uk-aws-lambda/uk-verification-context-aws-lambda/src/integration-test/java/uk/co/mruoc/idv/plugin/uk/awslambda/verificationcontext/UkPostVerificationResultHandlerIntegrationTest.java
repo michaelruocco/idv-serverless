@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.verificationcontext;
+package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
@@ -7,22 +7,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextServiceFactory;
 import uk.co.mruoc.idv.awslambda.verificationcontext.result.PostVerificationResultHandler;
+import uk.co.mruoc.idv.awslambda.verificationcontext.result.VerificationResultsServiceFactory;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
-import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
-import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationResultsDao;
@@ -38,28 +37,30 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
-public class PostVerificationResultsHandlerIntegrationTest {
+public class UkPostVerificationResultHandlerIntegrationTest {
 
     private final VerificationContextDao contextDao = new FakeVerificationContextDao();
-    private final VerificationResultsDao resultsDao = new FakeVerificationResultsDao();
-    private final GetVerificationContextService loadContextService = buildVerificationContextService(contextDao);
-    private final VerificationResultService resultService = buildVerificationResultService(resultsDao, loadContextService);
+    private final VerificationResultsDao resultDao = new FakeVerificationResultsDao();
+    private final GetVerificationContextServiceFactory getContextFactory = new UkGetVerificationContextServiceFactory(contextDao);
+    private final VerificationResultsServiceFactory postResultsFactory = new UkPostVerificationResultServiceFactory(getContextFactory.build(), resultDao);
 
-    private final PostVerificationResultHandler handler = new PostVerificationResultHandler(resultService);
+    private final PostVerificationResultHandler handler = new UkPostVerificationResultHandler(postResultsFactory.build());
 
     @Before
     public void setUp() {
+        System.out.println("saving to dao " + contextDao);
         contextDao.save(buildContext());
     }
 
     @Test
-    public void shouldSaveVerificationResults() throws JSONException {
+    public void shouldCreateVerificationContext() throws JSONException {
         final String requestBody = loadContentFromClasspath("/post-verification-result-request.json");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withBody(requestBody);
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
 
+        System.out.println("response body " + response.getBody());
         final VerificationResultResponseDocument document = toDocument(response.getBody());
         final String expectedBody = loadExpectedBody(document);
         assertThat(response.getStatusCode()).isEqualTo(201);
@@ -74,20 +75,6 @@ public class PostVerificationResultsHandlerIntegrationTest {
     private static VerificationResultResponseDocument toDocument(final String body) {
         final JsonConverter converter = new JsonApiVerificationContextJsonConverterFactory().build();
         return converter.toObject(body, VerificationResultResponseDocument.class);
-    }
-
-    private static VerificationResultService buildVerificationResultService(final VerificationResultsDao dao, final GetVerificationContextService loadContextService) {
-        return VerificationResultService.builder()
-                .uuidGenerator(new RandomUuidGenerator())
-                .getContextService(loadContextService)
-                .dao(dao)
-                .build();
-    }
-
-    private static GetVerificationContextService buildVerificationContextService(final VerificationContextDao dao) {
-        return GetVerificationContextService.builder()
-                .dao(dao)
-                .build();
     }
 
     private static VerificationContext buildContext() {

@@ -15,7 +15,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
-import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.json.JsonConverter;
@@ -37,7 +37,7 @@ public class GetVerificationContextHandlerIntegrationTest {
     private static final UUID CONTEXT_ID = UUID.randomUUID();
 
     private final VerificationContextDao contextDao = new FakeVerificationContextDao();
-    private final LoadVerificationContextService contextService = buildVerificationContextService(contextDao);
+    private final GetVerificationContextService contextService = buildVerificationContextService(contextDao);
 
     private final GetVerificationContextHandler handler = new GetVerificationContextHandler(contextService);
 
@@ -86,8 +86,8 @@ public class GetVerificationContextHandlerIntegrationTest {
         return VerificationContextBodyTemplatePopulator.populate(template, document);
     }
 
-    private static LoadVerificationContextService buildVerificationContextService(final VerificationContextDao dao) {
-        return LoadVerificationContextService.builder()
+    private static GetVerificationContextService buildVerificationContextService(final VerificationContextDao dao) {
+        return GetVerificationContextService.builder()
                 .dao(dao)
                 .build();
     }

@@ -25,7 +25,7 @@ public class ErrorHandlerDelegator {
     }
 
     private JsonApiErrorHandler findHandler(final Exception e) {
-        log.info("finding alias handler for exception {}", e.toString());
+        log.info("finding handler for exception {}", e.toString());
         log.info("exception handler keys {}", handlers.keySet());
         if (handlers.containsKey(e.getClass())) {
             final JsonApiErrorHandler handler = handlers.get(e.getClass());

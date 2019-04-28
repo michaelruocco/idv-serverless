@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextHandler;
-import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 
 public class UkGetVerificationContextHandler extends GetVerificationContextHandler {
 
@@ -9,7 +9,7 @@ public class UkGetVerificationContextHandler extends GetVerificationContextHandl
         this(new UkGetVerificationContextServiceFactory().build());
     }
 
-    public UkGetVerificationContextHandler(final LoadVerificationContextService service) {
+    public UkGetVerificationContextHandler(final GetVerificationContextService service) {
         super(service);
     }
 

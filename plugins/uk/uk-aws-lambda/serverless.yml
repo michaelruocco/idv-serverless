@@ -28,6 +28,9 @@ custom:
     getVerificationContext:
       name: ${self:custom.stage}-get-verification-context
 
+    postVerificationResult:
+      name: ${self:custom.stage}-post-verification-result
+
   dynamoTables:
     identity:
       name: ${self:custom.stage}-identity
@@ -36,6 +39,10 @@ custom:
     verificationContext:
       name: ${self:custom.stage}-verification-context
       arn: { "Fn::Join" : ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref" : "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationContext.name}" ] ] }
+
+    verificationResult:
+      name: ${self:custom.stage}-verification-result
+      arn: { "Fn::Join": ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref": "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationResult.name}" ] ] }
 
   topics:
     idvEvent:
@@ -141,6 +148,28 @@ functions:
           - dynamodb:GetItem
         Resource: ${self:custom.dynamoTables.verificationContext.arn}
 
+  postVerificationResult:
+    handler: uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext.UkPostVerificationResultHandler
+    package:
+      artifact: uk-verification-context-aws-lambda/build/distributions/uk-verification-context-aws-lambda-${self:custom.version}.zip
+    name: ${self:custom.lambdas.postVerificationResult.name}
+    events:
+      - http:
+          path: verificationContexts/{id}/results
+          method: post
+          authorizer: authorizer
+          resultTtlInSeconds: 0
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamoTables.verificationResult.arn}
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamoTables.verificationContext.arn}
+
 resources:
   Resources:
     identityTable:
@@ -174,6 +203,20 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.dynamoTables.verificationContext.name}
+
+    verificationResultTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.dynamoTables.verificationResult.name}
 
     idvEventTopic:
       Type: AWS::SNS::Topic

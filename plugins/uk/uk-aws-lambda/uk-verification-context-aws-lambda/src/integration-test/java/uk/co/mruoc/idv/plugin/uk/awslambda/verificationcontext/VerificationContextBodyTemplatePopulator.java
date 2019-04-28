@@ -3,7 +3,7 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 import org.apache.commons.lang3.StringUtils;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
-public class BodyTemplatePopulator {
+public class VerificationContextBodyTemplatePopulator {
 
     private static final String[] PLACEHOLDERS = new String[]{
             "%VERIFICATION_CONTEXT_ID%",

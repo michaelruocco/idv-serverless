@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextHandler;
-import uk.co.mruoc.idv.awslambda.verificationcontext.LoadVerificationContextServiceFactory;
+import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextServiceFactory;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
@@ -38,7 +38,7 @@ public class UkGetVerificationContextHandlerIntegrationTest {
     private static final UUID CONTEXT_ID = UUID.randomUUID();
 
     private final VerificationContextDao contextDao = new FakeVerificationContextDao();
-    private final LoadVerificationContextServiceFactory factory = new UkGetVerificationContextServiceFactory(contextDao);
+    private final GetVerificationContextServiceFactory factory = new UkGetVerificationContextServiceFactory(contextDao);
     private final GetVerificationContextHandler handler = new UkGetVerificationContextHandler(factory.build());
 
     @Before
@@ -83,7 +83,7 @@ public class UkGetVerificationContextHandlerIntegrationTest {
 
     private static String loadExpectedBody(final VerificationContextResponseDocument document) {
         final String template = loadContentFromClasspath("/get-verification-context-response.json");
-        return BodyTemplatePopulator.populate(template, document);
+        return VerificationContextBodyTemplatePopulator.populate(template, document);
     }
 
 }

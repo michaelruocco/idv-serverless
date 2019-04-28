@@ -274,6 +274,65 @@
 			"response": []
 		},
 		{
+			"name": "Post verification results rsa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 201 status\", function () {",
+							"    pm.response.to.have.status(201);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"type\": \"verificationResults\",\n    \"attributes\": {\n      \"contextId\": \"{{contextId}}\",\n      \"results\": [\n        {\n          \"sequence\": \"OTP_SMS\",\n          \"method\": \"CARD_CREDENTIALS\",\n          \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n          \"timestamp\": \"{{timestampUtc}}\",\n          \"result\": \"SUCCESS\"\n        }\n      ]\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts/{{contextId}}/results",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts",
+						"{{contextId}}",
+						"results"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Post verification context as3 login",
 			"event": [
 				{

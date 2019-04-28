@@ -9,7 +9,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
-import uk.co.mruoc.idv.core.verificationcontext.service.LoadVerificationContextService.VerificationContextNotFoundException;
+import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService.VerificationContextNotFoundException;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService.MethodNotFoundInSequenceException;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService.SequenceNotFoundException;
@@ -29,12 +29,12 @@ import static org.mockito.Mockito.verify;
 public class VerificationResultServiceTest {
 
     private final VerificationResultsDao dao = mock(VerificationResultsDao.class);
-    private final LoadVerificationContextService loadContextService = mock(LoadVerificationContextService.class);
+    private final GetVerificationContextService loadContextService = mock(GetVerificationContextService.class);
     private final UuidGenerator uuidGenerator = mock(UuidGenerator.class);
 
     private final VerificationResultService service = VerificationResultService.builder()
             .dao(dao)
-            .loadContextService(loadContextService)
+            .getContextService(loadContextService)
             .uuidGenerator(uuidGenerator)
             .build();
 
