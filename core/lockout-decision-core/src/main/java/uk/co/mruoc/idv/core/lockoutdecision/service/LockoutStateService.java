@@ -24,10 +24,10 @@ public class LockoutStateService {
         final LockoutPolicy policy = loadPolicy(attempt);
         final VerificationAttempts attempts = loadAttemptsService.load(attempt.getAlias());
 
-        final LockoutState initialLockoutState = calculateLockoutState(policy, attempts);
-        if (initialLockoutState.isLocked()) {
+        final LockoutState state = calculateLockoutState(policy, attempts);
+        if (state.isLocked()) {
             log.info("not registering attempt as lockout state is already locked");
-            return initialLockoutState;
+            return state;
         }
 
         if (attempt.isSuccessful()) {
@@ -42,11 +42,6 @@ public class LockoutStateService {
         final LockoutPolicy policy = loadPolicy(attempt);
         final VerificationAttempts attempts = loadAttemptsService.load(attempt.getAlias());
         return calculateLockoutState(policy, attempts);
-    }
-
-    private LockoutState calculateLockoutState(final LockoutPolicy policy, final VerificationAttempts attempts) {
-        final LockoutStateRequest request = converter.toRequest(attempts);
-        return policy.calculateLockoutState(request);
     }
 
     private LockoutPolicy loadPolicy(final VerificationAttempt attempt) {
@@ -72,6 +67,11 @@ public class LockoutStateService {
         final LockoutState state = calculateLockoutState(policy, attempts);
         log.info("calculated lockout state {}", state);
         return state;
+    }
+
+    private LockoutState calculateLockoutState(final LockoutPolicy policy, final VerificationAttempts attempts) {
+        final LockoutStateRequest request = converter.toRequest(attempts);
+        return policy.calculateLockoutState(request);
     }
 
 }
