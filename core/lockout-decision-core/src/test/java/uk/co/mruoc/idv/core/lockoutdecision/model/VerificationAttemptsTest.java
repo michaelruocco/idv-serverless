@@ -66,9 +66,9 @@ public class VerificationAttemptsTest {
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
         final VerificationAttempts attempts = VerificationAttempts.builder().build();
 
-        attempts.add(attempt);
+        final VerificationAttempts updatedAttempts = attempts.add(attempt);
 
-        assertThat(attempts.size()).isEqualTo(1);
+        assertThat(updatedAttempts.size()).isEqualTo(1);
     }
 
     @Test

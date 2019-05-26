@@ -36,8 +36,10 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
         return attempts.stream();
     }
 
-    public void add(final VerificationAttempt attempt) {
-        attempts.add(attempt);
+    public VerificationAttempts add(final VerificationAttempt attempt) {
+        final Collection<VerificationAttempt> newAttempts = new ArrayList<>(attempts);
+        newAttempts.add(attempt);
+        return new VerificationAttempts(idvId, lockoutStateId, newAttempts);
     }
 
     public Instant getMostRecentTimestamp() {
