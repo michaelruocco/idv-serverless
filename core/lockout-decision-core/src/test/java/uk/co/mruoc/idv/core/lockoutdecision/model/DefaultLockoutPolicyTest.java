@@ -3,8 +3,6 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
-import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
-import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,19 +15,20 @@ import static org.mockito.Mockito.mock;
 
 public class DefaultLockoutPolicyTest {
 
+    private static final String ACTIVITY = "ACTIVITY";
+    private static final String VERIFICATION_METHOD = "VERIFICATION_METHOD";
     private static final String ALL = "ALL";
 
     @Test
     public void shouldReturnFalseIfAttemptAliasDoesNotMatchPolicy() {
-        final String activity = Activity.Types.LOGIN;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
-                .activities(Collections.singleton(activity))
+                .activities(Collections.singleton(ACTIVITY))
                 .aliasTypes(Collections.singleton(AliasType.Names.CREDIT_CARD_NUMBER))
                 .methods(Collections.emptyList())
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getActivityType()).willReturn(activity);
+        given(attempt.getActivityType()).willReturn(ACTIVITY);
         given(attempt.getAliasTypeName()).willReturn(AliasType.Names.DEBIT_CARD_NUMBER);
         given(attempt.getMethodName()).willReturn(Optional.empty());
 
@@ -42,13 +41,13 @@ public class DefaultLockoutPolicyTest {
     public void shouldReturnFalseIfAttemptActivityDoesNotMatchPolicy() {
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
-                .activities(Collections.singleton(Activity.Types.LOGIN))
+                .activities(Collections.singleton(ACTIVITY))
                 .aliasTypes(Collections.singleton(aliasType))
                 .methods(Collections.emptyList())
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getActivityType()).willReturn(Activity.Types.ONLINE_PURCHASE);
+        given(attempt.getActivityType()).willReturn("OTHER_ACTIVITY");
         given(attempt.getAliasTypeName()).willReturn(aliasType);
         given(attempt.getMethodName()).willReturn(Optional.empty());
 
@@ -59,16 +58,15 @@ public class DefaultLockoutPolicyTest {
 
     @Test
     public void shouldReturnTrueIfAttemptAliasAndActivityMatchesPolicyAndMethodIsNotProvided() {
-        final String activity = Activity.Types.LOGIN;
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
-                .activities(Collections.singleton(activity))
+                .activities(Collections.singleton(ACTIVITY))
                 .aliasTypes(Collections.singleton(aliasType))
                 .methods(Collections.emptyList())
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getActivityType()).willReturn(activity);
+        given(attempt.getActivityType()).willReturn(ACTIVITY);
         given(attempt.getAliasTypeName()).willReturn(aliasType);
         given(attempt.getMethodName()).willReturn(Optional.empty());
 
@@ -79,18 +77,17 @@ public class DefaultLockoutPolicyTest {
 
     @Test
     public void shouldReturnFalseIfAttemptAliasAndActivityMatchesPolicyAndMethodDoesNotMatch() {
-        final String activity = Activity.Types.LOGIN;
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
-                .activities(Collections.singleton(activity))
+                .activities(Collections.singleton(ACTIVITY))
                 .aliasTypes(Collections.singleton(aliasType))
-                .methods(Collections.singleton(VerificationMethod.Names.PHYSICAL_PINSENTRY))
+                .methods(Collections.singleton(VERIFICATION_METHOD))
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getActivityType()).willReturn(activity);
+        given(attempt.getActivityType()).willReturn(ACTIVITY);
         given(attempt.getAliasTypeName()).willReturn(aliasType);
-        given(attempt.getMethodName()).willReturn(Optional.of(VerificationMethod.Names.MOBILE_PINSENTRY));
+        given(attempt.getMethodName()).willReturn(Optional.of("OTHER_VERIFICATION_METHOD"));
 
         final boolean appliesTo = policy.appliesTo(attempt);
 
@@ -99,19 +96,17 @@ public class DefaultLockoutPolicyTest {
 
     @Test
     public void shouldReturnTrueIfAttemptAliasAndActivityAndMethodAllMatchPolicy() {
-        final String activity = Activity.Types.LOGIN;
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
-        final String method = VerificationMethod.Names.PHYSICAL_PINSENTRY;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
-                .activities(Collections.singleton(activity))
+                .activities(Collections.singleton(ACTIVITY))
                 .aliasTypes(Collections.singleton(aliasType))
-                .methods(Collections.singleton(method))
+                .methods(Collections.singleton(VERIFICATION_METHOD))
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getActivityType()).willReturn(activity);
+        given(attempt.getActivityType()).willReturn(ACTIVITY);
         given(attempt.getAliasTypeName()).willReturn(aliasType);
-        given(attempt.getMethodName()).willReturn(Optional.of(method));
+        given(attempt.getMethodName()).willReturn(Optional.of(VERIFICATION_METHOD));
 
         final boolean appliesTo = policy.appliesTo(attempt);
 
@@ -127,9 +122,9 @@ public class DefaultLockoutPolicyTest {
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getActivityType()).willReturn(Activity.Types.ONLINE_PURCHASE);
+        given(attempt.getActivityType()).willReturn(ACTIVITY);
         given(attempt.getAliasTypeName()).willReturn(AliasType.Names.DEBIT_CARD_NUMBER);
-        given(attempt.getMethodName()).willReturn(Optional.of(VerificationMethod.Names.PHYSICAL_PINSENTRY));
+        given(attempt.getMethodName()).willReturn(Optional.of(VERIFICATION_METHOD));
 
         final boolean appliesTo = policy.appliesTo(attempt);
 

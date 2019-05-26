@@ -3,8 +3,6 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies.LockoutPolicyNotConfiguredForAttemptException;
-import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
-import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 
 import java.util.Optional;
 
@@ -15,9 +13,9 @@ import static org.mockito.Mockito.mock;
 public class LockoutPolicyNotConfiguredForAttemptExceptionTest {
 
     private static final String MESSAGE_FORMAT = "no policy configured for activity %s and alias %s and method %s";
-    private static final String ACTIVITY_TYPE_NAME = Activity.Types.LOGIN;
+    private static final String ACTIVITY_TYPE_NAME = "ACTIVITY";
     private static final String ALIAS_TYPE_NAME = AliasType.Names.IDV_ID;
-    private static final String METHOD_NAME = VerificationMethod.Names.PHYSICAL_PINSENTRY;
+    private static final String METHOD_NAME = "METHOD_NAME";
 
     private final VerificationAttempt attempt = mock(VerificationAttempt.class);
 

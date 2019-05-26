@@ -1,3 +1,4 @@
 dependencies {
-    compile project(':core:verification-context-core')
+    compile project(':core')
+    compile project(':core:identity-core')
 }
