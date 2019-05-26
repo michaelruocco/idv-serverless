@@ -1,9 +1,6 @@
-package uk.co.mruoc.idv.core.lockoutdecision.service;
+package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import lombok.extern.slf4j.Slf4j;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutType;
-import uk.co.mruoc.idv.core.lockoutdecision.model.MaxAttemptsLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 
 @Slf4j
 public class MaxAttemptsLockoutStateCalculator implements LockoutStateCalculator {
@@ -15,8 +12,9 @@ public class MaxAttemptsLockoutStateCalculator implements LockoutStateCalculator
     }
 
     @Override
-    public MaxAttemptsLockoutState calculateLockoutState(final VerificationAttempts attempts) {
-        log.info("calculating time based lock from calculator {} with attempts {} and max attempts {}", this, attempts, maximumNumberOfAttempts);
+    public MaxAttemptsLockoutState calculateLockoutState(final LockoutStateRequest request) {
+        log.info("calculating time based lock from calculator {} with request {} and max attempts {}", this, request, maximumNumberOfAttempts);
+        final VerificationAttempts attempts = request.getAttempts();
         final int numberOfAttemptsRemaining = maximumNumberOfAttempts - attempts.size();
         return MaxAttemptsLockoutState.builder()
                 .attempts(attempts)

@@ -1,12 +1,8 @@
-package uk.co.mruoc.idv.core.lockoutdecision.service;
+package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutType;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 
@@ -189,6 +185,9 @@ public class DefaultLockoutPolicyTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(attemptCollection)
                 .build();
+        final LockoutStateRequest request = LockoutStateRequest.builder()
+                .attempts(attempts)
+                .build();
 
         final LockoutStateCalculator calculator = mock(LockoutStateCalculator.class);
 
@@ -199,14 +198,14 @@ public class DefaultLockoutPolicyTest {
                 .stateCalculator(calculator)
                 .build();
 
-        final ArgumentCaptor<VerificationAttempts> captor = ArgumentCaptor.forClass(VerificationAttempts.class);
+        final ArgumentCaptor<LockoutStateRequest> captor = ArgumentCaptor.forClass(LockoutStateRequest.class);
         final LockoutState expectedState = mock(LockoutState.class);
         given(calculator.calculateLockoutState(captor.capture())).willReturn(expectedState);
 
-        final LockoutState state = policy.calculateLockoutState(attempts);
+        final LockoutState state = policy.calculateLockoutState(request);
 
         assertThat(state).isEqualTo(expectedState);
-        assertThat(captor.getValue()).containsExactlyElementsOf(attemptCollection);
+        assertThat(captor.getValue().getAttempts()).containsExactlyElementsOf(attemptCollection);
     }
 
 }

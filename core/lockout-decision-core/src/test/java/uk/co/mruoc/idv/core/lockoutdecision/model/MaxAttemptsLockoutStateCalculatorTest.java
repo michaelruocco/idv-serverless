@@ -1,11 +1,6 @@
-package uk.co.mruoc.idv.core.lockoutdecision.service;
+package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutType;
-import uk.co.mruoc.idv.core.lockoutdecision.model.MaxAttemptsLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 
 import java.util.Arrays;
 
@@ -20,10 +15,12 @@ public class MaxAttemptsLockoutStateCalculatorTest {
 
     @Test
     public void shouldReturnMaxNumberOfAttemptsRemainingIfEmptyAttemptsPassed() {
-        final VerificationAttempts attempts = VerificationAttempts.builder()
+        final VerificationAttempts attempts = VerificationAttempts.builder().build();
+        final LockoutStateRequest request = LockoutStateRequest.builder()
+                .attempts(attempts)
                 .build();
 
-        final MaxAttemptsLockoutState state = calculator.calculateLockoutState(attempts);
+        final MaxAttemptsLockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.getNumberOfAttemptsRemaining()).isEqualTo(MAX_NUMBER_OF_ATTEMPTS);
     }
@@ -34,18 +31,23 @@ public class MaxAttemptsLockoutStateCalculatorTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt, attempt, attempt))
                 .build();
+        final LockoutStateRequest request = LockoutStateRequest.builder()
+                .attempts(attempts)
+                .build();
 
-        final MaxAttemptsLockoutState state = calculator.calculateLockoutState(attempts);
+        final MaxAttemptsLockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.getNumberOfAttemptsRemaining()).isEqualTo(0);
     }
 
     @Test
     public void shouldReturnNotLockedIfAttemptsRemaining() {
-        final VerificationAttempts attempts = VerificationAttempts.builder()
+        final VerificationAttempts attempts = VerificationAttempts.builder().build();
+        final LockoutStateRequest request = LockoutStateRequest.builder()
+                .attempts(attempts)
                 .build();
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.isLocked()).isFalse();
     }
@@ -56,28 +58,36 @@ public class MaxAttemptsLockoutStateCalculatorTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt, attempt, attempt))
                 .build();
+        final LockoutStateRequest request = LockoutStateRequest.builder()
+                .attempts(attempts)
+                .build();
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.isLocked()).isTrue();
     }
 
     @Test
     public void shouldReturnNumberOfAttempts() {
-        final VerificationAttempts attempts = VerificationAttempts.builder()
+        final VerificationAttempts attempts = VerificationAttempts.builder().build();
+        final LockoutStateRequest request = LockoutStateRequest.builder()
+                .attempts(attempts)
                 .build();
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.getNumberOfAttempts()).isEqualTo(attempts.size());
     }
 
     @Test
     public void shouldReturnMaxAttemptsLockoutState() {
-        final VerificationAttempts attempts = VerificationAttempts.builder()
+        final VerificationAttempts attempts = VerificationAttempts.builder().build();
+        final LockoutStateRequest request = LockoutStateRequest.builder()
+                .attempts(attempts)
                 .build();
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.getType()).isEqualTo(LockoutType.MAX_ATTEMPTS);
     }

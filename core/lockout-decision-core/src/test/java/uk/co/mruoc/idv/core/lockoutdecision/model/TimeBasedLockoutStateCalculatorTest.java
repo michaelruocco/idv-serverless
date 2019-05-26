@@ -1,13 +1,6 @@
-package uk.co.mruoc.idv.core.lockoutdecision.service;
+package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockedTimeBasedIntervalLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutType;
-import uk.co.mruoc.idv.core.lockoutdecision.model.TimeBasedInterval;
-import uk.co.mruoc.idv.core.lockoutdecision.model.TimeBasedIntervals;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
-import uk.co.mruoc.idv.core.service.TimeService;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -19,10 +12,9 @@ import static org.mockito.Mockito.mock;
 
 public class TimeBasedLockoutStateCalculatorTest {
 
-    private final TimeService timeService = mock(TimeService.class);
     private final TimeBasedIntervals intervals = mock(TimeBasedIntervals.class);
 
-    private final LockoutStateCalculator calculator = new TimeBasedLockoutStateCalculator(timeService, intervals);
+    private final LockoutStateCalculator calculator = new TimeBasedLockoutStateCalculator(intervals);
 
     @Test
     public void shouldReturnTimeBasedIntervalLockoutType() {
@@ -30,8 +22,9 @@ public class TimeBasedLockoutStateCalculatorTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(attempts.size()).willReturn(size);
         given(intervals.getInternalFor(size)).willReturn(Optional.empty());
+        final LockoutStateRequest request = toRequest(attempts);
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.getType()).isEqualTo(LockoutType.TIME_BASED_INTERVAL);
     }
@@ -42,8 +35,9 @@ public class TimeBasedLockoutStateCalculatorTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(attempts.size()).willReturn(size);
         given(intervals.getInternalFor(size)).willReturn(Optional.empty());
+        final LockoutStateRequest request = toRequest(attempts);
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.getNumberOfAttempts()).isEqualTo(size);
     }
@@ -54,8 +48,9 @@ public class TimeBasedLockoutStateCalculatorTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(attempts.size()).willReturn(size);
         given(intervals.getInternalFor(size)).willReturn(Optional.empty());
+        final LockoutStateRequest request = toRequest(attempts);
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.isLocked()).isFalse();
     }
@@ -66,15 +61,15 @@ public class TimeBasedLockoutStateCalculatorTest {
         final TimeBasedInterval interval = mock(TimeBasedInterval.class);
         given(interval.getDuration()).willReturn(lockDuration);
 
-        final Instant now = Instant.now();
-        given(timeService.now()).willReturn(now);
-
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
+        final Instant now = Instant.now();
+        final LockoutStateRequest request = toRequest(attempts, now);
+
         given(attempts.getMostRecentTimestamp()).willReturn(now.minus(Duration.ofMinutes(16)));
         given(attempts.size()).willReturn(2);
         given(intervals.getInternalFor(attempts.size())).willReturn(Optional.of(interval));
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.isLocked()).isFalse();
     }
@@ -85,15 +80,15 @@ public class TimeBasedLockoutStateCalculatorTest {
         final TimeBasedInterval interval = mock(TimeBasedInterval.class);
         given(interval.getDuration()).willReturn(lockDuration);
 
-        final Instant now = Instant.now();
-        given(timeService.now()).willReturn(now);
-
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
+        final Instant now = Instant.now();
+        final LockoutStateRequest request = toRequest(attempts, now);
+
         given(attempts.getMostRecentTimestamp()).willReturn(now.minus(Duration.ofMinutes(2)));
         given(attempts.size()).willReturn(2);
         given(intervals.getInternalFor(attempts.size())).willReturn(Optional.of(interval));
 
-        final LockoutState state = calculator.calculateLockoutState(attempts);
+        final LockoutState state = calculator.calculateLockoutState(request);
 
         assertThat(state.isLocked()).isTrue();
         assertThat(state).isInstanceOf(LockedTimeBasedIntervalLockoutState.class);
@@ -110,6 +105,17 @@ public class TimeBasedLockoutStateCalculatorTest {
         final String type = calculator.getType();
 
         assertThat(type).isEqualTo(expectedLockoutType);
+    }
+
+    private static LockoutStateRequest toRequest(final VerificationAttempts attempts) {
+        return toRequest(attempts, Instant.now());
+    }
+
+    private static LockoutStateRequest toRequest(final VerificationAttempts attempts, final Instant now) {
+        return LockoutStateRequest.builder()
+                .attempts(attempts)
+                .timestamp(now)
+                .build();
     }
 
 }

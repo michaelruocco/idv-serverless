@@ -30,6 +30,10 @@ public interface AliasType {
         return CARD_NUMBER_TYPES.contains(type);
     }
 
+    static boolean isIdvId(final String type) {
+        return Names.IDV_ID.equals(type);
+    }
+
     interface Names {
 
         String IDV_ID = "IDV_ID";

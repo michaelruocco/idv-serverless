@@ -1,12 +1,9 @@
-package uk.co.mruoc.idv.core.lockoutdecision.service;
+package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -44,9 +41,13 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
     }
 
     @Override
-    public LockoutState calculateLockoutState(final VerificationAttempts attempts) {
-        final VerificationAttempts applicableAttempts = getApplicableAttempts(attempts);
-        return stateCalculator.calculateLockoutState(applicableAttempts);
+    public LockoutState calculateLockoutState(final LockoutStateRequest request) {
+        final VerificationAttempts applicableAttempts = getApplicableAttempts(request.getAttempts());
+        final LockoutStateRequest updatedRequest = LockoutStateRequest.builder()
+                .attempts(applicableAttempts)
+                .timestamp(request.getTimestamp())
+                .build();
+        return stateCalculator.calculateLockoutState(updatedRequest);
     }
 
     @Override
