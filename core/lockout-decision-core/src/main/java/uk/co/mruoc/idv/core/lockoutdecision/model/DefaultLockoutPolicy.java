@@ -98,7 +98,11 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
 
     private boolean appliesToMethod(final String methodName) {
         boolean appliesToMethod = appliesToAllMethods || methods.contains(methodName);
-        log.info("method {} does not apply to policy {}", methodName, this);
+        if (appliesToMethod) {
+            log.info("method {} applies to policy {}", methodName, this);
+        } else {
+            log.info("method {} does not apply to policy {}", methodName, this);
+        }
         return appliesToMethod;
     }
 

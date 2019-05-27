@@ -11,4 +11,10 @@ public interface VerificationContextMixin {
     @JsonIgnore
     UUID getIdvId();
 
+    @JsonIgnore
+    String getChannelId();
+
+    @JsonIgnore
+    String getActivityType();
+
 }

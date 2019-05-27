@@ -8,5 +8,8 @@ public interface JsonApiVerificationMethodResultsMixin {
 
     @JsonIgnore
     UUID getId();
+
+    @JsonIgnore
+    boolean isEmpty();
     
 }

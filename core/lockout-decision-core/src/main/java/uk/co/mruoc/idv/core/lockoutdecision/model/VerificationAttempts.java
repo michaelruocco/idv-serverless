@@ -1,16 +1,19 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import lombok.Builder;
+import lombok.ToString;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.stream.Stream;
 
 @Builder
+@ToString
 public class VerificationAttempts implements Iterable<VerificationAttempt> {
 
     private final UUID idvId;
@@ -20,12 +23,25 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
     @Builder.Default
     private final Collection<VerificationAttempt> attempts = new ArrayList<>();
 
+    @Override
+    public Iterator<VerificationAttempt> iterator() {
+        return attempts.iterator();
+    }
+
     public UUID getLockoutStateId() {
         return lockoutStateId;
     }
 
     public UUID getIdvId() {
         return idvId;
+    }
+
+    public Collection<VerificationAttempt> getAttempts() {
+        return Collections.unmodifiableCollection(attempts);
+    }
+
+    public VerificationAttempt get(final int index) {
+        return new ArrayList<>(attempts).get(index);
     }
 
     public int size() {
@@ -60,11 +76,6 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
         final Collection<VerificationAttempt> remainingAttempts = new ArrayList<>(attempts);
         remainingAttempts.removeAll(attemptsToRemove);
         return new VerificationAttempts(idvId, lockoutStateId, remainingAttempts);
-    }
-
-    @Override
-    public Iterator<VerificationAttempt> iterator() {
-        return attempts.iterator();
     }
 
 }

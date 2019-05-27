@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.ToString;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 
 import java.time.Instant;
@@ -27,6 +27,14 @@ public class VerificationContext {
     private final Instant created;
     private final Instant expiry;
     private final Collection<VerificationMethodSequence> sequences;
+
+    public String getActivityType() {
+        return activity.getType();
+    }
+
+    public String getChannelId() {
+        return channel.getId();
+    }
 
     public UUID getIdvId() {
         return identity.getIdvId();

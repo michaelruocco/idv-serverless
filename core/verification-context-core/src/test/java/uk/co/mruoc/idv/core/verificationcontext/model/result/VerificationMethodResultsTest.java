@@ -40,6 +40,15 @@ public class VerificationMethodResultsTest {
                 .build();
 
         assertThat(results).isEmpty();
+        assertThat(results.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void shouldReturnZeroSizeResultsByDefault() {
+        final VerificationMethodResults results = VerificationMethodResults.builder()
+                .build();
+
+        assertThat(results.size()).isEqualTo(0);
     }
 
     @Test
@@ -101,6 +110,17 @@ public class VerificationMethodResultsTest {
         assertThat(updatedResults).containsExactly(result);
         assertThat(updatedResults.getId()).isEqualTo(id);
         assertThat(updatedResults.getContextId()).isEqualTo(contextId);
+    }
+
+    @Test
+    public void shouldIncreaseSizeWhenResultAdded() {
+        final VerificationMethodResults results = VerificationMethodResults.builder()
+                .build();
+        final VerificationMethodResult result = mock(VerificationMethodResult.class);
+
+        final VerificationMethodResults updatedResults = results.add(result);
+
+        assertThat(updatedResults.size()).isEqualTo(1);
     }
 
 }

@@ -2,11 +2,10 @@ package uk.co.mruoc.idv.jsonapi.verificationcontext;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.DefaultVerificationContextRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

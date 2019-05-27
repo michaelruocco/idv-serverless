@@ -58,7 +58,7 @@ public class UkPostVerificationContextServiceFactory implements CreateVerificati
         final TimeService timeService = new DefaultTimeService();
         return CreateVerificationContextService.builder()
                 .requestConverter(new VerificationContextRequestConverter())
-                .identityService(identityServiceFactory.getIdentityService())
+                .identityService(identityServiceFactory.build())
                 .policiesService(new UkVerificationPoliciesService())
                 .timeService(timeService)
                 .verificationMethodsService(new UkVerificationMethodsService())

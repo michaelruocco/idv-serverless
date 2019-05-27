@@ -1,3 +1,4 @@
 dependencies {
+    compile project(':plugins:uk')
     compile project(':core:verification-context-core')
 }

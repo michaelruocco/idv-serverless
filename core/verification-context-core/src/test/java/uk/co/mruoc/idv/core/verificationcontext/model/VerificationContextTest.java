@@ -4,10 +4,10 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 
@@ -43,6 +43,19 @@ public class VerificationContextTest {
                 .build();
 
         assertThat(context.getChannel()).isEqualTo(channel);
+    }
+
+    @Test
+    public void shouldReturnChannelId() {
+        final String channelId = "channelId";
+        final Channel channel = mock(Channel.class);
+        given(channel.getId()).willReturn(channelId);
+
+        final VerificationContext context = VerificationContext.builder()
+                .channel(channel)
+                .build();
+
+        assertThat(context.getChannelId()).isEqualTo(channelId);
     }
 
     @Test
@@ -89,6 +102,19 @@ public class VerificationContextTest {
                 .build();
 
         assertThat(request.getActivity()).isEqualTo(activity);
+    }
+
+    @Test
+    public void shouldReturnActivityType() {
+        final String activityType = "activityType";
+        final Activity activity = mock(Activity.class);
+        given(activity.getType()).willReturn(activityType);
+
+        final VerificationContext request = VerificationContext.builder()
+                .activity(activity)
+                .build();
+
+        assertThat(request.getActivityType()).isEqualTo(activityType);
     }
 
     @Test

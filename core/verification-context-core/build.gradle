@@ -2,5 +2,6 @@ dependencies {
     compile 'org.javamoney:moneta:1.1'
     compile project(':core')
     compile project(':core:identity-core')
+    compile project(':core:lockout-decision-core')
     compile project(':events')
 }

@@ -20,7 +20,7 @@ public class DynamoVerificationResultsDao implements VerificationResultsDao {
 
     @Override
     public void save(final VerificationMethodResults results) {
-        log.info("saving verification context {}", results);
+        log.info("saving verification results {}", results);
         final Item item = toItem(results);
         log.info("putting item {}", item);
         table.putItem(item);
@@ -28,7 +28,7 @@ public class DynamoVerificationResultsDao implements VerificationResultsDao {
 
     @Override
     public Optional<VerificationMethodResults> load(final UUID contextId) {
-        log.info("loading verification context by id {}", contextId);
+        log.info("loading verification results by id {}", contextId);
         final Item item = table.getItem("id", contextId.toString());
         if (item == null) {
             log.debug("verification results not found returning empty optional");

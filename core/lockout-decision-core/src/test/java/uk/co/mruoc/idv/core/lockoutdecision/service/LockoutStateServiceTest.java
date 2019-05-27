@@ -10,7 +10,12 @@ import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -24,7 +29,7 @@ public class LockoutStateServiceTest {
     private final LoadVerificationAttemptsService loadAttemptsService = mock(LoadVerificationAttemptsService.class);
     private final VerificationAttemptsDao dao = mock(VerificationAttemptsDao.class);
 
-    private final LockoutStateService attemptService = LockoutStateService.builder()
+    private final LockoutStateService lockoutStateService = LockoutStateService.builder()
             .converter(converter)
             .policiesService(policiesService)
             .loadAttemptsService(loadAttemptsService)
@@ -32,9 +37,18 @@ public class LockoutStateServiceTest {
             .build();
 
     @Test
+    public void shouldReturnNullStateIfEmptyCollectionPassed() {
+        final Collection<VerificationAttempt> attempts = Collections.emptyList();
+
+        final Throwable cause = catchThrowable(() -> lockoutStateService.register(attempts));
+
+        assertThat(cause).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("attempts collection must not be empty");
+    }
+
+    @Test
     public void shouldLoadLockoutStateForAttempt() {
         final VerificationAttempt attempt = buildAttempt();
-        final LockoutState expectedLockoutState = buildLockedState();
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
         given(channelPolicies.getPolicyFor(attempt)).willReturn(lockoutPolicy);
@@ -43,11 +57,12 @@ public class LockoutStateServiceTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(loadAttemptsService.load(attempt.getAlias())).willReturn(attempts);
 
+        final LockoutState expectedLockoutState = buildLockedState();
         final LockoutStateRequest request = mock(LockoutStateRequest.class);
         given(converter.toRequest(attempts)).willReturn(request);
         given(lockoutPolicy.calculateLockoutState(request)).willReturn(expectedLockoutState);
 
-        final LockoutState lockoutState = attemptService.load(attempt);
+        final LockoutState lockoutState = lockoutStateService.load(attempt);
 
         assertThat(lockoutState).isEqualTo(expectedLockoutState);
     }
@@ -55,7 +70,6 @@ public class LockoutStateServiceTest {
     @Test
     public void shouldReturnInitialLockoutStateIfInitialStateIsAlreadyLocked() {
         final VerificationAttempt attempt = buildAttempt();
-        final LockoutState initialState = buildLockedState();
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
         given(channelPolicies.getPolicyFor(attempt)).willReturn(lockoutPolicy);
@@ -64,11 +78,12 @@ public class LockoutStateServiceTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(loadAttemptsService.load(attempt.getAlias())).willReturn(attempts);
 
+        final LockoutState initialState = buildLockedState();
         final LockoutStateRequest request = mock(LockoutStateRequest.class);
         given(converter.toRequest(attempts)).willReturn(request);
         given(lockoutPolicy.calculateLockoutState(request)).willReturn(initialState);
 
-        final LockoutState lockoutState = attemptService.register(attempt);
+        final LockoutState lockoutState = lockoutStateService.register(attempt);
 
         assertThat(lockoutState).isEqualTo(initialState);
     }
@@ -76,7 +91,6 @@ public class LockoutStateServiceTest {
     @Test
     public void shouldResetLockoutStateIfAttemptIsSuccessfulAndInitialStateIsNotLocked() {
         final VerificationAttempt attempt = buildSuccessfulAttempt();
-        final LockoutState initialState = buildNotLockedState();
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
 
@@ -89,6 +103,7 @@ public class LockoutStateServiceTest {
         final VerificationAttempts resetAttempts = mock(VerificationAttempts.class);
         given(lockoutPolicy.reset(attempts)).willReturn(resetAttempts);
 
+        final LockoutState initialState = buildNotLockedState();
         final LockoutStateRequest initialRequest = mock(LockoutStateRequest.class);
         given(converter.toRequest(attempts)).willReturn(initialRequest);
         given(lockoutPolicy.calculateLockoutState(initialRequest)).willReturn(initialState);
@@ -98,7 +113,7 @@ public class LockoutStateServiceTest {
         given(converter.toRequest(resetAttempts)).willReturn(resetRequest);
         given(lockoutPolicy.calculateLockoutState(resetRequest)).willReturn(resetState);
 
-        final LockoutState lockoutState = attemptService.register(attempt);
+        final LockoutState lockoutState = lockoutStateService.register(attempt);
 
         assertThat(lockoutState).isEqualTo(resetState);
         verify(dao).save(resetAttempts);
@@ -107,7 +122,6 @@ public class LockoutStateServiceTest {
     @Test
     public void shouldUpdateLockoutStateIfAttemptIsUnsuccessfulAndInitialStateIsNotLocked() {
         final VerificationAttempt attempt = buildAttempt();
-        final LockoutState initialState = buildNotLockedState();
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
 
@@ -120,6 +134,7 @@ public class LockoutStateServiceTest {
         final VerificationAttempts updateAttempts = mock(VerificationAttempts.class);
         given(attempts.add(attempt)).willReturn(updateAttempts);
 
+        final LockoutState initialState = buildNotLockedState();
         final LockoutStateRequest initialRequest = mock(LockoutStateRequest.class);
         given(converter.toRequest(attempts)).willReturn(initialRequest);
         given(lockoutPolicy.calculateLockoutState(initialRequest)).willReturn(initialState);
@@ -129,10 +144,42 @@ public class LockoutStateServiceTest {
         given(converter.toRequest(updateAttempts)).willReturn(updateRequest);
         given(lockoutPolicy.calculateLockoutState(updateRequest)).willReturn(updateState);
 
-        final LockoutState lockoutState = attemptService.register(attempt);
+        final LockoutState lockoutState = lockoutStateService.register(attempt);
 
         assertThat(lockoutState).isEqualTo(updateState);
         verify(dao).save(updateAttempts);
+    }
+
+    @Test
+    public void shouldRegisterMultipleAttemptsAndReturnLockoutStateForLastAttempt() {
+        final VerificationAttempt attempt1 = buildAttempt();
+        final VerificationAttempt attempt2 = buildAttempt();
+        final Collection<VerificationAttempt> inputAttempts = Arrays.asList(attempt1, attempt2);
+
+        final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
+        final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
+        given(channelPolicies.getPolicyFor(attempt1)).willReturn(lockoutPolicy);
+        given(channelPolicies.getPolicyFor(attempt2)).willReturn(lockoutPolicy);
+        given(policiesService.getPoliciesForChannel(CHANNEL_ID)).willReturn(channelPolicies);
+
+        final VerificationAttempts attempts1 = mock(VerificationAttempts.class);
+        given(loadAttemptsService.load(attempt1.getAlias())).willReturn(attempts1);
+        final VerificationAttempts attempts2 = mock(VerificationAttempts.class);
+        given(loadAttemptsService.load(attempt2.getAlias())).willReturn(attempts2);
+
+        final LockoutState state1 = buildLockedState();
+        final LockoutStateRequest request1 = mock(LockoutStateRequest.class);
+        given(converter.toRequest(attempts1)).willReturn(request1);
+        given(lockoutPolicy.calculateLockoutState(request1)).willReturn(state1);
+
+        final LockoutState state2 = buildLockedState();
+        final LockoutStateRequest request2 = mock(LockoutStateRequest.class);
+        given(converter.toRequest(attempts2)).willReturn(request2);
+        given(lockoutPolicy.calculateLockoutState(request2)).willReturn(state2);
+
+        final LockoutState lockoutState = lockoutStateService.register(inputAttempts);
+
+        assertThat(lockoutState).isEqualTo(state2);
     }
 
     private VerificationAttempt buildAttempt() {

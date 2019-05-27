@@ -11,9 +11,9 @@ import uk.co.mruoc.idv.plugin.uk.identity.service.UkAliasLoaderService;
 
 public class UkIdentityServiceFactory implements IdentityServiceFactory {
 
-    private static IdentityService IDENTITY_SERVICE;
-
     private final IdentityDao dao;
+
+    private IdentityService service;
 
     public UkIdentityServiceFactory() {
         this(buildDao());
@@ -21,14 +21,12 @@ public class UkIdentityServiceFactory implements IdentityServiceFactory {
 
     public UkIdentityServiceFactory(final IdentityDao dao) {
         this.dao = dao;
+        this.service = buildService();
     }
 
     @Override
-    public IdentityService getIdentityService() {
-        if (IDENTITY_SERVICE == null) {
-            IDENTITY_SERVICE = buildService();
-        }
-        return IDENTITY_SERVICE;
+    public IdentityService build() {
+        return service;
     }
 
     private IdentityService buildService() {

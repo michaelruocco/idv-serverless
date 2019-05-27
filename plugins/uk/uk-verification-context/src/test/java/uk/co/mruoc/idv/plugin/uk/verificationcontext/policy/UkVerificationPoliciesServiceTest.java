@@ -4,7 +4,7 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
-import uk.co.mruoc.idv.plugin.uk.verificationcontext.channel.UkChannel;
+import uk.co.mruoc.idv.plugin.uk.channel.UkChannel;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.as3.As3ChannelVerificationPolicies;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.bbos.BbosChannelVerificationPolicies;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.rsa.RsaChannelVerificationPolicies;

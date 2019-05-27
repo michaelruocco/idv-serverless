@@ -26,7 +26,7 @@ public class FakeIdentityDao implements IdentityDao {
     }
 
     @Override
-    public Optional<Identity> load(Alias alias) {
+    public Optional<Identity> load(final Alias alias) {
         return Optional.ofNullable(identities.get(alias));
     }
 

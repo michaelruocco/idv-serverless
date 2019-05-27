@@ -2,6 +2,7 @@ dependencies {
     compile project(':core:verification-context-core')
     compile project(':json')
     compile project(':json:identity-json')
+    compile project(':json:lockout-decision-json')
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8'
     compile 'org.zalando:jackson-datatype-money:1.1.1'
 

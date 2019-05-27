@@ -1,0 +1,18 @@
+{
+  "idvId": "%IDV_ID%",
+  "lockoutStateId": "%LOCKOUT_STATE_ID%",
+  "attempts": [
+    {
+      "channelId": "CHANNEL",
+      "timestamp": "2019-03-11T21:51:54.638Z",
+      "alias": {
+        "type": "TYPE",
+        "format": "FORMAT",
+        "value": "VALUE"
+      },
+      "activityType": "ACTIVITY",
+      "methodName": "PUSH_NOTIFICATION",
+      "successful": false
+    }
+  ]
+}

@@ -44,6 +44,10 @@ custom:
       name: ${self:custom.stage}-verification-result
       arn: { "Fn::Join": ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref": "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationResult.name}" ] ] }
 
+    verificationAttempt:
+      name: ${self:custom.stage}-verification-attempt
+      arn: { "Fn::Join": ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref": "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationAttempt.name}" ] ] }
+
   topics:
     idvEvent:
       name: ${self:custom.stage}-idv-event
@@ -169,6 +173,15 @@ functions:
         Action:
           - dynamodb:GetItem
         Resource: ${self:custom.dynamoTables.verificationContext.arn}
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamoTables.verificationAttempt.arn}
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamoTables.identity.arn}
 
 resources:
   Resources:
@@ -217,6 +230,20 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.dynamoTables.verificationResult.name}
+
+    verificationAttemptTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: idvId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: idvId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.dynamoTables.verificationAttempt.name}
 
     idvEventTopic:
       Type: AWS::SNS::Topic

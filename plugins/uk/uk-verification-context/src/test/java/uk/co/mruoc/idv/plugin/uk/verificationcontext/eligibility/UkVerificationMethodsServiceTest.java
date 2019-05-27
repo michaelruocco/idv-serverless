@@ -13,9 +13,9 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVer
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsService;
-import uk.co.mruoc.idv.plugin.uk.verificationcontext.channel.As3Channel;
-import uk.co.mruoc.idv.plugin.uk.verificationcontext.channel.BbosChannel;
-import uk.co.mruoc.idv.plugin.uk.verificationcontext.channel.RsaChannel;
+import uk.co.mruoc.idv.plugin.uk.channel.As3Channel;
+import uk.co.mruoc.idv.plugin.uk.channel.BbosChannel;
+import uk.co.mruoc.idv.plugin.uk.channel.RsaChannel;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.as3.As3LoginVerificationPolicy;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.bbos.BbosLoginVerificationPolicy;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.rsa.RsaOnlinePurchaseVerificationPolicy;

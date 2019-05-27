@@ -4,6 +4,6 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 
 public interface IdentityServiceFactory {
 
-    IdentityService getIdentityService();
+    IdentityService build();
 
 }

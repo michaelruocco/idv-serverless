@@ -6,8 +6,8 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
+import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.json.JsonConverter;
 
 import java.time.Instant;

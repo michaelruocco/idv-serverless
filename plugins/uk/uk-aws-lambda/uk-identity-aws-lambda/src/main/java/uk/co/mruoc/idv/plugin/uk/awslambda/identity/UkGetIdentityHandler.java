@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 public class UkGetIdentityHandler extends GetIdentityHandler {
 
     public UkGetIdentityHandler() {
-        this(new UkIdentityServiceFactory().getIdentityService());
+        this(new UkIdentityServiceFactory().build());
     }
 
     public UkGetIdentityHandler(final IdentityService identityService) {

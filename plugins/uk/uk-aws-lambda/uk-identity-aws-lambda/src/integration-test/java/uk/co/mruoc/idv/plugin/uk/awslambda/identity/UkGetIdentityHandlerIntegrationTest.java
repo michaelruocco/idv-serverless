@@ -24,7 +24,7 @@ public class UkGetIdentityHandlerIntegrationTest {
 
     private final IdentityDao dao = new FakeIdentityDao();
     private final IdentityServiceFactory factory = new UkIdentityServiceFactory(dao);
-    private final GetIdentityHandler handler = new UkGetIdentityHandler(factory.getIdentityService());
+    private final GetIdentityHandler handler = new UkGetIdentityHandler(factory.build());
 
     private final IdvIdAlias idvIdAlias = new IdvIdAlias("3713f6f6-8fa6-4686-bcbc-e348ee3b4b06");
     private final Alias alias = new TokenizedCreditCardNumberAlias("1111111111111111");

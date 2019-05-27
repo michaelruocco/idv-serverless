@@ -18,7 +18,6 @@ public class UkGetVerificationContextServiceFactory implements GetVerificationCo
     }
 
     public UkGetVerificationContextServiceFactory(final VerificationContextDao dao) {
-        System.out.println("created factory with dao " + dao);
         this.dao = dao;
     }
 
@@ -28,7 +27,6 @@ public class UkGetVerificationContextServiceFactory implements GetVerificationCo
     }
 
     private GetVerificationContextService buildService() {
-        System.out.println("building service with dao " + dao);
         return GetVerificationContextService.builder()
                 .dao(dao)
                 .build();

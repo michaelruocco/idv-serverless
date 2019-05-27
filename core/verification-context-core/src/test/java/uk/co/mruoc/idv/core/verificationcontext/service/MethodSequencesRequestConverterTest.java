@@ -3,9 +3,9 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 
 import static org.assertj.core.api.Assertions.assertThat;

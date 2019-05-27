@@ -4,8 +4,8 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
 
 import java.util.Collections;

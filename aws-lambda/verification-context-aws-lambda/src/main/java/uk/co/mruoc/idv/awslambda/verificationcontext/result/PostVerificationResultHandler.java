@@ -47,7 +47,7 @@ public class PostVerificationResultHandler implements RequestHandler<APIGatewayP
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {
-            return createContext(input);
+            return createResults(input);
         } catch (final Exception e) {
             final APIGatewayProxyResponseEvent response = exceptionConverter.toResponse(e);
             log.info("returning response {}", response);
@@ -55,7 +55,7 @@ public class PostVerificationResultHandler implements RequestHandler<APIGatewayP
         }
     }
 
-    private APIGatewayProxyResponseEvent createContext(final APIGatewayProxyRequestEvent requestEvent) {
+    private APIGatewayProxyResponseEvent createResults(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
         final VerificationMethodResults results = resultsExtractor.extractRequest(requestEvent);
         final VerificationMethodResults updatedResults = service.upsert(results);

@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.lockoutdecision.service;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
@@ -9,6 +10,8 @@ import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
+
+import java.util.Collection;
 
 @Slf4j
 @Builder
@@ -19,10 +22,20 @@ public class LockoutStateService {
     private final LoadVerificationAttemptsService loadAttemptsService;
     private final VerificationAttemptsDao dao;
 
+    public LockoutState register(final Collection<VerificationAttempt> attempts) {
+        validate(attempts);
+        LockoutState state = null;
+        for (final VerificationAttempt attempt : attempts) {
+            state = register(attempt);
+        }
+        return state;
+    }
+
     public LockoutState register(final VerificationAttempt attempt) {
         log.info("registering attempt {}", attempt);
         final LockoutPolicy policy = loadPolicy(attempt);
-        final VerificationAttempts attempts = loadAttemptsService.load(attempt.getAlias());
+        final Alias alias = attempt.getAlias();
+        final VerificationAttempts attempts = loadAttempts(alias);
 
         final LockoutState state = calculateLockoutState(policy, attempts);
         if (state.isLocked()) {
@@ -40,8 +53,13 @@ public class LockoutStateService {
     public LockoutState load(final VerificationAttempt attempt) {
         log.info("loading lockout state for attempt {}", attempt);
         final LockoutPolicy policy = loadPolicy(attempt);
-        final VerificationAttempts attempts = loadAttemptsService.load(attempt.getAlias());
+        final Alias alias = attempt.getAlias();
+        final VerificationAttempts attempts = loadAttempts(alias);
         return calculateLockoutState(policy, attempts);
+    }
+
+    private VerificationAttempts loadAttempts(final Alias alias) {
+        return loadAttemptsService.load(alias);
     }
 
     private LockoutPolicy loadPolicy(final VerificationAttempt attempt) {
@@ -72,6 +90,12 @@ public class LockoutStateService {
     private LockoutState calculateLockoutState(final LockoutPolicy policy, final VerificationAttempts attempts) {
         final LockoutStateRequest request = converter.toRequest(attempts);
         return policy.calculateLockoutState(request);
+    }
+
+    private void validate(final Collection<VerificationAttempt> attempts) {
+        if (attempts.isEmpty()) {
+            throw new IllegalArgumentException("attempts collection must not be empty");
+        }
     }
 
 }

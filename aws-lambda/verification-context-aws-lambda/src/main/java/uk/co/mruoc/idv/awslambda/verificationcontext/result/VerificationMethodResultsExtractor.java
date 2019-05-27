@@ -15,6 +15,10 @@ public class VerificationMethodResultsExtractor {
     public VerificationMethodResults extractRequest(final APIGatewayProxyRequestEvent input) {
         try {
             final VerificationResultRequestDocument document = converter.toObject(input.getBody(), VerificationResultRequestDocument.class);
+            final VerificationMethodResults results = document.getResults();
+            if (results.isEmpty()) {
+                throw new InvalidVerificationMethodResultsException("results array must not be empty");
+            }
             return document.getResults();
         } catch (final JsonConversionException e) {
             throw new InvalidVerificationMethodResultsException(e);
@@ -25,6 +29,10 @@ public class VerificationMethodResultsExtractor {
 
         public InvalidVerificationMethodResultsException(final Throwable cause) {
             super(cause);
+        }
+
+        public InvalidVerificationMethodResultsException(final String message) {
+            super(message);
         }
 
     }

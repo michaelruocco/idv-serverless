@@ -19,10 +19,13 @@ dependencies {
     compile project(':aws-lambda:identity-aws-lambda')
     compile project(':json-api:verification-context-json-api')
     compile project(':dao:verification-context:verification-context-dao-dynamodb')
+    compile project(':dao:lockout-decision:lockout-decision-dao-dynamodb')
 
     integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
     integrationTestCompile project(':dao:identity:identity-dao-fake')
+    integrationTestCompile project(':dao:lockout-decision:lockout-decision-dao-fake')
     integrationTestCompile project(':events:fake-events')
+    integrationTestCompile project(':json:lockout-decision-json')
     integrationTestCompile 'org.skyscreamer:jsonassert:1.5.0'
 }
 

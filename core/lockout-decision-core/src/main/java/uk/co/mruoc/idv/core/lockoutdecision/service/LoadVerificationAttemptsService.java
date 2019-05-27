@@ -9,7 +9,9 @@ import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
+import uk.co.mruoc.idv.core.service.UuidGenerator;
 
+import java.util.Collections;
 import java.util.UUID;
 
 @Builder
@@ -18,12 +20,13 @@ public class LoadVerificationAttemptsService {
 
     private final IdentityService identityService;
     private final VerificationAttemptsDao dao;
+    private final UuidGenerator uuidGenerator;
 
     public VerificationAttempts load(final Alias alias) {
         log.info("loading attempts for alias {}", alias);
         final UUID idvId = loadIdvId(alias);
         log.info("loading attempts for idv id {}", idvId);
-        return dao.loadByIdvId(idvId);
+        return dao.loadByIdvId(idvId).orElseGet(() -> createNewAttempts(idvId));
     }
 
     private UUID loadIdvId(final Alias alias) {
@@ -33,6 +36,14 @@ public class LoadVerificationAttemptsService {
         }
         final Identity identity = identityService.load(alias);
         return identity.getIdvId();
+    }
+
+    private VerificationAttempts createNewAttempts(final UUID idvId) {
+        return VerificationAttempts.builder()
+                .lockoutStateId(uuidGenerator.randomUuid())
+                .attempts(Collections.emptyList())
+                .idvId(idvId)
+                .build();
     }
 
 }

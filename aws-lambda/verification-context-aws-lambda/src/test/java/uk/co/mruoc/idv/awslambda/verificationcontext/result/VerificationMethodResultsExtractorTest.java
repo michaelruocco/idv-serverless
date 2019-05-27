@@ -46,4 +46,20 @@ public class VerificationMethodResultsExtractorTest {
         assertThat(results).isEqualTo(expectedResults);
     }
 
+    @Test
+    public void shouldThrowExceptionIfResultsListIsEmpty() {
+        final String body = "body";
+        final APIGatewayProxyRequestEvent event = new APIGatewayProxyRequestEvent().withBody(body);
+        final VerificationResultRequestDocument document = mock(VerificationResultRequestDocument.class);
+        given(converter.toObject(body, VerificationResultRequestDocument.class)).willReturn(document);
+        final VerificationMethodResults expectedResults = mock(VerificationMethodResults.class);
+        given(document.getResults()).willReturn(expectedResults);
+        given(expectedResults.isEmpty()).willReturn(true);
+
+        final Throwable cause = catchThrowable(() -> extractor.extractRequest(event));
+
+        assertThat(cause).isInstanceOf(InvalidVerificationMethodResultsException.class)
+                .hasMessage("results array must not be empty");
+    }
+
 }

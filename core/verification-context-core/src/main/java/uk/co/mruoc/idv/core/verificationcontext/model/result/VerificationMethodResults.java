@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.verificationcontext.model.result;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 
 @Builder
 @Getter
+@ToString
 public class VerificationMethodResults implements Iterable<VerificationMethodResult> {
 
     private final UUID id;
@@ -46,6 +48,10 @@ public class VerificationMethodResults implements Iterable<VerificationMethodRes
 
     public int size() {
         return results.size();
+    }
+
+    public boolean isEmpty() {
+        return results.isEmpty();
     }
 
     private VerificationMethodResults addAll(final Collection<VerificationMethodResult> resultsToAdd) {

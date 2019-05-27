@@ -8,6 +8,7 @@ import uk.co.mruoc.idv.json.JacksonJsonConverter;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.JsonConverterFactory;
 import uk.co.mruoc.idv.json.identity.IdvIdentityModule;
+import uk.co.mruoc.idv.json.lockoutdecision.IdvLockoutDecisionModule;
 import uk.co.mruoc.idv.json.verificationcontext.IdvVerificationContextModule;
 
 public class JsonApiVerificationContextJsonConverterFactory implements JsonConverterFactory {

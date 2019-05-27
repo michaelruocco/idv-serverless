@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import lombok.extern.slf4j.Slf4j;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
 
 import java.io.IOException;
 

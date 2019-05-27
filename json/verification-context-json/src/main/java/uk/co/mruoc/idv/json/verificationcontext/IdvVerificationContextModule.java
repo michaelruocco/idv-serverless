@@ -3,11 +3,11 @@ package uk.co.mruoc.idv.json.verificationcontext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import uk.co.mruoc.idv.core.model.CardNumber;
+import uk.co.mruoc.idv.core.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.OnlinePurchaseActivity;
-import uk.co.mruoc.idv.core.verificationcontext.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.MobilePinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationMethod;
@@ -28,6 +28,7 @@ import uk.co.mruoc.idv.json.verificationcontext.activity.OnlinePurchaseActivityM
 import uk.co.mruoc.idv.json.verificationcontext.channel.ChannelDeserializer;
 import uk.co.mruoc.idv.json.verificationcontext.result.VerificationMethodResultMixin;
 import uk.co.mruoc.idv.json.verificationcontext.result.VerificationMethodResultsDeserializer;
+import uk.co.mruoc.idv.json.verificationcontext.result.VerificationMethodResultsMixin;
 
 public class IdvVerificationContextModule extends SimpleModule {
 
@@ -72,6 +73,7 @@ public class IdvVerificationContextModule extends SimpleModule {
     private void setUpResult() {
         addDeserializer(VerificationMethodResults.class, new VerificationMethodResultsDeserializer());
 
+        setMixInAnnotation(VerificationMethodResults.class, VerificationMethodResultsMixin.class);
         setMixInAnnotation(VerificationMethodResult.class, VerificationMethodResultMixin.class);
     }
 
