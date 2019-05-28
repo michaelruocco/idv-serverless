@@ -116,4 +116,37 @@ public class VerificationAttemptsTest {
         assertThat(stream).contains(attempt1, attempt2);
     }
 
+    @Test
+    public void shouldReturnAttempts() {
+        final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
+        final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
+        final VerificationAttempts attempts = VerificationAttempts.builder()
+                .attempts(Arrays.asList(attempt1, attempt2))
+                .build();
+
+        final Collection<VerificationAttempt> attemptsCollection = attempts.getAttempts();
+
+        assertThat(attemptsCollection).contains(attempt1, attempt2);
+    }
+
+    @Test
+    public void shouldGetAttemptByIndex() {
+        final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
+        final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
+        final VerificationAttempts attempts = VerificationAttempts.builder()
+                .attempts(Arrays.asList(attempt1, attempt2))
+                .build();
+
+        assertThat(attempts.get(0)).isEqualTo(attempt1);
+        assertThat(attempts.get(1)).isEqualTo(attempt2);
+    }
+
+    @Test
+    public void shouldReturnDetails() {
+        final VerificationAttempts attempts = VerificationAttempts.builder()
+                .build();
+
+        assertThat(attempts.toString()).isEqualTo("VerificationAttempts(idvId=null, lockoutStateId=null, attempts=[])");
+    }
+
 }
