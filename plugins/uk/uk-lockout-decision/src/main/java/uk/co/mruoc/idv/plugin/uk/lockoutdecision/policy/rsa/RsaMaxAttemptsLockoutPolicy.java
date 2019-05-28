@@ -17,7 +17,7 @@ public class RsaMaxAttemptsLockoutPolicy extends DefaultLockoutPolicy {
     public RsaMaxAttemptsLockoutPolicy() {
         super(buildStateCalculator(),
                 buildAliasTypes(),
-                buildActivites(),
+                buildActivities(),
                 buildMethods());
     }
 
@@ -32,7 +32,7 @@ public class RsaMaxAttemptsLockoutPolicy extends DefaultLockoutPolicy {
         );
     }
 
-    private static Collection<String> buildActivites() {
+    private static Collection<String> buildActivities() {
         return Collections.singleton(ALL);
     }
 

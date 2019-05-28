@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import lombok.Builder;
-import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,7 +9,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ToString
-@Getter
 @Slf4j
 public class DefaultLockoutPolicy implements LockoutPolicy {
 
@@ -97,7 +95,7 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
     }
 
     private boolean appliesToMethod(final String methodName) {
-        boolean appliesToMethod = appliesToAllMethods || methods.contains(methodName);
+        final boolean appliesToMethod = appliesToAllMethods || methods.contains(methodName);
         if (appliesToMethod) {
             log.info("method {} applies to policy {}", methodName, this);
         } else {

@@ -11,6 +11,8 @@ public class IdvLockoutDecisionModule extends SimpleModule {
     }
 
     private void setUpAttempts() {
+        addDeserializer(VerificationAttempts.class, new VerificationAttemptsDeserializer());
+
         setMixInAnnotation(VerificationAttempt.class, VerificationAttemptMixin.class);
         setMixInAnnotation(VerificationAttempts.class, VerificationAttemptsMixin.class);
     }

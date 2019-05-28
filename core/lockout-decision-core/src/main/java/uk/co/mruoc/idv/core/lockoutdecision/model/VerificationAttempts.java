@@ -1,6 +1,8 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.Instant;
@@ -14,6 +16,8 @@ import java.util.stream.Stream;
 
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor(force = true) //required by jackson
 public class VerificationAttempts implements Iterable<VerificationAttempt> {
 
     private final UUID idvId;
@@ -55,7 +59,7 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
     public VerificationAttempts add(final VerificationAttempt attempt) {
         final Collection<VerificationAttempt> newAttempts = new ArrayList<>(attempts);
         newAttempts.add(attempt);
-        return new VerificationAttempts(idvId, lockoutStateId, newAttempts);
+        return toNewAttempts(newAttempts);
     }
 
     public Instant getMostRecentTimestamp() {
@@ -75,7 +79,15 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
     public VerificationAttempts removeAll(final Collection<VerificationAttempt> attemptsToRemove) {
         final Collection<VerificationAttempt> remainingAttempts = new ArrayList<>(attempts);
         remainingAttempts.removeAll(attemptsToRemove);
-        return new VerificationAttempts(idvId, lockoutStateId, remainingAttempts);
+        return toNewAttempts(remainingAttempts);
+    }
+
+    private VerificationAttempts toNewAttempts(final Collection<VerificationAttempt> newAttempts) {
+        return VerificationAttempts.builder()
+                .idvId(idvId)
+                .lockoutStateId(lockoutStateId)
+                .attempts(newAttempts)
+                .build();
     }
 
 }

@@ -22,7 +22,8 @@ import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 @Slf4j
 public class VerificationMethodResultsDeserializerTest {
 
-    private static final String RESULTS_PATH = "/result/results.json";
+    private static final String RESULTS_WITH_IDS_PATH = "/result/results-with-ids.json";
+    private static final String RESULTS_WITHOUT_IDS_PATH = "/result/results-without-ids.json";
 
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
@@ -32,19 +33,32 @@ public class VerificationMethodResultsDeserializerTest {
 
         final String json = CONVERTER.toJson(results);
 
-        final String expectedJson = loadContentFromClasspath(RESULTS_PATH);
+        final String expectedJson = loadContentFromClasspath(RESULTS_WITH_IDS_PATH);
         JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
     }
 
     @Test
-    public void shouldDeserializeResults() {
-        final String json = loadContentFromClasspath(RESULTS_PATH);
+    public void shouldDeserializeResultsWithIds() {
+        final String json = loadContentFromClasspath(RESULTS_WITH_IDS_PATH);
 
         final VerificationMethodResults results = CONVERTER.toObject(json, VerificationMethodResults.class);
 
         final VerificationMethodResults expectedResults = buildResults();
         assertThat(results.getId()).isEqualTo(expectedResults.getId());
         assertThat(results.getContextId()).isEqualTo(expectedResults.getContextId());
+        assertThat(results).usingElementComparator(new VerificationMethodResultComparator())
+                .containsExactlyElementsOf(expectedResults);
+    }
+
+    @Test
+    public void shouldDeserializeResultsWithoutIds() {
+        final String json = loadContentFromClasspath(RESULTS_WITHOUT_IDS_PATH);
+
+        final VerificationMethodResults results = CONVERTER.toObject(json, VerificationMethodResults.class);
+
+        assertThat(results.getId()).isNull();
+        assertThat(results.getContextId()).isNull();
+        final VerificationMethodResults expectedResults = buildResults();
         assertThat(results).usingElementComparator(new VerificationMethodResultComparator())
                 .containsExactlyElementsOf(expectedResults);
     }
