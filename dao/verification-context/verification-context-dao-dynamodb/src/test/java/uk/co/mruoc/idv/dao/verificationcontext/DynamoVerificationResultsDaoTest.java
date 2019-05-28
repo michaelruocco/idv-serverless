@@ -28,7 +28,7 @@ public class DynamoVerificationResultsDaoTest {
     @Rule
     public final LocalDynamoRule localDynamoRule = new LocalDynamoRule();
 
-    private final VerificationTableFactory tableFactory = new VerificationTableFactory(TABLE_NAME);
+    private final VerificationResultTableFactory tableFactory = new VerificationResultTableFactory(TABLE_NAME);
 
     private VerificationResultsDao dao;
 
@@ -60,9 +60,9 @@ public class DynamoVerificationResultsDaoTest {
     public void shouldReturnEmptyOptionalForContextIdThatDoesNotHaveResults() {
         final UUID contextId = UUID.randomUUID();
 
-        final Optional<VerificationMethodResults> loadedContext = dao.load(contextId);
+        final Optional<VerificationMethodResults> loadedResults = dao.load(contextId);
 
-        assertThat(loadedContext).isEmpty();
+        assertThat(loadedResults).isEmpty();
     }
 
     private static VerificationMethodResults buildVerificationResults() {
