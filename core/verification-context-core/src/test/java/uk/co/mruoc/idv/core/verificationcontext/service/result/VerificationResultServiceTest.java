@@ -13,13 +13,9 @@ import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodR
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService.VerificationContextNotFoundException;
-import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationMethodResultConverter;
-import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService.MethodNotFoundInSequenceException;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService.SequenceNotFoundException;
-import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
@@ -97,6 +93,7 @@ public class VerificationResultServiceTest {
                 .sequences(Collections.singleton(sequence))
                 .build();
         given(getContextService.load(contextId)).willReturn(context);
+        given(dao.load(contextId)).willReturn(Optional.empty());
 
         final Throwable cause = catchThrowable(() -> service.upsert(results));
 
@@ -119,6 +116,7 @@ public class VerificationResultServiceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(sequenceName, Collections.singleton(method));
         final VerificationContext context = toContext(contextId, sequence);
         given(getContextService.load(contextId)).willReturn(context);
+        given(dao.load(contextId)).willReturn(Optional.empty());
 
         final Throwable cause = catchThrowable(() -> service.upsert(results));
 
@@ -172,6 +170,7 @@ public class VerificationResultServiceTest {
         final VerificationContext context = toContext(contextId, sequence);
         given(getContextService.load(contextId)).willReturn(context);
         final VerificationMethodResult existingResult = mock(VerificationMethodResult.class);
+        given(existingResult.getSequenceName()).willReturn(sequenceName);
         final VerificationMethodResults existingResults = VerificationMethodResults.builder()
                 .contextId(contextId)
                 .results(Collections.singleton(existingResult))
@@ -203,18 +202,19 @@ public class VerificationResultServiceTest {
         final VerificationContext context = toContext(contextId, sequence);
         given(getContextService.load(contextId)).willReturn(context);
         final VerificationMethodResult existingResult = mock(VerificationMethodResult.class);
+        given(existingResult.getSequenceName()).willReturn(sequenceName);
         final VerificationMethodResults existingResults = VerificationMethodResults.builder()
                 .contextId(contextId)
                 .results(Collections.singleton(existingResult))
                 .build();
         given(dao.load(contextId)).willReturn(Optional.of(existingResults));
 
-        Collection<VerificationAttempt> attempts = Collections.emptyList();
-        given(converter.toAttempts(context, results)).willReturn(attempts);
+        final VerificationAttempt attempt = mock(VerificationAttempt.class);
+        given(converter.toAttempt(context, result)).willReturn(attempt);
 
         service.upsert(results);
 
-        verify(lockoutStateService).register(attempts);
+        verify(lockoutStateService).register(attempt);
     }
 
     private static VerificationMethodResults toResults(final VerificationMethodResult result) {

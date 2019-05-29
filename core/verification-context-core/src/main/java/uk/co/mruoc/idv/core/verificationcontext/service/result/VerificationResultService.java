@@ -11,7 +11,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodR
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 
-import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,12 +30,12 @@ public class VerificationResultService {
         log.info("loading context with id {}", contextId);
         final VerificationContext context = getContextService.load(contextId);
         log.info("loaded verification context {}", context);
-        validateResults(context, results);
         final VerificationMethodResults loadedResults = loadOrCreate(contextId);
         log.info("loaded results {}", loadedResults);
+        validateResults(context, results, loadedResults);
         final VerificationMethodResults updatedResults = loadedResults.addAll(results);
         log.info("updated results {}", updatedResults);
-        registerAttempts(context, results);
+        registerAttempts(context, results, updatedResults);
         dao.save(updatedResults);
         return updatedResults;
     }
@@ -49,19 +48,19 @@ public class VerificationResultService {
         return dao.load(contextId).orElseGet(() -> createNewResults(contextId));
     }
 
-    private void validateResults(final VerificationContext context, final VerificationMethodResults results) {
-        results.stream().forEach(result -> validateResult(context, result));
+    private void validateResults(final VerificationContext context, final VerificationMethodResults results, final VerificationMethodResults existingResults) {
+        results.stream().forEach(result -> validateResult(context, result, existingResults));
     }
 
-    private void validateResult(final VerificationContext context, final VerificationMethodResult result) {
+    private void validateResult(final VerificationContext context, final VerificationMethodResult result, final VerificationMethodResults existingResults) {
         final UUID contextId = context.getId();
         final String sequenceName = result.getSequenceName();
-        final Optional<VerificationMethodSequence> sequence = context.getSequence(sequenceName);
-        if (!sequence.isPresent()) {
-            throw new SequenceNotFoundException(contextId, sequenceName);
+        final VerificationMethodSequence sequence = extractSequence(context, sequenceName);
+        if (sequence.isComplete(existingResults)) {
+            throw new SequenceAlreadyCompleteException(contextId, sequenceName);
         }
         final String methodName = result.getMethodName();
-        if (!sequence.get().containsMethod(methodName)) {
+        if (!sequence.containsMethod(methodName)) {
             throw new MethodNotFoundInSequenceException(contextId, sequenceName, methodName);
         }
     }
@@ -73,10 +72,68 @@ public class VerificationResultService {
                 .build();
     }
 
-    private void registerAttempts(final VerificationContext context, final VerificationMethodResults results) {
-        final Collection<VerificationAttempt> attempts = converter.toAttempts(context, results);
-        log.info("registering attempts {}", attempts);
-        lockoutStateService.register(attempts);
+    private void registerAttempts(final VerificationContext context, final VerificationMethodResults results, final VerificationMethodResults allResults) {
+        for (final VerificationMethodResult result : results) {
+            final VerificationMethodSequence sequence = extractSequence(context, result);
+            if (result.isSuccessful()) {
+                handleSuccessfulResult(context, result);
+            } else {
+                handleFailureResult(sequence, context, result, allResults);
+            }
+        }
+    }
+
+    private VerificationMethodSequence extractSequence(final VerificationContext context, final VerificationMethodResult result) {
+        return extractSequence(context, result.getSequenceName());
+    }
+
+    private VerificationMethodSequence extractSequence(final VerificationContext context, final String sequenceName) {
+        final Optional<VerificationMethodSequence> sequence = context.getSequence(sequenceName);
+        return sequence.orElseThrow(() -> new SequenceNotFoundException(context.getId(), sequenceName));
+    }
+
+    private void handleSuccessfulResult(final VerificationContext context, final VerificationMethodResult result) {
+        log.info("registering successful attempt for result {}", result);
+        registerAttempt(context, result);
+    }
+
+    private void handleFailureResult(final VerificationMethodSequence sequence, final VerificationContext context, final VerificationMethodResult result, final VerificationMethodResults allResults) {
+        if (sequence.shouldFailImmediately()) {
+            log.info("registering failure attempt for result {} as sequence {} should fail immediately", result, sequence.getName());
+            registerAttempt(context, result);
+        } else if (sequence.isComplete(allResults)) {
+            log.info("registering failure attempt for result {} as sequence {} is complete", result, sequence.getName());
+            registerAttempt(context, result);
+        }
+    }
+
+    private void registerAttempt(final VerificationContext context, final VerificationMethodResult result) {
+        final VerificationAttempt attempt = converter.toAttempt(context, result);
+        log.info("registering attempt {}", attempt);
+        lockoutStateService.register(attempt);
+    }
+
+    public static class SequenceAlreadyCompleteException extends RuntimeException {
+
+        private static final String MESSAGE_FORMAT = "sequence %s in verification context %s is already complete";
+
+        private final UUID contextId;
+        private final String sequenceName;
+
+        public SequenceAlreadyCompleteException(final UUID contextId, final String sequenceName) {
+            super(String.format(MESSAGE_FORMAT, sequenceName, contextId));
+            this.contextId = contextId;
+            this.sequenceName = sequenceName;
+        }
+
+        public UUID getContextId() {
+            return contextId;
+        }
+
+        public String getSequenceName() {
+            return sequenceName;
+        }
+
     }
 
     public static class SequenceNotFoundException extends RuntimeException {
