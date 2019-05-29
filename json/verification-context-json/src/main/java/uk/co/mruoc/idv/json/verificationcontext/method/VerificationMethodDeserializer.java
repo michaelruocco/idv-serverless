@@ -71,9 +71,8 @@ public class VerificationMethodDeserializer extends StdDeserializer<Verification
         final String name = extractName(methodNode);
         final int duration = extractDuration(methodNode);
         final VerificationStatus status = extractStatus(methodNode);
-        final int maxAttempts = extractMaxAttempts(methodNode);
         final Map<String, Object> properties = toProperties(methodNode);
-        return new DefaultVerificationMethod(name, duration, status, maxAttempts, properties);
+        return new DefaultVerificationMethod(name, duration, status, properties);
     }
 
     private static OtpSmsVerificationMethod toOtpSms(final JsonNode methodNode) {
@@ -170,10 +169,6 @@ public class VerificationMethodDeserializer extends StdDeserializer<Verification
 
     private static VerificationStatus extractStatus(final JsonNode node) {
         return VerificationStatus.valueOf(node.get("status").asText());
-    }
-
-    private static int extractMaxAttempts(final JsonNode node) {
-        return node.get("maxAttempts").asInt();
     }
 
     private static JsonNode extractPropertiesNode(final JsonNode node) {

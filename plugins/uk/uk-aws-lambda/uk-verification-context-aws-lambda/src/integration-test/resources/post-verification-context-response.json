@@ -55,7 +55,6 @@
               "name": "PHYSICAL_PINSENTRY",
               "duration": 300000,
               "status": "AVAILABLE",
-              "maxAttempts": 1,
               "properties": {
                 "cardNumbers": [
                   {
@@ -77,14 +76,12 @@
             {
               "name": "CARD_CREDENTIALS",
               "duration": 300000,
-              "status": "AVAILABLE",
-              "maxAttempts": 1
+              "status": "AVAILABLE"
             },
             {
               "name": "ONE_TIME_PASSCODE_SMS",
               "duration": 300000,
               "status": "AVAILABLE",
-              "maxAttempts": 1,
               "properties": {
                 "mobileNumbers": [
                   {

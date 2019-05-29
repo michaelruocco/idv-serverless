@@ -33,13 +33,6 @@ public class MobilePinsentryVerificationMethodTest {
     }
 
     @Test
-    public void shouldReturnMaxAttempts() {
-        final int maxAttempts = mobilePinsentry.getMaxAttempts();
-
-        assertThat(maxAttempts).isEqualTo(VerificationMethod.DEFAULT_MAX_ATTEMPTS);
-    }
-
-    @Test
     public void shouldReturnFunction() {
         final PinsentryFunction function = mobilePinsentry.getFunction();
 
@@ -52,7 +45,7 @@ public class MobilePinsentryVerificationMethodTest {
 
         assertThat(value).isEqualTo("MobilePinsentryVerificationMethod(super=" +
                 "DefaultVerificationMethod(" +
-                "name=MOBILE_PINSENTRY, duration=300000, status=AVAILABLE, maxAttempts=1, " +
+                "name=MOBILE_PINSENTRY, duration=300000, status=AVAILABLE, " +
                 "properties={function=IDENTIFY}))");
     }
 

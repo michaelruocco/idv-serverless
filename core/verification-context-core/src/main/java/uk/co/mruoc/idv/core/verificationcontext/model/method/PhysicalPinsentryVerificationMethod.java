@@ -17,15 +17,14 @@ public class PhysicalPinsentryVerificationMethod extends DefaultVerificationMeth
     public PhysicalPinsentryVerificationMethod(final int duration,
                                                final PinsentryFunction function,
                                                final Collection<CardNumber> cardNumbers) {
-        this(duration, function, DEFAULT_STATUS, DEFAULT_MAX_ATTEMPTS, cardNumbers);
+        this(duration, function, DEFAULT_STATUS, cardNumbers);
     }
 
     public PhysicalPinsentryVerificationMethod(final int duration,
                                                final PinsentryFunction function,
                                                final VerificationStatus status,
-                                               final int maxAttempts,
                                                final Collection<CardNumber> cardNumbers) {
-        super(Names.PHYSICAL_PINSENTRY, duration, status, maxAttempts, toMap(function, cardNumbers));
+        super(Names.PHYSICAL_PINSENTRY, duration, status, toMap(function, cardNumbers));
     }
 
     public PinsentryFunction getFunction() {

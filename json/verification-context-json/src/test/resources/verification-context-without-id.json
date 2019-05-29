@@ -37,8 +37,7 @@
         {
           "name": "PUSH_NOTIFICATION",
           "duration": 300000,
-          "status": "AVAILABLE",
-          "maxAttempts": 1
+          "status": "AVAILABLE"
         }
       ]
     }

@@ -208,7 +208,7 @@ public class VerificationMethodSequenceTest {
 
         assertThat(sequence.toString()).isEqualTo("VerificationMethodSequence(name=PUSH_NOTIFICATION, " +
                 "failureStrategy=IMMEDIATE, methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
-                "name=PUSH_NOTIFICATION, duration=0, status=AVAILABLE, maxAttempts=1, properties={}))])");
+                "name=PUSH_NOTIFICATION, duration=0, status=AVAILABLE, properties={}))])");
     }
 
     private static class FakePhysicalPinsentryVerificationMethod extends PhysicalPinsentryVerificationMethod {

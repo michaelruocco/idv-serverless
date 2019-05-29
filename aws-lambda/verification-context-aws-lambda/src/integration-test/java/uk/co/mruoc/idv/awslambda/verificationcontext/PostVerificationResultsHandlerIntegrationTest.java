@@ -163,6 +163,7 @@ public class PostVerificationResultsHandlerIntegrationTest {
     private static GetVerificationContextService buildVerificationContextService(final VerificationContextDao dao) {
         return GetVerificationContextService.builder()
                 .dao(dao)
+                .timeService(new DefaultTimeService())
                 .build();
     }
 

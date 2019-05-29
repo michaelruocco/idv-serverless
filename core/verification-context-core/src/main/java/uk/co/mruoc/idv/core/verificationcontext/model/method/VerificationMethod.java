@@ -7,13 +7,10 @@ public interface VerificationMethod {
 
     int DEFAULT_DURATION = 300000;
     VerificationStatus DEFAULT_STATUS = VerificationStatus.AVAILABLE;
-    int DEFAULT_MAX_ATTEMPTS = 1;
 
     String getName();
 
     int getDuration();
-
-    int getMaxAttempts();
 
     VerificationStatus getStatus();
 

@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextServiceFactory;
+import uk.co.mruoc.idv.core.service.DefaultTimeService;
 import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
@@ -29,6 +30,7 @@ public class UkGetVerificationContextServiceFactory implements GetVerificationCo
     private GetVerificationContextService buildService() {
         return GetVerificationContextService.builder()
                 .dao(dao)
+                .timeService(new DefaultTimeService())
                 .build();
     }
 

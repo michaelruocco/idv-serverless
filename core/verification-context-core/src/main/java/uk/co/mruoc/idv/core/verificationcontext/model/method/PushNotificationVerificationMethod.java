@@ -6,11 +6,11 @@ import lombok.ToString;
 public class PushNotificationVerificationMethod extends DefaultVerificationMethod {
 
     public PushNotificationVerificationMethod(final int duration) {
-        this(duration, DEFAULT_STATUS, DEFAULT_MAX_ATTEMPTS);
+        this(duration, DEFAULT_STATUS);
     }
 
-    public PushNotificationVerificationMethod(final int duration, final VerificationStatus status, final int maxAttempts) {
-        super(Names.PUSH_NOTIFICATION, duration, status, maxAttempts);
+    public PushNotificationVerificationMethod(final int duration, final VerificationStatus status) {
+        super(Names.PUSH_NOTIFICATION, duration, status);
     }
 
 }

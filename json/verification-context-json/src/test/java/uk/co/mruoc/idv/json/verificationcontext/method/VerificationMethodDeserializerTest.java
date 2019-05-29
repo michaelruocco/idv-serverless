@@ -39,7 +39,6 @@ public class VerificationMethodDeserializerTest {
 
     private static final int DURATION = 300000;
     private static final VerificationStatus STATUS = VerificationStatus.AVAILABLE;
-    private static final int MAX_ATTEMPTS = 1;
 
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
@@ -246,7 +245,7 @@ public class VerificationMethodDeserializerTest {
         properties.put("anotherProperty", Collections.unmodifiableMap(subProperty));
 
         final String name = "DEFAULT_METHOD";
-        return new DefaultVerificationMethod(name, DURATION, STATUS, MAX_ATTEMPTS, Collections.unmodifiableMap(properties));
+        return new DefaultVerificationMethod(name, DURATION, STATUS, Collections.unmodifiableMap(properties));
     }
 
 }

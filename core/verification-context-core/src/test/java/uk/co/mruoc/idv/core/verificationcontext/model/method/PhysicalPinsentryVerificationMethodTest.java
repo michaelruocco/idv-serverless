@@ -48,13 +48,6 @@ public class PhysicalPinsentryVerificationMethodTest {
     }
 
     @Test
-    public void shouldReturnMaxAttempts() {
-        final int maxAttempts = physicalPinsentry.getMaxAttempts();
-
-        assertThat(maxAttempts).isEqualTo(VerificationMethod.DEFAULT_MAX_ATTEMPTS);
-    }
-
-    @Test
     public void shouldReturnCardNumbers() {
         final Collection<CardNumber> cardNumbers = physicalPinsentry.getCardNumbers();
 
@@ -67,7 +60,7 @@ public class PhysicalPinsentryVerificationMethodTest {
 
         assertThat(value).isEqualTo("PhysicalPinsentryVerificationMethod(" +
                 "super=DefaultVerificationMethod(" +
-                "name=PHYSICAL_PINSENTRY, duration=300000, status=AVAILABLE, maxAttempts=1, " +
+                "name=PHYSICAL_PINSENTRY, duration=300000, status=AVAILABLE, " +
                 "properties={" +
                 "cardNumbers=[CardNumber(masked=null, tokenized=1234567890123456, encrypted=null), " +
                 "CardNumber(masked=null, tokenized=6543210987654321, encrypted=null)], function=IDENTIFY}))");
