@@ -12,6 +12,8 @@ import uk.co.mruoc.idv.core.lockoutdecision.service.VerificationAttemptsConverte
 import uk.co.mruoc.idv.core.service.DefaultTimeService;
 import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.RegisterAttemptsService;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.SequenceExtractor;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationMethodResultConverter;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
@@ -61,7 +63,15 @@ public class UkPostVerificationResultServiceFactory implements VerificationResul
                 .getContextService(getContextService)
                 .uuidGenerator(new RandomUuidGenerator())
                 .dao(resultsDao)
+                .sequenceExtractor(new SequenceExtractor())
+                .registerAttemptsService(buildRegisterAttemptsService())
+                .build();
+    }
+
+    private RegisterAttemptsService buildRegisterAttemptsService() {
+        return RegisterAttemptsService.builder()
                 .converter(new VerificationMethodResultConverter())
+                .sequenceExtractor(new SequenceExtractor())
                 .lockoutStateService(buildLockoutStateService())
                 .build();
     }

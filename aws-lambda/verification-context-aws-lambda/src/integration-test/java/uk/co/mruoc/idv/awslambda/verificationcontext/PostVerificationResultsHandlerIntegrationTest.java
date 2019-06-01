@@ -32,6 +32,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.service.GetVerificationContextService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.RegisterAttemptsService;
+import uk.co.mruoc.idv.core.verificationcontext.service.result.SequenceExtractor;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationMethodResultConverter;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultService;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
@@ -65,7 +67,8 @@ public class PostVerificationResultsHandlerIntegrationTest {
     private final IdentityService identityService = buildIdentityService(identityDao);
     private final LoadVerificationAttemptsService loadAttemptsService = buildLoadAttemptsService(attemptsDao, identityService);
     private final LockoutStateService lockoutStateService = buildLockoutStateService(attemptsDao, loadAttemptsService);
-    private final VerificationResultService resultService = buildVerificationResultService(resultsDao, loadContextService, lockoutStateService);
+    private final RegisterAttemptsService registerAttemptsService = buildRegisterAttemptsService(lockoutStateService);
+    private final VerificationResultService resultService = buildVerificationResultService(resultsDao, loadContextService, registerAttemptsService);
 
     private final PostVerificationResultHandler handler = new PostVerificationResultHandler(resultService);
 
@@ -150,12 +153,12 @@ public class PostVerificationResultsHandlerIntegrationTest {
 
     private static VerificationResultService buildVerificationResultService(final VerificationResultsDao dao,
                                                                             final GetVerificationContextService loadContextService,
-                                                                            final LockoutStateService lockoutStateService) {
+                                                                            final RegisterAttemptsService registerAttemptsService) {
         return VerificationResultService.builder()
                 .uuidGenerator(new RandomUuidGenerator())
                 .getContextService(loadContextService)
-                .converter(new VerificationMethodResultConverter())
-                .lockoutStateService(lockoutStateService)
+                .sequenceExtractor(new SequenceExtractor())
+                .registerAttemptsService(registerAttemptsService)
                 .dao(dao)
                 .build();
     }
@@ -197,6 +200,14 @@ public class PostVerificationResultsHandlerIntegrationTest {
                 .policiesService(new StubbedLockoutPoliciesService())
                 .loadAttemptsService(loadAttemptsService)
                 .dao(dao)
+                .build();
+    }
+
+    private static RegisterAttemptsService buildRegisterAttemptsService(final LockoutStateService lockoutStateService) {
+        return RegisterAttemptsService.builder()
+                .sequenceExtractor(new SequenceExtractor())
+                .converter(new VerificationMethodResultConverter())
+                .lockoutStateService(lockoutStateService)
                 .build();
     }
 

@@ -44,7 +44,7 @@ public class DefaultVerificationMethodsService implements VerificationMethodsSer
             final AvailabilityHandler handler = getHandler(methodRequest);
             methods.add(handler.loadMethod(methodRequest));
         }
-        return new VerificationMethodSequence(sequencePolicy.getName(), methods, sequencePolicy.getFailureStrategy());
+        return new VerificationMethodSequence(sequencePolicy.getName(), methods, sequencePolicy.getRegisterAttemptStrategy());
     }
 
     private AvailabilityHandler getHandler(final VerificationMethodRequest request) {

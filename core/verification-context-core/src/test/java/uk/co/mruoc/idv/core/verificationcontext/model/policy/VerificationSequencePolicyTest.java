@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class VerificationSequencePolicyTest {
 
-    private static final FailureStrategy DEFAULT_FAILURE_STRATEGY = FailureStrategy.IMMEDIATE;
+    private static final RegisterAttemptStrategy DEFAULT_REGISTER_ATTEMPT_STRATEGY = RegisterAttemptStrategy.IMMEDIATE;
     private static final String CUSTOM_NAME = "CUSTOM_NAME";
 
     @Test
@@ -28,22 +28,22 @@ public class VerificationSequencePolicyTest {
     }
 
     @Test
-    public void shouldReturnDefaultFailureStrategyIfNotSet() {
+    public void shouldReturnDefaultRegisterAttemptStrategyIfNotSet() {
         final VerificationMethodPolicy policy = new PushNotificationMethodPolicy();
 
         final VerificationSequencePolicy entry = new VerificationSequencePolicy(CUSTOM_NAME, policy);
 
-        assertThat(entry.getFailureStrategy()).isEqualTo(DEFAULT_FAILURE_STRATEGY);
+        assertThat(entry.getRegisterAttemptStrategy()).isEqualTo(DEFAULT_REGISTER_ATTEMPT_STRATEGY);
     }
 
     @Test
-    public void shouldReturnFailureStrategyt() {
+    public void shouldReturnRegisterAttemptStrategy() {
         final VerificationMethodPolicy policy = new PushNotificationMethodPolicy();
-        final FailureStrategy failureStrategy = FailureStrategy.ON_COMPLETION;
+        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
 
-        final VerificationSequencePolicy entry = new VerificationSequencePolicy(CUSTOM_NAME, failureStrategy, policy);
+        final VerificationSequencePolicy entry = new VerificationSequencePolicy(CUSTOM_NAME, registerAttemptStrategy, policy);
 
-        assertThat(entry.getFailureStrategy()).isEqualTo(failureStrategy);
+        assertThat(entry.getRegisterAttemptStrategy()).isEqualTo(registerAttemptStrategy);
     }
 
     @Test

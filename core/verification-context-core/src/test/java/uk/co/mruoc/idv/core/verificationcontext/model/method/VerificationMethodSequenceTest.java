@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence.VerificationMethodNotFoundInSequenceException;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.FailureStrategy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.RegisterAttemptStrategy;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,19 +23,19 @@ public class VerificationMethodSequenceTest {
     }
 
     @Test
-    public void shouldReturnImmediateFailureStrategyByDefault() {
+    public void shouldReturnImmediateRegisterAttemptStrategyByDefault() {
         final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList());
 
-        assertThat(sequence.getFailureStrategy()).isEqualTo(FailureStrategy.IMMEDIATE);
+        assertThat(sequence.getRegisterAttemptStrategy()).isEqualTo(RegisterAttemptStrategy.IMMEDIATE);
     }
 
     @Test
-    public void shouldReturnSpecifiedFailureStrategy() {
-        final FailureStrategy failureStrategy = FailureStrategy.ON_COMPLETION;
+    public void shouldReturnSpecifiedRegisterAttemptStrategy() {
+        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
 
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), failureStrategy);
+        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
 
-        assertThat(sequence.getFailureStrategy()).isEqualTo(failureStrategy);
+        assertThat(sequence.getRegisterAttemptStrategy()).isEqualTo(registerAttemptStrategy);
     }
 
     @Test
@@ -207,7 +207,7 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
 
         assertThat(sequence.toString()).isEqualTo("VerificationMethodSequence(name=PUSH_NOTIFICATION, " +
-                "failureStrategy=IMMEDIATE, methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
+                "registerAttemptStrategy=IMMEDIATE, methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
                 "name=PUSH_NOTIFICATION, duration=0, status=AVAILABLE, properties={}))])");
     }
 

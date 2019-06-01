@@ -149,4 +149,11 @@ public class VerificationAttemptsTest {
         assertThat(attempts.toString()).isEqualTo("VerificationAttempts(idvId=null, lockoutStateId=null, attempts=[])");
     }
 
+    @Test
+    public void shouldHaveNoArgsConstructorForJackson() {
+        final VerificationAttempts attempts = new VerificationAttempts();
+
+        assertThat(attempts).isNotNull();
+    }
+
 }

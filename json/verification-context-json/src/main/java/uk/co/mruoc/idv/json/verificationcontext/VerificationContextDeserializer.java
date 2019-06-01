@@ -14,7 +14,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.FailureStrategy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.RegisterAttemptStrategy;
 import uk.co.mruoc.idv.json.verificationcontext.activity.ActivityDeserializer;
 import uk.co.mruoc.idv.json.verificationcontext.method.VerificationMethodDeserializer;
 import uk.co.mruoc.idv.json.identity.AliasDeserializer;
@@ -105,12 +105,12 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
     private static VerificationMethodSequence toVerificationMethodSequence(final JsonNode sequenceNode) {
         final List<VerificationMethod> methods = new ArrayList<>();
         final String name = extractName(sequenceNode);
-        final FailureStrategy failureStrategy = extractFailureStrategy(sequenceNode);
+        final RegisterAttemptStrategy registerAttemptStrategy = extractRegisterAttemptStrategy(sequenceNode);
         final JsonNode methodsNode = sequenceNode.get("methods");
         for (final JsonNode methodNode : methodsNode) {
             methods.add(toMethod(methodNode));
         }
-        return new VerificationMethodSequence(name, methods, failureStrategy);
+        return new VerificationMethodSequence(name, methods, registerAttemptStrategy);
     }
 
     private static VerificationMethod toMethod(final JsonNode methodNode) {
@@ -122,8 +122,8 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
         return node.get("name").asText();
     }
 
-    private static FailureStrategy extractFailureStrategy(final JsonNode node) {
-        return FailureStrategy.valueOf(node.get("failureStrategy").asText());
+    private static RegisterAttemptStrategy extractRegisterAttemptStrategy(final JsonNode node) {
+        return RegisterAttemptStrategy.valueOf(node.get("registerAttemptStrategy").asText());
     }
 
 }

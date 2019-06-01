@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import lombok.ToString;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.FailureStrategy;
+import uk.co.mruoc.idv.core.verificationcontext.model.policy.RegisterAttemptStrategy;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 
@@ -13,28 +13,28 @@ import java.util.Optional;
 @ToString
 public class VerificationMethodSequence {
 
-    private static final FailureStrategy DEFAULT_FAILURE_STRATEGY = FailureStrategy.IMMEDIATE;
+    private static final RegisterAttemptStrategy DEFAULT_REGISTER_ATTEMPT_STRATEGY = RegisterAttemptStrategy.IMMEDIATE;
 
     private final String name;
-    private final FailureStrategy failureStrategy;
+    private final RegisterAttemptStrategy registerAttemptStrategy;
     private final Collection<VerificationMethod> methods;
 
     public VerificationMethodSequence(final VerificationMethod method) {
-        this(method, DEFAULT_FAILURE_STRATEGY);
+        this(method, DEFAULT_REGISTER_ATTEMPT_STRATEGY);
     }
 
-    public VerificationMethodSequence(final VerificationMethod method, final FailureStrategy failureStrategy) {
-        this(method.getName(), Collections.singleton(method), failureStrategy);
+    public VerificationMethodSequence(final VerificationMethod method, final RegisterAttemptStrategy registerAttemptStrategy) {
+        this(method.getName(), Collections.singleton(method), registerAttemptStrategy);
     }
 
     public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods) {
-        this(name, methods, DEFAULT_FAILURE_STRATEGY);
+        this(name, methods, DEFAULT_REGISTER_ATTEMPT_STRATEGY);
     }
 
-    public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods, final FailureStrategy failureStrategy) {
+    public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods, final RegisterAttemptStrategy registerAttemptStrategy) {
         this.name = name;
         this.methods = methods;
-        this.failureStrategy = failureStrategy;
+        this.registerAttemptStrategy = registerAttemptStrategy;
     }
 
     public String getName() {
@@ -51,8 +51,8 @@ public class VerificationMethodSequence {
         return VerificationStatus.AVAILABLE;
     }
 
-    public FailureStrategy getFailureStrategy() {
-        return failureStrategy;
+    public RegisterAttemptStrategy getRegisterAttemptStrategy() {
+        return registerAttemptStrategy;
     }
 
     public PhysicalPinsentryVerificationMethod getPhysicalPinsentry() {
@@ -91,7 +91,7 @@ public class VerificationMethodSequence {
     }
 
     public boolean shouldFailImmediately() {
-        return FailureStrategy.IMMEDIATE.equals(failureStrategy);
+        return RegisterAttemptStrategy.IMMEDIATE.equals(registerAttemptStrategy);
     }
 
     public boolean isComplete(final VerificationMethodResults results) {

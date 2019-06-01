@@ -8,7 +8,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationM
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 
-@JsonPropertyOrder({ "name", "status", "duration", "failureStrategy", "methods" })
+@JsonPropertyOrder({ "name", "status", "duration", "registerAttemptStrategy", "methods" })
 public interface VerificationMethodSequenceMixin {
 
     @JsonIgnore
