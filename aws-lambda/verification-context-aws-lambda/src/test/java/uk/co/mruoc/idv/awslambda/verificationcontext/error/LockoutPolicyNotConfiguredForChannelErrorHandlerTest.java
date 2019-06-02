@@ -15,7 +15,7 @@ public class LockoutPolicyNotConfiguredForChannelErrorHandlerTest {
     private final JsonApiErrorHandler handler = new LockoutPolicyNotConfiguredForChannelErrorHandler();
 
     @Test
-    public void shouldSupportIdentityRequestInvalidException() {
+    public void shouldSupportException() {
         assertThat(handler.getSupportedExceptions()).containsExactly(LockoutPolicyNotConfiguredForChannelException.class);
     }
 

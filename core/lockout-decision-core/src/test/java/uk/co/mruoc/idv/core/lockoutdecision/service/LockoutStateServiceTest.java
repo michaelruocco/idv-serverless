@@ -4,6 +4,7 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies;
+import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
@@ -197,11 +198,11 @@ public class LockoutStateServiceTest {
     }
 
     private LockoutState buildNotLockedState() {
-        return mock(LockoutState.class);
+        return mock(DefaultLockoutState.class);
     }
 
     private LockoutState buildLockedState() {
-        final LockoutState state = mock(LockoutState.class);
+        final LockoutState state = mock(DefaultLockoutState.class);
         given(state.isLocked()).willReturn(true);
         return state;
     }

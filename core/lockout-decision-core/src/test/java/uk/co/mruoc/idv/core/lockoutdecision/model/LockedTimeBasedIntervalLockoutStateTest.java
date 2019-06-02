@@ -49,6 +49,17 @@ public class LockedTimeBasedIntervalLockoutStateTest {
     }
 
     @Test
+    public void shouldReturnDurationInMillis() {
+        final Duration duration = Duration.ofMinutes(15);
+
+        final LockedTimeBasedIntervalLockoutState state = LockedTimeBasedIntervalLockoutState.builder()
+                .duration(duration)
+                .build();
+
+        assertThat(state.getDurationInMillis()).isEqualTo(duration.toMillis());
+    }
+
+    @Test
     public void shouldReturnLockedUntil() {
         final Instant lockedUntil = Instant.now();
 

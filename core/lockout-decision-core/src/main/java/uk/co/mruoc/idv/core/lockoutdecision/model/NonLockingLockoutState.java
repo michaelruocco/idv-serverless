@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class NonLockingLockoutState extends LockoutState {
+public class NonLockingLockoutState extends DefaultLockoutState {
 
     private static final boolean NOT_LOCKED = false;
 

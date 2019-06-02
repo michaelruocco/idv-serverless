@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class MaxAttemptsLockoutState extends LockoutState {
+public class MaxAttemptsLockoutState extends DefaultLockoutState {
 
     private static final String TYPE = LockoutType.MAX_ATTEMPTS;
 

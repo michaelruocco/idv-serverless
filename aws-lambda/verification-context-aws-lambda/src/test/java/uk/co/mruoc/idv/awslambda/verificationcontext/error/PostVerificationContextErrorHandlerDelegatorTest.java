@@ -9,8 +9,11 @@ import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestE
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.service.AliasLoadFailedException;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderService.AliasTypeNotSupportedException;
+import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService.LockoutPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
+import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService.LockoutStateIsLockedException;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
@@ -100,6 +103,19 @@ public class PostVerificationContextErrorHandlerDelegatorTest {
         final List<JsonApiErrorItem> errors = document.getErrors();
         assertThat(errors).hasSize(1);
         final JsonApiErrorItem expectedItem = new LockoutPolicyNotConfiguredForChannelErrorItem(channelId);
+        assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(expectedItem);
+    }
+
+    @Test
+    public void shouldConvertLockoutStateIsLockedToErrorDocument() {
+        final LockoutState lockoutState = mock(DefaultLockoutState.class);
+        final Exception exception = new LockoutStateIsLockedException(lockoutState);
+
+        final JsonApiErrorDocument document = delegator.toDocument(exception);
+
+        final List<JsonApiErrorItem> errors = document.getErrors();
+        assertThat(errors).hasSize(1);
+        final JsonApiErrorItem expectedItem = new LockoutStateIsLockedErrorItem(lockoutState);
         assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(expectedItem);
     }
 

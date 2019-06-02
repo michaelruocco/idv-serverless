@@ -15,7 +15,7 @@ public class InvalidVerificationContextRequestErrorHandlerTest {
     private final JsonApiErrorHandler handler = new InvalidVerificationContextRequestErrorHandler();
 
     @Test
-    public void shouldSupportIdentityRequestInvalidException() {
+    public void shouldSupportException() {
         assertThat(handler.getSupportedExceptions()).containsExactly(InvalidVerificationContextRequestException.class);
     }
 

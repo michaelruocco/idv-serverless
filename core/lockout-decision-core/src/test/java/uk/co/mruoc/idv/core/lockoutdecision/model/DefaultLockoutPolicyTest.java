@@ -194,7 +194,7 @@ public class DefaultLockoutPolicyTest {
                 .build();
 
         final ArgumentCaptor<LockoutStateRequest> captor = ArgumentCaptor.forClass(LockoutStateRequest.class);
-        final LockoutState expectedState = mock(LockoutState.class);
+        final LockoutState expectedState = mock(DefaultLockoutState.class);
         given(calculator.calculateLockoutState(captor.capture())).willReturn(expectedState);
 
         final LockoutState state = policy.calculateLockoutState(request);

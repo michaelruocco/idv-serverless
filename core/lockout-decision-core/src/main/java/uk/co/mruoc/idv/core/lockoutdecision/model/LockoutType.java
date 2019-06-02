@@ -7,4 +7,8 @@ public interface LockoutType {
     String MAX_ATTEMPTS = "MAX_ATTEMPTS";
     String NON_LOCKING = "NON_LOCKING";
 
+    static boolean isTimeBased(final String lockoutType) {
+        return lockoutType.contains("TIME_BASED");
+    }
+
 }

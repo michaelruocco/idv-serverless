@@ -1,34 +1,19 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.UUID;
 
-@RequiredArgsConstructor
-public class LockoutState {
+public interface LockoutState {
 
-    private final VerificationAttempts attempts;
-    private final String lockoutType;
-    private final boolean locked;
+    UUID getId();
 
-    public UUID getId() {
-        return attempts.getLockoutStateId();
-    }
+    UUID getIdvId();
 
-    public UUID getIdvId() {
-        return attempts.getIdvId();
-    }
+    String getType();
 
-    public String getType() {
-        return lockoutType;
-    }
+    boolean isLocked();
 
-    public boolean isLocked() {
-        return locked;
-    }
+    int getNumberOfAttempts();
 
-    public int getNumberOfAttempts() {
-        return attempts.size();
-    }
+    boolean isTimeBased();
 
 }

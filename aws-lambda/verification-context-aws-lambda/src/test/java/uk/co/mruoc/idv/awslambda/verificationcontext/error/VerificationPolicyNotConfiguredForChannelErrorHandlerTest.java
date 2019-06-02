@@ -15,7 +15,7 @@ public class VerificationPolicyNotConfiguredForChannelErrorHandlerTest {
     private final JsonApiErrorHandler handler = new VerificationPolicyNotConfiguredForChannelErrorHandler();
 
     @Test
-    public void shouldSupportIdentityRequestInvalidException() {
+    public void shouldSupportException() {
         assertThat(handler.getSupportedExceptions()).containsExactly(VerificationPolicyNotConfiguredForChannelException.class);
     }
 

@@ -6,6 +6,7 @@ import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
 import uk.co.mruoc.idv.core.model.channel.Channel;
@@ -218,13 +219,13 @@ public class CreateVerificationContextServiceTest {
     }
 
     private static LockoutState buildLockedLockoutState() {
-        final LockoutState state = mock(LockoutState.class);
+        final LockoutState state = mock(DefaultLockoutState.class);
         given(state.isLocked()).willReturn(true);
         return state;
     }
 
     private static LockoutState buildNotLockedLockoutState() {
-        final LockoutState state = mock(LockoutState.class);
+        final LockoutState state = mock(DefaultLockoutState.class);
         given(state.isLocked()).willReturn(false);
         return state;
     }

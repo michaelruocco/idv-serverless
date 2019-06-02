@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 @Getter
-public class LockedTimeBasedLockoutState extends LockoutState {
+public class LockedTimeBasedLockoutState extends DefaultLockoutState implements TimeBasedLockoutState {
 
     private static final boolean LOCKED = true;
 
@@ -20,6 +20,11 @@ public class LockedTimeBasedLockoutState extends LockoutState {
         super(attempts, type, LOCKED);
         this.duration = duration;
         this.lockedUntil = lockedUntil;
+    }
+
+    @Override
+    public long getDurationInMillis() {
+        return duration.toMillis();
     }
 
 }

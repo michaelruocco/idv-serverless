@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService.LockoutStateIsLockedException;
 
@@ -9,7 +10,7 @@ import static org.mockito.Mockito.mock;
 
 public class LockoutStateIsLockedExceptionTest {
 
-    private final LockoutState state = mock(LockoutState.class);
+    private final LockoutState state = mock(DefaultLockoutState.class);
 
     @Test
     public void shouldReturnLockoutState() {

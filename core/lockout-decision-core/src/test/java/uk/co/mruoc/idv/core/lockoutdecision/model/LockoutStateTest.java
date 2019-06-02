@@ -14,7 +14,7 @@ public class LockoutStateTest {
     private final String lockoutType = LockoutType.MAX_ATTEMPTS;
     private final boolean locked = true;
 
-    private final LockoutState state = new LockoutState(attempts, lockoutType, locked);
+    private final LockoutState state = new DefaultLockoutState(attempts, lockoutType, locked);
 
     @Test
     public void shouldReturnId() {

@@ -15,7 +15,7 @@ public class VerificationPolicyNotConfiguredForActivityErrorHandlerTest {
     private final JsonApiErrorHandler handler = new VerificationPolicyNotConfiguredForActivityErrorHandler();
 
     @Test
-    public void shouldSupportIdentityRequestInvalidException() {
+    public void shouldSupportException() {
         assertThat(handler.getSupportedExceptions()).containsExactly(VerificationPolicyNotConfiguredForActivityException.class);
     }
 

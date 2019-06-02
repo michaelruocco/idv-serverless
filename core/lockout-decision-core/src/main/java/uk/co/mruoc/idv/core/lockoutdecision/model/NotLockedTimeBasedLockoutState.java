@@ -3,7 +3,7 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import lombok.Getter;
 
 @Getter
-public class NotLockedTimeBasedLockoutState extends LockoutState {
+public class NotLockedTimeBasedLockoutState extends DefaultLockoutState {
 
     private static final boolean NOT_LOCKED = false;
 
