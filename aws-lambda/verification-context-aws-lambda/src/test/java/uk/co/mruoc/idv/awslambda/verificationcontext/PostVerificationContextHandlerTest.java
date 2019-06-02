@@ -8,7 +8,6 @@ import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
 import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
 
 import static org.assertj.core.api.Assertions.assertThat;
