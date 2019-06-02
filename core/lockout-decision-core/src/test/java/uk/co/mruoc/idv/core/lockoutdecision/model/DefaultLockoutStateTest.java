@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class LockoutStateTest {
+public class DefaultLockoutStateTest {
 
     private final VerificationAttempts attempts = mock(VerificationAttempts.class);
     private final String lockoutType = LockoutType.MAX_ATTEMPTS;
@@ -58,6 +58,15 @@ public class LockoutStateTest {
         final int numberOfAttempts = state.getNumberOfAttempts();
 
         assertThat(numberOfAttempts).isEqualTo(expectedNumberOfAttempts);
+    }
+
+    @Test
+    public void shouldReturnIsTimeBased() {
+        final LockoutState timeBasedState = new DefaultLockoutState(attempts, LockoutType.TIME_BASED_RECURRING, locked);
+        assertThat(timeBasedState.isTimeBased()).isTrue();
+
+        final LockoutState maxAttemptsState = new DefaultLockoutState(attempts, LockoutType.MAX_ATTEMPTS, locked);
+        assertThat(maxAttemptsState.isTimeBased()).isFalse();
     }
 
 }
