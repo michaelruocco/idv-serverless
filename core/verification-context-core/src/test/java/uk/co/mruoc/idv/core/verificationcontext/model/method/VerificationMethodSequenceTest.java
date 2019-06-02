@@ -211,6 +211,24 @@ public class VerificationMethodSequenceTest {
                 "name=PUSH_NOTIFICATION, duration=0, status=AVAILABLE, properties={}))])");
     }
 
+    @Test
+    public void shouldReturnRegisterAttemptImmediatelyTrueIfRegisterAttemptStrategyIsImmediate() {
+        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.IMMEDIATE;
+
+        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
+
+        assertThat(sequence.shouldRegisterAttemptImmediately()).isTrue();
+    }
+
+    @Test
+    public void shouldReturnRegisterAttemptImmediatelyFalseIfRegisterAttemptStrategyIsNotImmediate() {
+        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
+
+        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
+
+        assertThat(sequence.shouldRegisterAttemptImmediately()).isFalse();
+    }
+
     private static class FakePhysicalPinsentryVerificationMethod extends PhysicalPinsentryVerificationMethod {
 
         private FakePhysicalPinsentryVerificationMethod() {

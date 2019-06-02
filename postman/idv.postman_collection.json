@@ -155,7 +155,7 @@
 			"response": []
 		},
 		{
-			"name": "Generate Token",
+			"name": "Generate token",
 			"event": [
 				{
 					"listen": "test",
@@ -479,8 +479,8 @@
 							"",
 							"pm.test(\"should return correct error\", function () {",
 							"    var json = JSON.parse(responseBody)",
-							"    pm.expect(json.errors[0].title).to.equal(\"No verification policies configured\");",
-							"    pm.expect(json.errors[0].detail).to.equal(\"No verification policies are configured for channel INVALID\");",
+							"    pm.expect(json.errors[0].title).to.equal(\"No lockout policies configured\");",
+							"    pm.expect(json.errors[0].detail).to.equal(\"No lockout policies are configured for channel INVALID\");",
 							"    pm.expect(json.errors[0].meta).to.eql({",
 							"        \"channelId\": \"INVALID\"",
 							"    });",

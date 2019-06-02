@@ -132,6 +132,10 @@ functions:
         Resource: ${self:custom.dynamoTables.identity.arn}
       - Effect: Allow
         Action:
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamoTables.verificationAttempt.arn}
+      - Effect: Allow
+        Action:
           - sns:Publish
         Resource: ${self:custom.topics.idvEvent.arn}
 

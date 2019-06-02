@@ -65,7 +65,7 @@ public class UkJwtPostTokensHandlerIntegrationTest {
         assertThat(decodedToken.getIssuer()).isEqualTo("uk-idv");
         assertThat(decodedToken.getId()).is(VALID_UUID);
         assertThat(decodedToken.getAudience()).isNull();
-        assertThat(decodedToken.getIssuedAt()).isCloseTo(Instant.now(), within(1, ChronoUnit.SECONDS));
+        assertThat(decodedToken.getIssuedAt()).isCloseTo(Instant.now(), within(2, ChronoUnit.SECONDS));
     }
 
     @Test

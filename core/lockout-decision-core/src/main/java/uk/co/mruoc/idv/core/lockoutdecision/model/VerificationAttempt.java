@@ -11,7 +11,7 @@ import java.util.Optional;
 @Getter
 @Builder
 @ToString
-public class VerificationAttempt {
+public class VerificationAttempt implements LoadLockoutStateRequest {
 
     private final String channelId;
     private final Instant timestamp;

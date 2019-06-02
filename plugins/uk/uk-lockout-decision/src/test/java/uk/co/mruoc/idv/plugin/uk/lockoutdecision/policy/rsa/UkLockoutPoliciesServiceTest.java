@@ -12,10 +12,18 @@ public class UkLockoutPoliciesServiceTest {
     private final LockoutPoliciesService policiesService = new UkLockoutPoliciesService();
 
     @Test
-    public void shouldReturnRsaChannelLockoutPoliciesForRsaChannel() {
+    public void shouldReturnRsaChannelLockoutPolicies() {
         final ChannelLockoutPolicies policies = policiesService.getPoliciesForChannel(UkChannel.Ids.RSA);
 
         assertThat(policies).isInstanceOf(RsaChannelLockoutPolicies.class);
+    }
+
+
+    @Test
+    public void shouldReturnAs3ChannelLockoutPolicies() {
+        final ChannelLockoutPolicies policies = policiesService.getPoliciesForChannel(UkChannel.Ids.AS3);
+
+        assertThat(policies).isInstanceOf(As3ChannelLockoutPolicies.class);
     }
 
 }

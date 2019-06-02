@@ -9,6 +9,7 @@ import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestE
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.service.AliasLoadFailedException;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderService.AliasTypeNotSupportedException;
+import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService.LockoutPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
@@ -87,6 +88,19 @@ public class PostVerificationContextErrorHandlerDelegatorTest {
         assertThat(errors).hasSize(1);
         final JsonApiErrorItem item = new AliasLoadFailedErrorItem(alias);
         assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(item);
+    }
+
+    @Test
+    public void shouldConvertLockoutPolicyNotConfiguredForChannelExceptionToErrorDocument() {
+        final String channelId = "channelId";
+        final Exception exception = new LockoutPolicyNotConfiguredForChannelException(channelId);
+
+        final JsonApiErrorDocument document = delegator.toDocument(exception);
+
+        final List<JsonApiErrorItem> errors = document.getErrors();
+        assertThat(errors).hasSize(1);
+        final JsonApiErrorItem expectedItem = new LockoutPolicyNotConfiguredForChannelErrorItem(channelId);
+        assertThat(errors.get(0)).isEqualToComparingFieldByFieldRecursively(expectedItem);
     }
 
     @Test

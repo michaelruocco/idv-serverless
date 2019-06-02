@@ -55,7 +55,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
     }
 
     @Test
-    public void shouldReturnLockoutType() {
+    public void shouldPopulateLockoutType() {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Collections.emptyList())
                 .build();
@@ -111,7 +111,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
         final LockoutState state = policy.calculateLockoutState(request);
 
-        assertThat(state.getNumberOfAttempts()).isEqualTo(2);
+        assertThat(state.getNumberOfAttempts()).isEqualTo(attempts.size());
     }
 
     @Test

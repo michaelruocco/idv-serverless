@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies.LockoutPolicyNotConfiguredForAttemptException;
+import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies.LockoutPolicyNotConfiguredForRequestException;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public class ChannelLockoutPoliciesTest {
 
         final Throwable cause = catchThrowable(() -> policies.getPolicyFor(attempt));
 
-        assertThat(cause).isInstanceOf(LockoutPolicyNotConfiguredForAttemptException.class);
+        assertThat(cause).isInstanceOf(LockoutPolicyNotConfiguredForRequestException.class);
     }
 
     @Test

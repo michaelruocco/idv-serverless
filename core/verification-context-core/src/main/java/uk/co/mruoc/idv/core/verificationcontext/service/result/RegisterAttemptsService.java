@@ -32,7 +32,7 @@ public class RegisterAttemptsService {
     private boolean shouldRegisterAttempt(final RegisterAttemptsRequest request, final VerificationMethodResult newResult) {
         final VerificationContext context = request.getContext();
         final VerificationMethodSequence sequence = sequenceExtractor.extractSequence(context, newResult);
-        if (sequence.shouldFailImmediately()) {
+        if (sequence.shouldRegisterAttemptImmediately()) {
             log.info("registering attempt for result {} as sequence {} should fail immediately", newResult, sequence);
             return true;
         }

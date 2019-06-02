@@ -13,13 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class RsaChannelLockoutPoliciesTest {
+public class As3ChannelLockoutPoliciesTest {
 
-    private final ChannelLockoutPolicies policies = new RsaChannelLockoutPolicies();
+    private final ChannelLockoutPolicies policies = new As3ChannelLockoutPolicies();
 
     @Test
     public void shouldReturnChannelId() {
-        assertThat(policies.getChannelId()).isEqualTo(UkChannel.Ids.RSA);
+        assertThat(policies.getChannelId()).isEqualTo(UkChannel.Ids.AS3);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class RsaChannelLockoutPoliciesTest {
 
         final LockoutPolicy policy = policies.getPolicyFor(attempt);
 
-        assertThat(policy).isInstanceOf(RsaMaxAttemptsLockoutPolicy.class);
+        assertThat(policy).isInstanceOf(As3TimeBasedLockoutPolicy.class);
     }
 
 }

@@ -42,7 +42,7 @@ public class RegisterAttemptsServiceTest {
         final VerificationContext context = mock(VerificationContext.class);
         given(request.getContext()).willReturn(context);
         final VerificationMethodSequence sequence = mock(VerificationMethodSequence.class);
-        given(sequence.shouldFailImmediately()).willReturn(true);
+        given(sequence.shouldRegisterAttemptImmediately()).willReturn(true);
         given(sequenceExtractor.extractSequence(context, newResult)).willReturn(sequence);
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
         given(converter.toAttempt(context, newResult)).willReturn(attempt);
@@ -65,7 +65,7 @@ public class RegisterAttemptsServiceTest {
         final VerificationContext context = mock(VerificationContext.class);
         given(request.getContext()).willReturn(context);
         final VerificationMethodSequence sequence = mock(VerificationMethodSequence.class);
-        given(sequence.shouldFailImmediately()).willReturn(true);
+        given(sequence.shouldRegisterAttemptImmediately()).willReturn(true);
         given(sequenceExtractor.extractSequence(context, newResult1)).willReturn(sequence);
         given(sequenceExtractor.extractSequence(context, newResult2)).willReturn(sequence);
         final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
@@ -91,7 +91,7 @@ public class RegisterAttemptsServiceTest {
         final VerificationContext context = mock(VerificationContext.class);
         given(request.getContext()).willReturn(context);
         final VerificationMethodSequence sequence = mock(VerificationMethodSequence.class);
-        given(sequence.shouldFailImmediately()).willReturn(true);
+        given(sequence.shouldRegisterAttemptImmediately()).willReturn(true);
         given(sequenceExtractor.extractSequence(context, newResult)).willReturn(sequence);
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
         given(converter.toAttempt(context, newResult)).willReturn(attempt);
@@ -114,7 +114,7 @@ public class RegisterAttemptsServiceTest {
         final VerificationContext context = mock(VerificationContext.class);
         given(request.getContext()).willReturn(context);
         final VerificationMethodSequence sequence = mock(VerificationMethodSequence.class);
-        given(sequence.shouldFailImmediately()).willReturn(false);
+        given(sequence.shouldRegisterAttemptImmediately()).willReturn(false);
         final VerificationMethodResults allResults = mock(VerificationMethodResults.class);
         given(existingResults.add(newResult)).willReturn(allResults);
         given(sequence.isComplete(allResults)).willReturn(false);
@@ -138,7 +138,7 @@ public class RegisterAttemptsServiceTest {
         final VerificationContext context = mock(VerificationContext.class);
         given(request.getContext()).willReturn(context);
         final VerificationMethodSequence sequence = mock(VerificationMethodSequence.class);
-        given(sequence.shouldFailImmediately()).willReturn(false);
+        given(sequence.shouldRegisterAttemptImmediately()).willReturn(false);
         final VerificationMethodResults allResults = mock(VerificationMethodResults.class);
         given(existingResults.add(newResult)).willReturn(allResults);
         given(sequence.isComplete(allResults)).willReturn(true);

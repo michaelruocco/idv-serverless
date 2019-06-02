@@ -10,8 +10,11 @@ import uk.co.mruoc.idv.awslambda.identity.IdentityServiceFactory;
 import uk.co.mruoc.idv.awslambda.verificationcontext.PostVerificationContextHandler;
 import uk.co.mruoc.idv.awslambda.verificationcontext.CreateVerificationContextServiceFactory;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
+import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
+import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
+import uk.co.mruoc.idv.dao.lockoutdecision.FakeVerificationAttemptsDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.events.EventPublisher;
 import uk.co.mruoc.idv.events.sns.fake.FakeEventPublisher;
@@ -19,6 +22,7 @@ import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 import uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkIdentityServiceFactory;
+import uk.co.mruoc.idv.plugin.uk.lockoutdecision.policy.rsa.UkLockoutPoliciesService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
@@ -29,7 +33,9 @@ public class UkPostVerificationContextHandlerIntegrationTest {
     private final VerificationContextDao contextDao = new FakeVerificationContextDao();
     private final EventPublisher eventPublisher = new FakeEventPublisher();
     private final IdentityServiceFactory serviceFactory = new UkIdentityServiceFactory(identityDao);
-    private final CreateVerificationContextServiceFactory factory = new UkPostVerificationContextServiceFactory(serviceFactory, contextDao, eventPublisher);
+    private final VerificationAttemptsDao attemptsDao = new FakeVerificationAttemptsDao();
+    private final LockoutPoliciesService lockoutPoliciesService = new UkLockoutPoliciesService();
+    private final CreateVerificationContextServiceFactory factory = new UkPostVerificationContextServiceFactory(serviceFactory,contextDao, eventPublisher, attemptsDao, lockoutPoliciesService);
     private final PostVerificationContextHandler handler = new UkPostVerificationContextHandler(factory.build());
 
     @Test

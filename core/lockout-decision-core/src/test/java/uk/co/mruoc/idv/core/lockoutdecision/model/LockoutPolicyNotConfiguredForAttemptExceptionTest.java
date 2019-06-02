@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
-import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies.LockoutPolicyNotConfiguredForAttemptException;
+import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies.LockoutPolicyNotConfiguredForRequestException;
 
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public class LockoutPolicyNotConfiguredForAttemptExceptionTest {
         given(attempt.getActivityType()).willReturn(ACTIVITY_TYPE_NAME);
         given(attempt.getMethodName()).willReturn(Optional.empty());
 
-        final LockoutPolicyNotConfiguredForAttemptException exception = new LockoutPolicyNotConfiguredForAttemptException(attempt);
+        final LockoutPolicyNotConfiguredForRequestException exception = new LockoutPolicyNotConfiguredForRequestException(attempt);
 
         assertThat(exception.getActivityType()).isEqualTo(ACTIVITY_TYPE_NAME);
     }
@@ -34,7 +34,7 @@ public class LockoutPolicyNotConfiguredForAttemptExceptionTest {
         given(attempt.getAliasTypeName()).willReturn(ALIAS_TYPE_NAME);
         given(attempt.getMethodName()).willReturn(Optional.empty());
 
-        final LockoutPolicyNotConfiguredForAttemptException exception = new LockoutPolicyNotConfiguredForAttemptException(attempt);
+        final LockoutPolicyNotConfiguredForRequestException exception = new LockoutPolicyNotConfiguredForRequestException(attempt);
 
         assertThat(exception.getAliasTypeName()).isEqualTo(ALIAS_TYPE_NAME);
     }
@@ -43,7 +43,7 @@ public class LockoutPolicyNotConfiguredForAttemptExceptionTest {
     public void shouldReturnMethodName() {
         given(attempt.getMethodName()).willReturn(Optional.of(METHOD_NAME));
 
-        final LockoutPolicyNotConfiguredForAttemptException exception = new LockoutPolicyNotConfiguredForAttemptException(attempt);
+        final LockoutPolicyNotConfiguredForRequestException exception = new LockoutPolicyNotConfiguredForRequestException(attempt);
 
         assertThat(exception.getMethodName()).contains(METHOD_NAME);
     }
@@ -55,7 +55,7 @@ public class LockoutPolicyNotConfiguredForAttemptExceptionTest {
         given(attempt.getAliasTypeName()).willReturn(ALIAS_TYPE_NAME);
         given(attempt.getMethodName()).willReturn(Optional.of(METHOD_NAME));
 
-        final Throwable cause = new LockoutPolicyNotConfiguredForAttemptException(attempt);
+        final Throwable cause = new LockoutPolicyNotConfiguredForRequestException(attempt);
 
         assertThat(cause.getMessage()).isEqualTo(expectedMessage);
     }

@@ -4,7 +4,7 @@ public interface LockoutPolicy {
 
     String getType();
 
-    boolean appliesTo(final VerificationAttempt attempt);
+    boolean appliesTo(final LoadLockoutStateRequest attempt);
 
     VerificationAttempts reset(final VerificationAttempts attempts);
 

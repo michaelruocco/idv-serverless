@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
+import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
@@ -48,7 +49,7 @@ public class PostVerificationContextHandlerTest {
     @Test
     public void shouldCreateVerificationContext() {
         final APIGatewayProxyRequestEvent requestEvent = new APIGatewayProxyRequestEvent();
-        final VerificationContextRequest contextRequest = mock(VerificationContextRequest.class);
+        final AbstractVerificationContextRequest contextRequest = mock(AbstractVerificationContextRequest.class);
         given(requestExtractor.extractRequest(requestEvent)).willReturn(contextRequest);
 
         final VerificationContext context = mock(VerificationContext.class);

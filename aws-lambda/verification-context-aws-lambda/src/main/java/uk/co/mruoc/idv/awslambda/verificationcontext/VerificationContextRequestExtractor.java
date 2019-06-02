@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import lombok.RequiredArgsConstructor;
+import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.JsonConverter.JsonConversionException;
@@ -12,7 +13,7 @@ public class VerificationContextRequestExtractor {
 
     private final JsonConverter converter;
 
-    public VerificationContextRequest extractRequest(final APIGatewayProxyRequestEvent input) {
+    public AbstractVerificationContextRequest extractRequest(final APIGatewayProxyRequestEvent input) {
         try {
             final VerificationContextRequestDocument document = converter.toObject(input.getBody(), VerificationContextRequestDocument.class);
             return document.getRequest();

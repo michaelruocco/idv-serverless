@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LoadLockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
@@ -50,10 +51,10 @@ public class LockoutStateService {
         return update(policy, attempts, attempt);
     }
 
-    public LockoutState load(final VerificationAttempt attempt) {
-        log.info("loading lockout state for attempt {}", attempt);
-        final LockoutPolicy policy = loadPolicy(attempt);
-        final Alias alias = attempt.getAlias();
+    public LockoutState load(final LoadLockoutStateRequest request) {
+        log.info("loading lockout state for request {}", request);
+        final LockoutPolicy policy = loadPolicy(request);
+        final Alias alias = request.getAlias();
         final VerificationAttempts attempts = loadAttempts(alias);
         return calculateLockoutState(policy, attempts);
     }
@@ -62,9 +63,9 @@ public class LockoutStateService {
         return loadAttemptsService.load(alias);
     }
 
-    private LockoutPolicy loadPolicy(final VerificationAttempt attempt) {
-        final ChannelLockoutPolicies policies = policiesService.getPoliciesForChannel(attempt.getChannelId());
-        return policies.getPolicyFor(attempt);
+    private LockoutPolicy loadPolicy(final LoadLockoutStateRequest request) {
+        final ChannelLockoutPolicies policies = policiesService.getPoliciesForChannel(request.getChannelId());
+        return policies.getPolicyFor(request);
     }
 
     private LockoutState reset(final LockoutPolicy policy, final VerificationAttempts attempts) {

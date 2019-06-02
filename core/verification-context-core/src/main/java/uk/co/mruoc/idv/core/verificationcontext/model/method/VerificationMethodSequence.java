@@ -90,7 +90,7 @@ public class VerificationMethodSequence {
                 .orElseThrow(() -> new VerificationMethodNotFoundInSequenceException(methodName));
     }
 
-    public boolean shouldFailImmediately() {
+    public boolean shouldRegisterAttemptImmediately() {
         return RegisterAttemptStrategy.IMMEDIATE.equals(registerAttemptStrategy);
     }
 

@@ -15,7 +15,8 @@ public class PostVerificationContextErrorHandlerDelegator extends ErrorHandlerDe
                 new VerificationPolicyNotConfiguredForChannelErrorHandler(),
                 new VerificationPolicyNotConfiguredForActivityErrorHandler(),
                 new AliasTypeNotSupportedErrorHandler(),
-                new AliasLoadFailedErrorHandler()));
+                new AliasLoadFailedErrorHandler(),
+                new LockoutPolicyNotConfiguredForChannelErrorHandler()));
     }
 
 }

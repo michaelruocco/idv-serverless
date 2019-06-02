@@ -6,12 +6,14 @@ import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
 import uk.co.mruoc.idv.core.model.channel.Channel;
 import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
+import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
@@ -22,6 +24,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerification
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.PushNotificationMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationSequencePolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationPolicy;
+import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService.LockoutStateIsLockedException;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.idv.events.EventPublisher;
 
@@ -54,6 +57,7 @@ public class CreateVerificationContextServiceTest {
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
     private final VerificationContextConverter contextConverter = mock(VerificationContextConverter.class);
     private final EventPublisher eventPublisher = mock(EventPublisher.class);
+    private final LockoutStateService lockoutStateService = mock(LockoutStateService.class);
 
     private final CreateVerificationContextService service = CreateVerificationContextService.builder()
             .requestConverter(requestConverter)
@@ -66,12 +70,24 @@ public class CreateVerificationContextServiceTest {
             .dao(dao)
             .contextConverter(contextConverter)
             .eventPublisher(eventPublisher)
+            .lockoutStateService(lockoutStateService)
             .build();
 
     @Test
+    public void shouldThrowExceptionIfLockoutStateIsLocked() {
+        final AbstractVerificationContextRequest request = buildRequest();
+        givenLockoutStateIsLocked(request);
+
+        final Throwable thrown = catchThrowable(() -> service.create(request));
+
+        assertThat(thrown).isInstanceOf(LockoutStateIsLockedException.class);
+    }
+
+    @Test
     public void shouldThrowExceptionIfVerificationPolicyNotConfiguredForChannel() {
-        final VerificationContextRequest request = buildRequest();
+        final AbstractVerificationContextRequest request = buildRequest();
         final Channel channel = request.getChannel();
+        givenLockoutStateIsNotLocked(request);
         doThrow(VerificationPolicyNotConfiguredForChannelException.class).when(policiesService).getPoliciesForChannel(channel.getId());
 
         final Throwable thrown = catchThrowable(() -> service.create(request));
@@ -81,10 +97,11 @@ public class CreateVerificationContextServiceTest {
 
     @Test
     public void shouldThrowExceptionIfVerificationPolicyNotConfiguredForActivity() {
-        final VerificationContextRequest request = buildRequest();
+        final AbstractVerificationContextRequest request = buildRequest();
         final Channel channel = request.getChannel();
         final Activity activity = request.getActivity();
         final ChannelVerificationPolicies policies = mock(ChannelVerificationPolicies.class);
+        givenLockoutStateIsNotLocked(request);
         given(policiesService.getPoliciesForChannel(channel.getId())).willReturn(policies);
         doThrow(VerificationPolicyNotConfiguredForActivityException.class).when(policies).getPolicyFor(activity.getType());
 
@@ -95,7 +112,8 @@ public class CreateVerificationContextServiceTest {
 
     @Test
     public void shouldCreateVerificationContext() {
-        final VerificationContextRequest request = buildRequest();
+        final AbstractVerificationContextRequest request = buildRequest();
+        givenLockoutStateIsNotLocked(request);
 
         final UpsertIdentityRequest upsertIdentityRequest = mock(UpsertIdentityRequest.class);
         given(requestConverter.toUpsertIdentityRequest(request)).willReturn(upsertIdentityRequest);
@@ -138,7 +156,8 @@ public class CreateVerificationContextServiceTest {
 
     @Test
     public void shouldPassCorrectRequestToVerificationMethodsService() {
-        final VerificationContextRequest request = buildRequest();
+        final AbstractVerificationContextRequest request = buildRequest();
+        givenLockoutStateIsNotLocked(request);
 
         final UpsertIdentityRequest upsertIdentityRequest = mock(UpsertIdentityRequest.class);
         given(requestConverter.toUpsertIdentityRequest(request)).willReturn(upsertIdentityRequest);
@@ -174,8 +193,8 @@ public class CreateVerificationContextServiceTest {
         assertThat(methodsRequest.getPolicy()).isEqualTo(channelPolicies.getPolicyFor(request.getActivity().getType()));
     }
 
-    private static VerificationContextRequest buildRequest() {
-        final VerificationContextRequest request = mock(VerificationContextRequest.class);
+    private static AbstractVerificationContextRequest buildRequest() {
+        final AbstractVerificationContextRequest request = mock(AbstractVerificationContextRequest.class);
         given(request.getChannel()).willReturn(new DefaultChannel(CHANNEL_ID));
         given(request.getProvidedAlias()).willReturn(new IdvIdAlias());
         given(request.getActivity()).willReturn(new LoginActivity(Instant.now()));
@@ -186,6 +205,28 @@ public class CreateVerificationContextServiceTest {
         final VerificationSequencePolicy entry = new VerificationSequencePolicy(new PushNotificationMethodPolicy());
         final Collection<VerificationPolicy> policies = Collections.singleton(new VerificationPolicy(Activity.Types.LOGIN, Collections.singleton(entry)));
         return new ChannelVerificationPolicies(CHANNEL_ID, policies);
+    }
+
+    private void givenLockoutStateIsLocked(final AbstractVerificationContextRequest request) {
+        final LockoutState state = buildLockedLockoutState();
+        given(lockoutStateService.load(request)).willReturn(state);
+    }
+
+    private void givenLockoutStateIsNotLocked(final AbstractVerificationContextRequest request) {
+        final LockoutState state = buildNotLockedLockoutState();
+        given(lockoutStateService.load(request)).willReturn(state);
+    }
+
+    private static LockoutState buildLockedLockoutState() {
+        final LockoutState state = mock(LockoutState.class);
+        given(state.isLocked()).willReturn(true);
+        return state;
+    }
+
+    private static LockoutState buildNotLockedLockoutState() {
+        final LockoutState state = mock(LockoutState.class);
+        given(state.isLocked()).willReturn(false);
+        return state;
     }
 
 }

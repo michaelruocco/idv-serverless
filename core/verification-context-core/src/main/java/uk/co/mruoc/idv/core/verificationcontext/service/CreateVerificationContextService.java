@@ -4,9 +4,12 @@ import lombok.Builder;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
 import uk.co.mruoc.idv.core.model.channel.Channel;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
+import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
@@ -32,14 +35,23 @@ public class CreateVerificationContextService {
     private final VerificationContextDao dao;
     private final VerificationContextConverter contextConverter;
     private final EventPublisher eventPublisher;
+    private final LockoutStateService lockoutStateService;
 
-    public VerificationContext create(final VerificationContextRequest request) {
+    public VerificationContext create(final AbstractVerificationContextRequest request) {
         final UpsertIdentityRequest upsertIdentityRequest = requestConverter.toUpsertIdentityRequest(request);
         final Identity identity = identityService.upsert(upsertIdentityRequest);
+        validateLockoutState(request);
         final VerificationContext context = buildContext(request, identity);
         dao.save(context);
         eventPublisher.publish(contextConverter.toCreatedEvent(context));
         return context;
+    }
+
+    private void validateLockoutState(final AbstractVerificationContextRequest request) {
+        final LockoutState state = lockoutStateService.load(request);
+        if (state.isLocked()) {
+            throw new LockoutStateIsLockedException(state);
+        }
     }
 
     private VerificationContext buildContext(final VerificationContextRequest request, final Identity identity) {
@@ -73,6 +85,21 @@ public class CreateVerificationContextService {
                 .policy(policy)
                 .build();
         return verificationMethodsService.loadMethodSequences(methodsRequest);
+    }
+
+    public static class LockoutStateIsLockedException extends RuntimeException {
+
+        private final LockoutState state;
+
+        public LockoutStateIsLockedException(final LockoutState state) {
+            super(String.format("cannot create verification context lockout state is locked %s", state));
+            this.state = state;
+        }
+
+        public LockoutState getLockoutState() {
+            return state;
+        }
+
     }
 
 }

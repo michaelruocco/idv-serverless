@@ -3,6 +3,7 @@ package uk.co.mruoc.idv.awslambda.verificationcontext;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestExtractor.InvalidVerificationContextRequestException;
+import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.JsonConverter.JsonConversionException;
@@ -38,7 +39,7 @@ public class VerificationContextRequestExtractorTest {
         final APIGatewayProxyRequestEvent event = new APIGatewayProxyRequestEvent().withBody(body);
         final VerificationContextRequestDocument document = mock(VerificationContextRequestDocument.class);
         given(converter.toObject(body, VerificationContextRequestDocument.class)).willReturn(document);
-        final VerificationContextRequest expectedRequest = mock(VerificationContextRequest.class);
+        final AbstractVerificationContextRequest expectedRequest = mock(AbstractVerificationContextRequest.class);
         given(document.getRequest()).willReturn(expectedRequest);
 
         final VerificationContextRequest request = extractor.extractRequest(event);

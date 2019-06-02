@@ -9,8 +9,8 @@ import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.verificationcontext.error.PostVerificationContextErrorHandlerDelegator;
+import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
 import uk.co.mruoc.idv.json.JsonConverterFactory;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
@@ -47,6 +47,7 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
         try {
             return createContext(input);
         } catch (final Exception e) {
+            log.error("caught exception trying to create verification context", e);
             final APIGatewayProxyResponseEvent response = exceptionConverter.toResponse(e);
             log.info("returning response {}", response);
             return response;
@@ -55,7 +56,7 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
 
     private APIGatewayProxyResponseEvent createContext(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
-        final VerificationContextRequest request = requestExtractor.extractRequest(requestEvent);
+        final AbstractVerificationContextRequest request = requestExtractor.extractRequest(requestEvent);
         final VerificationContext context = service.create(request);
         final APIGatewayProxyResponseEvent responseEvent = responseFactory.toResponseEvent(context);
         log.info("returning response {}", responseEvent);

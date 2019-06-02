@@ -54,12 +54,12 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
     }
 
     @Override
-    public boolean appliesTo(final VerificationAttempt attempt) {
-        log.info("checking that attempt {} applies to policy {}", attempt, this);
-        final boolean applies = appliesToAlias(attempt.getAliasTypeName()) &&
-                appliesToActivity(attempt.getActivityType());
+    public boolean appliesTo(final LoadLockoutStateRequest request) {
+        log.info("checking that request {} applies to policy {}", request, this);
+        final boolean applies = appliesToAlias(request.getAliasTypeName()) &&
+                appliesToActivity(request.getActivityType());
 
-        final Optional<String> methodName = attempt.getMethodName();
+        final Optional<String> methodName = request.getMethodName();
         return methodName.map(s -> applies && appliesToMethod(s)).orElse(applies);
     }
 
