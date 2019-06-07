@@ -1,15 +1,18 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
-import lombok.Builder;
-import lombok.Getter;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 
-import java.time.Instant;
+import java.util.Optional;
 
-@Builder
-@Getter
-public class LockoutStateRequest {
+public interface LoadLockoutStateRequest {
+    
+    String getChannelId();
+    
+    Alias getAlias();
 
-    private final VerificationAttempts attempts;
-    private final Instant timestamp;
+    String getActivityType();
 
+    String getAliasTypeName();
+
+    Optional<String> getMethodName();
 }

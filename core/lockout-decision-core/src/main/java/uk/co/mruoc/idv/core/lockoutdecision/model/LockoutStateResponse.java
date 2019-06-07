@@ -4,7 +4,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 
 import java.util.Optional;
 
-public interface LoadLockoutStateRequest {
+public interface LockoutStateRequest {
     
     String getChannelId();
     
@@ -15,4 +15,5 @@ public interface LoadLockoutStateRequest {
     String getAliasTypeName();
 
     Optional<String> getMethodName();
+
 }
