@@ -7,7 +7,7 @@ public class NonLockingLockoutStateCalculator implements LockoutStateCalculator 
 
     @Override
     public LockoutState calculateLockoutState(final CalculateLockoutStateRequest request) {
-        log.info("calculating time based lock from calculator {} with request {}", this, request);
+        log.info("calculating lock from calculator {} with request {}", this, request);
         return NonLockingLockoutState.builder()
                 .attempts(request.getAttempts())
                 .build();

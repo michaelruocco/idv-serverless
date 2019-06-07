@@ -1,0 +1,16 @@
+dependencies {
+    compile project(':aws-lambda:lockout-decision-aws-lambda')
+    compile project(':plugins:uk:uk-lockout-decision')
+    compile project(':plugins:uk:uk-aws-lambda:uk-identity-aws-lambda')
+    compile project(':dao:lockout-decision:lockout-decision-dao-dynamodb')
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip

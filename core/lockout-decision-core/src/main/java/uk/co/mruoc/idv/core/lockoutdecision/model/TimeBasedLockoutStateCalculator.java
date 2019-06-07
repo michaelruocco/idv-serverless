@@ -17,7 +17,7 @@ public class TimeBasedLockoutStateCalculator implements LockoutStateCalculator {
 
     @Override
     public LockoutState calculateLockoutState(final CalculateLockoutStateRequest request) {
-        log.info("calculating time based lock from calculator {} with request {} and intervals {}", this, request, intervals);
+        log.info("calculating lock from calculator {} with request {} and intervals {}", this, request, intervals);
 
         final VerificationAttempts attempts = request.getAttempts();
         final Optional<TimeBasedInterval> interval = intervals.getInternalFor(attempts.size());

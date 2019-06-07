@@ -19,6 +19,7 @@ include 'plugins:uk:uk-lockout-decision'
 include 'plugins:uk:uk-aws-lambda:uk-authorizer-aws-lambda'
 include 'plugins:uk:uk-aws-lambda:uk-identity-aws-lambda'
 include 'plugins:uk:uk-aws-lambda:uk-verification-context-aws-lambda'
+include 'plugins:uk:uk-aws-lambda:uk-lockout-decision-aws-lambda'
 
 include 'json:identity-json'
 include 'json:verification-context-json'
