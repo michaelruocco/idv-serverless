@@ -1,29 +1,29 @@
-package uk.co.mruoc.idv.awslambda.verificationcontext;
+package uk.co.mruoc.idv.awslambda.lockoutdecision;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import lombok.RequiredArgsConstructor;
-import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.JsonConverter.JsonConversionException;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextRequestDocument;
+import uk.co.mruoc.idv.jsonapi.lockoutdecision.LockoutStateRequestDocument;
 
 @RequiredArgsConstructor
-public class VerificationContextRequestExtractor {
+public class LockoutStateRequestExtractor {
 
     private final JsonConverter converter;
 
-    public AbstractVerificationContextRequest extractRequest(final APIGatewayProxyRequestEvent input) {
+    public LockoutStateRequest extractRequest(final APIGatewayProxyRequestEvent input) {
         try {
-            final VerificationContextRequestDocument document = converter.toObject(input.getBody(), VerificationContextRequestDocument.class);
+            final LockoutStateRequestDocument document = converter.toObject(input.getBody(), LockoutStateRequestDocument.class);
             return document.getRequest();
         } catch (final JsonConversionException e) {
-            throw new InvalidVerificationContextRequestException(e);
+            throw new InvalidLockoutStateRequestException(e);
         }
     }
 
-    public static class InvalidVerificationContextRequestException extends RuntimeException {
+    public static class InvalidLockoutStateRequestException extends RuntimeException {
 
-        public InvalidVerificationContextRequestException(final Throwable cause) {
+        public InvalidLockoutStateRequestException(final Throwable cause) {
             super(cause);
         }
 

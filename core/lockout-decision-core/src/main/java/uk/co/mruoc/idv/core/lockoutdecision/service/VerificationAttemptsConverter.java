@@ -1,6 +1,6 @@
 package uk.co.mruoc.idv.core.lockoutdecision.service;
 
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.CalculateLockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 import uk.co.mruoc.idv.core.service.TimeService;
 
@@ -12,8 +12,8 @@ public class VerificationAttemptsConverter {
         this.timeService = timeService;
     }
 
-    public LockoutStateRequest toRequest(final VerificationAttempts attempts) {
-        return LockoutStateRequest.builder()
+    public CalculateLockoutStateRequest toRequest(final VerificationAttempts attempts) {
+        return CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(timeService.now())
                 .build();

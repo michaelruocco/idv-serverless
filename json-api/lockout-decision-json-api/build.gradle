@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':json-api')
+    compile project(':core:lockout-decision-core')
+    compile project(':json:lockout-decision-json')
+    compile project(':json:identity-json')
+}

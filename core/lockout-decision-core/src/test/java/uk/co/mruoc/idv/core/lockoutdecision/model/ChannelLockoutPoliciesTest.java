@@ -3,8 +3,6 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies.LockoutPolicyNotConfiguredForRequestException;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
@@ -25,7 +23,6 @@ public class ChannelLockoutPoliciesTest {
     public void shouldThrowExceptionIfNoPolicyConfiguredForAttempt() {
         final ChannelLockoutPolicies policies = new ChannelLockoutPolicies(CHANNEL_ID);
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getMethodName()).willReturn(Optional.empty());
 
         final Throwable cause = catchThrowable(() -> policies.getPolicyFor(attempt));
 
@@ -38,7 +35,6 @@ public class ChannelLockoutPoliciesTest {
         final ChannelLockoutPolicies policies = new ChannelLockoutPolicies(CHANNEL_ID, expectedPolicy);
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
         given(expectedPolicy.appliesTo(attempt)).willReturn(true);
-        given(attempt.getMethodName()).willReturn(Optional.empty());
 
         final LockoutPolicy actualPolicy = policies.getPolicyFor(attempt);
 

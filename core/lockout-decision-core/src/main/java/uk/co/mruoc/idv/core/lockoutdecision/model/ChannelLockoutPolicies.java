@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Optional;
 
 public class ChannelLockoutPolicies {
 
@@ -22,7 +21,7 @@ public class ChannelLockoutPolicies {
         return this.channelId;
     }
 
-    public LockoutPolicy getPolicyFor(final LoadLockoutStateRequest request) {
+    public LockoutPolicy getPolicyFor(final LockoutStateRequest request) {
         return policies.stream()
                 .filter(policy -> policy.appliesTo(request))
                 .findFirst()
@@ -33,9 +32,9 @@ public class ChannelLockoutPolicies {
 
         private static final String MESSAGE_FORMAT = "no policy configured for activity %s and alias %s";
 
-        private final LoadLockoutStateRequest request;
+        private final LockoutStateRequest request;
 
-        public LockoutPolicyNotConfiguredForRequestException(final LoadLockoutStateRequest request) {
+        public LockoutPolicyNotConfiguredForRequestException(final LockoutStateRequest request) {
             super(buildMessage(request));
             this.request = request;
         }
@@ -48,16 +47,8 @@ public class ChannelLockoutPolicies {
             return request.getAliasTypeName();
         }
 
-        public Optional<String> getMethodName() {
-            return request.getMethodName();
-        }
-
-        private static String buildMessage(final LoadLockoutStateRequest request) {
-            final StringBuilder message = new StringBuilder(String.format(MESSAGE_FORMAT, request.getActivityType(), request.getAliasTypeName()));
-            if (request.getMethodName().isPresent()) {
-                return message.append(String.format(" and method %s", request.getMethodName().get())).toString();
-            }
-            return message.toString();
+        private static String buildMessage(final LockoutStateRequest request) {
+            return String.format(MESSAGE_FORMAT, request.getActivityType(), request.getAliasTypeName());
         }
 
     }

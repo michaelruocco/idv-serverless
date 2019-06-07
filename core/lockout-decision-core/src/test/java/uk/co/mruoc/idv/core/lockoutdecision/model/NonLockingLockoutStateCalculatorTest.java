@@ -11,7 +11,7 @@ public class NonLockingLockoutStateCalculatorTest {
     @Test
     public void shouldAlwaysReturnNotLockedLockoutState() {
         final VerificationAttempts attempts = VerificationAttempts.builder().build();
-        final LockoutStateRequest request = buildRequest(attempts);
+        final CalculateLockoutStateRequest request = buildRequest(attempts);
 
         final LockoutState state = calculator.calculateLockoutState(request);
 
@@ -21,7 +21,7 @@ public class NonLockingLockoutStateCalculatorTest {
     @Test
     public void shouldReturnNumberOfAttempts() {
         final VerificationAttempts attempts = VerificationAttempts.builder().build();
-        final LockoutStateRequest request = buildRequest(attempts);
+        final CalculateLockoutStateRequest request = buildRequest(attempts);
 
         final LockoutState state = calculator.calculateLockoutState(request);
 
@@ -30,7 +30,7 @@ public class NonLockingLockoutStateCalculatorTest {
 
     @Test
     public void shouldReturnNonLockingLockoutState() {
-        final LockoutStateRequest request = buildRequest();
+        final CalculateLockoutStateRequest request = buildRequest();
 
         final LockoutState state = calculator.calculateLockoutState(request);
 
@@ -44,13 +44,13 @@ public class NonLockingLockoutStateCalculatorTest {
         assertThat(type).isEqualTo(LockoutType.NON_LOCKING);
     }
 
-    private static LockoutStateRequest buildRequest(final VerificationAttempts attempts) {
-        return LockoutStateRequest.builder()
+    private static CalculateLockoutStateRequest buildRequest(final VerificationAttempts attempts) {
+        return CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
     }
 
-    private static LockoutStateRequest buildRequest() {
+    private static CalculateLockoutStateRequest buildRequest() {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .build();
         return buildRequest(attempts);

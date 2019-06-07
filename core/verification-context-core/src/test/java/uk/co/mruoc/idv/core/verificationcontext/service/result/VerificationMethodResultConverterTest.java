@@ -58,13 +58,6 @@ public class VerificationMethodResultConverterTest {
     }
 
     @Test
-    public void shouldConvertEmptyOptionalIfMethodNameIsNull() {
-        final VerificationAttempt attempt = converter.toAttempt(context, result);
-
-        assertThat(attempt.getMethodName()).isEmpty();
-    }
-
-    @Test
     public void shouldConvertMethodName() {
         final String methodName = "methodName";
         given(result.getMethodName()).willReturn(methodName);

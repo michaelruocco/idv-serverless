@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':aws-lambda')
+    compile project(':json-api:lockout-decision-json-api')
+}

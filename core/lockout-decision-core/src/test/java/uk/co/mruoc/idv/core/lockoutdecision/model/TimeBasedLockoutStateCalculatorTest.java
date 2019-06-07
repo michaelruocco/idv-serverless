@@ -22,7 +22,7 @@ public class TimeBasedLockoutStateCalculatorTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(attempts.size()).willReturn(size);
         given(intervals.getInternalFor(size)).willReturn(Optional.empty());
-        final LockoutStateRequest request = toRequest(attempts);
+        final CalculateLockoutStateRequest request = toRequest(attempts);
 
         final LockoutState state = calculator.calculateLockoutState(request);
 
@@ -35,7 +35,7 @@ public class TimeBasedLockoutStateCalculatorTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(attempts.size()).willReturn(size);
         given(intervals.getInternalFor(size)).willReturn(Optional.empty());
-        final LockoutStateRequest request = toRequest(attempts);
+        final CalculateLockoutStateRequest request = toRequest(attempts);
 
         final LockoutState state = calculator.calculateLockoutState(request);
 
@@ -48,7 +48,7 @@ public class TimeBasedLockoutStateCalculatorTest {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         given(attempts.size()).willReturn(size);
         given(intervals.getInternalFor(size)).willReturn(Optional.empty());
-        final LockoutStateRequest request = toRequest(attempts);
+        final CalculateLockoutStateRequest request = toRequest(attempts);
 
         final LockoutState state = calculator.calculateLockoutState(request);
 
@@ -63,7 +63,7 @@ public class TimeBasedLockoutStateCalculatorTest {
 
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         final Instant now = Instant.now();
-        final LockoutStateRequest request = toRequest(attempts, now);
+        final CalculateLockoutStateRequest request = toRequest(attempts, now);
 
         given(attempts.getMostRecentTimestamp()).willReturn(now.minus(Duration.ofMinutes(16)));
         given(attempts.size()).willReturn(2);
@@ -82,7 +82,7 @@ public class TimeBasedLockoutStateCalculatorTest {
 
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
         final Instant now = Instant.now();
-        final LockoutStateRequest request = toRequest(attempts, now);
+        final CalculateLockoutStateRequest request = toRequest(attempts, now);
 
         given(attempts.getMostRecentTimestamp()).willReturn(now.minus(Duration.ofMinutes(2)));
         given(attempts.size()).willReturn(2);
@@ -107,12 +107,12 @@ public class TimeBasedLockoutStateCalculatorTest {
         assertThat(type).isEqualTo(expectedLockoutType);
     }
 
-    private static LockoutStateRequest toRequest(final VerificationAttempts attempts) {
+    private static CalculateLockoutStateRequest toRequest(final VerificationAttempts attempts) {
         return toRequest(attempts, Instant.now());
     }
 
-    private static LockoutStateRequest toRequest(final VerificationAttempts attempts, final Instant now) {
-        return LockoutStateRequest.builder()
+    private static CalculateLockoutStateRequest toRequest(final VerificationAttempts attempts, final Instant now) {
+        return CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(now)
                 .build();

@@ -1,13 +1,15 @@
-package uk.co.mruoc.idv.jsonapi.verificationcontext;
+package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import uk.co.mruoc.idv.json.verificationcontext.VerificationContextMixin;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutStateRequest;
 
-import java.util.UUID;
-
-public interface JsonApiVerificationContextMixin extends VerificationContextMixin {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonDeserialize(as = DefaultLockoutStateRequest.class)
+public interface LockoutStateRequestMixin {
 
     @JsonIgnore
-    UUID getId();
+    String getAliasTypeName();
 
 }

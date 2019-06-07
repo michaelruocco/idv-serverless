@@ -56,14 +56,6 @@ public class VerificationAttemptTest {
     }
 
     @Test
-    public void shouldReturnEmptyOptionalIfMethodNameIsNotSet() {
-        final VerificationAttempt attempt = VerificationAttempt.builder()
-                .build();
-
-        assertThat(attempt.getMethodName()).isEmpty();
-    }
-
-    @Test
     public void shouldReturnMethodName() {
         final String methodName = "methodName";
 
@@ -100,7 +92,7 @@ public class VerificationAttemptTest {
 
         assertThat(attempt.toString()).isEqualTo("VerificationAttempt(" +
                 "channelId=null, timestamp=null, alias=null, activityType=null, " +
-                "methodName=Optional.empty, successful=false)");
+                "methodName=null, successful=false)");
     }
 
 }

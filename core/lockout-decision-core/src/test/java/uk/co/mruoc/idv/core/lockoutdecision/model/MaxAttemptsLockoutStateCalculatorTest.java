@@ -16,7 +16,7 @@ public class MaxAttemptsLockoutStateCalculatorTest {
     @Test
     public void shouldReturnMaxNumberOfAttemptsRemainingIfEmptyAttemptsPassed() {
         final VerificationAttempts attempts = VerificationAttempts.builder().build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -31,7 +31,7 @@ public class MaxAttemptsLockoutStateCalculatorTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt, attempt, attempt))
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -43,7 +43,7 @@ public class MaxAttemptsLockoutStateCalculatorTest {
     @Test
     public void shouldReturnNotLockedIfAttemptsRemaining() {
         final VerificationAttempts attempts = VerificationAttempts.builder().build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -58,7 +58,7 @@ public class MaxAttemptsLockoutStateCalculatorTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt, attempt, attempt))
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -70,7 +70,7 @@ public class MaxAttemptsLockoutStateCalculatorTest {
     @Test
     public void shouldReturnNumberOfAttempts() {
         final VerificationAttempts attempts = VerificationAttempts.builder().build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -83,7 +83,7 @@ public class MaxAttemptsLockoutStateCalculatorTest {
     @Test
     public void shouldReturnMaxAttemptsLockoutState() {
         final VerificationAttempts attempts = VerificationAttempts.builder().build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 

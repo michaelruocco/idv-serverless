@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.stream.Stream;
 @NoArgsConstructor(force = true) //required by jackson
 public class VerificationAttempts implements Iterable<VerificationAttempt> {
 
-    private final UUID idvId;
+    private final IdvIdAlias idvIdAlias;
 
     private final UUID lockoutStateId;
 
@@ -36,8 +37,12 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
         return lockoutStateId;
     }
 
+    public IdvIdAlias getIdvIdAlias() {
+        return idvIdAlias;
+    }
+
     public UUID getIdvId() {
-        return idvId;
+        return idvIdAlias.getValueAsUuid();
     }
 
     public Collection<VerificationAttempt> getAttempts() {
@@ -84,7 +89,7 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
 
     private VerificationAttempts toNewAttempts(final Collection<VerificationAttempt> newAttempts) {
         return VerificationAttempts.builder()
-                .idvId(idvId)
+                .idvIdAlias(idvIdAlias)
                 .lockoutStateId(lockoutStateId)
                 .attempts(newAttempts)
                 .build();

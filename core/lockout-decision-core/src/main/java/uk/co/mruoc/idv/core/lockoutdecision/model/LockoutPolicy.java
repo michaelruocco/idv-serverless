@@ -4,10 +4,10 @@ public interface LockoutPolicy {
 
     String getType();
 
-    boolean appliesTo(final LoadLockoutStateRequest attempt);
+    boolean appliesTo(final LockoutStateRequest attempt);
 
     VerificationAttempts reset(final VerificationAttempts attempts);
 
-    LockoutState calculateLockoutState(final LockoutStateRequest request);
+    LockoutState calculateLockoutState(final CalculateLockoutStateRequest request);
 
 }

@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.model.ChannelLockoutPolicies;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LoadLockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.CalculateLockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 
@@ -51,19 +51,25 @@ public class LockoutStateService {
         return update(policy, attempts, attempt);
     }
 
-    public LockoutState load(final LoadLockoutStateRequest request) {
+    public LockoutState load(final LockoutStateRequest request) {
         log.info("loading lockout state for request {}", request);
         final LockoutPolicy policy = loadPolicy(request);
-        final Alias alias = request.getAlias();
-        final VerificationAttempts attempts = loadAttempts(alias);
+        final VerificationAttempts attempts = loadAttempts(request.getAlias());
         return calculateLockoutState(policy, attempts);
+    }
+
+    public LockoutState reset(final LockoutStateRequest request) {
+        log.info("resetting lockout state for request {}", request);
+        final LockoutPolicy policy = loadPolicy(request);
+        final VerificationAttempts attempts = loadAttempts(request.getAlias());
+        return reset(policy, attempts);
     }
 
     private VerificationAttempts loadAttempts(final Alias alias) {
         return loadAttemptsService.load(alias);
     }
 
-    private LockoutPolicy loadPolicy(final LoadLockoutStateRequest request) {
+    private LockoutPolicy loadPolicy(final LockoutStateRequest request) {
         final ChannelLockoutPolicies policies = policiesService.getPoliciesForChannel(request.getChannelId());
         return policies.getPolicyFor(request);
     }
@@ -89,7 +95,7 @@ public class LockoutStateService {
     }
 
     private LockoutState calculateLockoutState(final LockoutPolicy policy, final VerificationAttempts attempts) {
-        final LockoutStateRequest request = converter.toRequest(attempts);
+        final CalculateLockoutStateRequest request = converter.toRequest(attempts);
         return policy.calculateLockoutState(request);
     }
 

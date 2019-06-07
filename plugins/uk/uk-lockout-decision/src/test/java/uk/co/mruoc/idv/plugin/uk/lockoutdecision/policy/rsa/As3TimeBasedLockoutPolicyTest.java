@@ -2,10 +2,11 @@ package uk.co.mruoc.idv.plugin.uk.lockoutdecision.policy.rsa;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockedTimeBasedLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.CalculateLockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutType;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +46,7 @@ public class As3TimeBasedLockoutPolicyTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Collections.emptyList())
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -58,10 +58,10 @@ public class As3TimeBasedLockoutPolicyTest {
     @Test
     public void shouldPopulateIdvId() {
         final VerificationAttempts attempts = VerificationAttempts.builder()
-                .idvId(UUID.randomUUID())
+                .idvIdAlias(new IdvIdAlias())
                 .attempts(Collections.emptyList())
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -76,7 +76,7 @@ public class As3TimeBasedLockoutPolicyTest {
                 .lockoutStateId(UUID.randomUUID())
                 .attempts(Collections.emptyList())
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -89,7 +89,7 @@ public class As3TimeBasedLockoutPolicyTest {
     public void shouldReturnNotLockedForOneFailedAttempt() {
         final int numberOfAttempts = 1;
         final VerificationAttempts attempts = buildAttempts(numberOfAttempts);
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(Instant.now())
                 .build();
@@ -104,7 +104,7 @@ public class As3TimeBasedLockoutPolicyTest {
     public void shouldReturnFifteenMinuteLockForThreeFailedAttempts() {
         final int numberOfAttempts = 3;
         final VerificationAttempts attempts = buildAttempts(numberOfAttempts);
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(Instant.now())
                 .build();
@@ -123,7 +123,7 @@ public class As3TimeBasedLockoutPolicyTest {
     public void shouldReturnOneHourLockForSixFailedAttempts() {
         final int numberOfAttempts = 6;
         final VerificationAttempts attempts = buildAttempts(numberOfAttempts);
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(Instant.now())
                 .build();
@@ -142,7 +142,7 @@ public class As3TimeBasedLockoutPolicyTest {
     public void shouldReturnFourHourLockForNineFailedAttempts() {
         final int numberOfAttempts = 9;
         final VerificationAttempts attempts = buildAttempts(numberOfAttempts);
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(Instant.now())
                 .build();
@@ -161,7 +161,7 @@ public class As3TimeBasedLockoutPolicyTest {
     public void shouldReturnTwentyFourHourLockForTwelveFailedAttempts() {
         final int numberOfAttempts = 12;
         final VerificationAttempts attempts = buildAttempts(numberOfAttempts);
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(Instant.now())
                 .build();
@@ -180,7 +180,7 @@ public class As3TimeBasedLockoutPolicyTest {
     public void shouldReturnTwentyFourHourLockForMoreThanTwelveFailedAttempts() {
         final int numberOfAttempts = 13;
         final VerificationAttempts attempts = buildAttempts(numberOfAttempts);
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .timestamp(Instant.now())
                 .build();
@@ -221,7 +221,6 @@ public class As3TimeBasedLockoutPolicyTest {
 
     private VerificationAttempt buildAttempt(final String aliasTypeName) {
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getMethodName()).willReturn(Optional.of("ANY"));
         given(attempt.getActivityType()).willReturn("ANY");
         given(attempt.getAliasTypeName()).willReturn(aliasTypeName);
         given(attempt.getTimestamp()).willReturn(Instant.now());

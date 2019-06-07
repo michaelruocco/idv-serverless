@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.jsonapi.lockoutdecision;
+package uk.co.mruoc.idv.json.lockoutdecision;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -2,16 +2,16 @@ package uk.co.mruoc.idv.plugin.uk.lockoutdecision.policy.rsa;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.CalculateLockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutType;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +59,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Collections.emptyList())
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -71,10 +71,10 @@ public class RsaMaxAttemptsLockoutPolicyTest {
     @Test
     public void shouldPopulateIdvId() {
         final VerificationAttempts attempts = VerificationAttempts.builder()
-                .idvId(UUID.randomUUID())
+                .idvIdAlias(new IdvIdAlias())
                 .attempts(Collections.emptyList())
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -89,7 +89,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
                 .lockoutStateId(UUID.randomUUID())
                 .attempts(Collections.emptyList())
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -105,7 +105,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2))
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -122,7 +122,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2, attempt3))
                 .build();
-        final LockoutStateRequest request = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
                 .build();
 
@@ -147,7 +147,6 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     private VerificationAttempt buildAttempt(final String aliasTypeName) {
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
-        given(attempt.getMethodName()).willReturn(Optional.of("ANY"));
         given(attempt.getActivityType()).willReturn("ANY");
         given(attempt.getAliasTypeName()).willReturn(aliasTypeName);
         return attempt;

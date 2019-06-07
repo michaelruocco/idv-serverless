@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 import uk.co.mruoc.idv.json.identity.AliasDeserializer;
@@ -27,7 +28,7 @@ public class VerificationAttemptsDeserializer extends StdDeserializer<Verificati
         final JsonNode attemptsNode = parser.readValueAsTree();
         return VerificationAttempts.builder()
                 .attempts(toAttempts(attemptsNode.get("attempts")))
-                .idvId(UUID.fromString(attemptsNode.get("idvId").asText()))
+                .idvIdAlias(new IdvIdAlias(attemptsNode.get("idvId").asText()))
                 .lockoutStateId(UUID.fromString(attemptsNode.get("lockoutStateId").asText()))
                 .build();
     }

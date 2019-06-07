@@ -5,6 +5,4 @@ dependencies {
     compile project(':json:lockout-decision-json')
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8'
     compile 'org.zalando:jackson-datatype-money:1.1.1'
-
-    testCompile 'org.skyscreamer:jsonassert:1.5.0'
 }

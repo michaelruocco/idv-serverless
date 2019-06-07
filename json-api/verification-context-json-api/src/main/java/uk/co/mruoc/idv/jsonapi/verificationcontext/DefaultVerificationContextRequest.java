@@ -45,10 +45,4 @@ public class DefaultVerificationContextRequest extends AbstractVerificationConte
         return providedAlias.getTypeName();
     }
 
-    @Override
-    @JsonIgnore
-    public Optional<String> getMethodName() {
-        return Optional.empty();
-    }
-
 }

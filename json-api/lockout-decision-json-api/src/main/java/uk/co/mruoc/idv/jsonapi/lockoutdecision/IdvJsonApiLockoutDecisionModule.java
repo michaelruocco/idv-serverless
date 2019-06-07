@@ -1,22 +1,15 @@
-package uk.co.mruoc.idv.jsonapi.verificationcontext;
+package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
-import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.result.JsonApiVerificationMethodResultMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.result.JsonApiVerificationMethodResultsMixin;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.result.VerificationResultResponseDocument;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.result.VerificationResultResponseDocumentDeserializer;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateResponse;
 
-public class IdvJsonApiVerificationContextModule extends SimpleModule {
+public class IdvJsonApiLockoutDecisionModule extends SimpleModule {
 
-    public IdvJsonApiVerificationContextModule() {
-        addDeserializer(VerificationResultResponseDocument.class, new VerificationResultResponseDocumentDeserializer());
-
-        setMixInAnnotation(VerificationContext.class, JsonApiVerificationContextMixin.class);
-        setMixInAnnotation(VerificationMethodResult.class, JsonApiVerificationMethodResultMixin.class);
-        setMixInAnnotation(VerificationMethodResults.class, JsonApiVerificationMethodResultsMixin.class);
+    public IdvJsonApiLockoutDecisionModule() {
+        setMixInAnnotation(LockoutStateRequest.class, LockoutStateRequestMixin.class);
+        setMixInAnnotation(LockoutState.class, LockoutStateMixin.class);
     }
 
 }

@@ -1,64 +1,73 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class DefaultLockoutStateRequestTest {
+public class DefaultLockoutStateResponseTest {
 
     @Test
-    public void shouldReturnChannelId() {
-        final String channelId = "channelId";
+    public void shouldReturnId() {
+        final VerificationAttempts attempts = mock(VerificationAttempts.class);
+        final UUID id = UUID.randomUUID();
+        given(attempts.getLockoutStateId()).willReturn(id);
 
-        final LockoutStateRequest request = DefaultLockoutStateRequest.builder()
-                .channelId(channelId)
+        final LockoutStateResponse request = DefaultLockoutStateResponse.builder()
+                .attempts(attempts)
                 .build();
 
-        assertThat(request.getChannelId()).isEqualTo(channelId);
+        assertThat(request.getId()).isEqualTo(id);
     }
 
     @Test
-    public void shouldReturnAlias() {
-        final Alias alias = mock(Alias.class);
+    public void shouldReturnIdvIdAlias() {
+        final VerificationAttempts attempts = mock(VerificationAttempts.class);
+        final IdvIdAlias idvIdAlias = mock(IdvIdAlias.class);
+        given(attempts.getIdvIdAlias()).willReturn(idvIdAlias);
 
-        final LockoutStateRequest request = DefaultLockoutStateRequest.builder()
-                .alias(alias)
+        final LockoutStateResponse request = DefaultLockoutStateResponse.builder()
+                .attempts(attempts)
                 .build();
 
-        assertThat(request.getAlias()).isEqualTo(alias);
-        assertThat(request.getAliasTypeName()).isEqualTo(alias.getTypeName());
+        assertThat(request.getIdvIdAlias()).isEqualTo(idvIdAlias);
     }
 
     @Test
-    public void shouldReturnActivityType() {
-        final String activityType = "activityType";
+    public void shouldReturnVerificationAttempts() {
+        final VerificationAttempts attempts = mock(VerificationAttempts.class);
 
-        final LockoutStateRequest request = DefaultLockoutStateRequest.builder()
-                .activityType(activityType)
+        final LockoutStateResponse request = DefaultLockoutStateResponse.builder()
+                .attempts(attempts)
                 .build();
 
-        assertThat(request.getActivityType()).isEqualTo(activityType);
+        assertThat(request.getVerificationAttempts()).isEqualTo(attempts);
     }
 
     @Test
-    public void shouldReturnEmptyOptionalIfMethodNameNotSet() {
-        final LockoutStateRequest request = DefaultLockoutStateRequest.builder()
+    public void shouldReturnAttempts() {
+        final VerificationAttempts attempts = mock(VerificationAttempts.class);
+        final Collection<VerificationAttempt> attemptCollection = Collections.emptyList();
+        given(attempts.getAttempts()).willReturn(attemptCollection);
+
+        final LockoutStateResponse request = DefaultLockoutStateResponse.builder()
+                .attempts(attempts)
                 .build();
 
-        assertThat(request.getMethodName()).isEmpty();
+        assertThat(request.getAttempts()).isEqualTo(attemptCollection);
     }
 
     @Test
-    public void shouldReturnMethodName() {
-        final String methodName = "methodName";
+    public void shouldHaveNoArgsConstructorForJackson() {
+        final LockoutStateResponse response = new DefaultLockoutStateResponse();
 
-        final LockoutStateRequest request = DefaultLockoutStateRequest.builder()
-                .methodName(methodName)
-                .build();
-
-        assertThat(request.getMethodName()).contains(methodName);
+        assertThat(response).isNotNull();
     }
 
 }

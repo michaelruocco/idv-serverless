@@ -5,7 +5,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ToString
@@ -17,31 +16,26 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
     private final LockoutStateCalculator stateCalculator;
     private final Collection<String> aliasTypes;
     private final Collection<String> activities;
-    private final Collection<String> methods;
 
     private final boolean appliesToAllAliases;
     private final boolean appliesToAllActivities;
-    private final boolean appliesToAllMethods;
 
     @Builder
     public DefaultLockoutPolicy(final LockoutStateCalculator stateCalculator,
                                 final Collection<String> aliasTypes,
-                                final Collection<String> activities,
-                                final Collection<String> methods) {
+                                final Collection<String> activities) {
         this.stateCalculator = stateCalculator;
         this.aliasTypes = aliasTypes;
         this.activities = activities;
-        this.methods = methods;
 
         this.appliesToAllAliases = aliasTypes.contains(ALL);
         this.appliesToAllActivities = activities.contains(ALL);
-        this.appliesToAllMethods = methods.contains(ALL);
     }
 
     @Override
-    public LockoutState calculateLockoutState(final LockoutStateRequest request) {
+    public LockoutState calculateLockoutState(final CalculateLockoutStateRequest request) {
         final VerificationAttempts applicableAttempts = getApplicableAttempts(request.getAttempts());
-        final LockoutStateRequest updatedRequest = LockoutStateRequest.builder()
+        final CalculateLockoutStateRequest updatedRequest = CalculateLockoutStateRequest.builder()
                 .attempts(applicableAttempts)
                 .timestamp(request.getTimestamp())
                 .build();
@@ -54,13 +48,10 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
     }
 
     @Override
-    public boolean appliesTo(final LoadLockoutStateRequest request) {
+    public boolean appliesTo(final LockoutStateRequest request) {
         log.info("checking that request {} applies to policy {}", request, this);
-        final boolean applies = appliesToAlias(request.getAliasTypeName()) &&
+        return appliesToAlias(request.getAliasTypeName()) &&
                 appliesToActivity(request.getActivityType());
-
-        final Optional<String> methodName = request.getMethodName();
-        return methodName.map(s -> applies && appliesToMethod(s)).orElse(applies);
     }
 
     @Override
@@ -74,7 +65,7 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
         final Collection<VerificationAttempt> applicableAttempts = getApplicableAttemptsCollection(attempts);
         log.info("returning applicable attempts {}", applicableAttempts);
         return VerificationAttempts.builder()
-                .idvId(attempts.getIdvId())
+                .idvIdAlias(attempts.getIdvIdAlias())
                 .lockoutStateId(attempts.getLockoutStateId())
                 .attempts(applicableAttempts)
                 .build();
@@ -92,16 +83,6 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
 
     private boolean appliesToActivity(final String activity) {
         return appliesToAllActivities || activities.contains(activity);
-    }
-
-    private boolean appliesToMethod(final String methodName) {
-        final boolean appliesToMethod = appliesToAllMethods || methods.contains(methodName);
-        if (appliesToMethod) {
-            log.info("method {} applies to policy {}", methodName, this);
-        } else {
-            log.info("method {} does not apply to policy {}", methodName, this);
-        }
-        return appliesToMethod;
     }
 
 }

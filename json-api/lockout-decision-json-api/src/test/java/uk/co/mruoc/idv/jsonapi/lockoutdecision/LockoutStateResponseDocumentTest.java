@@ -4,19 +4,26 @@ import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
-import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutStateRequest;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.model.NotLockedTimeBasedIntervalLockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
+import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 import uk.co.mruoc.idv.json.JsonConverter;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
-public class LockoutStateRequestDocumentTest {
+public class LockoutStateResponseDocumentTest {
 
-    private static final String JSON = loadContentFromClasspath("/lockout-state-request-document.json");
-    private static final LockoutStateRequestDocument DOCUMENT = buildDocument();
+    private static final String JSON = loadContentFromClasspath("/lockout-state-response-document.json");
+    private static final LockoutStateResponseDocument DOCUMENT = buildDocument();
 
     private static final JsonConverter CONVERTER = new JsonApiLockoutDecisionJsonConverterFactory().build();
 
@@ -28,33 +35,35 @@ public class LockoutStateRequestDocumentTest {
     }
 
     @Test
-    public void shouldDeserializeDocument() {
-        final LockoutStateRequestDocument document = CONVERTER.toObject(JSON, LockoutStateRequestDocument.class);
+    public void shouldReturnResponse() {
+        final LockoutState lockoutState = buildLockoutState();
 
-        assertThat(document).isEqualToComparingFieldByFieldRecursively(DOCUMENT);
+        final LockoutStateResponseDocument document = new LockoutStateResponseDocument(lockoutState);
+
+        assertThat(document.getLockoutState()).isEqualTo(lockoutState);
     }
 
-    @Test
-    public void shouldReturnRequest() {
-        final LockoutStateRequest request = buildRequest();
-
-        final LockoutStateRequestDocument document = new LockoutStateRequestDocument(request);
-
-        assertThat(document.getRequest()).isEqualTo(request);
+    private static LockoutStateResponseDocument buildDocument() {
+        final LockoutState lockoutState = buildLockoutState();
+        return new LockoutStateResponseDocument(lockoutState);
     }
 
-    private static LockoutStateRequestDocument buildDocument() {
-        final LockoutStateRequest results = buildRequest();
-        return new LockoutStateRequestDocument(results);
-    }
-
-    private static LockoutStateRequest buildRequest() {
-        final Alias alias = new TokenizedCreditCardNumberAlias("3489347343788005");
-        return DefaultLockoutStateRequest.builder()
-                .channelId("DEFAULT")
-                .activityType("LOGIN")
-                .alias(alias)
+    private static LockoutState buildLockoutState() {
+        final IdvIdAlias alias = new IdvIdAlias("d98aa22c-a06e-4db5-8dc1-9ea83716ac12");
+        final VerificationAttempt attempt = VerificationAttempt.builder()
+                .alias(new DefaultAlias(new DefaultAliasType("TYPE"), "FORMAT", "VALUE"))
+                .channelId("CHANNEL_ID")
+                .activityType("ACTIVITY_TYPE")
+                .methodName("METHOD_NAME")
+                .timestamp(Instant.parse("2019-03-10T12:53:57.547Z"))
+                .successful(false)
                 .build();
+        final VerificationAttempts attempts = VerificationAttempts.builder()
+                .lockoutStateId(UUID.fromString("a20ed37e-0205-4b73-82d0-8435ee74f7a3"))
+                .attempts(Collections.singleton(attempt))
+                .idvIdAlias(new IdvIdAlias("d98aa22c-a06e-4db5-8dc1-9ea83716ac12"))
+                .build();
+        return new NotLockedTimeBasedIntervalLockoutState(attempts);
     }
 
 }

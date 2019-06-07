@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.verificationcontext;
+package uk.co.mruoc.idv.awslambda.lockoutdecision;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -8,34 +8,33 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
-import uk.co.mruoc.idv.awslambda.verificationcontext.error.PostVerificationContextErrorHandlerDelegator;
-import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
-import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
-import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
 import uk.co.mruoc.idv.json.JsonConverterFactory;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
+import uk.co.mruoc.idv.jsonapi.lockoutdecision.JsonApiLockoutDecisionJsonConverterFactory;
 
 @Slf4j
 @Builder
 @AllArgsConstructor
-public class PostVerificationContextHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class PutResetLockoutStateHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new JsonApiVerificationContextJsonConverterFactory();
+    private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new JsonApiLockoutDecisionJsonConverterFactory();
 
-    private final VerificationContextRequestExtractor requestExtractor;
-    private final CreateVerificationContextService service;
-    private final VerificationContextResponseFactory responseFactory;
+    private final LockoutStateRequestExtractor requestExtractor;
+    private final LockoutStateService service;
+    private final LockoutStateResponseFactory responseFactory;
     private final ExceptionConverter exceptionConverter;
 
-    public PostVerificationContextHandler(final CreateVerificationContextService service) {
+    public PutResetLockoutStateHandler(final LockoutStateService service) {
         this(builder()
-                .requestExtractor(new VerificationContextRequestExtractor(JSON_CONVERTER_FACTORY.build()))
+                .requestExtractor(new LockoutStateRequestExtractor(JSON_CONVERTER_FACTORY.build()))
                 .service(service)
-                .responseFactory(new VerificationContextCreatedResponseFactory(JSON_CONVERTER_FACTORY.build()))
+                .responseFactory(new LockoutStateOkResponseFactory(JSON_CONVERTER_FACTORY.build()))
                 .exceptionConverter(buildExceptionConverter()));
     }
 
-    public PostVerificationContextHandler(final PostVerificationContextHandlerBuilder builder) {
+    public PutResetLockoutStateHandler(final PutResetLockoutStateHandlerBuilder builder) {
         this.requestExtractor = builder.requestExtractor;
         this.service = builder.service;
         this.responseFactory = builder.responseFactory;
@@ -56,9 +55,9 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
 
     private APIGatewayProxyResponseEvent createContext(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
-        final AbstractVerificationContextRequest request = requestExtractor.extractRequest(requestEvent);
-        final VerificationContext context = service.create(request);
-        final APIGatewayProxyResponseEvent responseEvent = responseFactory.toResponseEvent(context);
+        final LockoutStateRequest request = requestExtractor.extractRequest(requestEvent);
+        final LockoutState lockoutState = service.reset(request);
+        final APIGatewayProxyResponseEvent responseEvent = responseFactory.toResponseEvent(lockoutState);
         log.info("returning response {}", responseEvent);
         return responseEvent;
     }
@@ -66,7 +65,7 @@ public class PostVerificationContextHandler implements RequestHandler<APIGateway
     private static ExceptionConverter buildExceptionConverter() {
         return ExceptionConverter.builder()
                 .jsonConverter(JSON_CONVERTER_FACTORY.build())
-                .errorHandler(new PostVerificationContextErrorHandlerDelegator())
+                .errorHandler(new PutResetLockoutStateErrorHandlerDelegator())
                 .build();
     }
 

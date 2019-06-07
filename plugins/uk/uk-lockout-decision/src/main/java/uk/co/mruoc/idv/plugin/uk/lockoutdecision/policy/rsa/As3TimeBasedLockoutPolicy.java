@@ -19,8 +19,7 @@ public class As3TimeBasedLockoutPolicy extends DefaultLockoutPolicy {
     public As3TimeBasedLockoutPolicy() {
         super(buildStateCalculator(),
                 buildAliasTypes(),
-                buildActivities(),
-                buildMethods());
+                buildActivities());
     }
 
     private static LockoutStateCalculator buildStateCalculator() {
@@ -38,10 +37,6 @@ public class As3TimeBasedLockoutPolicy extends DefaultLockoutPolicy {
     }
 
     private static Collection<String> buildActivities() {
-        return Collections.singleton(ALL);
-    }
-
-    private static Collection<String> buildMethods() {
         return Collections.singleton(ALL);
     }
 

@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -14,17 +15,17 @@ import static org.mockito.Mockito.mock;
 
 public class VerificationAttemptsTest {
 
-    private final UUID idvId = UUID.randomUUID();
-
     @Test
-    public void shouldSetIdvId() {
+    public void shouldSetIdvIdAlias() {
+        final IdvIdAlias idvIdAlias = new IdvIdAlias();
         final VerificationAttempts attempts = VerificationAttempts.builder()
-                .idvId(idvId)
+                .idvIdAlias(idvIdAlias)
                 .build();
 
-        final UUID actualIdvId = attempts.getIdvId();
+        final IdvIdAlias actualIdvIdAlias = attempts.getIdvIdAlias();
 
-        assertThat(actualIdvId).isEqualTo(idvId);
+        assertThat(actualIdvIdAlias).isEqualTo(idvIdAlias);
+        assertThat(attempts.getIdvId()).isEqualTo(idvIdAlias.getValueAsUuid());
     }
 
     @Test
@@ -146,7 +147,7 @@ public class VerificationAttemptsTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .build();
 
-        assertThat(attempts.toString()).isEqualTo("VerificationAttempts(idvId=null, lockoutStateId=null, attempts=[])");
+        assertThat(attempts.toString()).isEqualTo("VerificationAttempts(idvIdAlias=null, lockoutStateId=null, attempts=[])");
     }
 
     @Test

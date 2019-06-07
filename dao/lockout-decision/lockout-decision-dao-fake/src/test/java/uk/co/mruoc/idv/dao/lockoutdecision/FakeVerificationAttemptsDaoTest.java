@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.dao.lockoutdecision;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 
@@ -11,20 +12,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FakeVerificationAttemptsDaoTest {
 
-    private static final UUID IDV_ID = UUID.randomUUID();
 
     private final VerificationAttemptsDao dao = new FakeVerificationAttemptsDao();
 
     @Test
     public void shouldSaveAttempts() {
+        final IdvIdAlias idvIdAlias = new IdvIdAlias();
+        final UUID idvId = idvIdAlias.getValueAsUuid();
 
         final VerificationAttempts attempts = VerificationAttempts.builder()
-                .idvId(IDV_ID)
+                .idvIdAlias(idvIdAlias)
                 .build();
 
         dao.save(attempts);
 
-        assertThat(dao.loadByIdvId(IDV_ID)).isEqualTo(Optional.of(attempts));
+        assertThat(dao.loadByIdvId(idvId)).isEqualTo(Optional.of(attempts));
     }
 
     @Test

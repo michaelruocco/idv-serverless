@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 public interface LockoutStateCalculator {
 
-    LockoutState calculateLockoutState(final LockoutStateRequest request);
+    LockoutState calculateLockoutState(final CalculateLockoutStateRequest request);
 
     String getType();
 

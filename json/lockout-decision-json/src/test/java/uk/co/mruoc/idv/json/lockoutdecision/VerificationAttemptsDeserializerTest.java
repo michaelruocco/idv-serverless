@@ -4,6 +4,7 @@ import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 import uk.co.mruoc.idv.json.JsonConverter;
@@ -44,7 +45,7 @@ public class VerificationAttemptsDeserializerTest {
                 .successful(true)
                 .build();
         return VerificationAttempts.builder()
-                .idvId(UUID.fromString("1a10908d-e2eb-4680-a271-3d0c4d028a6b"))
+                .idvIdAlias(new IdvIdAlias("1a10908d-e2eb-4680-a271-3d0c4d028a6b"))
                 .lockoutStateId(UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23"))
                 .attempts(Collections.singleton(attempt))
                 .build();

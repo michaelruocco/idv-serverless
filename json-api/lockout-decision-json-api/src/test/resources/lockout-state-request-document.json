@@ -4,7 +4,6 @@
     "attributes": {
       "channelId": "DEFAULT",
       "activityType": "LOGIN",
-      "methodName": "PUSH_AUTHENTICATION",
       "alias": {
         "type": "CREDIT_CARD_NUMBER",
         "format": "TOKENIZED",

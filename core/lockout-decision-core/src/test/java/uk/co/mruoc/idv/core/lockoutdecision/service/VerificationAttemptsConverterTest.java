@@ -1,7 +1,7 @@
 package uk.co.mruoc.idv.core.lockoutdecision.service;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
+import uk.co.mruoc.idv.core.lockoutdecision.model.CalculateLockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 import uk.co.mruoc.idv.core.service.TimeService;
 
@@ -23,7 +23,7 @@ public class VerificationAttemptsConverterTest {
         given(timeService.now()).willReturn(now);
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
 
-        final LockoutStateRequest request = converter.toRequest(attempts);
+        final CalculateLockoutStateRequest request = converter.toRequest(attempts);
 
         assertThat(request.getTimestamp()).isEqualTo(now);
     }
@@ -32,7 +32,7 @@ public class VerificationAttemptsConverterTest {
     public void shouldConverterToRequestWithVerificationAttempts() {
         final VerificationAttempts attempts = mock(VerificationAttempts.class);
 
-        final LockoutStateRequest request = converter.toRequest(attempts);
+        final CalculateLockoutStateRequest request = converter.toRequest(attempts);
 
         assertThat(request.getAttempts()).isEqualTo(attempts);
     }

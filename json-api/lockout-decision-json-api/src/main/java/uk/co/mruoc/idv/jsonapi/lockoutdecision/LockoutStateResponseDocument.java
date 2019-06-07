@@ -2,24 +2,22 @@ package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
-import uk.co.mruoc.jsonapi.JsonApiDataItem;
+import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.jsonapi.JsonApiDataItemWithId;
 
 @Getter
-@NoArgsConstructor(force = true) //required by jackson
-public class LockoutStateRequestDocument {
+public class LockoutStateResponseDocument {
 
     private static final String TYPE = "lockoutStates";
 
-    private final JsonApiDataItem<LockoutStateRequest> data;
+    private final JsonApiDataItemWithId<LockoutState> data;
 
-    public LockoutStateRequestDocument(final LockoutStateRequest result) {
-        this.data = new JsonApiDataItem<>(TYPE, result);
+    public LockoutStateResponseDocument(final LockoutState response) {
+        this.data = new JsonApiDataItemWithId<>(response.getId(), TYPE, response);
     }
 
     @JsonIgnore
-    public LockoutStateRequest getRequest() {
+    public LockoutState getLockoutState() {
         return data.getAttributes();
     }
 

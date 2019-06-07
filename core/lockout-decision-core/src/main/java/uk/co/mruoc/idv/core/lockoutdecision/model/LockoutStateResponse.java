@@ -1,19 +1,18 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 
-import java.util.Optional;
+import java.util.Collection;
+import java.util.UUID;
 
-public interface LockoutStateRequest {
-    
-    String getChannelId();
-    
-    Alias getAlias();
+public interface LockoutStateResponse {
 
-    String getActivityType();
+    UUID getId();
 
-    String getAliasTypeName();
+    IdvIdAlias getIdvIdAlias();
 
-    Optional<String> getMethodName();
+    Collection<VerificationAttempt> getAttempts();
+
+    VerificationAttempts getVerificationAttempts();
 
 }
