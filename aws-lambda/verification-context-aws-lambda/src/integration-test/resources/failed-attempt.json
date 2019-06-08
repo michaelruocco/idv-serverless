@@ -1,11 +1,13 @@
 {
   "lockoutStateId": "%LOCKOUT_STATE_ID%",
   "idvId": "%IDV_ID%",
-  "idvIdAlias": {
-    "type": "IDV_ID",
-    "format": "CLEAR_TEXT",
-    "value": "%IDV_ID%"
-  },
+  "aliases": [
+    {
+      "type": "TYPE",
+      "format": "FORMAT",
+      "value": "VALUE"
+    }
+  ],
   "attempts": [
     {
       "channelId": "CHANNEL",

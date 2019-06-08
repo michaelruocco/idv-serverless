@@ -4,6 +4,8 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import lombok.RequiredArgsConstructor;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.json.JsonConverter;
+import uk.co.mruoc.idv.jsonapi.lockoutdecision.DefaultLockoutStateResponse;
+import uk.co.mruoc.idv.jsonapi.lockoutdecision.LockoutStateResponse;
 import uk.co.mruoc.idv.jsonapi.lockoutdecision.LockoutStateResponseDocument;
 
 @RequiredArgsConstructor
@@ -12,8 +14,11 @@ public class LockoutStateResponseFactory {
     private final int statusCode;
     private final JsonConverter jsonConverter;
 
-    public LockoutStateResponseDocument toResponseDocument(final LockoutState lockoutState) {
-        return new LockoutStateResponseDocument(lockoutState);
+    public LockoutStateResponseDocument toResponseDocument(final LockoutState state) {
+        final LockoutStateResponse response = DefaultLockoutStateResponse.builder()
+                .state(state)
+                .build();
+        return new LockoutStateResponseDocument(response);
     }
 
     public APIGatewayProxyResponseEvent toResponseEvent(final LockoutState lockoutState) {

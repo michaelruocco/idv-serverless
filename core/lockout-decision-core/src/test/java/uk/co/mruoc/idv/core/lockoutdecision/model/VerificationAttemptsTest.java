@@ -1,7 +1,8 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -16,16 +17,15 @@ import static org.mockito.Mockito.mock;
 public class VerificationAttemptsTest {
 
     @Test
-    public void shouldSetIdvIdAlias() {
-        final IdvIdAlias idvIdAlias = new IdvIdAlias();
+    public void shouldSetIdvId() {
+        final UUID expectedIdvId = UUID.randomUUID();
         final VerificationAttempts attempts = VerificationAttempts.builder()
-                .idvIdAlias(idvIdAlias)
+                .idvId(expectedIdvId)
                 .build();
 
-        final IdvIdAlias actualIdvIdAlias = attempts.getIdvIdAlias();
+        final UUID idvId = attempts.getIdvId();
 
-        assertThat(actualIdvIdAlias).isEqualTo(idvIdAlias);
-        assertThat(attempts.getIdvId()).isEqualTo(idvIdAlias.getValueAsUuid());
+        assertThat(idvId).isEqualTo(expectedIdvId);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class VerificationAttemptsTest {
 
         final Stream<VerificationAttempt> stream = attempts.stream();
 
-        assertThat(stream).contains(attempt1, attempt2);
+        assertThat(stream).containsExactly(attempt1, attempt2);
     }
 
     @Test
@@ -125,9 +125,28 @@ public class VerificationAttemptsTest {
                 .attempts(Arrays.asList(attempt1, attempt2))
                 .build();
 
-        final Collection<VerificationAttempt> attemptsCollection = attempts.getAttempts();
+        final Collection<VerificationAttempt> attemptsCollection = attempts.toCollection();
 
-        assertThat(attemptsCollection).contains(attempt1, attempt2);
+        assertThat(attemptsCollection).containsExactly(attempt1, attempt2);
+    }
+
+    @Test
+    public void shouldReturnAliases() {
+        final Alias alias1 = mock(Alias.class);
+        final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
+        given(attempt1.getAlias()).willReturn(alias1);
+
+        final Alias alias2 = mock(Alias.class);
+        final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
+        given(attempt2.getAlias()).willReturn(alias2);
+
+        final VerificationAttempts attempts = VerificationAttempts.builder()
+                .attempts(Arrays.asList(attempt1, attempt2))
+                .build();
+
+        final Aliases aliases = attempts.getAliases();
+
+        assertThat(aliases).containsExactlyInAnyOrder(alias1, alias2);
     }
 
     @Test
@@ -147,7 +166,7 @@ public class VerificationAttemptsTest {
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .build();
 
-        assertThat(attempts.toString()).isEqualTo("VerificationAttempts(idvIdAlias=null, lockoutStateId=null, attempts=[])");
+        assertThat(attempts.toString()).isEqualTo("VerificationAttempts(idvId=null, lockoutStateId=null, attempts=[])");
     }
 
     @Test

@@ -24,26 +24,25 @@ public class LoadVerificationAttemptsService {
 
     public VerificationAttempts load(final Alias alias) {
         log.info("loading attempts for alias {}", alias);
-        final IdvIdAlias idvIdAlias = loadIdvIdAlias(alias);
-        final UUID idvId = idvIdAlias.getValueAsUuid();
+        final UUID idvId = loadIdvId(alias);
         log.info("loading attempts for idv id {}", idvId);
-        return dao.loadByIdvId(idvId).orElseGet(() -> createNewAttempts(idvIdAlias));
+        return dao.loadByIdvId(idvId).orElseGet(() -> createNewAttempts(idvId));
     }
 
-    private IdvIdAlias loadIdvIdAlias(final Alias alias) {
+    private UUID loadIdvId(final Alias alias) {
         if (AliasType.isIdvId(alias.getTypeName())) {
             log.info("returning uuid value from idv id alias");
-            return ((IdvIdAlias) alias);
+            return ((IdvIdAlias) alias).getValueAsUuid();
         }
         final Identity identity = identityService.load(alias);
-        return identity.getIdvIdAlias();
+        return identity.getIdvId();
     }
 
-    private VerificationAttempts createNewAttempts(final IdvIdAlias idvIdAlias) {
+    private VerificationAttempts createNewAttempts(final UUID idvId) {
         return VerificationAttempts.builder()
                 .lockoutStateId(uuidGenerator.randomUuid())
                 .attempts(Collections.emptyList())
-                .idvIdAlias(idvIdAlias)
+                .idvId(idvId)
                 .build();
     }
 

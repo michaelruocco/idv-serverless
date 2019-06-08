@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 
 @Getter
 public class LockedTimeBasedLockoutState extends DefaultLockoutState implements TimeBasedLockoutState {
@@ -23,8 +24,18 @@ public class LockedTimeBasedLockoutState extends DefaultLockoutState implements 
     }
 
     @Override
-    public long getDurationInMillis() {
-        return duration.toMillis();
+    public Optional<Duration> getDuration() {
+        return Optional.of(duration);
+    }
+
+    @Override
+    public Optional<Long> getDurationInMillis() {
+        return Optional.of(duration.toMillis());
+    }
+
+    @Override
+    public Optional<Instant> getLockedUntil() {
+        return Optional.of(lockedUntil);
     }
 
 }

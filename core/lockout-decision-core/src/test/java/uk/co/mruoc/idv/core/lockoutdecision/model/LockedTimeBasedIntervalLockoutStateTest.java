@@ -45,7 +45,7 @@ public class LockedTimeBasedIntervalLockoutStateTest {
                 .duration(duration)
                 .build();
 
-        assertThat(state.getDuration()).isEqualTo(duration);
+        assertThat(state.getDuration()).contains(duration);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class LockedTimeBasedIntervalLockoutStateTest {
                 .duration(duration)
                 .build();
 
-        assertThat(state.getDurationInMillis()).isEqualTo(duration.toMillis());
+        assertThat(state.getDurationInMillis()).contains(duration.toMillis());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class LockedTimeBasedIntervalLockoutStateTest {
                 .lockedUntil(lockedUntil)
                 .build();
 
-        assertThat(state.getLockedUntil()).isEqualTo(lockedUntil);
+        assertThat(state.getLockedUntil()).contains(lockedUntil);
     }
 
 }

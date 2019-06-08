@@ -71,7 +71,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
     @Test
     public void shouldPopulateIdvId() {
         final VerificationAttempts attempts = VerificationAttempts.builder()
-                .idvIdAlias(new IdvIdAlias())
+                .idvId(UUID.randomUUID())
                 .attempts(Collections.emptyList())
                 .build();
         final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()

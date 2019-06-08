@@ -56,14 +56,14 @@ public class LoadVerificationAttemptsServiceTest {
     @Test
     public void shouldLoadIdentityFromAliasAndLoadAttemptsUsingIdentityIdvAliasValue() {
         final Identity identity = mock(Identity.class);
-        final IdvIdAlias idvIdAlias = new IdvIdAlias();
-        given(identity.getIdvIdAlias()).willReturn(idvIdAlias);
+        final UUID idvId = UUID.randomUUID();
+        given(identity.getIdvId()).willReturn(idvId);
 
         final Alias alias = new CreditCardNumberAlias(Alias.Formats.CLEAR_TEXT, "1234567890123456");
         given(identityService.load(alias)).willReturn(identity);
 
         final VerificationAttempts expectedAttempts = mock(VerificationAttempts.class);
-        given(dao.loadByIdvId(idvIdAlias.getValueAsUuid())).willReturn(Optional.of(expectedAttempts));
+        given(dao.loadByIdvId(idvId)).willReturn(Optional.of(expectedAttempts));
 
         final VerificationAttempts attempts = service.load(alias);
 

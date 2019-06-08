@@ -66,7 +66,7 @@ public class DynamoVerificationAttemptsDaoTest {
     }
 
     private static VerificationAttempts buildVerificationAttempts() {
-        final IdvIdAlias idvIdAlias = new IdvIdAlias();
+        final UUID idvId = UUID.randomUUID();
         final UUID lockoutStateId = UUID.randomUUID();
         final VerificationAttempt attempt = VerificationAttempt.builder()
                 .channelId("channelId")
@@ -77,7 +77,7 @@ public class DynamoVerificationAttemptsDaoTest {
                 .timestamp(Instant.now())
                 .build();
         return VerificationAttempts.builder()
-                .idvIdAlias(idvIdAlias)
+                .idvId(idvId)
                 .lockoutStateId(lockoutStateId)
                 .attempts(Collections.singleton(attempt))
                 .build();

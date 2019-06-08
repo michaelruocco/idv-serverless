@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Builder
@@ -21,8 +23,7 @@ import java.util.stream.Stream;
 @NoArgsConstructor(force = true) //required by jackson
 public class VerificationAttempts implements Iterable<VerificationAttempt> {
 
-    private final IdvIdAlias idvIdAlias;
-
+    private final UUID idvId;
     private final UUID lockoutStateId;
 
     @Builder.Default
@@ -37,16 +38,17 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
         return lockoutStateId;
     }
 
-    public IdvIdAlias getIdvIdAlias() {
-        return idvIdAlias;
-    }
-
     public UUID getIdvId() {
-        return idvIdAlias.getValueAsUuid();
+        return idvId;
     }
 
-    public Collection<VerificationAttempt> getAttempts() {
+    public Collection<VerificationAttempt> toCollection() {
         return Collections.unmodifiableCollection(attempts);
+    }
+
+    public Aliases getAliases() {
+        final Collection<Alias> aliases = attempts.stream().map(VerificationAttempt::getAlias).collect(Collectors.toSet());
+        return Aliases.with(aliases);
     }
 
     public VerificationAttempt get(final int index) {
@@ -89,7 +91,7 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
 
     private VerificationAttempts toNewAttempts(final Collection<VerificationAttempt> newAttempts) {
         return VerificationAttempts.builder()
-                .idvIdAlias(idvIdAlias)
+                .idvId(idvId)
                 .lockoutStateId(lockoutStateId)
                 .attempts(newAttempts)
                 .build();

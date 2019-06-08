@@ -94,7 +94,7 @@ public class TimeBasedLockoutStateCalculatorTest {
         assertThat(state).isInstanceOf(LockedTimeBasedIntervalLockoutState.class);
         assertThat(state.getNumberOfAttempts()).isEqualTo(attempts.size());
         final LockedTimeBasedIntervalLockoutState lockedState = (LockedTimeBasedIntervalLockoutState) state;
-        assertThat(lockedState.getDuration()).isEqualTo(lockDuration);
+        assertThat(lockedState.getDuration()).contains(lockDuration);
     }
 
     @Test

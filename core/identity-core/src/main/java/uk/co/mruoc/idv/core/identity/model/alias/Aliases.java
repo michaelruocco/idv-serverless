@@ -96,6 +96,10 @@ public class Aliases implements Iterable<Alias> {
         return aliases.size();
     }
 
+    public Collection<Alias> toCollection() {
+        return aliases;
+    }
+
     private Aliases add(final Collection<Alias> newAliases) {
         final Set<Alias> mergedAliases = new HashSet<>();
         mergedAliases.addAll(this.aliases);

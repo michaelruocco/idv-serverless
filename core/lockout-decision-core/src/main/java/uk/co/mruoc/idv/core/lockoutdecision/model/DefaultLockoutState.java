@@ -1,9 +1,8 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import lombok.RequiredArgsConstructor;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
-import java.util.Collection;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -24,8 +23,8 @@ public class DefaultLockoutState implements LockoutState {
     }
 
     @Override
-    public IdvIdAlias getIdvIdAlias() {
-        return attempts.getIdvIdAlias();
+    public Aliases getAliases() {
+        return attempts.getAliases();
     }
 
     @Override
@@ -49,13 +48,13 @@ public class DefaultLockoutState implements LockoutState {
     }
 
     @Override
-    public VerificationAttempts getVerificationAttempts() {
-        return attempts;
+    public boolean isMaxAttempts() {
+        return LockoutType.MAX_ATTEMPTS.equals(lockoutType);
     }
 
     @Override
-    public Collection<VerificationAttempt> getAttempts() {
-        return attempts.getAttempts();
+    public VerificationAttempts getAttempts() {
+        return attempts;
     }
 
 }

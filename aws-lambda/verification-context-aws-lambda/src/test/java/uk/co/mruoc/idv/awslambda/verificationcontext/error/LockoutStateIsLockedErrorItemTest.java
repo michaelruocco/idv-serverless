@@ -3,12 +3,14 @@ package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.model.MaxAttemptsLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.TimeBasedLockoutState;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +23,7 @@ public class LockoutStateIsLockedErrorItemTest {
 
     private static final UUID IDV_ID = UUID.randomUUID();
     private static final int NUMBER_OF_ATTEMPTS = 3;
-    private final LockoutState lockoutState = buildLockoutState(IDV_ID);
+    private final LockoutState lockoutState = buildLockoutState();
     private static final String DETAIL = String.format("Identity %s is locked out", IDV_ID);
 
     private final JsonApiErrorItem item = new LockoutStateIsLockedErrorItem(lockoutState);
@@ -58,7 +60,7 @@ public class LockoutStateIsLockedErrorItemTest {
     @Test
     public void shouldReturnTimeBasedMeta() {
         final Instant lockedUntil = Instant.now();
-        final TimeBasedLockoutState lockoutState = buildTimeBasedLockoutState(IDV_ID, lockedUntil);
+        final TimeBasedLockoutState lockoutState = buildTimeBasedLockoutState(lockedUntil);
 
         final JsonApiErrorItem timeBasedItem = new LockoutStateIsLockedErrorItem(lockoutState);
 
@@ -68,23 +70,47 @@ public class LockoutStateIsLockedErrorItemTest {
         assertThat(meta).containsEntry("idvId", IDV_ID);
         assertThat(meta).containsEntry("numberOfAttempts", NUMBER_OF_ATTEMPTS);
         assertThat(meta).containsEntry("duration", lockoutState.getDurationInMillis());
-        assertThat(meta).containsEntry("lockedUntil", lockedUntil);
+        assertThat(meta).containsEntry("lockedUntil", lockoutState.getLockedUntil());
     }
 
-    private static LockoutState buildLockoutState(final UUID idvId) {
+    @Test
+    public void shouldReturnMaxAttemptsMeta() {
+        final int attemptsRemaining = 3;
+        final MaxAttemptsLockoutState lockoutState = buildMaxAttemptsLockoutState(attemptsRemaining);
+
+        final JsonApiErrorItem maxAttemptsItem = new LockoutStateIsLockedErrorItem(lockoutState);
+
+        final Map<String, Object> meta = maxAttemptsItem.getMeta();
+
+        assertThat(meta).hasSize(3);
+        assertThat(meta).containsEntry("idvId", IDV_ID);
+        assertThat(meta).containsEntry("numberOfAttempts", NUMBER_OF_ATTEMPTS);
+        assertThat(meta).containsEntry("numberOfAttemptsRemaining", attemptsRemaining);
+    }
+
+    private static LockoutState buildLockoutState() {
         final LockoutState lockoutState = mock(DefaultLockoutState.class);
-        given(lockoutState.getIdvId()).willReturn(idvId);
+        given(lockoutState.getIdvId()).willReturn(IDV_ID);
         given(lockoutState.getNumberOfAttempts()).willReturn(NUMBER_OF_ATTEMPTS);
         return lockoutState;
     }
 
-    private static TimeBasedLockoutState buildTimeBasedLockoutState(final UUID idvId, final Instant lockedUntil) {
+    private static TimeBasedLockoutState buildTimeBasedLockoutState(final Instant lockedUntil) {
         final TimeBasedLockoutState lockoutState = mock(TimeBasedLockoutState.class);
-        given(lockoutState.getIdvId()).willReturn(idvId);
+        given(lockoutState.getIdvId()).willReturn(IDV_ID);
         given(lockoutState.isTimeBased()).willReturn(true);
         given(lockoutState.getNumberOfAttempts()).willReturn(NUMBER_OF_ATTEMPTS);
-        given(lockoutState.getDurationInMillis()).willReturn(Duration.ofMinutes(15).toMillis());
-        given(lockoutState.getLockedUntil()).willReturn(lockedUntil);
+        given(lockoutState.getDurationInMillis()).willReturn(Optional.of(Duration.ofMinutes(15).toMillis()));
+        given(lockoutState.getLockedUntil()).willReturn(Optional.of(lockedUntil));
+        return lockoutState;
+    }
+
+    private static MaxAttemptsLockoutState buildMaxAttemptsLockoutState(final int attemptsRemaining) {
+        final MaxAttemptsLockoutState lockoutState = mock(MaxAttemptsLockoutState.class);
+        given(lockoutState.getIdvId()).willReturn(IDV_ID);
+        given(lockoutState.isMaxAttempts()).willReturn(true);
+        given(lockoutState.getNumberOfAttempts()).willReturn(NUMBER_OF_ATTEMPTS);
+        given(lockoutState.getNumberOfAttemptsRemaining()).willReturn(attemptsRemaining);
         return lockoutState;
     }
 

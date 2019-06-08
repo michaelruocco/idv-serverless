@@ -1,0 +1,32 @@
+{
+  "data": {
+    "type": "lockoutStates",
+    "id": "a20ed37e-0205-4b73-82d0-8435ee74f7a3",
+    "attributes": {
+      "idvId":"d98aa22c-a06e-4db5-8dc1-9ea83716ac12",
+      "type": "TIME_BASED_INTERVAL",
+      "locked": false,
+      "aliases": [
+        {
+          "type": "TYPE",
+          "format": "FORMAT",
+          "value": "VALUE"
+        }
+      ],
+      "attempts": [
+        {
+          "alias": {
+            "type": "TYPE",
+            "format": "FORMAT",
+            "value": "VALUE"
+          },
+          "channelId": "CHANNEL_ID",
+          "activityType": "ACTIVITY_TYPE",
+          "methodName": "METHOD_NAME",
+          "timestamp": "2019-03-10T12:53:57.547Z",
+          "successful": false
+        }
+      ]
+    }
+  }
+}

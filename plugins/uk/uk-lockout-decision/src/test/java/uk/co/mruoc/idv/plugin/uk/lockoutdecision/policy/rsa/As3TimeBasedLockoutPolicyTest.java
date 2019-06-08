@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.plugin.uk.lockoutdecision.policy.rsa;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
-import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockedTimeBasedLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
@@ -58,7 +57,7 @@ public class As3TimeBasedLockoutPolicyTest {
     @Test
     public void shouldPopulateIdvId() {
         final VerificationAttempts attempts = VerificationAttempts.builder()
-                .idvIdAlias(new IdvIdAlias())
+                .idvId(UUID.randomUUID())
                 .attempts(Collections.emptyList())
                 .build();
         final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
@@ -115,8 +114,8 @@ public class As3TimeBasedLockoutPolicyTest {
         assertThat(state.isLocked()).isTrue();
         final LockedTimeBasedLockoutState timeBasedLockoutState = (LockedTimeBasedLockoutState) state;
         final Duration fifteenMinutes = Duration.ofMinutes(15);
-        assertThat(timeBasedLockoutState.getDuration()).isEqualTo(fifteenMinutes);
-        assertThat(timeBasedLockoutState.getLockedUntil()).isEqualTo(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
+        assertThat(timeBasedLockoutState.getDuration()).contains(fifteenMinutes);
+        assertThat(timeBasedLockoutState.getLockedUntil()).contains(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
     }
 
     @Test
@@ -134,8 +133,8 @@ public class As3TimeBasedLockoutPolicyTest {
         assertThat(state.isLocked()).isTrue();
         final LockedTimeBasedLockoutState timeBasedLockoutState = (LockedTimeBasedLockoutState) state;
         final Duration fifteenMinutes = Duration.ofHours(1);
-        assertThat(timeBasedLockoutState.getDuration()).isEqualTo(fifteenMinutes);
-        assertThat(timeBasedLockoutState.getLockedUntil()).isEqualTo(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
+        assertThat(timeBasedLockoutState.getDuration()).contains(fifteenMinutes);
+        assertThat(timeBasedLockoutState.getLockedUntil()).contains(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
     }
 
     @Test
@@ -153,8 +152,8 @@ public class As3TimeBasedLockoutPolicyTest {
         assertThat(state.isLocked()).isTrue();
         final LockedTimeBasedLockoutState timeBasedLockoutState = (LockedTimeBasedLockoutState) state;
         final Duration fifteenMinutes = Duration.ofHours(4);
-        assertThat(timeBasedLockoutState.getDuration()).isEqualTo(fifteenMinutes);
-        assertThat(timeBasedLockoutState.getLockedUntil()).isEqualTo(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
+        assertThat(timeBasedLockoutState.getDuration()).contains(fifteenMinutes);
+        assertThat(timeBasedLockoutState.getLockedUntil()).contains(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
     }
 
     @Test
@@ -172,8 +171,8 @@ public class As3TimeBasedLockoutPolicyTest {
         assertThat(state.isLocked()).isTrue();
         final LockedTimeBasedLockoutState timeBasedLockoutState = (LockedTimeBasedLockoutState) state;
         final Duration fifteenMinutes = Duration.ofHours(24);
-        assertThat(timeBasedLockoutState.getDuration()).isEqualTo(fifteenMinutes);
-        assertThat(timeBasedLockoutState.getLockedUntil()).isEqualTo(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
+        assertThat(timeBasedLockoutState.getDuration()).contains(fifteenMinutes);
+        assertThat(timeBasedLockoutState.getLockedUntil()).contains(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
     }
 
     @Test
@@ -191,8 +190,8 @@ public class As3TimeBasedLockoutPolicyTest {
         assertThat(state.isLocked()).isTrue();
         final LockedTimeBasedLockoutState timeBasedLockoutState = (LockedTimeBasedLockoutState) state;
         final Duration fifteenMinutes = Duration.ofHours(24);
-        assertThat(timeBasedLockoutState.getDuration()).isEqualTo(fifteenMinutes);
-        assertThat(timeBasedLockoutState.getLockedUntil()).isEqualTo(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
+        assertThat(timeBasedLockoutState.getDuration()).contains(fifteenMinutes);
+        assertThat(timeBasedLockoutState.getLockedUntil()).contains(attempts.getMostRecentTimestamp().plus(fifteenMinutes));
     }
 
     @Test

@@ -65,7 +65,7 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
         final Collection<VerificationAttempt> applicableAttempts = getApplicableAttemptsCollection(attempts);
         log.info("returning applicable attempts {}", applicableAttempts);
         return VerificationAttempts.builder()
-                .idvIdAlias(attempts.getIdvIdAlias())
+                .idvId(attempts.getIdvId())
                 .lockoutStateId(attempts.getLockoutStateId())
                 .attempts(applicableAttempts)
                 .build();

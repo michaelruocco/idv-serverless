@@ -2,13 +2,14 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 
 public interface TimeBasedLockoutState extends LockoutState {
 
-    Duration getDuration();
+    Optional<Duration> getDuration();
 
-    long getDurationInMillis();
+    Optional<Long> getDurationInMillis();
 
-    Instant getLockedUntil();
+    Optional<Instant> getLockedUntil();
 
 }

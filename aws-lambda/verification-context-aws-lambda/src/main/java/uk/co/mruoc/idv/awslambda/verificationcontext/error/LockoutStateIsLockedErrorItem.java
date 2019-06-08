@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutdecision.model.MaxAttemptsLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.TimeBasedLockoutState;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
@@ -25,15 +26,36 @@ public class LockoutStateIsLockedErrorItem extends JsonApiErrorItem {
     }
 
 
-    private static Map<String, Object> toMeta(final LockoutState lockoutState) {
-        final Map<String, Object> meta = new HashMap<>();
-        meta.put("idvId", lockoutState.getIdvId());
-        meta.put("numberOfAttempts", lockoutState.getNumberOfAttempts());
-        if (lockoutState.isTimeBased()) {
-            final TimeBasedLockoutState timeBasedState = (TimeBasedLockoutState) lockoutState;
-            meta.put("duration", timeBasedState.getDurationInMillis());
-            meta.put("lockedUntil", timeBasedState.getLockedUntil());
+    private static Map<String, Object> toMeta(final LockoutState state) {
+        if (state.isTimeBased()) {
+            return toMeta((TimeBasedLockoutState) state);
+        } else if (state.isMaxAttempts()) {
+            return toMeta((MaxAttemptsLockoutState) state);
         }
+        return toDefaultMeta(state);
+    }
+
+    private static Map<String, Object> toMeta(final TimeBasedLockoutState state) {
+        final Map<String, Object> meta = new HashMap<>();
+        meta.put("idvId", state.getIdvId());
+        meta.put("numberOfAttempts", state.getNumberOfAttempts());
+        meta.put("duration", state.getDurationInMillis());
+        meta.put("lockedUntil", state.getLockedUntil());
+        return Collections.unmodifiableMap(meta);
+    }
+
+    private static Map<String, Object> toMeta(final MaxAttemptsLockoutState state) {
+        final Map<String, Object> meta = new HashMap<>();
+        meta.put("idvId", state.getIdvId());
+        meta.put("numberOfAttempts", state.getNumberOfAttempts());
+        meta.put("numberOfAttemptsRemaining", state.getNumberOfAttemptsRemaining());
+        return Collections.unmodifiableMap(meta);
+    }
+
+    private static Map<String, Object> toDefaultMeta(final LockoutState state) {
+        final Map<String, Object> meta = new HashMap<>();
+        meta.put("idvId", state.getIdvId());
+        meta.put("numberOfAttempts", state.getNumberOfAttempts());
         return Collections.unmodifiableMap(meta);
     }
 

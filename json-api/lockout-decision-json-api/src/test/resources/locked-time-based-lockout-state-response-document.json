@@ -3,13 +3,18 @@
     "type": "lockoutStates",
     "id": "a20ed37e-0205-4b73-82d0-8435ee74f7a3",
     "attributes": {
-      "idvIdAlias": {
-        "type": "IDV_ID",
-        "format": "CLEAR_TEXT",
-        "value": "d98aa22c-a06e-4db5-8dc1-9ea83716ac12"
-      },
+      "idvId": "d98aa22c-a06e-4db5-8dc1-9ea83716ac12",
       "type": "TIME_BASED_INTERVAL",
-      "locked": false,
+      "locked": true,
+      "duration": 900000,
+      "lockedUntil": "2019-03-10T13:08:57.547Z",
+      "aliases": [
+        {
+          "type": "TYPE",
+          "format": "FORMAT",
+          "value": "VALUE"
+        }
+      ],
       "attempts": [
         {
           "alias": {
