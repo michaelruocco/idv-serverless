@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class LockoutStateResponseDocumentTest {
@@ -61,12 +63,40 @@ public class LockoutStateResponseDocumentTest {
 
     @Test
     public void shouldReturnResponse() {
-        final LockoutState state = new NotLockedTimeBasedIntervalLockoutState(buildAttempts());
-        final LockoutStateResponse response = buildLockoutStateResponse(state);
+        final LockoutStateResponse response = mock(LockoutStateResponse.class);
 
         final LockoutStateResponseDocument document = new LockoutStateResponseDocument(response);
 
         assertThat(document.getResponse()).isEqualTo(response);
+    }
+
+    @Test
+    public void shouldReturnId() {
+        final UUID id = UUID.randomUUID();
+        final LockoutStateResponse response = mock(LockoutStateResponse.class);
+        given(response.getId()).willReturn(id);
+
+        final LockoutStateResponseDocument document = new LockoutStateResponseDocument(response);
+
+        assertThat(document.getId()).isEqualTo(id);
+    }
+
+    @Test
+    public void shouldReturnIdvId() {
+        final UUID idvId = UUID.randomUUID();
+        final LockoutStateResponse response = mock(LockoutStateResponse.class);
+        given(response.getIdvId()).willReturn(idvId);
+
+        final LockoutStateResponseDocument document = new LockoutStateResponseDocument(response);
+
+        assertThat(document.getIdvId()).isEqualTo(idvId);
+    }
+
+    @Test
+    public void shouldHaveNoArgConstructorForJackson() {
+        final LockoutStateResponseDocument document = new LockoutStateResponseDocument();
+
+        assertThat(document).isNotNull();
     }
 
     private static LockoutStateResponseDocument buildDocument(final LockoutState state) {
