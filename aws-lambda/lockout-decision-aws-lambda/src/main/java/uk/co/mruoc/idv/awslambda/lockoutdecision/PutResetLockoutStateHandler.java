@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
+import uk.co.mruoc.idv.awslambda.lockoutdecision.error.PutResetLockoutStateErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;

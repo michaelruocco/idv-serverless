@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.awslambda.lockoutdecision;
+package uk.co.mruoc.idv.awslambda.lockoutdecision.error;
 
 import uk.co.mruoc.idv.awslambda.ErrorHandlerDelegator;
 import uk.co.mruoc.idv.awslambda.InternalServerErrorHandler;
