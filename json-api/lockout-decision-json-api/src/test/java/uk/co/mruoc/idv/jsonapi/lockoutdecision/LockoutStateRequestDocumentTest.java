@@ -1,15 +1,13 @@
 package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutStateRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
 import uk.co.mruoc.idv.json.JsonConverter;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -21,10 +19,10 @@ public class LockoutStateRequestDocumentTest {
     private static final JsonConverter CONVERTER = new JsonApiLockoutDecisionJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDocument() throws JSONException {
+    public void shouldSerializeDocument() {
         final String json = CONVERTER.toJson(DOCUMENT);
 
-        JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(JSON);
     }
 
     @Test

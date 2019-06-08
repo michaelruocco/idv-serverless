@@ -1,9 +1,6 @@
 package uk.co.mruoc.idv.jsonapi.verificationcontext;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
@@ -24,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.*;
 
@@ -35,10 +33,10 @@ public class VerificationContextResponseDocumentTest {
     private static final JsonConverter CONVERTER = new JsonApiVerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDocument() throws JSONException {
+    public void shouldSerializeDocument() {
         final String json = CONVERTER.toJson(DOCUMENT);
 
-        JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(JSON);
     }
 
     @Test

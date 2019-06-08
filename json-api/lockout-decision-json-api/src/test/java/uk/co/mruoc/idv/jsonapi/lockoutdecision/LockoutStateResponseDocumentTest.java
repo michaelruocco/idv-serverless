@@ -1,9 +1,6 @@
 package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockedTimeBasedIntervalLockoutState;
@@ -19,6 +16,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -29,17 +27,17 @@ public class LockoutStateResponseDocumentTest {
     private static final JsonConverter CONVERTER = new JsonApiLockoutDecisionJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDocumentWithNotLockedState() throws JSONException {
+    public void shouldSerializeDocumentWithNotLockedState() {
         final String expectedJson = loadContentFromClasspath("/not-locked-lockout-state-response-document.json");
         final LockoutStateResponseDocument document = buildDocument(new NotLockedTimeBasedIntervalLockoutState(buildAttempts()));
 
         final String json = CONVERTER.toJson(document);
 
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
-    public void shouldSerializeDocumentWithTimeBasedLockedState() throws JSONException {
+    public void shouldSerializeDocumentWithTimeBasedLockedState() {
         final Duration duration = Duration.ofMinutes(15);
         final Instant lockedUtil = Instant.parse("2019-03-10T13:08:57.547Z");
         final String expectedJson = loadContentFromClasspath("/locked-time-based-lockout-state-response-document.json");
@@ -47,18 +45,18 @@ public class LockoutStateResponseDocumentTest {
 
         final String json = CONVERTER.toJson(document);
 
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
-    public void shouldSerializeDocumentWithMaxAttemptsState() throws JSONException {
+    public void shouldSerializeDocumentWithMaxAttemptsState() {
         final int attemptsRemaining = 2;
         final String expectedJson = loadContentFromClasspath("/max-attempts-lockout-state-response-document.json");
         final LockoutStateResponseDocument document = buildDocument(new MaxAttemptsLockoutState(buildAttempts(), attemptsRemaining));
 
         final String json = CONVERTER.toJson(document);
 
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test

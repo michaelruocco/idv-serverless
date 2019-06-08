@@ -2,6 +2,6 @@ allprojects {
     dependencies {
         compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
 
-        testCompile 'org.skyscreamer:jsonassert:1.5.0'
+        testCompile 'net.javacrumbs.json-unit:json-unit-assertj:2.7.0'
     }
 }
