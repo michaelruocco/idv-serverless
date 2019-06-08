@@ -6,7 +6,6 @@ import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutStateRequest;
 public class IdvJsonApiLockoutDecisionModule extends SimpleModule {
 
     public IdvJsonApiLockoutDecisionModule() {
-        setMixInAnnotation(LockoutStateRequest.class, LockoutStateRequestMixin.class);
         setMixInAnnotation(LockoutStateResponse.class, LockoutStateResponseMixin.class);
     }
 

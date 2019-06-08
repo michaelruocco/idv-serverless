@@ -1,0 +1,12 @@
+{
+  "data": {
+    "id": "%ID%",
+    "type": "lockoutStates",
+    "attributes": {
+      "type": "MAX_ATTEMPTS",
+      "locked": false,
+      "idvId": "%IDV_ID%",
+      "numberOfAttemptsRemaining": 3
+    }
+  }
+}

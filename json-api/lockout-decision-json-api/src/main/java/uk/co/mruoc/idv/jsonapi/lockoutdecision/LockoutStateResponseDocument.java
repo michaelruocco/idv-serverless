@@ -2,9 +2,13 @@ package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import uk.co.mruoc.jsonapi.JsonApiDataItemWithId;
 
+import java.util.UUID;
+
 @Getter
+@NoArgsConstructor(force = true)
 public class LockoutStateResponseDocument {
 
     private static final String TYPE = "lockoutStates";
@@ -18,6 +22,16 @@ public class LockoutStateResponseDocument {
     @JsonIgnore
     public LockoutStateResponse getResponse() {
         return data.getAttributes();
+    }
+
+    @JsonIgnore
+    public UUID getId() {
+        return data.getId();
+    }
+
+    @JsonIgnore
+    public UUID getIdvId() {
+        return getResponse().getIdvId();
     }
 
 }

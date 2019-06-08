@@ -1,0 +1,14 @@
+{
+  "data": {
+    "type": "lockoutStates",
+    "attributes": {
+      "channelId": "RSA",
+      "activityType": "ONLINE_PURCHASE",
+      "alias": {
+        "type": "CREDIT_CARD_NUMBER",
+        "format": "TOKENIZED",
+        "value": "3489347343788005"
+      }
+    }
+  }
+}
