@@ -1,6 +1,6 @@
 allprojects {
     dependencies {
-        compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
 
         testCompile 'org.skyscreamer:jsonassert:1.5.0'
     }

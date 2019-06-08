@@ -4,6 +4,4 @@ dependencies {
     compile project(':aws-lambda')
     compile project(':core:authorizer-core')
     compile project(':json-api:authorizer-json-api')
-
-    compile 'org.apache.commons:commons-lang3:3.8.1'
 }

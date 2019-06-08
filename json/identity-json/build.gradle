@@ -1,7 +1,6 @@
 dependencies {
     compile project(':core:identity-core')
     compile project(':json')
-    compile 'org.apache.commons:commons-lang3:3.8.1'
 
     testCompile 'org.skyscreamer:jsonassert:1.5.0'
 }
