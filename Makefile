@@ -7,7 +7,13 @@ clean:
 	./gradlew clean
 
 build:
-	./gradlew build spotlessApply
+	./gradlew build
+
+spotless:
+	./gradlew spotlessApply
+
+checkDependencies:
+	./gradlew dependencyUpdates
 
 deploy:
 	cd plugins/uk/uk-aws-lambda; \
