@@ -3,8 +3,6 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Optional;
-
 @Getter
 public class MaxAttemptsLockoutState extends DefaultLockoutState {
 

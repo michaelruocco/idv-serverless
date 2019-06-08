@@ -9,7 +9,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodR
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationResult;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.result.VerificationResultResponseDocument;
 
 import java.time.Instant;
 import java.util.Collections;
