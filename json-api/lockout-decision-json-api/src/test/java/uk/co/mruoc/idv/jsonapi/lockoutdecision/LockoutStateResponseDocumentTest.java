@@ -49,7 +49,6 @@ public class LockoutStateResponseDocumentTest {
     }
 
     private static LockoutState buildLockoutState() {
-        final IdvIdAlias alias = new IdvIdAlias("d98aa22c-a06e-4db5-8dc1-9ea83716ac12");
         final VerificationAttempt attempt = VerificationAttempt.builder()
                 .alias(new DefaultAlias(new DefaultAliasType("TYPE"), "FORMAT", "VALUE"))
                 .channelId("CHANNEL_ID")

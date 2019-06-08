@@ -10,8 +10,6 @@ import uk.co.mruoc.idv.core.model.channel.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 
-import java.util.Optional;
-
 @Builder
 @Getter
 @RequiredArgsConstructor
