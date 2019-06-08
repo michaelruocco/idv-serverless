@@ -118,10 +118,6 @@ public class PostVerificationResultsHandlerIntegrationTest {
         final VerificationAttempts attempts = extractAttempts(document);
         final String attemptsJson = toJson(attempts);
         final String expectedJson = loadExpectedBody(attempts);
-
-        System.out.println(attemptsJson);
-        System.out.println(expectedJson);
-
         JSONAssert.assertEquals(expectedJson, attemptsJson, JSONCompareMode.NON_EXTENSIBLE);
     }
 

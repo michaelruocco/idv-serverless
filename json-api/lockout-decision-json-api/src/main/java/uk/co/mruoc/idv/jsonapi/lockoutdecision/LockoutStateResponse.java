@@ -1,6 +1,5 @@
 package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 

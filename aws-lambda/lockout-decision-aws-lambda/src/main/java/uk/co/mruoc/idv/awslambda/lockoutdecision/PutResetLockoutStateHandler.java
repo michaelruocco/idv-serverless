@@ -45,7 +45,7 @@ public class PutResetLockoutStateHandler implements RequestHandler<APIGatewayPro
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {
-            return createContext(input);
+            return resetLockoutState(input);
         } catch (final Exception e) {
             log.error("caught exception trying to create verification context", e);
             final APIGatewayProxyResponseEvent response = exceptionConverter.toResponse(e);
@@ -54,7 +54,7 @@ public class PutResetLockoutStateHandler implements RequestHandler<APIGatewayPro
         }
     }
 
-    private APIGatewayProxyResponseEvent createContext(final APIGatewayProxyRequestEvent requestEvent) {
+    private APIGatewayProxyResponseEvent resetLockoutState(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
         final LockoutStateRequest request = requestExtractor.extractRequest(requestEvent);
         final LockoutState lockoutState = service.reset(request);

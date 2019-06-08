@@ -22,8 +22,8 @@ public class JsonApiLockoutDecisionJsonConverterFactory implements JsonConverter
         final ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new IdvIdentityModule());
         mapper.registerModule(new Jdk8Module());
-        mapper.registerModule(new IdvLockoutDecisionModule());
         mapper.registerModule(new IdvJsonApiLockoutDecisionModule());
+        mapper.registerModule(new IdvLockoutDecisionModule());
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;

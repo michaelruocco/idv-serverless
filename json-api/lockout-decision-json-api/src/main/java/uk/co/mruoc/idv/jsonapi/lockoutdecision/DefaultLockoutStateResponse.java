@@ -68,6 +68,4 @@ public class DefaultLockoutStateResponse implements LockoutStateResponse {
         return attempts.toCollection();
     }
 
-
-
 }

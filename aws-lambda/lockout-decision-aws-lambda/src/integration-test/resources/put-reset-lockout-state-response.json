@@ -1,12 +1,11 @@
 {
   "data": {
-    "id": "%ID%",
+    "id": "${json-unit.ignore}",
     "type": "lockoutStates",
     "attributes": {
-      "type": "MAX_ATTEMPTS",
+      "type": "NON_LOCKING",
       "locked": false,
-      "idvId": "%IDV_ID%",
-      "numberOfAttemptsRemaining": 3
+      "idvId": "${json-unit.ignore}"
     }
   }
 }
