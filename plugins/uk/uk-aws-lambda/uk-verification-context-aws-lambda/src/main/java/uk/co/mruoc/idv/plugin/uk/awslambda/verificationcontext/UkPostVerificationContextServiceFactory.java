@@ -2,8 +2,8 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.Environment;
-import uk.co.mruoc.idv.awslambda.identity.IdentityServiceFactory;
 import uk.co.mruoc.idv.awslambda.verificationcontext.CreateVerificationContextServiceFactory;
+import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDaoFactory;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LoadVerificationAttemptsService;
@@ -38,26 +38,26 @@ public class UkPostVerificationContextServiceFactory implements CreateVerificati
 
     private static CreateVerificationContextService CONTEXT_SERVICE;
 
-    private final IdentityServiceFactory identityServiceFactory;
+    private final IdentityService identityService;
     private final VerificationContextDao contextDao;
     private final EventPublisher eventPublisher;
     private final VerificationAttemptsDao attemptsDao;
     private final LockoutPoliciesService lockoutPoliciesService;
 
     public UkPostVerificationContextServiceFactory() {
-        this(new UkIdentityServiceFactory(),
+        this(new UkIdentityServiceFactory().build(),
                 buildContextDao(),
                 buildEventPublisher(),
                 buildAttemptsDao(),
                 new UkLockoutPoliciesService());
     }
 
-    public UkPostVerificationContextServiceFactory(final IdentityServiceFactory identityServiceFactory,
+    public UkPostVerificationContextServiceFactory(final IdentityService identityService,
                                                    final VerificationContextDao contextDao,
                                                    final EventPublisher eventPublisher,
                                                    final VerificationAttemptsDao attemptsDao,
                                                    final LockoutPoliciesService lockoutPoliciesService) {
-        this.identityServiceFactory = identityServiceFactory;
+        this.identityService = identityService;
         this.contextDao = contextDao;
         this.eventPublisher = eventPublisher;
         this.attemptsDao = attemptsDao;
@@ -77,7 +77,7 @@ public class UkPostVerificationContextServiceFactory implements CreateVerificati
         final LockoutStateService lockoutStateService = buildLockoutStateService();
         return CreateVerificationContextService.builder()
                 .requestConverter(new VerificationContextRequestConverter())
-                .identityService(identityServiceFactory.build())
+                .identityService(identityService)
                 .policiesService(new UkVerificationPoliciesService())
                 .timeService(timeService)
                 .verificationMethodsService(new UkVerificationMethodsService())
@@ -109,7 +109,7 @@ public class UkPostVerificationContextServiceFactory implements CreateVerificati
         return LoadVerificationAttemptsService.builder()
                 .dao(attemptsDao)
                 .uuidGenerator(new RandomUuidGenerator())
-                .identityService(identityServiceFactory.build())
+                .identityService(identityService)
                 .build();
     }
 

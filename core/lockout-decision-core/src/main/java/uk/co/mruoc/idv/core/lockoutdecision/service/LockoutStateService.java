@@ -35,16 +35,17 @@ public class LockoutStateService {
     public LockoutState register(final VerificationAttempt attempt) {
         log.info("registering attempt {}", attempt);
         final LockoutPolicy policy = loadPolicy(attempt);
-        final VerificationAttempts attempts = loadAttempts(policy, attempt.getAlias());
+        final Alias alias = attempt.getAlias();
+        final VerificationAttempts attempts = loadAttempts(alias);
 
-        final LockoutState state = calculateLockoutState(policy, attempts);
+        final LockoutState state = calculateLockoutState(alias, policy, attempts);
         if (state.isLocked()) {
             log.info("not registering attempt as lockout state is already locked");
             return state;
         }
 
         if (attempt.isSuccessful()) {
-            return reset(policy, attempts);
+            return reset(alias, policy, attempts);
         }
 
         return update(policy, attempts, attempt);
@@ -53,23 +54,19 @@ public class LockoutStateService {
     public LockoutState load(final LockoutStateRequest request) {
         log.info("loading lockout state for request {}", request);
         final LockoutPolicy policy = loadPolicy(request);
-        final VerificationAttempts attempts = loadAttempts(policy, request.getAlias());
-        return calculateLockoutState(policy, attempts);
+        final VerificationAttempts attempts = loadAttempts(request.getAlias());
+        return calculateLockoutState(request.getAlias(), policy, attempts);
     }
 
     public LockoutState reset(final LockoutStateRequest request) {
         log.info("resetting lockout state for request {}", request);
         final LockoutPolicy policy = loadPolicy(request);
-        final VerificationAttempts attempts = loadAttempts(policy, request.getAlias());
-        return reset(policy, attempts);
+        final VerificationAttempts attempts = loadAttempts(request.getAlias());
+        return reset(request.getAlias(), policy, attempts);
     }
 
-    private VerificationAttempts loadAttempts(final LockoutPolicy policy, final Alias alias) {
-        final VerificationAttempts attempts = loadAttemptsService.load(alias);
-        if (policy.appliesToAllAliases()) {
-            return attempts;
-        }
-        return attempts.filterByAlias(alias);
+    private VerificationAttempts loadAttempts(final Alias alias) {
+        return loadAttemptsService.load(alias);
     }
 
     private LockoutPolicy loadPolicy(final LockoutStateRequest request) {
@@ -77,28 +74,28 @@ public class LockoutStateService {
         return policies.getPolicyFor(request);
     }
 
-    private LockoutState reset(final LockoutPolicy policy, final VerificationAttempts attempts) {
-        log.info("resetting verification attempts");
-        final VerificationAttempts resetAttempts = policy.reset(attempts);
-        return update(policy, resetAttempts);
+    private LockoutState reset(final Alias alias, final LockoutPolicy policy, final VerificationAttempts attempts) {
+        log.info("resetting verification attempts {} with alias {}", attempts, alias);
+        final VerificationAttempts resetAttempts = policy.reset(alias, attempts);
+        return update(alias, policy, resetAttempts);
     }
 
     private LockoutState update(final LockoutPolicy policy, final VerificationAttempts attempts, final VerificationAttempt attempt) {
-        log.info("updating verification attempts");
+        log.info("updating verification attempts {} with attempt {}", attempts, attempt);
         final VerificationAttempts updatedAttempts = attempts.add(attempt);
-        return update(policy, updatedAttempts);
+        return update(attempt.getAlias(), policy, updatedAttempts);
     }
 
-    private LockoutState update(final LockoutPolicy policy, final VerificationAttempts attempts) {
+    private LockoutState update(final Alias alias, final LockoutPolicy policy, final VerificationAttempts attempts) {
         log.info("persisting verification attempts {}", attempts);
         dao.save(attempts);
-        final LockoutState state = calculateLockoutState(policy, attempts);
+        final LockoutState state = calculateLockoutState(alias, policy, attempts);
         log.info("calculated lockout state {}", state);
         return state;
     }
 
-    private LockoutState calculateLockoutState(final LockoutPolicy policy, final VerificationAttempts attempts) {
-        final CalculateLockoutStateRequest request = converter.toRequest(attempts);
+    private LockoutState calculateLockoutState(final Alias alias, final LockoutPolicy policy, final VerificationAttempts attempts) {
+        final CalculateLockoutStateRequest request = converter.toRequest(alias, attempts);
         return policy.calculateLockoutState(request);
     }
 

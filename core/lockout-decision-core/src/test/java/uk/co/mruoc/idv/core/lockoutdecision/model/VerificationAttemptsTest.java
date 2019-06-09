@@ -3,7 +3,6 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
-import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -175,22 +174,6 @@ public class VerificationAttemptsTest {
         final VerificationAttempts attempts = new VerificationAttempts();
 
         assertThat(attempts).isNotNull();
-    }
-
-    @Test
-    public void shouldFilterByAlias() {
-        final Alias alias = new TokenizedCreditCardNumberAlias("12345678910123456");
-        final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
-        given(attempt1.getAlias()).willReturn(alias);
-        final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
-        given(attempt2.getAlias()).willReturn(new TokenizedCreditCardNumberAlias("99999999999999999"));
-        final VerificationAttempts attempts = VerificationAttempts.builder()
-                .attempts(Arrays.asList(attempt1, attempt2))
-                .build();
-
-        final VerificationAttempts filteredAttempts = attempts.filterByAlias(alias);
-
-        assertThat(filteredAttempts).containsExactly(attempt1);
     }
 
 }

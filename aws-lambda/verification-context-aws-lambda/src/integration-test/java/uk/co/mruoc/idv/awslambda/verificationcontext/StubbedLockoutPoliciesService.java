@@ -18,7 +18,7 @@ public class StubbedLockoutPoliciesService implements LockoutPoliciesService {
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .stateCalculator(new NonLockingLockoutStateCalculator())
                 .activities(Collections.singleton(ALL))
-                .aliasType(ALL)
+                .aliasTypeName(ALL)
                 .build();
         return new ChannelLockoutPolicies(channelId, policy);
     }

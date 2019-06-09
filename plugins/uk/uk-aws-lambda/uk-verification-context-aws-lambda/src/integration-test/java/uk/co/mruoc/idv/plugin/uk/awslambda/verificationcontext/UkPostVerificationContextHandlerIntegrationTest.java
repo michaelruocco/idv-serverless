@@ -3,10 +3,10 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import org.junit.Test;
-import uk.co.mruoc.idv.awslambda.identity.IdentityServiceFactory;
 import uk.co.mruoc.idv.awslambda.verificationcontext.PostVerificationContextHandler;
 import uk.co.mruoc.idv.awslambda.verificationcontext.CreateVerificationContextServiceFactory;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
+import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
@@ -28,10 +28,10 @@ public class UkPostVerificationContextHandlerIntegrationTest {
     private final IdentityDao identityDao = new FakeIdentityDao();
     private final VerificationContextDao contextDao = new FakeVerificationContextDao();
     private final EventPublisher eventPublisher = new FakeEventPublisher();
-    private final IdentityServiceFactory serviceFactory = new UkIdentityServiceFactory(identityDao);
+    private final IdentityService identityService = new UkIdentityServiceFactory(identityDao).build();
     private final VerificationAttemptsDao attemptsDao = new FakeVerificationAttemptsDao();
     private final LockoutPoliciesService lockoutPoliciesService = new UkLockoutPoliciesService();
-    private final CreateVerificationContextServiceFactory factory = new UkPostVerificationContextServiceFactory(serviceFactory,contextDao, eventPublisher, attemptsDao, lockoutPoliciesService);
+    private final CreateVerificationContextServiceFactory factory = new UkPostVerificationContextServiceFactory(identityService, contextDao, eventPublisher, attemptsDao, lockoutPoliciesService);
     private final PostVerificationContextHandler handler = new UkPostVerificationContextHandler(factory.build());
 
     @Test

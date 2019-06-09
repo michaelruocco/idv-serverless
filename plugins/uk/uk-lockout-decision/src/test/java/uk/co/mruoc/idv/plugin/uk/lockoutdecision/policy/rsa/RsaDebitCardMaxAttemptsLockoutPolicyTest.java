@@ -13,7 +13,7 @@ public class RsaDebitCardMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldReturnDebitCardAliasType() {
-        assertThat(policy.getAliasType()).isEqualTo(AliasType.Names.DEBIT_CARD_NUMBER);
+        assertThat(policy.getAliasTypeName()).isEqualTo(AliasType.Names.DEBIT_CARD_NUMBER);
     }
 
 }

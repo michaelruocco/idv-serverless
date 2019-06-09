@@ -1,7 +1,10 @@
 package uk.co.mruoc.idv.plugin.uk.lockoutdecision.policy.rsa;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
+import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.CalculateLockoutStateRequest;
@@ -19,9 +22,7 @@ import static org.mockito.Mockito.mock;
 
 public class RsaMaxAttemptsLockoutPolicyTest {
 
-    private static final String ALIAS_TYPE = AliasType.Names.DEBIT_CARD_NUMBER;
-
-    private final LockoutPolicy policy = new RsaMaxAttemptsLockoutPolicy(ALIAS_TYPE);
+    private final LockoutPolicy policy = new RsaMaxAttemptsLockoutPolicy(AliasType.Names.CREDIT_CARD_NUMBER);
 
     @Test
     public void shouldHaveMaxAttemptsType() {
@@ -30,7 +31,8 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldApplyToAnyActivityAndMethodForAliasesMatchingAliasType() {
-        final VerificationAttempt attempt = buildAttempt(ALIAS_TYPE);
+        final Alias alias = new TokenizedCreditCardNumberAlias("1234567890123456");
+        final VerificationAttempt attempt = buildAttempt(alias);
 
         final boolean appliesToAttempt = policy.appliesTo(attempt);
 
@@ -39,7 +41,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldNotApplyIfAliasTypeDoesNotMatch() {
-        final VerificationAttempt attempt = buildAttempt(AliasType.Names.IDV_ID);
+        final VerificationAttempt attempt = buildAttempt(new IdvIdAlias());
 
         final boolean appliesToAttempt = policy.appliesTo(attempt);
 
@@ -92,13 +94,15 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldReturnNumberOfFailedAttempts() {
-        final VerificationAttempt attempt1 = buildAttempt(ALIAS_TYPE);
-        final VerificationAttempt attempt2 = buildAttempt(ALIAS_TYPE);
+        final Alias alias = new TokenizedCreditCardNumberAlias("1234567890123456");
+        final VerificationAttempt attempt1 = buildAttempt(alias);
+        final VerificationAttempt attempt2 = buildAttempt(alias);
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2))
                 .build();
         final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
+                .alias(alias)
                 .build();
 
         final LockoutState state = policy.calculateLockoutState(request);
@@ -108,14 +112,16 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldBeLockedIfThreeOrMoreFailedAttempts() {
-        final VerificationAttempt attempt1 = buildAttempt(ALIAS_TYPE);
-        final VerificationAttempt attempt2 = buildAttempt(ALIAS_TYPE);
-        final VerificationAttempt attempt3 = buildAttempt(ALIAS_TYPE);
+        final Alias alias = new TokenizedCreditCardNumberAlias("1234567890123456");
+        final VerificationAttempt attempt1 = buildAttempt(alias);
+        final VerificationAttempt attempt2 = buildAttempt(alias);
+        final VerificationAttempt attempt3 = buildAttempt(alias);
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2, attempt3))
                 .build();
         final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
+                .alias(alias)
                 .build();
 
         final LockoutState state = policy.calculateLockoutState(request);
@@ -125,22 +131,24 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldRemoveApplicableAttemptsOnReset() {
-        final VerificationAttempt attempt1 = buildAttempt(ALIAS_TYPE);
-        final VerificationAttempt attempt2 = buildAttempt(AliasType.Names.IDV_ID);
-        final VerificationAttempt attempt3 = buildAttempt(ALIAS_TYPE);
+        final Alias alias = new TokenizedCreditCardNumberAlias("1234567890123456");
+        final VerificationAttempt attempt1 = buildAttempt(alias);
+        final VerificationAttempt attempt2 = buildAttempt(new IdvIdAlias());
+        final VerificationAttempt attempt3 = buildAttempt(alias);
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2, attempt3))
                 .build();
 
-        final VerificationAttempts resetAttempts = policy.reset(attempts);
+        final VerificationAttempts resetAttempts = policy.reset(alias, attempts);
 
         assertThat(resetAttempts).containsExactly(attempt2);
     }
 
-    private VerificationAttempt buildAttempt(final String aliasTypeName) {
+    private VerificationAttempt buildAttempt(final Alias alias) {
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
         given(attempt.getActivityType()).willReturn("ANY");
-        given(attempt.getAliasTypeName()).willReturn(aliasTypeName);
+        given(attempt.getAlias()).willReturn(alias);
+        given(attempt.getAliasTypeName()).willReturn(alias.getTypeName());
         return attempt;
     }
 

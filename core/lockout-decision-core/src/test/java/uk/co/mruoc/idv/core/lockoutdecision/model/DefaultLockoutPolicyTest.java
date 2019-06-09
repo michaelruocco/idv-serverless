@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class DefaultLockoutPolicyTest {
     public void shouldReturnFalseIfAttemptAliasDoesNotMatchPolicy() {
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ACTIVITY))
-                .aliasType(AliasType.Names.CREDIT_CARD_NUMBER)
+                .aliasTypeName(AliasType.Names.CREDIT_CARD_NUMBER)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -38,7 +39,7 @@ public class DefaultLockoutPolicyTest {
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ACTIVITY))
-                .aliasType(aliasType)
+                .aliasTypeName(aliasType)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -55,7 +56,7 @@ public class DefaultLockoutPolicyTest {
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ACTIVITY))
-                .aliasType(aliasType)
+                .aliasTypeName(aliasType)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -71,7 +72,7 @@ public class DefaultLockoutPolicyTest {
     public void shouldReturnTrueIfPolicyMatchesAllActivitiesAliases() {
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ALL))
-                .aliasType(ALL)
+                .aliasTypeName(ALL)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -91,7 +92,7 @@ public class DefaultLockoutPolicyTest {
 
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.emptyList())
-                .aliasType("")
+                .aliasTypeName("")
                 .stateCalculator(calculator)
                 .build();
 
@@ -100,6 +101,7 @@ public class DefaultLockoutPolicyTest {
 
     @Test
     public void shouldRemoveApplicableAttemptsOnReset() {
+        final Alias alias = mock(Alias.class);
         final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
         final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
 
@@ -109,16 +111,41 @@ public class DefaultLockoutPolicyTest {
 
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ALL))
-                .aliasType(ALL)
+                .aliasTypeName(ALL)
                 .build();
 
-        final VerificationAttempts resetAttempts = policy.reset(attempts);
+        final VerificationAttempts resetAttempts = policy.reset(alias, attempts);
 
         assertThat(resetAttempts).isEmpty();
     }
 
     @Test
+    public void shouldRemoveApplicableAttemptsForSpecificAliasOnReset() {
+        final String aliasTypeName = "aliasTypeName";
+        final Alias alias = mock(Alias.class);
+        given(alias.getTypeName()).willReturn(aliasTypeName);
+        final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
+        given(attempt1.getAlias()).willReturn(alias);
+        final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
+        given(attempt2.getAlias()).willReturn(mock(Alias.class));
+
+        final VerificationAttempts attempts = VerificationAttempts.builder()
+                .attempts(Arrays.asList(attempt1, attempt2))
+                .build();
+
+        final LockoutPolicy policy = DefaultLockoutPolicy.builder()
+                .activities(Collections.singleton(ALL))
+                .aliasTypeName(aliasTypeName)
+                .build();
+
+        final VerificationAttempts resetAttempts = policy.reset(alias, attempts);
+
+        assertThat(resetAttempts).containsExactly(attempt2);
+    }
+
+    @Test
     public void shouldPassApplicableAttemptsToLockoutStateCalculator() {
+        final Alias alias = mock(Alias.class);
         final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
         final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
 
@@ -129,13 +156,14 @@ public class DefaultLockoutPolicyTest {
 
         final CalculateLockoutStateRequest request = CalculateLockoutStateRequest.builder()
                 .attempts(attempts)
+                .alias(alias)
                 .build();
 
         final LockoutStateCalculator calculator = mock(LockoutStateCalculator.class);
 
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ALL))
-                .aliasType(ALL)
+                .aliasTypeName(ALL)
                 .stateCalculator(calculator)
                 .build();
 
@@ -150,35 +178,15 @@ public class DefaultLockoutPolicyTest {
     }
 
     @Test
-    public void shouldReturnTrueIfMatchesAllAliases() {
-        final LockoutPolicy allAliasesPolicy = DefaultLockoutPolicy.builder()
-                .aliasType(ALL)
-                .activities(Collections.emptyList())
-                .build();
-
-        assertThat(allAliasesPolicy.appliesToAllAliases()).isTrue();
-    }
-
-    @Test
-    public void shouldReturnFalseIfMatchesAliasType() {
-        final LockoutPolicy allAliasesPolicy = DefaultLockoutPolicy.builder()
-                .aliasType(AliasType.Names.CREDIT_CARD_NUMBER)
-                .activities(Collections.emptyList())
-                .build();
-
-        assertThat(allAliasesPolicy.appliesToAllAliases()).isFalse();
-    }
-
-    @Test
     public void shouldReturnAliasType() {
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
 
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
-                .aliasType(aliasType)
+                .aliasTypeName(aliasType)
                 .activities(Collections.emptyList())
                 .build();
 
-        assertThat(policy.getAliasType()).isEqualTo(aliasType);
+        assertThat(policy.getAliasTypeName()).isEqualTo(aliasType);
     }
 
 }

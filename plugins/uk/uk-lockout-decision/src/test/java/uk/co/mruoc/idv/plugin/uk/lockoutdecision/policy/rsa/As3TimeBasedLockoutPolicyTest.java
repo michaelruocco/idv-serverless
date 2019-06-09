@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.lockoutdecision.policy.rsa;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockedTimeBasedLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
@@ -196,6 +197,7 @@ public class As3TimeBasedLockoutPolicyTest {
 
     @Test
     public void shouldRemoveApplicableAttemptsOnReset() {
+        final Alias alias = mock(Alias.class);
         final VerificationAttempt attempt1 = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
         final VerificationAttempt attempt2 = buildAttempt(AliasType.Names.IDV_ID);
         final VerificationAttempt attempt3 = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
@@ -203,7 +205,7 @@ public class As3TimeBasedLockoutPolicyTest {
                 .attempts(Arrays.asList(attempt1, attempt2, attempt3))
                 .build();
 
-        final VerificationAttempts resetAttempts = policy.reset(attempts);
+        final VerificationAttempts resetAttempts = policy.reset(alias, attempts);
 
         assertThat(resetAttempts).isEmpty();
     }

@@ -12,7 +12,7 @@ public class RsaCreditCardMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldReturnCreditCardAliasType() {
-        assertThat(policy.getAliasType()).isEqualTo(AliasType.Names.CREDIT_CARD_NUMBER);
+        assertThat(policy.getAliasTypeName()).isEqualTo(AliasType.Names.CREDIT_CARD_NUMBER);
     }
 
 }
