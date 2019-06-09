@@ -2,12 +2,8 @@ package uk.co.mruoc.idv.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.awslambda.verificationcontext.result.PostVerificationResultHandler;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
@@ -18,7 +14,6 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.IdvIdGenerator;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LoadVerificationAttemptsService;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
 import uk.co.mruoc.idv.core.lockoutdecision.service.VerificationAttemptsConverter;
@@ -41,16 +36,13 @@ import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.lockoutdecision.FakeVerificationAttemptsDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationResultsDao;
-import uk.co.mruoc.idv.json.JsonConverter;
-import uk.co.mruoc.idv.json.lockoutdecision.LockoutDecisionJsonConverterFactory;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.result.VerificationResultResponseDocument;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -80,75 +72,29 @@ public class PostVerificationResultsHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldSaveVerificationResults() throws JSONException {
+    public void shouldSaveVerificationResultsForSuccess() {
         final String requestBody = loadContentFromClasspath("/post-verification-success-result-request.json");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withBody(requestBody);
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
 
-        final VerificationResultResponseDocument document = toDocument(response.getBody());
-        final String expectedBody = loadExpectedBody(document);
         assertThat(response.getStatusCode()).isEqualTo(201);
-        JSONAssert.assertEquals(expectedBody, response.getBody(), JSONCompareMode.NON_EXTENSIBLE);
+        final String expectedBody = loadContentFromClasspath("/post-verification-success-result-response.json");
+        assertThatJson(response.getBody()).isEqualTo(expectedBody);
     }
 
     @Test
-    public void shouldCreateEmptyVerificationAttemptsForSuccessfulAttempt() {
-        final String requestBody = loadContentFromClasspath("/post-verification-success-result-request.json");
-        final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody(requestBody);
-
-        final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
-
-        final VerificationResultResponseDocument document = toDocument(response.getBody());
-        final VerificationAttempts attempts = extractAttempts(document);
-        assertThat(attempts).isEmpty();
-    }
-
-    @Test
-    public void shouldSaveVerificationAttemptsForFailureAttempt() throws JSONException {
+    public void shouldSaveVerificationResultsForFailure() {
         final String requestBody = loadContentFromClasspath("/post-verification-failure-result-request.json");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withBody(requestBody);
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
 
-        final VerificationResultResponseDocument document = toDocument(response.getBody());
-        final VerificationAttempts attempts = extractAttempts(document);
-        final String attemptsJson = toJson(attempts);
-        final String expectedJson = loadExpectedBody(attempts);
-        JSONAssert.assertEquals(expectedJson, attemptsJson, JSONCompareMode.NON_EXTENSIBLE);
-    }
-
-    private VerificationAttempts extractAttempts(final VerificationResultResponseDocument document) {
-        final UUID contextId = document.getContextId();
-        final VerificationContext context = contextDao.load(contextId).get();
-        final UUID idvId = context.getIdvId();
-        return attemptsDao.loadByIdvId(idvId).get();
-    }
-
-    private static String toJson(final VerificationAttempts attempts) {
-        final JsonConverter converter = new LockoutDecisionJsonConverterFactory().build();
-        return converter.toJson(attempts);
-    }
-
-    private static String loadExpectedBody(final VerificationResultResponseDocument document) {
-        final String template = loadContentFromClasspath("/post-verification-success-result-response.json");
-        return VerificationResultBodyTemplatePopulator.populate(template, document);
-    }
-
-    private static VerificationResultResponseDocument toDocument(final String body) {
-        final JsonConverter converter = new JsonApiVerificationContextJsonConverterFactory().build();
-        return converter.toObject(body, VerificationResultResponseDocument.class);
-    }
-
-    private static String loadExpectedBody(final VerificationAttempts attempts) {
-        final String templateJson = loadContentFromClasspath("/failed-attempt.json");
-        return StringUtils.replaceEachRepeatedly(templateJson,
-                new String[]{ "%IDV_ID%", "%LOCKOUT_STATE_ID%" },
-                new String[]{ attempts.getIdvId().toString(), attempts.getLockoutStateId().toString() }
-        );
+        assertThat(response.getStatusCode()).isEqualTo(201);
+        final String expectedBody = loadContentFromClasspath("/post-verification-failure-result-response.json");
+        assertThatJson(response.getBody()).isEqualTo(expectedBody);
     }
 
     private static VerificationResultService buildVerificationResultService(final VerificationResultsDao dao,

@@ -1,6 +1,6 @@
 {
   "data": {
-    "id": "%VERIFICATION_CONTEXT_ID%",
+    "id": "${json-unit.ignore}",
     "type": "verificationContexts",
     "attributes": {
       "channel": {
@@ -21,7 +21,7 @@
           {
             "type": "IDV_ID",
             "format": "CLEAR_TEXT",
-            "value": "%IDV_ID%"
+            "value": "${json-unit.ignore}"
           }
         ]
       },
@@ -29,8 +29,8 @@
         "type": "LOGIN",
         "timestamp": "2019-03-10T12:53:57.547Z"
       },
-      "created": "%CREATED%",
-      "expiry": "%EXPIRY%",
+      "created": "${json-unit.ignore}",
+      "expiry": "${json-unit.ignore}",
       "sequences": [
         {
           "name": "PUSH_NOTIFICATION",

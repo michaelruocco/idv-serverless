@@ -7,8 +7,8 @@
       "results": [
         {
           "verificationId": "a7609223-8c80-4e31-9bf8-e75d63cb998f",
-          "result": "SUCCESS",
-          "timestamp": "2019-03-10T21:51:54.638Z",
+          "result": "FAILURE",
+          "timestamp": "2019-03-11T21:51:54.638Z",
           "sequence": "PUSH_NOTIFICATION",
           "method": "PUSH_NOTIFICATION"
         }
