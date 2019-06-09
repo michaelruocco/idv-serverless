@@ -8,13 +8,6 @@
       "locked": true,
       "duration": 900000,
       "lockedUntil": "2019-03-10T13:08:57.547Z",
-      "aliases": [
-        {
-          "type": "TYPE",
-          "format": "FORMAT",
-          "value": "VALUE"
-        }
-      ],
       "attempts": [
         {
           "alias": {

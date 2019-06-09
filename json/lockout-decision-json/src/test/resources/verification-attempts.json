@@ -1,13 +1,6 @@
 {
   "lockoutStateId": "21b4d9e0-11c3-4e84-aa87-dc37d7f59e23",
   "idvId": "1a10908d-e2eb-4680-a271-3d0c4d028a6b",
-  "aliases": [
-    {
-      "type": "TYPE",
-      "format": "FORMAT",
-      "value": "VALUE"
-    }
-  ],
   "attempts": [
     {
       "alias": {

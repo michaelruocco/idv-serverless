@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.MaxAttemptsLockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
@@ -38,18 +37,6 @@ public class DefaultLockoutStateResponseTest {
                 .build();
 
         assertThat(request.getIdvId()).isEqualTo(idvId);
-    }
-
-    @Test
-    public void shouldReturnAliasesAsCollection() {
-        final Aliases aliases = Aliases.empty();
-        given(state.getAliases()).willReturn(aliases);
-
-        final LockoutStateResponse request = DefaultLockoutStateResponse.builder()
-                .state(state)
-                .build();
-
-        assertThat(request.getAliases()).isEmpty();
     }
 
     @Test

@@ -1,8 +1,6 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -128,25 +126,6 @@ public class VerificationAttemptsTest {
         final Collection<VerificationAttempt> attemptsCollection = attempts.toCollection();
 
         assertThat(attemptsCollection).containsExactly(attempt1, attempt2);
-    }
-
-    @Test
-    public void shouldReturnAliases() {
-        final Alias alias1 = mock(Alias.class);
-        final VerificationAttempt attempt1 = mock(VerificationAttempt.class);
-        given(attempt1.getAlias()).willReturn(alias1);
-
-        final Alias alias2 = mock(Alias.class);
-        final VerificationAttempt attempt2 = mock(VerificationAttempt.class);
-        given(attempt2.getAlias()).willReturn(alias2);
-
-        final VerificationAttempts attempts = VerificationAttempts.builder()
-                .attempts(Arrays.asList(attempt1, attempt2))
-                .build();
-
-        final Aliases aliases = attempts.getAliases();
-
-        assertThat(aliases).containsExactlyInAnyOrder(alias1, alias2);
     }
 
     @Test

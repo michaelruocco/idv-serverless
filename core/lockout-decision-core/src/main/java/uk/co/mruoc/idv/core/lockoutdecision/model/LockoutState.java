@@ -1,7 +1,5 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
-
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,8 +9,6 @@ public interface LockoutState {
     UUID getId();
 
     UUID getIdvId();
-
-    Aliases getAliases();
 
     String getType();
 

@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Builder
@@ -44,11 +41,6 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
 
     public Collection<VerificationAttempt> toCollection() {
         return Collections.unmodifiableCollection(attempts);
-    }
-
-    public Aliases getAliases() {
-        final Collection<Alias> aliases = attempts.stream().map(VerificationAttempt::getAlias).collect(Collectors.toSet());
-        return Aliases.with(aliases);
     }
 
     public VerificationAttempt get(final int index) {

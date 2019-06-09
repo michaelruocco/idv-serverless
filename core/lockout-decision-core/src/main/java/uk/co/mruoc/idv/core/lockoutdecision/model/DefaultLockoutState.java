@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import lombok.RequiredArgsConstructor;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
 import java.util.UUID;
 
@@ -20,11 +19,6 @@ public class DefaultLockoutState implements LockoutState {
     @Override
     public UUID getIdvId() {
         return attempts.getIdvId();
-    }
-
-    @Override
-    public Aliases getAliases() {
-        return attempts.getAliases();
     }
 
     @Override

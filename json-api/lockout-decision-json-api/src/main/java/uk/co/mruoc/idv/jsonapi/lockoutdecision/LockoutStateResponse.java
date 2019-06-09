@@ -1,6 +1,5 @@
 package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 
 import java.time.Instant;
@@ -15,8 +14,6 @@ public interface LockoutStateResponse {
     UUID getIdvId();
 
     Collection<VerificationAttempt> getAttempts();
-
-    Collection<Alias> getAliases();
 
     boolean isLocked();
 

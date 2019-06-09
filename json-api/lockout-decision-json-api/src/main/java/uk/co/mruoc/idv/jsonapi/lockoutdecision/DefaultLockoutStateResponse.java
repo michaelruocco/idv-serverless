@@ -3,8 +3,6 @@ package uk.co.mruoc.idv.jsonapi.lockoutdecision;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
@@ -29,12 +27,6 @@ public class DefaultLockoutStateResponse implements LockoutStateResponse {
     @Override
     public UUID getIdvId() {
         return state.getIdvId();
-    }
-
-    @Override
-    public Collection<Alias> getAliases() {
-        final Aliases aliases = state.getAliases();
-        return aliases.toCollection();
     }
 
     @Override

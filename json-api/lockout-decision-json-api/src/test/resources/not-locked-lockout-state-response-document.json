@@ -6,13 +6,6 @@
       "idvId":"d98aa22c-a06e-4db5-8dc1-9ea83716ac12",
       "type": "TIME_BASED_INTERVAL",
       "locked": false,
-      "aliases": [
-        {
-          "type": "TYPE",
-          "format": "FORMAT",
-          "value": "VALUE"
-        }
-      ],
       "attempts": [
         {
           "alias": {

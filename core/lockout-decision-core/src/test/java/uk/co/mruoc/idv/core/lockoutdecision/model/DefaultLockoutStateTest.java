@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.core.lockoutdecision.model;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.identity.model.alias.Aliases;
 
 import java.util.UUID;
 
@@ -56,16 +55,6 @@ public class DefaultLockoutStateTest {
         final VerificationAttempts actualAttempts = state.getAttempts();
 
         assertThat(actualAttempts).isEqualTo(attempts);
-    }
-
-    @Test
-    public void shouldReturnAliases() {
-        final Aliases expectedAliases = Aliases.empty();
-        given(attempts.getAliases()).willReturn(expectedAliases);
-
-        final Aliases aliases = state.getAliases();
-
-        assertThat(aliases).isEqualTo(expectedAliases);
     }
 
     @Test
