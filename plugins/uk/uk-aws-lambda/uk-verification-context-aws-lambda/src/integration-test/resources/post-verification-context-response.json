@@ -1,6 +1,6 @@
 {
   "data": {
-    "id": "%VERIFICATION_CONTEXT_ID%",
+    "id": "${json-unit.ignore}",
     "type": "verificationContexts",
     "attributes": {
       "channel": {
@@ -26,7 +26,7 @@
           {
             "type": "IDV_ID",
             "format": "CLEAR_TEXT",
-            "value": "%IDV_ID%"
+            "value": "${json-unit.ignore}"
           }
         ]
       },
@@ -42,8 +42,8 @@
           "merchant": "Amazon"
         }
       },
-      "created": "%CREATED%",
-      "expiry": "%EXPIRY%",
+      "created": "${json-unit.ignore}",
+      "expiry": "${json-unit.ignore}",
       "sequences": [
         {
           "name": "PHYSICAL_PINSENTRY",

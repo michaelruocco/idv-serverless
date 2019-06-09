@@ -1,10 +1,7 @@
 package uk.co.mruoc.idv.json.verificationcontext.activity;
 
 import org.javamoney.moneta.Money;
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;
@@ -18,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -30,13 +28,13 @@ public class ActivityDeserializerTest {
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeOnlinePurchaseActivity() throws JSONException {
+    public void shouldSerializeOnlinePurchaseActivity() {
         final Activity activity = buildOnlinePurchaseActivity();
 
         final String json = CONVERTER.toJson(activity);
 
         final String expectedJson = loadContentFromClasspath(ONLINE_PURCHASE_ACTIVITY_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -50,13 +48,13 @@ public class ActivityDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeLoginActivity() throws JSONException {
+    public void shouldSerializeLoginActivity() {
         final Activity activity = buildLoginActivity();
 
         final String json = CONVERTER.toJson(activity);
 
         final String expectedJson = loadContentFromClasspath(LOGIN_ACTIVITY_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -70,13 +68,13 @@ public class ActivityDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeDefaultActivity() throws JSONException {
+    public void shouldSerializeDefaultActivity() {
         final Activity activity = buildDefaultActivity();
 
         final String json = CONVERTER.toJson(activity);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_ACTIVITY_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test

@@ -1,13 +1,11 @@
 package uk.co.mruoc.idv.json.identity;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.json.JsonConverter;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -19,10 +17,10 @@ public class AliasDeserializerTest {
     private final JsonConverter converter = new IdentityJsonConverterFactory().build();
 
     @Test
-    public void shouldSerialize() throws JSONException {
+    public void shouldSerialize() {
         final String json = converter.toJson(ALIAS);
 
-        JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(JSON);
     }
 
     @Test

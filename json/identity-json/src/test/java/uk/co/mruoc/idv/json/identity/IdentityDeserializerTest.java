@@ -1,9 +1,6 @@
 package uk.co.mruoc.idv.json.identity;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
@@ -19,6 +16,7 @@ import uk.co.mruoc.idv.json.JsonConverter;
 
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -30,10 +28,10 @@ public class IdentityDeserializerTest {
     private final JsonConverter converter = new IdentityJsonConverterFactory().build();
 
     @Test
-    public void shouldSerialize() throws JSONException {
+    public void shouldSerialize() {
         final String json = converter.toJson(IDENTITY);
 
-        JSONAssert.assertEquals(IDENTITY_JSON, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(IDENTITY_JSON);
     }
 
     @Test

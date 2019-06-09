@@ -2,11 +2,8 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextHandler;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextServiceFactory;
 import uk.co.mruoc.idv.core.identity.model.Identity;
@@ -19,9 +16,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.DefaultActivity;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
-import uk.co.mruoc.idv.json.JsonConverter;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.VerificationContextResponseDocument;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -30,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -47,7 +42,7 @@ public class UkGetVerificationContextHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldLoadVerificationContext() throws JSONException {
+    public void shouldLoadVerificationContext() {
         final Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("id", CONTEXT_ID.toString());
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
@@ -55,10 +50,9 @@ public class UkGetVerificationContextHandlerIntegrationTest {
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
 
-        final VerificationContextResponseDocument document = toDocument(response.getBody());
-        final String expectedBody = loadExpectedBody(document);
         assertThat(response.getStatusCode()).isEqualTo(200);
-        JSONAssert.assertEquals(expectedBody, response.getBody(), JSONCompareMode.NON_EXTENSIBLE);
+        final String expectedBody = loadContentFromClasspath("/get-verification-context-response.json");
+        assertThatJson(response.getBody()).isEqualTo(expectedBody);
     }
 
     private static VerificationContext buildContext(final UUID id) {
@@ -74,16 +68,6 @@ public class UkGetVerificationContextHandlerIntegrationTest {
                 .created(now)
                 .expiry(now.plus(Duration.ofMinutes(5)))
                 .build();
-    }
-
-    private static VerificationContextResponseDocument toDocument(final String body) {
-        final JsonConverter converter = new JsonApiVerificationContextJsonConverterFactory().build();
-        return converter.toObject(body, VerificationContextResponseDocument.class);
-    }
-
-    private static String loadExpectedBody(final VerificationContextResponseDocument document) {
-        final String template = loadContentFromClasspath("/get-verification-context-response.json");
-        return VerificationContextBodyTemplatePopulator.populate(template, document);
     }
 
 }

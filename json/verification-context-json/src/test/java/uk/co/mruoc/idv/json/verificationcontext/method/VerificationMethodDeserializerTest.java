@@ -1,9 +1,6 @@
 package uk.co.mruoc.idv.json.verificationcontext.method;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.model.MobileNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.CardCredentialsVerificationMethod;
@@ -25,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -43,13 +41,13 @@ public class VerificationMethodDeserializerTest {
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeCardCredentialsMethod() throws JSONException {
+    public void shouldSerializeCardCredentialsMethod() {
         final VerificationMethod method = buildCardCredentialsMethod();
 
         final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(CARD_CREDENTIALS_METHOD_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -63,13 +61,13 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeOtpSmsMethod() throws JSONException {
+    public void shouldSerializeOtpSmsMethod() {
         final VerificationMethod method = buildOtpSmsMethod();
 
         final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(OTP_SMS_METHOD_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -83,13 +81,13 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializePhysicalPinsentryMethod() throws JSONException {
+    public void shouldSerializePhysicalPinsentryMethod() {
         final VerificationMethod method = buildPhysicalPinsentryMethod();
 
         final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(PHYSICAL_PINSENTRY_METHOD_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -103,13 +101,13 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeMobilePinsentryMethod() throws JSONException {
+    public void shouldSerializeMobilePinsentryMethod() {
         final VerificationMethod method = buildMobilePinsentryMethod();
 
         final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(MOBILE_PINSENTRY_METHOD_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -123,13 +121,13 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializePushNotificationMethod() throws JSONException {
+    public void shouldSerializePushNotificationMethod() {
         final VerificationMethod method = buildPushNotificationMethod();
 
         final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(PUSH_NOTIFICATION_METHOD_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -143,13 +141,13 @@ public class VerificationMethodDeserializerTest {
     }
 
     @Test
-    public void shouldSerializeDefaultMethod() throws JSONException {
+    public void shouldSerializeDefaultMethod() {
         final VerificationMethod method = buildDefaultMethod();
 
         final String json = CONVERTER.toJson(method);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_METHOD_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test

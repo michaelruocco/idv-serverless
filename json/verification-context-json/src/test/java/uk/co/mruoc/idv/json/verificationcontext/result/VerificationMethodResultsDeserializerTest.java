@@ -1,10 +1,7 @@
 package uk.co.mruoc.idv.json.verificationcontext.result;
 
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationResult;
@@ -16,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -28,13 +26,13 @@ public class VerificationMethodResultsDeserializerTest {
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeResults() throws JSONException {
+    public void shouldSerializeResults() {
         final VerificationMethodResults results = buildResults();
 
         final String json = CONVERTER.toJson(results);
 
         final String expectedJson = loadContentFromClasspath(RESULTS_WITH_IDS_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test

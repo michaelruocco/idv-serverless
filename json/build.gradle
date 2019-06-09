@@ -3,7 +3,7 @@ allprojects {
         compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9'
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.9'
-        
-        testCompile 'org.skyscreamer:jsonassert:1.5.0'
+
+        testCompile 'net.javacrumbs.json-unit:json-unit-assertj:2.7.0'
     }
 }

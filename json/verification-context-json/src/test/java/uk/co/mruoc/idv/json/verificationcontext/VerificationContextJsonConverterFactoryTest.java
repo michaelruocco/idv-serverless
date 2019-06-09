@@ -1,9 +1,6 @@
 package uk.co.mruoc.idv.json.verificationcontext;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
@@ -24,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -35,12 +33,12 @@ public class VerificationContextJsonConverterFactoryTest {
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldConvertVerificationContextWithIdToJson() throws JSONException {
+    public void shouldConvertVerificationContextWithIdToJson() {
         final String expectedJson = loadContentFromClasspath(PATH_TO_CONTEXT_WITH_ID);
 
         final String json = CONVERTER.toJson(buildContextWithId());
 
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test
@@ -53,12 +51,12 @@ public class VerificationContextJsonConverterFactoryTest {
     }
 
     @Test
-    public void shouldConvertVerificationContextWithoutIdToJson() throws JSONException {
+    public void shouldConvertVerificationContextWithoutIdToJson() {
         final String expectedJson = loadContentFromClasspath(PATH_TO_CONTEXT_WITHOUT_ID);
 
         final String json = CONVERTER.toJson(buildContextWithoutId());
 
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test

@@ -26,7 +26,7 @@ dependencies {
     integrationTestCompile project(':dao:identity:identity-dao-fake')
     integrationTestCompile project(':dao:lockout-decision:lockout-decision-dao-fake')
     integrationTestCompile project(':events:fake-events')
-    integrationTestCompile 'org.skyscreamer:jsonassert:1.5.0'
+    integrationTestCompile 'net.javacrumbs.json-unit:json-unit-assertj:2.7.0'
 }
 
 task buildZip(type: Zip) {

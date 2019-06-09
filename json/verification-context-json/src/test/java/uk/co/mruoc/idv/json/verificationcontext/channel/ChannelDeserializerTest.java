@@ -1,14 +1,12 @@
 package uk.co.mruoc.idv.json.verificationcontext.channel;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.model.channel.Channel;
 import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -19,13 +17,13 @@ public class ChannelDeserializerTest {
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDefaultChannel() throws JSONException {
+    public void shouldSerializeDefaultChannel() {
         final Channel channel = buildDefaultChannel();
 
         final String json = CONVERTER.toJson(channel);
 
         final String expectedJson = loadContentFromClasspath(DEFAULT_CHANNEL_PATH);
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     @Test

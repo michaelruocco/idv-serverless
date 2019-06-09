@@ -2,11 +2,8 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.verificationcontext;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.awslambda.identity.IdentityServiceFactory;
 import uk.co.mruoc.idv.awslambda.verificationcontext.GetVerificationContextServiceFactory;
 import uk.co.mruoc.idv.awslambda.verificationcontext.result.PostVerificationResultHandler;
@@ -28,9 +25,6 @@ import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.lockoutdecision.FakeVerificationAttemptsDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationResultsDao;
-import uk.co.mruoc.idv.json.JsonConverter;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.JsonApiVerificationContextJsonConverterFactory;
-import uk.co.mruoc.idv.jsonapi.verificationcontext.result.VerificationResultResponseDocument;
 import uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkIdentityServiceFactory;
 import uk.co.mruoc.idv.plugin.uk.channel.RsaChannel;
 
@@ -39,6 +33,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -64,27 +59,16 @@ public class UkPostVerificationResultHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldCreateVerificationContextResults() throws JSONException {
+    public void shouldCreateVerificationContextResults() {
         final String requestBody = loadContentFromClasspath("/post-verification-result-request.json");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withBody(requestBody);
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
 
-        final VerificationResultResponseDocument document = toDocument(response.getBody());
-        final String expectedBody = loadExpectedBody(document);
         assertThat(response.getStatusCode()).isEqualTo(201);
-        JSONAssert.assertEquals(expectedBody, response.getBody(), JSONCompareMode.NON_EXTENSIBLE);
-    }
-
-    private static String loadExpectedBody(final VerificationResultResponseDocument document) {
-        final String template = loadContentFromClasspath("/post-verification-result-response.json");
-        return VerificationResultBodyTemplatePopulator.populate(template, document);
-    }
-
-    private static VerificationResultResponseDocument toDocument(final String body) {
-        final JsonConverter converter = new JsonApiVerificationContextJsonConverterFactory().build();
-        return converter.toObject(body, VerificationResultResponseDocument.class);
+        final String expectedBody = loadContentFromClasspath("/post-verification-result-response.json");
+        assertThatJson(response.getBody()).isEqualTo(expectedBody);
     }
 
     private static VerificationContext buildContext(final Alias providedAlias, final Identity identity) {
