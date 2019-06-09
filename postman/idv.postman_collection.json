@@ -274,6 +274,78 @@
 			"response": []
 		},
 		{
+			"name": "Put reset lockout state rsa online purchase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"MAX_ATTEMPTS\");",
+							"})",
+							"",
+							"pm.test(\"should not be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(false);",
+							"})",
+							"",
+							"pm.test(\"should have three attempts remaining\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.numberOfAttemptsRemaining).to.equal(3);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"lockoutStates\",\n        \"attributes\": {\n            \"channelId\": \"RSA\",\n            \"activityType\": \"ONLINE_PURCHASE\",\n            \"alias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Post verification results rsa",
 			"event": [
 				{
@@ -283,6 +355,16 @@
 						"exec": [
 							"pm.test(\"should return 201 status\", function () {",
 							"    pm.response.to.have.status(201);",
+							"})",
+							"",
+							"pm.test(\"should have correct context id\", function () {",
+							"    var json = JSON.parse(responseBody);",
+							"    pm.expect(json.data.attributes.contextId).to.equal(environment.contextId);",
+							"})",
+							"",
+							"pm.test(\"should return 3 results\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.results.length).to.equal(3);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -316,7 +398,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"data\": {\n    \"type\": \"verificationResults\",\n    \"attributes\": {\n      \"contextId\": \"{{contextId}}\",\n      \"results\": [\n        {\n          \"sequence\": \"OTP_SMS\",\n          \"method\": \"CARD_CREDENTIALS\",\n          \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n          \"timestamp\": \"{{timestampUtc}}\",\n          \"result\": \"SUCCESS\"\n        }\n      ]\n    }\n  }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationResults\",\n        \"attributes\": {\n            \"contextId\": \"{{contextId}}\",\n            \"results\": [\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"result\": \"FAILURE\"\n                },\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"result\": \"FAILURE\"\n                },\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"result\": \"FAILURE\"\n                }\n            ]\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{host}}/verificationContexts/{{contextId}}/results",
@@ -327,6 +409,285 @@
 						"verificationContexts",
 						"{{contextId}}",
 						"results"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get lockout state rsa online purchase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"MAX_ATTEMPTS\");",
+							"})",
+							"",
+							"pm.test(\"should be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(true);",
+							"})",
+							"",
+							"pm.test(\"should have no attempts remaining\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.numberOfAttemptsRemaining).to.equal(0);",
+							"})",
+							"",
+							"pm.test(\"should return 3 attempts\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.attempts.length).to.equal(3);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates?channelId=RSA&activityType=ONLINE_PURCHASE&aliasType=CREDIT_CARD_NUMBER&aliasFormat=TOKENIZED&=TOKENIZED&aliasValue=3489347343788005",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					],
+					"query": [
+						{
+							"key": "channelId",
+							"value": "RSA"
+						},
+						{
+							"key": "activityType",
+							"value": "ONLINE_PURCHASE"
+						},
+						{
+							"key": "aliasType",
+							"value": "CREDIT_CARD_NUMBER"
+						},
+						{
+							"key": "aliasFormat",
+							"value": "TOKENIZED"
+						},
+						{
+							"key": "",
+							"value": "TOKENIZED"
+						},
+						{
+							"key": "aliasValue",
+							"value": "3489347343788005"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put reset lockout state rsa online purchase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"MAX_ATTEMPTS\");",
+							"})",
+							"",
+							"pm.test(\"should not be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(false);",
+							"})",
+							"",
+							"pm.test(\"should have three attempts remaining\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.numberOfAttemptsRemaining).to.equal(3);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"lockoutStates\",\n        \"attributes\": {\n            \"channelId\": \"RSA\",\n            \"activityType\": \"ONLINE_PURCHASE\",\n            \"alias\": {\n                \"type\": \"CREDIT_CARD_NUMBER\",\n                \"format\": \"TOKENIZED\",\n                \"value\": \"3489347343788005\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get lockout state rsa online purchase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"MAX_ATTEMPTS\");",
+							"})",
+							"",
+							"pm.test(\"should not be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(false);",
+							"})",
+							"",
+							"pm.test(\"should have three attempts remaining\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.numberOfAttemptsRemaining).to.equal(3);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates?channelId=RSA&activityType=ONLINE_PURCHASE&aliasType=CREDIT_CARD_NUMBER&aliasFormat=TOKENIZED&=TOKENIZED&aliasValue=3489347343788005",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					],
+					"query": [
+						{
+							"key": "channelId",
+							"value": "RSA"
+						},
+						{
+							"key": "activityType",
+							"value": "ONLINE_PURCHASE"
+						},
+						{
+							"key": "aliasType",
+							"value": "CREDIT_CARD_NUMBER"
+						},
+						{
+							"key": "aliasFormat",
+							"value": "TOKENIZED"
+						},
+						{
+							"key": "",
+							"value": "TOKENIZED"
+						},
+						{
+							"key": "aliasValue",
+							"value": "3489347343788005"
+						}
 					]
 				}
 			},
@@ -354,7 +715,16 @@
 							"    var json = JSON.parse(responseBody)",
 							"    var firstMethod = json.data.attributes.sequences[1];",
 							"    pm.expect(firstMethod.name).to.equal(\"PHYSICAL_PINSENTRY\");",
-							"})"
+							"})",
+							"",
+							"var json = JSON.parse(responseBody);",
+							"",
+							"var contextId = json.data.id;",
+							"postman.setEnvironmentVariable(\"contextId\", contextId);",
+							"",
+							"var aliases = json.data.attributes.identity.aliases;",
+							"let idvId = aliases.find(alias => alias.type === \"IDV_ID\");",
+							"postman.setEnvironmentVariable(\"idvId\", idvId.value);"
 						],
 						"type": "text/javascript"
 					}
@@ -396,6 +766,406 @@
 					],
 					"path": [
 						"verificationContexts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put reset lockout state as3 login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"TIME_BASED_INTERVAL\");",
+							"})",
+							"",
+							"pm.test(\"should not be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(false);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"lockoutStates\",\n        \"attributes\": {\n            \"channelId\": \"AS3\",\n            \"activityType\": \"LOGIN\",\n            \"alias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post verification results as3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 201 status\", function () {",
+							"    pm.response.to.have.status(201);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"verificationResults\",\n        \"attributes\": {\n            \"contextId\": \"{{contextId}}\",\n            \"results\": [\n                {\n                    \"sequence\": \"PUSH_NOTIFICATION\",\n                    \"method\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"result\": \"FAILURE\"\n                },\n                {\n                    \"sequence\": \"PUSH_NOTIFICATION\",\n                    \"method\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"result\": \"FAILURE\"\n                },\n                {\n                    \"sequence\": \"PUSH_NOTIFICATION\",\n                    \"method\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"result\": \"FAILURE\"\n                }\n            ]\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/verificationContexts/{{contextId}}/results",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verificationContexts",
+						"{{contextId}}",
+						"results"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get lockout state as3 login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"TIME_BASED_INTERVAL\");",
+							"})",
+							"",
+							"pm.test(\"should be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(true);",
+							"})",
+							"",
+							"pm.test(\"should have duration\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.duration).to.equal(900000);",
+							"})",
+							"",
+							"pm.test(\"should have locked until\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.lockedUntil).not.equal(null);",
+							"})",
+							"",
+							"pm.test(\"should have three attempts\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.attempts.length).to.equal(3);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates?channelId=AS3&activityType=LOGIN&aliasType=UKC_CARDHOLDER_ID&aliasFormat=CLEAR_TEXT&=TOKENIZED&aliasValue=12345678",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					],
+					"query": [
+						{
+							"key": "channelId",
+							"value": "AS3"
+						},
+						{
+							"key": "activityType",
+							"value": "LOGIN"
+						},
+						{
+							"key": "aliasType",
+							"value": "UKC_CARDHOLDER_ID"
+						},
+						{
+							"key": "aliasFormat",
+							"value": "CLEAR_TEXT"
+						},
+						{
+							"key": "",
+							"value": "TOKENIZED"
+						},
+						{
+							"key": "aliasValue",
+							"value": "12345678"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put reset lockout state as3 login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"TIME_BASED_INTERVAL\");",
+							"})",
+							"",
+							"pm.test(\"should not be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(false);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"lockoutStates\",\n        \"attributes\": {\n            \"channelId\": \"AS3\",\n            \"activityType\": \"LOGIN\",\n            \"alias\": {\n                \"type\": \"UKC_CARDHOLDER_ID\",\n                \"format\": \"CLEAR_TEXT\",\n                \"value\": \"12345678\"\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get lockout state as3 login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
+						"exec": [
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return max attempts lockout type\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.type).to.equal(\"TIME_BASED_INTERVAL\");",
+							"})",
+							"",
+							"pm.test(\"should not be locked\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.locked).to.equal(false);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77d5803b-3b76-4475-a761-b6b576a19c8d",
+						"exec": [
+							"postman.setEnvironmentVariable('timestampUtc', (new Date()).toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/lockoutStates?channelId=AS3&activityType=LOGIN&aliasType=UKC_CARDHOLDER_ID&aliasFormat=CLEAR_TEXT&=TOKENIZED&aliasValue=12345678",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"lockoutStates"
+					],
+					"query": [
+						{
+							"key": "channelId",
+							"value": "AS3"
+						},
+						{
+							"key": "activityType",
+							"value": "LOGIN"
+						},
+						{
+							"key": "aliasType",
+							"value": "UKC_CARDHOLDER_ID"
+						},
+						{
+							"key": "aliasFormat",
+							"value": "CLEAR_TEXT"
+						},
+						{
+							"key": "",
+							"value": "TOKENIZED"
+						},
+						{
+							"key": "aliasValue",
+							"value": "12345678"
+						}
 					]
 				}
 			},
@@ -752,16 +1522,16 @@
 							"    pm.expect(json.data.id).to.equal(environment.contextId);",
 							"})",
 							"",
-							"pm.test(\"should return physical pinsentry as first verification method\", function () {",
+							"pm.test(\"should return push notification as first verification method\", function () {",
 							"    var json = JSON.parse(responseBody)",
 							"    var firstMethod = json.data.attributes.sequences[0];",
-							"    pm.expect(firstMethod.name).to.equal(\"PHYSICAL_PINSENTRY\");",
+							"    pm.expect(firstMethod.name).to.equal(\"PUSH_NOTIFICATION\");",
 							"})",
 							"",
-							"pm.test(\"should return otp sms as second verification method\", function () {",
+							"pm.test(\"should return physical pinsentry as second verification method\", function () {",
 							"    var json = JSON.parse(responseBody)",
 							"    var firstMethod = json.data.attributes.sequences[1];",
-							"    pm.expect(firstMethod.name).to.equal(\"OTP_SMS\");",
+							"    pm.expect(firstMethod.name).to.equal(\"PHYSICAL_PINSENTRY\");",
 							"})"
 						],
 						"type": "text/javascript"
@@ -888,7 +1658,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{host}}/identities?aliasType=CREDIT_CARD_NUMBER&aliasFormat=TOKENIZED&aliasValue=3489347343788005",
+					"raw": "{{host}}/identities?aliasType=UKC_CARDHOLDER_ID&aliasFormat=CLEAR_TEXT&aliasValue=12345678",
 					"host": [
 						"{{host}}"
 					],
@@ -898,15 +1668,15 @@
 					"query": [
 						{
 							"key": "aliasType",
-							"value": "CREDIT_CARD_NUMBER"
+							"value": "UKC_CARDHOLDER_ID"
 						},
 						{
 							"key": "aliasFormat",
-							"value": "TOKENIZED"
+							"value": "CLEAR_TEXT"
 						},
 						{
 							"key": "aliasValue",
-							"value": "3489347343788005"
+							"value": "12345678"
 						}
 					]
 				}
