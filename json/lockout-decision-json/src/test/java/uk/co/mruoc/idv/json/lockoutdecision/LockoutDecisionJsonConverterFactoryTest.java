@@ -1,9 +1,6 @@
 package uk.co.mruoc.idv.json.lockoutdecision;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAliasType;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
@@ -14,6 +11,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
 public class LockoutDecisionJsonConverterFactoryTest {
@@ -23,12 +21,12 @@ public class LockoutDecisionJsonConverterFactoryTest {
     private static final JsonConverter CONVERTER = new LockoutDecisionJsonConverterFactory().build();
 
     @Test
-    public void shouldConvertVerificationAttemptsToJson() throws JSONException {
+    public void shouldConvertVerificationAttemptsToJson() {
         final String expectedJson = loadContentFromClasspath(PATH_TO_ATTEMPTS);
 
         final String json = CONVERTER.toJson(buildAttempts());
 
-        JSONAssert.assertEquals(expectedJson, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(expectedJson);
     }
 
     private static VerificationAttempts buildAttempts() {

@@ -1,13 +1,11 @@
 package uk.co.mruoc.idv.jsonapi.authorizer;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.idv.core.authorizer.model.GenerateTokenRequest;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.authorizer.DefaultGenerateTokenRequest;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
@@ -19,10 +17,10 @@ public class GenerateTokenRequestDocumentTest {
     private static final JsonConverter CONVERTER = new GenerateTokenJsonConverterFactory().build();
 
     @Test
-    public void shouldSerializeDocument() throws JSONException {
+    public void shouldSerializeDocument() {
         final String json = CONVERTER.toJson(DOCUMENT);
 
-        JSONAssert.assertEquals(JSON, json, JSONCompareMode.STRICT);
+        assertThatJson(json).isEqualTo(JSON);
     }
 
     @Test
