@@ -19,7 +19,9 @@ import static org.mockito.Mockito.mock;
 
 public class RsaMaxAttemptsLockoutPolicyTest {
 
-    private final LockoutPolicy policy = new RsaMaxAttemptsLockoutPolicy();
+    private static final String ALIAS_TYPE = AliasType.Names.DEBIT_CARD_NUMBER;
+
+    private final LockoutPolicy policy = new RsaMaxAttemptsLockoutPolicy(ALIAS_TYPE);
 
     @Test
     public void shouldHaveMaxAttemptsType() {
@@ -27,8 +29,8 @@ public class RsaMaxAttemptsLockoutPolicyTest {
     }
 
     @Test
-    public void shouldApplyToAnyActivityAndMethodForDebitCardNumberAliases() {
-        final VerificationAttempt attempt = buildAttempt(AliasType.Names.DEBIT_CARD_NUMBER);
+    public void shouldApplyToAnyActivityAndMethodForAliasesMatchingAliasType() {
+        final VerificationAttempt attempt = buildAttempt(ALIAS_TYPE);
 
         final boolean appliesToAttempt = policy.appliesTo(attempt);
 
@@ -36,16 +38,7 @@ public class RsaMaxAttemptsLockoutPolicyTest {
     }
 
     @Test
-    public void shouldApplyToAnyActivityAndMethodForCreditCardNumberAliases() {
-        final VerificationAttempt attempt = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
-
-        final boolean appliesToAttempt = policy.appliesTo(attempt);
-
-        assertThat(appliesToAttempt).isTrue();
-    }
-
-    @Test
-    public void shouldNotApplyForNonCardNumberAliases() {
+    public void shouldNotApplyIfAliasTypeDoesNotMatch() {
         final VerificationAttempt attempt = buildAttempt(AliasType.Names.IDV_ID);
 
         final boolean appliesToAttempt = policy.appliesTo(attempt);
@@ -99,8 +92,8 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldReturnNumberOfFailedAttempts() {
-        final VerificationAttempt attempt1 = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
-        final VerificationAttempt attempt2 = buildAttempt(AliasType.Names.DEBIT_CARD_NUMBER);
+        final VerificationAttempt attempt1 = buildAttempt(ALIAS_TYPE);
+        final VerificationAttempt attempt2 = buildAttempt(ALIAS_TYPE);
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2))
                 .build();
@@ -115,9 +108,9 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldBeLockedIfThreeOrMoreFailedAttempts() {
-        final VerificationAttempt attempt1 = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
-        final VerificationAttempt attempt2 = buildAttempt(AliasType.Names.DEBIT_CARD_NUMBER);
-        final VerificationAttempt attempt3 = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
+        final VerificationAttempt attempt1 = buildAttempt(ALIAS_TYPE);
+        final VerificationAttempt attempt2 = buildAttempt(ALIAS_TYPE);
+        final VerificationAttempt attempt3 = buildAttempt(ALIAS_TYPE);
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2, attempt3))
                 .build();
@@ -132,9 +125,9 @@ public class RsaMaxAttemptsLockoutPolicyTest {
 
     @Test
     public void shouldRemoveApplicableAttemptsOnReset() {
-        final VerificationAttempt attempt1 = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
+        final VerificationAttempt attempt1 = buildAttempt(ALIAS_TYPE);
         final VerificationAttempt attempt2 = buildAttempt(AliasType.Names.IDV_ID);
-        final VerificationAttempt attempt3 = buildAttempt(AliasType.Names.CREDIT_CARD_NUMBER);
+        final VerificationAttempt attempt3 = buildAttempt(ALIAS_TYPE);
         final VerificationAttempts attempts = VerificationAttempts.builder()
                 .attempts(Arrays.asList(attempt1, attempt2, attempt3))
                 .build();

@@ -3,14 +3,11 @@ package uk.co.mruoc.idv.plugin.uk.awslambda.authorizer;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.co.mruoc.file.ContentLoader;
 import uk.co.mruoc.idv.awslambda.authorizer.handler.JwtAuthorizerHandler;
 import uk.co.mruoc.idv.core.authorizer.model.AuthPolicyResponse;
@@ -22,6 +19,7 @@ import uk.co.mruoc.idv.core.authorizer.service.TokenService;
 import java.io.UncheckedIOException;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.mockito.Mockito.mock;
 
 public class UkJwtAuthorizerHandlerIntegrationTest {
@@ -48,7 +46,7 @@ public class UkJwtAuthorizerHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldReturnAllowAllPolicyForTokenForIdvTestUserPrincipalId() throws JSONException {
+    public void shouldReturnAllowAllPolicyForTokenForIdvTestUserPrincipalId() {
         final String principalId = "idv-test-user";
         final TokenResponse tokenResponse = tokenService.create(DefaultTokenRequest.builder()
                 .id(UUID.randomUUID())
@@ -60,11 +58,11 @@ public class UkJwtAuthorizerHandlerIntegrationTest {
         final AuthPolicyResponse response = handler.handleRequest(new TokenAuthorizerRequest("type", token, methodArn), context);
 
         final String expectedJson = ContentLoader.loadContentFromClasspath("/allow-all-policy.json");
-        JSONAssert.assertEquals(expectedJson, toJson(response), JSONCompareMode.STRICT);
+        assertThatJson(toJson(response)).isEqualTo(expectedJson);
     }
 
     @Test
-    public void shouldReturnDenyAllPolicyForTokenForAnyOtherPrincipalId() throws JSONException {
+    public void shouldReturnDenyAllPolicyForTokenForAnyOtherPrincipalId() {
         final String principalId = "other-user";
         final TokenResponse tokenResponse = tokenService.create(DefaultTokenRequest.builder()
                 .id(UUID.randomUUID())
@@ -76,7 +74,7 @@ public class UkJwtAuthorizerHandlerIntegrationTest {
         final AuthPolicyResponse response = handler.handleRequest(new TokenAuthorizerRequest("type", token, methodArn), context);
 
         final String expectedJson = ContentLoader.loadContentFromClasspath("/deny-all-policy.json");
-        JSONAssert.assertEquals(expectedJson, toJson(response), JSONCompareMode.STRICT);
+        assertThatJson(toJson(response)).isEqualTo(expectedJson);
     }
 
     private static String toJson(final AuthPolicyResponse response) {

@@ -89,6 +89,13 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
         return toNewAttempts(remainingAttempts);
     }
 
+    public VerificationAttempts filterByAlias(final Alias alias) {
+        final Collection<VerificationAttempt> filteredAttempts = attempts.stream()
+                .filter(attempt -> attempt.getAlias().equals(alias))
+                .collect(Collectors.toList());
+        return toNewAttempts(filteredAttempts);
+    }
+
     private VerificationAttempts toNewAttempts(final Collection<VerificationAttempt> newAttempts) {
         return VerificationAttempts.builder()
                 .idvId(idvId)

@@ -6,19 +6,19 @@ import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutPolicy;
 import uk.co.mruoc.idv.core.lockoutdecision.model.NonLockingLockoutStateCalculator;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService;
 
-import java.util.Collection;
 import java.util.Collections;
 
 
 public class StubbedLockoutPoliciesService implements LockoutPoliciesService {
 
+    private static final String ALL = "ALL";
+
     @Override
     public ChannelLockoutPolicies getPoliciesForChannel(final String channelId) {
-        final Collection<String> all = Collections.singleton("ALL");
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .stateCalculator(new NonLockingLockoutStateCalculator())
-                .activities(all)
-                .aliasTypes(all)
+                .activities(Collections.singleton(ALL))
+                .aliasType(ALL)
                 .build();
         return new ChannelLockoutPolicies(channelId, policy);
     }

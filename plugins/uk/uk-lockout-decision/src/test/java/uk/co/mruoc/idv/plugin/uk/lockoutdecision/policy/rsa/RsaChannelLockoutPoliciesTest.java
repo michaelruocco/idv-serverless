@@ -21,13 +21,23 @@ public class RsaChannelLockoutPoliciesTest {
     }
 
     @Test
-    public void shouldReturnPolicies() {
+    public void shouldReturnCreditCardPolicy() {
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
         given(attempt.getAliasTypeName()).willReturn(AliasType.Names.CREDIT_CARD_NUMBER);
 
         final LockoutPolicy policy = policies.getPolicyFor(attempt);
 
-        assertThat(policy).isInstanceOf(RsaMaxAttemptsLockoutPolicy.class);
+        assertThat(policy).isInstanceOf(RsaCreditCardMaxAttemptsLockoutPolicy.class);
+    }
+
+    @Test
+    public void shouldReturnDebitCardPolicy() {
+        final VerificationAttempt attempt = mock(VerificationAttempt.class);
+        given(attempt.getAliasTypeName()).willReturn(AliasType.Names.DEBIT_CARD_NUMBER);
+
+        final LockoutPolicy policy = policies.getPolicyFor(attempt);
+
+        assertThat(policy).isInstanceOf(RsaDebitCardMaxAttemptsLockoutPolicy.class);
     }
 
 }

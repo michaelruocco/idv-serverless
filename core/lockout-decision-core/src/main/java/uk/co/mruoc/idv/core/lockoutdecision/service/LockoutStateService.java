@@ -35,8 +35,7 @@ public class LockoutStateService {
     public LockoutState register(final VerificationAttempt attempt) {
         log.info("registering attempt {}", attempt);
         final LockoutPolicy policy = loadPolicy(attempt);
-        final Alias alias = attempt.getAlias();
-        final VerificationAttempts attempts = loadAttempts(alias);
+        final VerificationAttempts attempts = loadAttempts(policy, attempt.getAlias());
 
         final LockoutState state = calculateLockoutState(policy, attempts);
         if (state.isLocked()) {
@@ -54,19 +53,23 @@ public class LockoutStateService {
     public LockoutState load(final LockoutStateRequest request) {
         log.info("loading lockout state for request {}", request);
         final LockoutPolicy policy = loadPolicy(request);
-        final VerificationAttempts attempts = loadAttempts(request.getAlias());
+        final VerificationAttempts attempts = loadAttempts(policy, request.getAlias());
         return calculateLockoutState(policy, attempts);
     }
 
     public LockoutState reset(final LockoutStateRequest request) {
         log.info("resetting lockout state for request {}", request);
         final LockoutPolicy policy = loadPolicy(request);
-        final VerificationAttempts attempts = loadAttempts(request.getAlias());
+        final VerificationAttempts attempts = loadAttempts(policy, request.getAlias());
         return reset(policy, attempts);
     }
 
-    private VerificationAttempts loadAttempts(final Alias alias) {
-        return loadAttemptsService.load(alias);
+    private VerificationAttempts loadAttempts(final LockoutPolicy policy, final Alias alias) {
+        final VerificationAttempts attempts = loadAttemptsService.load(alias);
+        if (policy.appliesToAllAliases()) {
+            return attempts;
+        }
+        return attempts.filterByAlias(alias);
     }
 
     private LockoutPolicy loadPolicy(final LockoutStateRequest request) {

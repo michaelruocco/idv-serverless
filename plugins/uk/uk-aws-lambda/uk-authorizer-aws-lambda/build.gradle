@@ -19,7 +19,7 @@ dependencies {
     compile 'com.github.michaelruocco:file-loader:4.0.0'
 
     integrationTestCompile 'com.github.stefanbirkner:system-rules:1.19.0'
-    integrationTestCompile 'org.skyscreamer:jsonassert:1.5.0'
+    integrationTestCompile 'net.javacrumbs.json-unit:json-unit-assertj:2.7.0'
 }
 
 task buildZip(type: Zip) {

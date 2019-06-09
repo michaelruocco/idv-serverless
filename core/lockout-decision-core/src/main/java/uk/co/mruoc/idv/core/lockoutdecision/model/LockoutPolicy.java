@@ -10,4 +10,8 @@ public interface LockoutPolicy {
 
     LockoutState calculateLockoutState(final CalculateLockoutStateRequest request);
 
+    boolean appliesToAllAliases();
+
+    String getAliasType();
+
 }

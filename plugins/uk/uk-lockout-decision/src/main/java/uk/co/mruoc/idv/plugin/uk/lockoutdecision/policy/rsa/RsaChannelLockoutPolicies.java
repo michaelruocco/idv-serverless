@@ -6,7 +6,9 @@ import uk.co.mruoc.idv.plugin.uk.channel.UkChannel;
 public class RsaChannelLockoutPolicies extends ChannelLockoutPolicies {
 
     public RsaChannelLockoutPolicies() {
-        super(UkChannel.Ids.RSA, new RsaMaxAttemptsLockoutPolicy());
+        super(UkChannel.Ids.RSA,
+                new RsaCreditCardMaxAttemptsLockoutPolicy(),
+                new RsaDebitCardMaxAttemptsLockoutPolicy());
     }
 
 }

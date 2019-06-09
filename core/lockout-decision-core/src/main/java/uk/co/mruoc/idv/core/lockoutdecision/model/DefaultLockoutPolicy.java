@@ -14,7 +14,7 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
     private static final String ALL = "ALL";
 
     private final LockoutStateCalculator stateCalculator;
-    private final Collection<String> aliasTypes;
+    private final String aliasType;
     private final Collection<String> activities;
 
     private final boolean appliesToAllAliases;
@@ -22,13 +22,13 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
 
     @Builder
     public DefaultLockoutPolicy(final LockoutStateCalculator stateCalculator,
-                                final Collection<String> aliasTypes,
+                                final String aliasType,
                                 final Collection<String> activities) {
         this.stateCalculator = stateCalculator;
-        this.aliasTypes = aliasTypes;
+        this.aliasType = aliasType;
         this.activities = activities;
 
-        this.appliesToAllAliases = aliasTypes.contains(ALL);
+        this.appliesToAllAliases = aliasType.equals(ALL);
         this.appliesToAllActivities = activities.contains(ALL);
     }
 
@@ -40,6 +40,16 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
                 .timestamp(request.getTimestamp())
                 .build();
         return stateCalculator.calculateLockoutState(updatedRequest);
+    }
+
+    @Override
+    public boolean appliesToAllAliases() {
+        return appliesToAllAliases;
+    }
+
+    @Override
+    public String getAliasType() {
+        return aliasType;
     }
 
     @Override
@@ -78,7 +88,7 @@ public class DefaultLockoutPolicy implements LockoutPolicy {
     }
 
     private boolean appliesToAlias(final String aliasType) {
-        return appliesToAllAliases || aliasTypes.contains(aliasType);
+        return appliesToAllAliases || this.aliasType.equals(aliasType);
     }
 
     private boolean appliesToActivity(final String activity) {

@@ -53,6 +53,7 @@ public class LockoutStateServiceTest {
         final VerificationAttempt attempt = buildAttempt();
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
+        given(lockoutPolicy.appliesToAllAliases()).willReturn(true);
         given(channelPolicies.getPolicyFor(attempt)).willReturn(lockoutPolicy);
         given(policiesService.getPoliciesForChannel(CHANNEL_ID)).willReturn(channelPolicies);
 
@@ -74,6 +75,7 @@ public class LockoutStateServiceTest {
         final VerificationAttempt attempt = buildAttempt();
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
+        given(lockoutPolicy.appliesToAllAliases()).willReturn(true);
         given(channelPolicies.getPolicyFor(attempt)).willReturn(lockoutPolicy);
         given(policiesService.getPoliciesForChannel(CHANNEL_ID)).willReturn(channelPolicies);
 
@@ -104,6 +106,7 @@ public class LockoutStateServiceTest {
 
         final VerificationAttempts resetAttempts = mock(VerificationAttempts.class);
         given(lockoutPolicy.reset(attempts)).willReturn(resetAttempts);
+        given(lockoutPolicy.appliesToAllAliases()).willReturn(true);
 
         final LockoutState initialState = buildNotLockedState();
         final CalculateLockoutStateRequest initialRequest = mock(CalculateLockoutStateRequest.class);
@@ -126,6 +129,7 @@ public class LockoutStateServiceTest {
         final VerificationAttempt attempt = buildAttempt();
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
+        given(lockoutPolicy.appliesToAllAliases()).willReturn(true);
 
         given(channelPolicies.getPolicyFor(attempt)).willReturn(lockoutPolicy);
         given(policiesService.getPoliciesForChannel(CHANNEL_ID)).willReturn(channelPolicies);
@@ -160,6 +164,7 @@ public class LockoutStateServiceTest {
 
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
+        given(lockoutPolicy.appliesToAllAliases()).willReturn(true);
         given(channelPolicies.getPolicyFor(attempt1)).willReturn(lockoutPolicy);
         given(channelPolicies.getPolicyFor(attempt2)).willReturn(lockoutPolicy);
         given(policiesService.getPoliciesForChannel(CHANNEL_ID)).willReturn(channelPolicies);
@@ -190,6 +195,7 @@ public class LockoutStateServiceTest {
 
         final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
         final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
+        given(lockoutPolicy.appliesToAllAliases()).willReturn(true);
         given(channelPolicies.getPolicyFor(request)).willReturn(lockoutPolicy);
         given(policiesService.getPoliciesForChannel(CHANNEL_ID)).willReturn(channelPolicies);
 

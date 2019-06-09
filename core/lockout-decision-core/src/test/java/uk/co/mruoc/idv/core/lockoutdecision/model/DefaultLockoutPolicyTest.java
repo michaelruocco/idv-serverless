@@ -21,7 +21,7 @@ public class DefaultLockoutPolicyTest {
     public void shouldReturnFalseIfAttemptAliasDoesNotMatchPolicy() {
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ACTIVITY))
-                .aliasTypes(Collections.singleton(AliasType.Names.CREDIT_CARD_NUMBER))
+                .aliasType(AliasType.Names.CREDIT_CARD_NUMBER)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -38,7 +38,7 @@ public class DefaultLockoutPolicyTest {
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ACTIVITY))
-                .aliasTypes(Collections.singleton(aliasType))
+                .aliasType(aliasType)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -55,7 +55,7 @@ public class DefaultLockoutPolicyTest {
         final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ACTIVITY))
-                .aliasTypes(Collections.singleton(aliasType))
+                .aliasType(aliasType)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -71,7 +71,7 @@ public class DefaultLockoutPolicyTest {
     public void shouldReturnTrueIfPolicyMatchesAllActivitiesAliases() {
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ALL))
-                .aliasTypes(Collections.singleton(ALL))
+                .aliasType(ALL)
                 .build();
 
         final VerificationAttempt attempt = mock(VerificationAttempt.class);
@@ -91,7 +91,7 @@ public class DefaultLockoutPolicyTest {
 
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.emptyList())
-                .aliasTypes(Collections.emptyList())
+                .aliasType("")
                 .stateCalculator(calculator)
                 .build();
 
@@ -109,7 +109,7 @@ public class DefaultLockoutPolicyTest {
 
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ALL))
-                .aliasTypes(Collections.singleton(ALL))
+                .aliasType(ALL)
                 .build();
 
         final VerificationAttempts resetAttempts = policy.reset(attempts);
@@ -135,7 +135,7 @@ public class DefaultLockoutPolicyTest {
 
         final LockoutPolicy policy = DefaultLockoutPolicy.builder()
                 .activities(Collections.singleton(ALL))
-                .aliasTypes(Collections.singleton(ALL))
+                .aliasType(ALL)
                 .stateCalculator(calculator)
                 .build();
 
@@ -147,6 +147,38 @@ public class DefaultLockoutPolicyTest {
 
         assertThat(state).isEqualTo(expectedState);
         assertThat(captor.getValue().getAttempts()).containsExactlyElementsOf(attemptCollection);
+    }
+
+    @Test
+    public void shouldReturnTrueIfMatchesAllAliases() {
+        final LockoutPolicy allAliasesPolicy = DefaultLockoutPolicy.builder()
+                .aliasType(ALL)
+                .activities(Collections.emptyList())
+                .build();
+
+        assertThat(allAliasesPolicy.appliesToAllAliases()).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseIfMatchesAliasType() {
+        final LockoutPolicy allAliasesPolicy = DefaultLockoutPolicy.builder()
+                .aliasType(AliasType.Names.CREDIT_CARD_NUMBER)
+                .activities(Collections.emptyList())
+                .build();
+
+        assertThat(allAliasesPolicy.appliesToAllAliases()).isFalse();
+    }
+
+    @Test
+    public void shouldReturnAliasType() {
+        final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
+
+        final LockoutPolicy policy = DefaultLockoutPolicy.builder()
+                .aliasType(aliasType)
+                .activities(Collections.emptyList())
+                .build();
+
+        assertThat(policy.getAliasType()).isEqualTo(aliasType);
     }
 
 }
