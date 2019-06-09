@@ -190,6 +190,40 @@ public class LockoutStateServiceTest {
     }
 
     @Test
+    public void shouldOnlyUpdateLockoutStateForAttemptsThatMatchAlias() {
+        final VerificationAttempt attempt = buildAttempt();
+        final ChannelLockoutPolicies channelPolicies = mock(ChannelLockoutPolicies.class);
+        final LockoutPolicy lockoutPolicy = mock(LockoutPolicy.class);
+        given(lockoutPolicy.appliesToAllAliases()).willReturn(false);
+
+        given(channelPolicies.getPolicyFor(attempt)).willReturn(lockoutPolicy);
+        given(policiesService.getPoliciesForChannel(CHANNEL_ID)).willReturn(channelPolicies);
+
+        final VerificationAttempts attempts = mock(VerificationAttempts.class);
+        given(loadAttemptsService.load(attempt.getAlias())).willReturn(attempts);
+        final VerificationAttempts filteredAttempts = mock(VerificationAttempts.class);
+        given(attempts.filterByAlias(attempt.getAlias())).willReturn(filteredAttempts);
+
+        final VerificationAttempts updateAttempts = mock(VerificationAttempts.class);
+        given(filteredAttempts.add(attempt)).willReturn(updateAttempts);
+
+        final LockoutState initialState = buildNotLockedState();
+        final CalculateLockoutStateRequest initialRequest = mock(CalculateLockoutStateRequest.class);
+        given(converter.toRequest(filteredAttempts)).willReturn(initialRequest);
+        given(lockoutPolicy.calculateLockoutState(initialRequest)).willReturn(initialState);
+
+        final LockoutState updateState = buildNotLockedState();
+        final CalculateLockoutStateRequest updateRequest = mock(CalculateLockoutStateRequest.class);
+        given(converter.toRequest(updateAttempts)).willReturn(updateRequest);
+        given(lockoutPolicy.calculateLockoutState(updateRequest)).willReturn(updateState);
+
+        final LockoutState lockoutState = lockoutStateService.register(attempt);
+
+        assertThat(lockoutState).isEqualTo(updateState);
+        verify(dao).save(updateAttempts);
+    }
+
+    @Test
     public void shouldResetAttempts() {
         final LockoutStateRequest request = buildRequest();
 
