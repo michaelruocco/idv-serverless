@@ -17,7 +17,7 @@ import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LoadVerificationAttemptsService;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
 import uk.co.mruoc.idv.core.lockoutdecision.service.VerificationAttemptsConverter;
-import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.core.channel.model.DefaultChannel;
 import uk.co.mruoc.idv.core.service.DefaultTimeService;
 import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;

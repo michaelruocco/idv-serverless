@@ -1,6 +1,8 @@
 package uk.co.mruoc.idv.core.model.channel;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.channel.model.Channel;
+import uk.co.mruoc.idv.core.channel.model.DefaultChannel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

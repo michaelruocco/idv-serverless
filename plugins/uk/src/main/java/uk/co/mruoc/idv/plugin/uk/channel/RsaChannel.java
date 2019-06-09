@@ -1,6 +1,6 @@
 package uk.co.mruoc.idv.plugin.uk.channel;
 
-import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.core.channel.model.DefaultChannel;
 
 public class RsaChannel extends DefaultChannel {
 

@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.awslambda.AliasExtractor;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.lockoutdecision.error.PutResetLockoutStateErrorHandlerDelegator;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
@@ -18,7 +19,7 @@ import uk.co.mruoc.idv.jsonapi.lockoutdecision.JsonApiLockoutDecisionJsonConvert
 @Slf4j
 @Builder
 @AllArgsConstructor
-public class PutResetLockoutStateHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class GetLockoutStateHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new JsonApiLockoutDecisionJsonConverterFactory();
 
@@ -27,15 +28,15 @@ public class PutResetLockoutStateHandler implements RequestHandler<APIGatewayPro
     private final LockoutStateResponseFactory responseFactory;
     private final ExceptionConverter exceptionConverter;
 
-    public PutResetLockoutStateHandler(final LockoutStateService service) {
+    public GetLockoutStateHandler(final LockoutStateService service) {
         this(builder()
-                .requestExtractor(new PutLockoutStateRequestExtractor(JSON_CONVERTER_FACTORY.build()))
+                .requestExtractor(new GetLockoutStateRequestExtractor(new AliasExtractor()))
                 .service(service)
                 .responseFactory(new LockoutStateOkResponseFactory(JSON_CONVERTER_FACTORY.build()))
                 .exceptionConverter(buildExceptionConverter()));
     }
 
-    public PutResetLockoutStateHandler(final PutResetLockoutStateHandlerBuilder builder) {
+    public GetLockoutStateHandler(final GetLockoutStateHandlerBuilder builder) {
         this.requestExtractor = builder.requestExtractor;
         this.service = builder.service;
         this.responseFactory = builder.responseFactory;
@@ -45,7 +46,7 @@ public class PutResetLockoutStateHandler implements RequestHandler<APIGatewayPro
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         try {
-            return resetLockoutState(input);
+            return getLockoutState(input);
         } catch (final Exception e) {
             log.error("caught exception trying to create verification context", e);
             final APIGatewayProxyResponseEvent response = exceptionConverter.toResponse(e);
@@ -54,10 +55,10 @@ public class PutResetLockoutStateHandler implements RequestHandler<APIGatewayPro
         }
     }
 
-    private APIGatewayProxyResponseEvent resetLockoutState(final APIGatewayProxyRequestEvent requestEvent) {
+    private APIGatewayProxyResponseEvent getLockoutState(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
         final LockoutStateRequest request = requestExtractor.extractRequest(requestEvent);
-        final LockoutState lockoutState = service.reset(request);
+        final LockoutState lockoutState = service.load(request);
         final APIGatewayProxyResponseEvent responseEvent = responseFactory.toResponseEvent(lockoutState);
         log.info("returning response {}", responseEvent);
         return responseEvent;

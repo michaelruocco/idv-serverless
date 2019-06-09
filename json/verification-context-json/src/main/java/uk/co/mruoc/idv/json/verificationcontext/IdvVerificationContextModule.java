@@ -3,7 +3,7 @@ package uk.co.mruoc.idv.json.verificationcontext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import uk.co.mruoc.idv.core.model.CardNumber;
-import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.channel.model.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.LoginActivity;

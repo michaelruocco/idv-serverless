@@ -1,8 +1,8 @@
 package uk.co.mruoc.idv.json.verificationcontext.channel;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.model.channel.Channel;
-import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.core.channel.model.Channel;
+import uk.co.mruoc.idv.core.channel.model.DefaultChannel;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
-import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.channel.model.Channel;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 
 @Builder

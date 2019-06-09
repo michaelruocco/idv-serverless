@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.awslambda.AliasExtractor;
 import uk.co.mruoc.idv.awslambda.ExceptionConverter;
 import uk.co.mruoc.idv.awslambda.RequestValidator;
 import uk.co.mruoc.idv.awslambda.identity.error.GetIdentityErrorHandlerDelegator;

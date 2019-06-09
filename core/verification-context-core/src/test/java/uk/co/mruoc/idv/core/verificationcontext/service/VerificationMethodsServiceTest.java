@@ -2,8 +2,8 @@ package uk.co.mruoc.idv.core.verificationcontext.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.co.mruoc.idv.core.model.channel.Channel;
-import uk.co.mruoc.idv.core.model.channel.DefaultChannel;
+import uk.co.mruoc.idv.core.channel.model.Channel;
+import uk.co.mruoc.idv.core.channel.model.DefaultChannel;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.MethodSequencesRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.DefaultVerificationMethod;

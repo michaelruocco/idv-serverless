@@ -1,6 +1,6 @@
 package uk.co.mruoc.idv.plugin.uk.channel;
 
-import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.channel.model.Channel;
 
 public interface UkChannel extends Channel {
 

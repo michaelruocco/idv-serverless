@@ -6,7 +6,7 @@ import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
-import uk.co.mruoc.idv.core.model.channel.Channel;
+import uk.co.mruoc.idv.core.channel.model.Channel;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
 import uk.co.mruoc.idv.core.verificationcontext.model.AbstractVerificationContextRequest;

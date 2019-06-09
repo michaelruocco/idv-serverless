@@ -18,7 +18,7 @@ public class LockoutStateRequestExtractorTest {
 
     private final JsonConverter converter = mock(JsonConverter.class);
 
-    private final LockoutStateRequestExtractor extractor = new LockoutStateRequestExtractor(converter);
+    private final LockoutStateRequestExtractor extractor = new PutLockoutStateRequestExtractor(converter);
 
     @Test
     public void shouldThrowExceptionIfRequestBodyCannotBeParsed() {

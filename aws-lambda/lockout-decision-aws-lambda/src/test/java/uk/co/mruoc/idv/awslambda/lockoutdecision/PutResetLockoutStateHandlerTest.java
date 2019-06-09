@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 
 public class PutResetLockoutStateHandlerTest {
 
-    private final LockoutStateRequestExtractor requestExtractor = mock(LockoutStateRequestExtractor.class);
+    private final PutLockoutStateRequestExtractor requestExtractor = mock(PutLockoutStateRequestExtractor.class);
     private final LockoutStateService service = mock(LockoutStateService.class);
     private final LockoutStateResponseFactory responseFactory = mock(LockoutStateResponseFactory.class);
     private final ExceptionConverter exceptionConverter = mock(ExceptionConverter.class);
