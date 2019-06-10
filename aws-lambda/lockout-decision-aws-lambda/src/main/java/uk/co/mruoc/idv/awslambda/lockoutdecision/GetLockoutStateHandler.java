@@ -23,6 +23,7 @@ public class GetLockoutStateHandler implements RequestHandler<APIGatewayProxyReq
 
     private static final JsonConverterFactory JSON_CONVERTER_FACTORY = new JsonApiLockoutDecisionJsonConverterFactory();
 
+    private final GetLockoutStateRequestValidator requestValidator;
     private final LockoutStateRequestExtractor requestExtractor;
     private final LockoutStateService service;
     private final LockoutStateResponseFactory responseFactory;
@@ -30,6 +31,7 @@ public class GetLockoutStateHandler implements RequestHandler<APIGatewayProxyReq
 
     public GetLockoutStateHandler(final LockoutStateService service) {
         this(builder()
+                .requestValidator(new GetLockoutStateRequestValidator())
                 .requestExtractor(new GetLockoutStateRequestExtractor(new AliasExtractor()))
                 .service(service)
                 .responseFactory(new LockoutStateOkResponseFactory(JSON_CONVERTER_FACTORY.build()))
@@ -37,6 +39,7 @@ public class GetLockoutStateHandler implements RequestHandler<APIGatewayProxyReq
     }
 
     public GetLockoutStateHandler(final GetLockoutStateHandlerBuilder builder) {
+        this.requestValidator = builder.requestValidator;
         this.requestExtractor = builder.requestExtractor;
         this.service = builder.service;
         this.responseFactory = builder.responseFactory;
@@ -57,6 +60,7 @@ public class GetLockoutStateHandler implements RequestHandler<APIGatewayProxyReq
 
     private APIGatewayProxyResponseEvent getLockoutState(final APIGatewayProxyRequestEvent requestEvent) {
         log.info("handling request {}", requestEvent);
+        requestValidator.validate(requestEvent);
         final LockoutStateRequest request = requestExtractor.extractRequest(requestEvent);
         final LockoutState lockoutState = service.load(request);
         final APIGatewayProxyResponseEvent responseEvent = responseFactory.toResponseEvent(lockoutState);

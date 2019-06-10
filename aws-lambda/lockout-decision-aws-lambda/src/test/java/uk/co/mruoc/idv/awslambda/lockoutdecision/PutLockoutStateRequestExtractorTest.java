@@ -14,7 +14,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
-public class LockoutStateRequestExtractorTest {
+public class PutLockoutStateRequestExtractorTest {
 
     private final JsonConverter converter = mock(JsonConverter.class);
 
@@ -33,7 +33,7 @@ public class LockoutStateRequestExtractorTest {
     }
 
     @Test
-    public void shouldReturnContextFromDocumentParsedFromRequestBody() {
+    public void shouldReturnLockoutStateRequestFromRequestEvent() {
         final String body = "body";
         final APIGatewayProxyRequestEvent event = new APIGatewayProxyRequestEvent().withBody(body);
         final LockoutStateRequestDocument document = mock(LockoutStateRequestDocument.class);

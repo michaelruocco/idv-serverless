@@ -5,8 +5,8 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.identity.IdentityServiceFactory;
+import uk.co.mruoc.idv.awslambda.lockoutdecision.GetLockoutStateHandler;
 import uk.co.mruoc.idv.awslambda.lockoutdecision.LoadVerificationAttemptsServiceFactory;
-import uk.co.mruoc.idv.awslambda.lockoutdecision.PutResetLockoutStateHandler;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
@@ -22,14 +22,15 @@ import uk.co.mruoc.idv.plugin.uk.channel.UkChannel;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
 
-public class UkPutResetLockoutStateHandlerIntegrationTest {
+public class UkGetLockoutStateHandlerIntegrationTest {
 
     private final IdentityDao identityDao = new FakeIdentityDao();
     private final IdentityServiceFactory identityServiceFactory = new UkIdentityServiceFactory(identityDao);
@@ -43,11 +44,11 @@ public class UkPutResetLockoutStateHandlerIntegrationTest {
             .timestamp(Instant.now())
             .methodName("METHOD_NAME2")
             .channelId(UkChannel.Ids.RSA)
-            .activityType("ACTIVITY2")
+            .activityType("ONLINE_PURCHASE")
             .alias(identity.getIdvIdAlias())
             .build();
 
-    private final PutResetLockoutStateHandler handler = new UkPutResetLockoutStateHandler(factory);
+    private final GetLockoutStateHandler handler = new UkGetLockoutStateHandler(factory);
 
     @Before
     public void setUp() {
@@ -58,18 +59,20 @@ public class UkPutResetLockoutStateHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldResetLockoutState() {
-        final String requestBody = loadContentFromClasspath("/put-reset-lockout-state-request.json");
+    public void shouldGetLockoutState() {
+        final Map<String, String> parameters = new HashMap<>();
+        parameters.put("channelId", UkChannel.Ids.RSA);
+        parameters.put("activityType", "ONLINE_PURCHASE");
+        parameters.put("aliasType", providedAlias.getTypeName());
+        parameters.put("aliasValue", providedAlias.getValue());
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody(requestBody);
+                .withQueryStringParameters(parameters);
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
 
         assertThat(response.getStatusCode()).isEqualTo(200);
-        final String expectedBody = loadContentFromClasspath("/put-reset-lockout-state-response.json");
+        final String expectedBody = loadContentFromClasspath("/get-lockout-state-response.json");
         assertThatJson(response.getBody()).isEqualTo(expectedBody);
-        final Optional<VerificationAttempts> remainingAttempts = attemptsDao.loadByIdvId(identity.getIdvId());
-        assertThat(remainingAttempts.get()).containsExactly(attemptWithDifferentAlias);
     }
 
     private VerificationAttempts buildAttempts() {

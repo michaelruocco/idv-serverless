@@ -3,6 +3,7 @@ package uk.co.mruoc.idv.awslambda;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.identity.model.alias.AliasType;
 import uk.co.mruoc.idv.core.identity.model.alias.DefaultAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 
@@ -43,6 +44,30 @@ public class AliasExtractorTest {
         assertThat(alias.getTypeName()).isEqualTo(aliasType);
         assertThat(alias.getFormat()).isEqualTo(aliasFormat);
         assertThat(alias.getValue()).isEqualTo(aliasValue);
+    }
+
+    @Test
+    public void shouldUseTokenizedAliasFormatIfNotProvidedForCreditCardNumberAlias() {
+        final String aliasType = AliasType.Names.CREDIT_CARD_NUMBER;
+        final String aliasValue = "aliasValue";
+        final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
+                .withQueryStringParameters(buildQueryStringParameters(aliasType, aliasValue));
+
+        final Alias alias = extractor.extractAlias(request);
+
+        assertThat(alias.getFormat()).isEqualTo(Alias.Formats.TOKENIZED);
+    }
+
+    @Test
+    public void shouldUseTokenizedAliasFormatIfNotProvidedForDebitCardNumberAlias() {
+        final String aliasType = AliasType.Names.DEBIT_CARD_NUMBER;
+        final String aliasValue = "aliasValue";
+        final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
+                .withQueryStringParameters(buildQueryStringParameters(aliasType, aliasValue));
+
+        final Alias alias = extractor.extractAlias(request);
+
+        assertThat(alias.getFormat()).isEqualTo(Alias.Formats.TOKENIZED);
     }
 
     @Test

@@ -3,11 +3,13 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 
 @Builder
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true) // required by jackson
+@ToString
 public class DefaultLockoutStateRequest implements LockoutStateRequest {
 
     private final String channelId;

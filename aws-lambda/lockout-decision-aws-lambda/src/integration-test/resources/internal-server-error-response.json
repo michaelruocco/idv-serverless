@@ -1,0 +1,10 @@
+{
+  "errors": [
+    {
+      "status": "500",
+      "title": "Internal Server Error",
+      "detail": "${json-unit.ignore-element}",
+      "meta": {}
+    }
+  ]
+}

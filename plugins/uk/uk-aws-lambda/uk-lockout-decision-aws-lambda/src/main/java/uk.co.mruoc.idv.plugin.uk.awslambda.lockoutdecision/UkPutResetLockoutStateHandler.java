@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.plugin.uk.awslambda.lockoutdecision;
 
 import lombok.extern.slf4j.Slf4j;
+import uk.co.mruoc.idv.awslambda.lockoutdecision.LoadVerificationAttemptsServiceFactory;
 import uk.co.mruoc.idv.awslambda.lockoutdecision.PutResetLockoutStateHandler;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.service.LoadVerificationAttemptsService;
@@ -16,7 +17,7 @@ public class UkPutResetLockoutStateHandler extends PutResetLockoutStateHandler {
         this(new UkLoadVerificationAttemptsServiceFactory());
     }
 
-    public UkPutResetLockoutStateHandler(UkLoadVerificationAttemptsServiceFactory factory) {
+    public UkPutResetLockoutStateHandler(final LoadVerificationAttemptsServiceFactory factory) {
         this(factory.build(), factory.getDao());
     }
 

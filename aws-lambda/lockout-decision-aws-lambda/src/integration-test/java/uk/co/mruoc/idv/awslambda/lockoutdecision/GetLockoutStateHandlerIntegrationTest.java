@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.Identity;
+import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.model.alias.cardnumber.TokenizedCreditCardNumberAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
@@ -13,46 +14,57 @@ import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
 import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.lockoutdecision.FakeVerificationAttemptsDao;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
-import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
-public class PutResetLockoutStateHandlerIntegrationTest {
+public class GetLockoutStateHandlerIntegrationTest {
 
     private static final IdentityDao IDENTITY_DAO = new FakeIdentityDao();
     private static final VerificationAttemptsDao ATTEMPTS_DAO = new FakeVerificationAttemptsDao();
 
     private final LockoutStateService lockoutStateService = buildLockoutStateService();
-    private final PutResetLockoutStateHandler handler = new PutResetLockoutStateHandler(lockoutStateService);
+    private final GetLockoutStateHandler handler = new GetLockoutStateHandler(lockoutStateService);
 
+    private final Alias alias = new TokenizedCreditCardNumberAlias("3489347343788005");
     @Before
     public void setUp() {
-        IDENTITY_DAO.save(Identity.withAliases(new IdvIdAlias(), new TokenizedCreditCardNumberAlias("3489347343788005")));
+        IDENTITY_DAO.save(Identity.withAliases(new IdvIdAlias(), alias));
     }
 
     @Test
-    public void shouldReturnErrorForInvalidRequest() {
-        final String requestBody = loadContentFromClasspath("/put-reset-lockout-state-invalid-request.json");
+    public void shouldGetLockoutState() {
+        final Map<String, String> parameters = new HashMap<>();
+        parameters.put("channelId", "RSA");
+        parameters.put("activityType", "ONLINE_PURCHASE");
+        parameters.put("aliasType", alias.getTypeName());
+        parameters.put("aliasValue", alias.getValue());
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody(requestBody);
-
-        final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
-
-        assertThat(response.getStatusCode()).isEqualTo(500);
-        final String expectedResponseBody = loadContentFromClasspath("/internal-server-error-response.json");
-        assertThatJson(response.getBody()).isEqualTo(expectedResponseBody);
-    }
-
-    @Test
-    public void shouldResetLockoutState() {
-        final String requestBody = loadContentFromClasspath("/put-reset-lockout-state-request.json");
-        final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
-                .withBody(requestBody);
+                .withQueryStringParameters(parameters);
 
         final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
 
         assertThat(response.getStatusCode()).isEqualTo(200);
         final String expectedResponseBody = loadContentFromClasspath("/put-reset-lockout-state-response.json");
+        assertThatJson(response.getBody()).isEqualTo(expectedResponseBody);
+    }
+
+    @Test
+    public void shouldReturnErrorIfRequiredParametersAreNotProvided() {
+        final Map<String, String> parameters = new HashMap<>();
+        parameters.put("channelId", "RSA");
+        parameters.put("activityType", "ONLINE_PURCHASE");
+        parameters.put("aliasType", alias.getTypeName());
+        final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
+                .withQueryStringParameters(parameters);
+
+        final APIGatewayProxyResponseEvent response = handler.handleRequest(request, null);
+
+        assertThat(response.getStatusCode()).isEqualTo(500);
+        final String expectedResponseBody = loadContentFromClasspath("/internal-server-error-response.json");
         assertThatJson(response.getBody()).isEqualTo(expectedResponseBody);
     }
 

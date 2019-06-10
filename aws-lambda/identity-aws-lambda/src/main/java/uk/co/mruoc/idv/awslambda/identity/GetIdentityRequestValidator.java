@@ -51,6 +51,4 @@ public class GetIdentityRequestValidator implements RequestValidator {
 
     }
 
-
-
 }

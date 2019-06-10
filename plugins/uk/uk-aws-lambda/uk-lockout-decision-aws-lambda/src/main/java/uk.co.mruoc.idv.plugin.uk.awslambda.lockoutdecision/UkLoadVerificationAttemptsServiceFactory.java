@@ -38,6 +38,7 @@ public class UkLoadVerificationAttemptsServiceFactory implements LoadVerificatio
                 .build();
     }
 
+    @Override
     public VerificationAttemptsDao getDao() {
         return dao;
     }

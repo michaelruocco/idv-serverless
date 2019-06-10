@@ -1,0 +1,13 @@
+{
+  "data": {
+    "type": "lockoutStates",
+    "attributes": {
+      "channelId": "RSA",
+      "activityType": "ONLINE_PURCHASE",
+      "alias": {
+        "format": "TOKENIZED",
+        "value": "3489347343788005"
+      }
+    }
+  }
+}
