@@ -2,9 +2,9 @@ package uk.co.mruoc.idv.json.verificationcontext.result;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import uk.co.mruoc.idv.core.model.VerificationResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
-import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationResult;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 

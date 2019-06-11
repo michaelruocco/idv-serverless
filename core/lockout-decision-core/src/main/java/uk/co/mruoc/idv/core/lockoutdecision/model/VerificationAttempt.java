@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
+import uk.co.mruoc.idv.core.model.VerificationResult;
 
 import java.time.Instant;
 
@@ -17,10 +18,14 @@ public class VerificationAttempt implements LockoutStateRequest {
     private final Alias alias;
     private final String activityType;
     private final String methodName;
-    private final boolean successful;
+    private final String result;
 
     public String getAliasTypeName() {
         return alias.getTypeName();
+    }
+
+    public boolean isSuccessful() {
+        return VerificationResult.SUCCESS.equals(result);
     }
 
 }

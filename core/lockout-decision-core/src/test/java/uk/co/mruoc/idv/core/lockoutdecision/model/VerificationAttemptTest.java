@@ -3,6 +3,7 @@ package uk.co.mruoc.idv.core.lockoutdecision.model;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
+import uk.co.mruoc.idv.core.model.VerificationResult;
 
 import java.time.Instant;
 
@@ -75,14 +76,36 @@ public class VerificationAttemptTest {
     }
 
     @Test
-    public void shouldReturnIsSuccessful() {
-        final boolean successful = true;
+    public void shouldReturnResult() {
+        final String result = "result";
 
         final VerificationAttempt attempt = VerificationAttempt.builder()
-                .successful(successful)
+                .result(result)
                 .build();
 
-        assertThat(attempt.isSuccessful()).isEqualTo(successful);
+        assertThat(attempt.getResult()).isEqualTo(result);
+    }
+
+    @Test
+    public void shouldReturnIsSuccessfulIfResultIsSuccess() {
+        final String result = VerificationResult.SUCCESS;
+
+        final VerificationAttempt attempt = VerificationAttempt.builder()
+                .result(result)
+                .build();
+
+        assertThat(attempt.isSuccessful()).isTrue();
+    }
+
+    @Test
+    public void shouldReturnNotSuccessfulIfResultIsNotSuccess() {
+        final String result = VerificationResult.FAILURE;
+
+        final VerificationAttempt attempt = VerificationAttempt.builder()
+                .result(result)
+                .build();
+
+        assertThat(attempt.isSuccessful()).isFalse();
     }
 
     @Test
@@ -92,7 +115,7 @@ public class VerificationAttemptTest {
 
         assertThat(attempt.toString()).isEqualTo("VerificationAttempt(" +
                 "channelId=null, timestamp=null, alias=null, activityType=null, " +
-                "methodName=null, successful=false)");
+                "methodName=null, result=null)");
     }
 
 }

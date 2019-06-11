@@ -23,7 +23,7 @@ public class VerificationMethodResultConverter {
                 .channelId(context.getChannelId())
                 .methodName(result.getMethodName())
                 .timestamp(result.getTimestamp())
-                .successful(result.isSuccessful())
+                .result(result.getResult())
                 .build();
     }
 

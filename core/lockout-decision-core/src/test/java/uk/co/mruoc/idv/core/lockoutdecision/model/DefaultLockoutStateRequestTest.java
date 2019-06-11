@@ -49,4 +49,11 @@ public class DefaultLockoutStateRequestTest {
         assertThat(request).isNotNull();
     }
 
+    @Test
+    public void shouldPrintDetails() {
+        final LockoutStateRequest request = new DefaultLockoutStateRequest();
+
+        assertThat(request.toString()).isEqualTo("DefaultLockoutStateRequest(channelId=null, alias=null, activityType=null)");
+    }
+
 }

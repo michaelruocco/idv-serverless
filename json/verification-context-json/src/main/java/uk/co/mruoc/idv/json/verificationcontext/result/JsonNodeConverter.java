@@ -3,7 +3,6 @@ package uk.co.mruoc.idv.json.verificationcontext.result;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
-import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationResult;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -76,8 +75,8 @@ public class JsonNodeConverter {
         return UUID.fromString(node.get("verificationId").asText());
     }
 
-    private static VerificationResult extractResult(final JsonNode node) {
-        return VerificationResult.valueOf(node.get("result").asText());
+    private static String extractResult(final JsonNode node) {
+        return node.get("result").asText();
     }
 
     private static Instant extractTimestamp(final JsonNode node) {

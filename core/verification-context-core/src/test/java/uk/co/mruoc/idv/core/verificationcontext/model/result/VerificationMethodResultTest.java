@@ -1,6 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.result;
 
 import org.junit.Test;
+import uk.co.mruoc.idv.core.model.VerificationResult;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -55,7 +56,7 @@ public class VerificationMethodResultTest {
 
     @Test
     public void shouldReturnResult() {
-        final VerificationResult result = VerificationResult.SUCCESS;
+        final String result = VerificationResult.SUCCESS;
 
         final VerificationMethodResult methodResult = VerificationMethodResult.builder()
                 .result(result)
@@ -66,7 +67,7 @@ public class VerificationMethodResultTest {
 
     @Test
     public void shouldBeSuccessfulIfResultIsSuccess() {
-        final VerificationResult result = VerificationResult.SUCCESS;
+        final String result = VerificationResult.SUCCESS;
 
         final VerificationMethodResult methodResult = VerificationMethodResult.builder()
                 .result(result)
@@ -85,7 +86,7 @@ public class VerificationMethodResultTest {
 
     @Test
     public void shouldNotBeSuccessfulIfResultIsNotSuccess() {
-        final VerificationResult result = VerificationResult.FAILURE;
+        final String result = VerificationResult.FAILURE;
 
         final VerificationMethodResult methodResult = VerificationMethodResult.builder()
                 .result(result)

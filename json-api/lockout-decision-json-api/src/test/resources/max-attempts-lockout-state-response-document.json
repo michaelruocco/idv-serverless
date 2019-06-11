@@ -18,7 +18,7 @@
           "activityType": "ACTIVITY_TYPE",
           "methodName": "METHOD_NAME",
           "timestamp": "2019-03-10T12:53:57.547Z",
-          "successful": false
+          "result": "RESULT"
         }
       ]
     }

@@ -1,0 +1,16 @@
+{
+  "data": {
+    "type": "lockoutStates",
+    "attributes": {
+      "contextId":"d98aa22c-a06e-4db5-8dc1-9ea83716ac12",
+      "attempts": [
+        {
+          "methodName": "METHOD_NAME",
+          "verificationId": "29c80561-6850-4d2f-ab56-69ea50768654",
+          "timestamp": "2019-03-10T12:53:57.547Z",
+          "result": "SUCCESS"
+        }
+      ]
+    }
+  }
+}

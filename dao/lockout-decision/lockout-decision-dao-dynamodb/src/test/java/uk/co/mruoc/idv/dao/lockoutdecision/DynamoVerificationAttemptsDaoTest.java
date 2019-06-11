@@ -73,7 +73,7 @@ public class DynamoVerificationAttemptsDaoTest {
                 .methodName("method")
                 .alias(new IdvIdAlias())
                 .activityType("activityType")
-                .successful(true)
+                .result("result")
                 .timestamp(Instant.now())
                 .build();
         return VerificationAttempts.builder()

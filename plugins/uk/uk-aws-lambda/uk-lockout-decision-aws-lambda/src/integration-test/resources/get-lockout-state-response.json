@@ -18,7 +18,7 @@
           },
           "activityType": "ACTIVITY1",
           "methodName": "METHOD_NAME1",
-          "successful": false
+          "result": "FAILURE"
         }
       ]
     }
