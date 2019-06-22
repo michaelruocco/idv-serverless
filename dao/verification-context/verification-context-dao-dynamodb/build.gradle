@@ -7,7 +7,7 @@ dependencies {
     compile project(':json:verification-context-json')
     compile project(':json:identity-json')
     compile project(':dao:dynamodb')
-    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.568'
+    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.578'
 
     testCompile 'com.amazonaws:DynamoDBLocal:1.11.477'
 }
