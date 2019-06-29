@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.jsonapi.verificationcontext.result;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.model.VerificationResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.json.JsonConverter;
@@ -60,7 +59,7 @@ public class VerificationResultResponseDocumentTest {
                 .methodName("PUSH_NOTIFICATION")
                 .verificationId(UUID.fromString("a7609223-8c80-4e31-9bf8-e75d63cb998f"))
                 .timestamp(Instant.parse("2019-03-10T21:51:54.638Z"))
-                .result(VerificationResult.SUCCESS)
+                .successful(true)
                 .build();
         return VerificationMethodResults.builder()
                 .id(UUID.fromString("21b4d9e0-11c3-4e84-aa87-dc37d7f59e23"))

@@ -5,7 +5,6 @@ import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultRegisterAttemptRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultRegisterAttemptsRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.RegisterAttemptRequest;
 import uk.co.mruoc.idv.core.lockoutdecision.model.RegisterAttemptsRequest;
-import uk.co.mruoc.idv.core.model.VerificationResult;
 import uk.co.mruoc.idv.json.JsonConverter;
 
 import java.time.Instant;
@@ -56,7 +55,7 @@ public class RegisterAttemptsRequestDocumentTest {
                 .methodName("METHOD_NAME")
                 .verificationId(UUID.fromString("29c80561-6850-4d2f-ab56-69ea50768654"))
                 .timestamp(Instant.parse("2019-03-10T12:53:57.547Z"))
-                .result(VerificationResult.SUCCESS)
+                .successful(true)
                 .build();
         return DefaultRegisterAttemptsRequest.builder()
                 .contextId(UUID.fromString("d98aa22c-a06e-4db5-8dc1-9ea83716ac12"))

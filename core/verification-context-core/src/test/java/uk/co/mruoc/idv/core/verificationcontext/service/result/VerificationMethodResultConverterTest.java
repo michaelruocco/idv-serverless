@@ -78,13 +78,13 @@ public class VerificationMethodResultConverterTest {
     }
 
     @Test
-    public void shouldConvertResult() {
-        final String resultValue = "result";
-        given(result.getResult()).willReturn(resultValue);
+    public void shouldConvertSuccessful() {
+        final boolean successful = true;
+        given(result.isSuccessful()).willReturn(successful);
 
         final VerificationAttempt attempt = converter.toAttempt(context, result);
 
-        assertThat(attempt.getResult()).isEqualTo(resultValue);
+        assertThat(attempt.isSuccessful()).isEqualTo(successful);
     }
 
     @Test

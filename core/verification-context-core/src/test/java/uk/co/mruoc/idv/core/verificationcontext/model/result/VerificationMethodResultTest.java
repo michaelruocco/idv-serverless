@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.result;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.model.VerificationResult;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -55,41 +54,19 @@ public class VerificationMethodResultTest {
     }
 
     @Test
-    public void shouldReturnResult() {
-        final String result = VerificationResult.SUCCESS;
+    public void shouldReturnSuccessful() {
+        final boolean successful = true;
 
         final VerificationMethodResult methodResult = VerificationMethodResult.builder()
-                .result(result)
+                .successful(successful)
                 .build();
 
-        assertThat(methodResult.getResult()).isEqualTo(result);
-    }
-
-    @Test
-    public void shouldBeSuccessfulIfResultIsSuccess() {
-        final String result = VerificationResult.SUCCESS;
-
-        final VerificationMethodResult methodResult = VerificationMethodResult.builder()
-                .result(result)
-                .build();
-
-        assertThat(methodResult.isSuccessful()).isTrue();
+        assertThat(methodResult.isSuccessful()).isEqualTo(successful);
     }
 
     @Test
     public void shouldNotBeSuccessfulIfResultIsNull() {
         final VerificationMethodResult methodResult = VerificationMethodResult.builder()
-                .build();
-
-        assertThat(methodResult.isSuccessful()).isFalse();
-    }
-
-    @Test
-    public void shouldNotBeSuccessfulIfResultIsNotSuccess() {
-        final String result = VerificationResult.FAILURE;
-
-        final VerificationMethodResult methodResult = VerificationMethodResult.builder()
-                .result(result)
                 .build();
 
         assertThat(methodResult.isSuccessful()).isFalse();

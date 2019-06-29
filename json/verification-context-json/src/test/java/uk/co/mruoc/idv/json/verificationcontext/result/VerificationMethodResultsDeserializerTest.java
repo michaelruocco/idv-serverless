@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.json.verificationcontext.result;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import uk.co.mruoc.idv.core.model.VerificationResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.json.JsonConverter;
@@ -69,7 +68,7 @@ public class VerificationMethodResultsDeserializerTest {
                 .sequenceName("PUSH_NOTIFICATION")
                 .verificationId(UUID.fromString("a7609223-8c80-4e31-9bf8-e75d63cb998f"))
                 .timestamp(Instant.parse("2019-03-10T21:51:54.638Z"))
-                .result(VerificationResult.SUCCESS)
+                .successful(true)
                 .build();
         return VerificationMethodResults.builder()
                 .id(UUID.fromString("7936b9b4-9426-41a2-822e-bb9aa957af87"))
@@ -87,7 +86,7 @@ public class VerificationMethodResultsDeserializerTest {
                     r1.getMethodName().compareTo(r2.getMethodName()) +
                     r1.getSequenceName().compareTo(r2.getSequenceName()) +
                     r1.getTimestamp().compareTo(r2.getTimestamp()) +
-                    r1.getResult().compareTo(r2.getResult());
+                    Boolean.compare(r1.isSuccessful(), r2.isSuccessful());
         }
 
     }

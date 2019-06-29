@@ -5,7 +5,6 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import uk.co.mruoc.idv.core.model.VerificationResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 import uk.co.mruoc.idv.core.verificationcontext.service.result.VerificationResultsDao;
@@ -72,7 +71,7 @@ public class DynamoVerificationResultsDaoTest {
                 .contextId(contextId)
                 .sequenceName("sequence")
                 .methodName("method")
-                .result(VerificationResult.SUCCESS)
+                .successful(true)
                 .verificationId(verificationId)
                 .timestamp(Instant.now())
                 .build();
@@ -92,7 +91,7 @@ public class DynamoVerificationResultsDaoTest {
                     r1.getMethodName().compareTo(r2.getMethodName()) +
                     r1.getSequenceName().compareTo(r2.getSequenceName()) +
                     r1.getTimestamp().compareTo(r2.getTimestamp()) +
-                    r1.getResult().compareTo(r2.getResult());
+                    Boolean.compare(r1.isSuccessful(), r2.isSuccessful());
         }
 
     }

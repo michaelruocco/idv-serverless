@@ -10,7 +10,4 @@ public interface VerificationAttemptMixin {
     @JsonIgnore
     String getAliasTypeName();
 
-    @JsonIgnore
-    boolean isSuccessful();
-
 }

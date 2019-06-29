@@ -8,7 +8,7 @@
           "methodName": "METHOD_NAME",
           "verificationId": "29c80561-6850-4d2f-ab56-69ea50768654",
           "timestamp": "2019-03-10T12:53:57.547Z",
-          "result": "SUCCESS"
+          "successful": true
         }
       ]
     }

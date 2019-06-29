@@ -15,7 +15,6 @@ import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempts;
-import uk.co.mruoc.idv.core.model.VerificationResult;
 import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
 import uk.co.mruoc.idv.dao.lockoutdecision.FakeVerificationAttemptsDao;
 import uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkIdentityServiceFactory;
@@ -41,7 +40,7 @@ public class UkGetLockoutStateHandlerIntegrationTest {
     private final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
     private final Identity identity = Identity.withAliases(new IdvIdAlias(), providedAlias);
     private final VerificationAttempt attemptWithDifferentAlias = VerificationAttempt.builder()
-            .result(VerificationResult.FAILURE)
+            .successful(false)
             .timestamp(Instant.now())
             .methodName("METHOD_NAME2")
             .channelId(UkChannel.Ids.RSA)
@@ -78,7 +77,7 @@ public class UkGetLockoutStateHandlerIntegrationTest {
 
     private VerificationAttempts buildAttempts() {
         final VerificationAttempt attemptWithMatchingAlias = VerificationAttempt.builder()
-                .result(VerificationResult.FAILURE)
+                .successful(false)
                 .timestamp(Instant.now())
                 .methodName("METHOD_NAME1")
                 .channelId(UkChannel.Ids.RSA)

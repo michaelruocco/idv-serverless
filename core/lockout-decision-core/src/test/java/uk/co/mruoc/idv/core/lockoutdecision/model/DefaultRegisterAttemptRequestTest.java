@@ -43,14 +43,14 @@ public class DefaultRegisterAttemptRequestTest {
     }
 
     @Test
-    public void shouldReturnResult() {
-        final String result = "result";
+    public void shouldReturnSuccessful() {
+        final boolean successful = true;
 
         final RegisterAttemptRequest request = DefaultRegisterAttemptRequest.builder()
-                .result(result)
+                .successful(successful)
                 .build();
 
-        assertThat(request.getResult()).isEqualTo(result);
+        assertThat(request.isSuccessful()).isEqualTo(successful);
     }
 
     @Test

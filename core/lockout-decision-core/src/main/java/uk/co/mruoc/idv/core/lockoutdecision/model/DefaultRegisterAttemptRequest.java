@@ -17,6 +17,6 @@ public class DefaultRegisterAttemptRequest implements RegisterAttemptRequest {
     private final String methodName;
     private final UUID verificationId;
     private final Instant timestamp;
-    private final String result;
+    private final boolean successful;
 
 }

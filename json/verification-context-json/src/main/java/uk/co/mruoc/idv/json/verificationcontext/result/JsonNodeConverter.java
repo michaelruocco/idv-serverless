@@ -58,7 +58,7 @@ public class JsonNodeConverter {
                 .sequenceName(extractSequenceName(node))
                 .methodName(extractMethodName(node))
                 .verificationId(extractVerificationId(node))
-                .result(extractResult(node))
+                .successful(extractSuccessful(node))
                 .timestamp(extractTimestamp(node))
                 .build();
     }
@@ -75,8 +75,8 @@ public class JsonNodeConverter {
         return UUID.fromString(node.get("verificationId").asText());
     }
 
-    private static String extractResult(final JsonNode node) {
-        return node.get("result").asText();
+    private static boolean extractSuccessful(final JsonNode node) {
+        return node.get("successful").asBoolean();
     }
 
     private static Instant extractTimestamp(final JsonNode node) {

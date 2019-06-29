@@ -115,7 +115,7 @@ public class LockoutStateResponseDocumentTest {
                 .activityType("ACTIVITY_TYPE")
                 .methodName("METHOD_NAME")
                 .timestamp(Instant.parse("2019-03-10T12:53:57.547Z"))
-                .result("RESULT")
+                .successful(true)
                 .build();
         return VerificationAttempts.builder()
                 .lockoutStateId(UUID.fromString("a20ed37e-0205-4b73-82d0-8435ee74f7a3"))

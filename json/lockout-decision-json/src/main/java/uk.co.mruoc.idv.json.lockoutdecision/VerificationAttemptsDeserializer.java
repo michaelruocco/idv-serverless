@@ -45,7 +45,7 @@ public class VerificationAttemptsDeserializer extends StdDeserializer<Verificati
         final VerificationAttempt.VerificationAttemptBuilder builder = VerificationAttempt.builder()
                 .channelId(attempt.get("channelId").asText())
                 .activityType(attempt.get("activityType").asText())
-                .result(attempt.get("result").asText())
+                .successful(attempt.get("successful").asBoolean())
                 .timestamp(Instant.parse(attempt.get("timestamp").asText()))
                 .alias(AliasDeserializer.toAlias(attempt.get("alias")));
 

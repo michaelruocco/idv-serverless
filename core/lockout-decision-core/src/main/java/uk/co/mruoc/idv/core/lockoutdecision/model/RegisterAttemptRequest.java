@@ -11,6 +11,6 @@ public interface RegisterAttemptRequest {
 
     Instant getTimestamp();
 
-    String getResult();
+    boolean isSuccessful();
 
 }

@@ -41,7 +41,7 @@ public class VerificationAttemptsDeserializerTest {
                 .methodName("METHOD_NAME")
                 .alias(new DefaultAlias(new DefaultAliasType("TYPE"), "FORMAT", "VALUE"))
                 .timestamp(Instant.parse("2019-03-10T12:53:57.547Z"))
-                .result("RESULT")
+                .successful(true)
                 .build();
         return VerificationAttempts.builder()
                 .idvId(UUID.fromString("1a10908d-e2eb-4680-a271-3d0c4d028a6b"))
