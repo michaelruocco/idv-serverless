@@ -47,7 +47,8 @@ public class VerificationAttemptsDeserializer extends StdDeserializer<Verificati
                 .activityType(attempt.get("activityType").asText())
                 .successful(attempt.get("successful").asBoolean())
                 .timestamp(Instant.parse(attempt.get("timestamp").asText()))
-                .alias(AliasDeserializer.toAlias(attempt.get("alias")));
+                .alias(AliasDeserializer.toAlias(attempt.get("alias")))
+                .verificationId(UUID.fromString(attempt.get("verificationId").asText()));
 
         if (attempt.has("methodName")) {
             builder.methodName(attempt.get("methodName").asText());

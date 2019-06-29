@@ -53,7 +53,7 @@ public class RegisterAttemptsRequestDocumentTest {
     private static RegisterAttemptsRequest buildRequest() {
         final RegisterAttemptRequest attempt = DefaultRegisterAttemptRequest.builder()
                 .methodName("METHOD_NAME")
-                .verificationId(UUID.fromString("29c80561-6850-4d2f-ab56-69ea50768654"))
+                .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .timestamp(Instant.parse("2019-03-10T12:53:57.547Z"))
                 .successful(true)
                 .build();

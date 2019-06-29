@@ -32,6 +32,7 @@ public class LockoutDecisionJsonConverterFactoryTest {
     private static VerificationAttempts buildAttempts() {
         final VerificationAttempt attempt = VerificationAttempt.builder()
                 .channelId("CHANNEL_ID")
+                .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .activityType("ACTIVITY_TYPE")
                 .methodName("METHOD_NAME")
                 .alias(new DefaultAlias(new DefaultAliasType("TYPE"), "FORMAT", "VALUE"))

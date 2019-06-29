@@ -21,6 +21,7 @@ public class VerificationMethodResultConverter {
                 .activityType(context.getActivityType())
                 .alias(context.getProvidedAlias())
                 .channelId(context.getChannelId())
+                .verificationId(result.getVerificationId())
                 .methodName(result.getMethodName())
                 .timestamp(result.getTimestamp())
                 .successful(result.isSuccessful())

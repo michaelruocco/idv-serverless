@@ -40,6 +40,7 @@ public class UkGetLockoutStateHandlerIntegrationTest {
     private final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
     private final Identity identity = Identity.withAliases(new IdvIdAlias(), providedAlias);
     private final VerificationAttempt attemptWithDifferentAlias = VerificationAttempt.builder()
+            .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
             .successful(false)
             .timestamp(Instant.now())
             .methodName("METHOD_NAME2")
@@ -78,6 +79,7 @@ public class UkGetLockoutStateHandlerIntegrationTest {
     private VerificationAttempts buildAttempts() {
         final VerificationAttempt attemptWithMatchingAlias = VerificationAttempt.builder()
                 .successful(false)
+                .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .timestamp(Instant.now())
                 .methodName("METHOD_NAME1")
                 .channelId(UkChannel.Ids.RSA)

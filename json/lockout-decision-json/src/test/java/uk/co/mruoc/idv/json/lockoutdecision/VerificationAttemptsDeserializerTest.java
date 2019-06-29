@@ -37,6 +37,7 @@ public class VerificationAttemptsDeserializerTest {
     private static VerificationAttempts buildAttempts() {
         final VerificationAttempt attempt = VerificationAttempt.builder()
                 .channelId("CHANNEL_ID")
+                .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .activityType("ACTIVITY_TYPE")
                 .methodName("METHOD_NAME")
                 .alias(new DefaultAlias(new DefaultAliasType("TYPE"), "FORMAT", "VALUE"))
@@ -62,7 +63,8 @@ public class VerificationAttemptsDeserializerTest {
                     a1.getTimestamp().compareTo(a2.getTimestamp()) +
                     Boolean.compare(a1.isSuccessful(), a2.isSuccessful()) +
                     a1.getAliasTypeName().compareTo(a2.getAliasTypeName()) +
-                    aliasComparator.compare(a1.getAlias(), a2.getAlias());
+                    aliasComparator.compare(a1.getAlias(), a2.getAlias()) +
+                    a1.getVerificationId().compareTo(a2.getVerificationId());
         }
 
     }

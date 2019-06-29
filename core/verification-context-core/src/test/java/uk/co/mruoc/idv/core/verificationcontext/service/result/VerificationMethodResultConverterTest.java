@@ -11,6 +11,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodR
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -85,6 +86,16 @@ public class VerificationMethodResultConverterTest {
         final VerificationAttempt attempt = converter.toAttempt(context, result);
 
         assertThat(attempt.isSuccessful()).isEqualTo(successful);
+    }
+
+    @Test
+    public void shouldConvertVerificationId() {
+        final UUID verificationId = UUID.randomUUID();
+        given(result.getVerificationId()).willReturn(verificationId);
+
+        final VerificationAttempt attempt = converter.toAttempt(context, result);
+
+        assertThat(attempt.getVerificationId()).isEqualTo(verificationId);
     }
 
     @Test

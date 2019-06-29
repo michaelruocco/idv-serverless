@@ -112,6 +112,7 @@ public class LockoutStateResponseDocumentTest {
         final VerificationAttempt attempt = VerificationAttempt.builder()
                 .alias(new DefaultAlias(new DefaultAliasType("TYPE"), "FORMAT", "VALUE"))
                 .channelId("CHANNEL_ID")
+                .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .activityType("ACTIVITY_TYPE")
                 .methodName("METHOD_NAME")
                 .timestamp(Instant.parse("2019-03-10T12:53:57.547Z"))

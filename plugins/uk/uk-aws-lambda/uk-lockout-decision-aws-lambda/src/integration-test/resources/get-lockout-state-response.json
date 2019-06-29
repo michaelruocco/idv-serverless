@@ -10,6 +10,7 @@
       "attempts": [
         {
           "channelId": "RSA",
+          "verificationId": "0dcbf980-5a82-4b9f-9cfa-4f72959f392a",
           "timestamp": "${json-unit.ignore}",
           "alias": {
             "type": "CREDIT_CARD_NUMBER",

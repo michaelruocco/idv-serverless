@@ -5,6 +5,7 @@ import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +20,17 @@ public class VerificationAttemptTest {
                 .build();
 
         assertThat(attempt.getChannelId()).isEqualTo(channelId);
+    }
+
+    @Test
+    public void shouldReturnVerificationId() {
+        final UUID verificationId = UUID.randomUUID();
+
+        final VerificationAttempt attempt = VerificationAttempt.builder()
+                .verificationId(verificationId)
+                .build();
+
+        assertThat(attempt.getVerificationId()).isEqualTo(verificationId);
     }
 
     @Test
@@ -92,7 +104,7 @@ public class VerificationAttemptTest {
 
         assertThat(attempt.toString()).isEqualTo("VerificationAttempt(" +
                 "channelId=null, timestamp=null, alias=null, activityType=null, " +
-                "methodName=null, successful=false)");
+                "methodName=null, verificationId=null, successful=false)");
     }
 
 }
