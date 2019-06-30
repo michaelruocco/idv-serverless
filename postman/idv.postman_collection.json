@@ -155,7 +155,7 @@
 			"response": []
 		},
 		{
-			"name": "Post verification results without token",
+			"name": "Post verification attempts without token",
 			"event": [
 				{
 					"listen": "test",
@@ -196,17 +196,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationResults\",\n        \"attributes\": {\n            \"contextId\": \"{{contextId}}\",\n            \"results\": [\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"d62b5a41-2426-4655-b65f-dc896e062636\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"0401cae0-2317-402e-8b3e-25cd610dc033\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                }\n            ]\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"lockoutState\",\n        \"attributes\": {\n            \"attempts\": [\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"d62b5a41-2426-4655-b65f-dc896e062636\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"0401cae0-2317-402e-8b3e-25cd610dc033\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                }\n            ]\n        }\n    }\n}"
 				},
 				"url": {
-					"raw": "{{host}}/verificationContexts/{{contextId}}/results",
+					"raw": "{{host}}/lockoutStates",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
-						"verificationContexts",
-						"{{contextId}}",
-						"results"
+						"lockoutStates"
 					]
 				}
 			},
@@ -461,25 +459,20 @@
 			"response": []
 		},
 		{
-			"name": "Post verification results rsa",
+			"name": "Post verification attempts rsa",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
 						"exec": [
-							"pm.test(\"should return 201 status\", function () {",
-							"    pm.response.to.have.status(201);",
-							"})",
-							"",
-							"pm.test(\"should have correct context id\", function () {",
-							"    var json = JSON.parse(responseBody);",
-							"    pm.expect(json.data.attributes.contextId).to.equal(environment.contextId);",
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
 							"})",
 							"",
 							"pm.test(\"should return 3 results\", function () {",
 							"    var json = JSON.parse(responseBody)",
-							"    pm.expect(json.data.attributes.results.length).to.equal(3);",
+							"    pm.expect(json.data.attributes.attempts.length).to.equal(3);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -513,17 +506,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationResults\",\n        \"attributes\": {\n            \"contextId\": \"{{contextId}}\",\n            \"results\": [\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"d62b5a41-2426-4655-b65f-dc896e062636\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"sequence\": \"OTP_SMS\",\n                    \"method\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"0401cae0-2317-402e-8b3e-25cd610dc033\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                }\n            ]\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"lockoutState\",\n        \"attributes\": {\n            \"attempts\": [\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"methodName\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"methodName\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"d62b5a41-2426-4655-b65f-dc896e062636\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"methodName\": \"CARD_CREDENTIALS\",\n                    \"verificationId\": \"0401cae0-2317-402e-8b3e-25cd610dc033\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                }\n            ]\n        }\n    }\n}"
 				},
 				"url": {
-					"raw": "{{host}}/verificationContexts/{{contextId}}/results",
+					"raw": "{{host}}/lockoutStates",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
-						"verificationContexts",
-						"{{contextId}}",
-						"results"
+						"lockoutStates"
 					]
 				}
 			},
@@ -954,15 +945,20 @@
 			"response": []
 		},
 		{
-			"name": "Post verification results as3",
+			"name": "Post verification attempts as3",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "dbfddb6a-730e-400d-bfe0-9bd57c15cc7f",
 						"exec": [
-							"pm.test(\"should return 201 status\", function () {",
-							"    pm.response.to.have.status(201);",
+							"pm.test(\"should return 200 status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"should return 3 results\", function () {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.data.attributes.attempts.length).to.equal(3);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -996,17 +992,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"type\": \"verificationResults\",\n        \"attributes\": {\n            \"contextId\": \"{{contextId}}\",\n            \"results\": [\n                {\n                    \"sequence\": \"PUSH_NOTIFICATION\",\n                    \"method\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"sequence\": \"PUSH_NOTIFICATION\",\n                    \"method\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"19cb2cd4-e6ff-42ff-9dbc-d6f8770984b3\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"sequence\": \"PUSH_NOTIFICATION\",\n                    \"method\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"05532b37-b2bf-41a5-8411-12a23b34f410\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                }\n            ]\n        }\n    }\n}"
+					"raw": "{\n    \"data\": {\n        \"type\": \"lockoutState\",\n        \"attributes\": {\n            \"attempts\": [\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"methodName\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"a7609223-8c80-4e31-9bf8-e75d63cb998f\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"methodName\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"19cb2cd4-e6ff-42ff-9dbc-d6f8770984b3\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                },\n                {\n                    \"contextId\": \"{{contextId}}\",\n                    \"methodName\": \"PUSH_NOTIFICATION\",\n                    \"verificationId\": \"05532b37-b2bf-41a5-8411-12a23b34f410\",\n                    \"timestamp\": \"{{timestampUtc}}\",\n                    \"successful\": false\n                }\n            ]\n        }\n    }\n}"
 				},
 				"url": {
-					"raw": "{{host}}/verificationContexts/{{contextId}}/results",
+					"raw": "{{host}}/lockoutStates",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
-						"verificationContexts",
-						"{{contextId}}",
-						"results"
+						"lockoutStates"
 					]
 				}
 			},

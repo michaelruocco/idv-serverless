@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':core:lockout-state-core')
+    compile project(':json')
+    compile project(':json:identity-json')
+}

@@ -7,11 +7,11 @@ import uk.co.mruoc.idv.awslambda.verificationcontext.PostVerificationContextHand
 import uk.co.mruoc.idv.awslambda.verificationcontext.CreateVerificationContextServiceFactory;
 import uk.co.mruoc.idv.core.identity.service.IdentityDao;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
-import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService;
+import uk.co.mruoc.idv.core.lockoutstate.service.LockoutPoliciesService;
+import uk.co.mruoc.idv.core.verificationattempts.dao.VerificationAttemptsDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.dao.identity.FakeIdentityDao;
-import uk.co.mruoc.idv.dao.lockoutdecision.FakeVerificationAttemptsDao;
+import uk.co.mruoc.idv.dao.verificationattempts.FakeVerificationAttemptsDao;
 import uk.co.mruoc.idv.dao.verificationcontext.FakeVerificationContextDao;
 import uk.co.mruoc.idv.events.EventPublisher;
 import uk.co.mruoc.idv.events.sns.fake.FakeEventPublisher;

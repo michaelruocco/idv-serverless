@@ -2,8 +2,8 @@ package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.JsonApiErrorHandler;
-import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.DefaultLockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.LockoutState;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService.LockoutStateIsLockedException;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;

@@ -17,15 +17,16 @@ sourceSets {
 dependencies {
     compile project(':aws-lambda')
     compile project(':aws-lambda:identity-aws-lambda')
+    compile project(':core:update-lockout-state-core')
     compile project(':json-api:verification-context-json-api')
+    compile project(':json-api:lockout-state-json-api')
     compile project(':dao:verification-context:verification-context-dao-dynamodb')
-    compile project(':dao:lockout-decision:lockout-decision-dao-dynamodb')
+    compile project(':dao:verification-attempts:verification-attempts-dao-dynamodb')
 
     integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
     integrationTestCompile project(':dao:identity:identity-dao-fake')
-    integrationTestCompile project(':dao:lockout-decision:lockout-decision-dao-fake')
+    integrationTestCompile project(':dao:verification-attempts:verification-attempts-dao-fake')
     integrationTestCompile project(':events:fake-events')
-    integrationTestCompile project(':json:lockout-decision-json')
     integrationTestCompile 'net.javacrumbs.json-unit:json-unit-assertj:2.7.0'
 }
 

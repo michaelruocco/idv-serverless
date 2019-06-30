@@ -4,12 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.awslambda.Environment;
 import uk.co.mruoc.idv.awslambda.verificationcontext.CreateVerificationContextServiceFactory;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
-import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDao;
-import uk.co.mruoc.idv.core.lockoutdecision.dao.VerificationAttemptsDaoFactory;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LoadVerificationAttemptsService;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
-import uk.co.mruoc.idv.core.lockoutdecision.service.VerificationAttemptsConverter;
+import uk.co.mruoc.idv.core.lockoutstate.service.LockoutStateCalculationService;
+import uk.co.mruoc.idv.core.verificationattempts.dao.VerificationAttemptsDao;
+import uk.co.mruoc.idv.core.verificationattempts.dao.VerificationAttemptsDaoFactory;
+import uk.co.mruoc.idv.core.verificationattempts.service.VerificationAttemptsService;
+import uk.co.mruoc.idv.core.lockoutstate.service.LockoutPoliciesService;
+import uk.co.mruoc.idv.core.lockoutstate.service.LoadLockoutStateService;
+import uk.co.mruoc.idv.core.lockoutstate.service.VerificationAttemptsConverter;
 import uk.co.mruoc.idv.core.service.DefaultTimeService;
 import uk.co.mruoc.idv.core.service.RandomUuidGenerator;
 import uk.co.mruoc.idv.core.service.TimeService;
@@ -19,7 +20,7 @@ import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDao;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextDaoFactory;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationContextRequestConverter;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService;
-import uk.co.mruoc.idv.dao.lockoutdecision.DynamoVerificationAttemptsDaoFactory;
+import uk.co.mruoc.idv.dao.verificationattempts.DynamoVerificationAttemptsDaoFactory;
 import uk.co.mruoc.idv.dao.verificationcontext.DynamoVerificationContextDaoFactory;
 import uk.co.mruoc.idv.events.EventPublisher;
 import uk.co.mruoc.idv.events.sns.SnsEventPublisherFactory;
@@ -74,7 +75,7 @@ public class UkPostVerificationContextServiceFactory implements CreateVerificati
 
     private CreateVerificationContextService buildCreateContextService() {
         final TimeService timeService = new DefaultTimeService();
-        final LockoutStateService lockoutStateService = buildLockoutStateService();
+        final LoadLockoutStateService lockoutStateService = buildLockoutStateService();
         return CreateVerificationContextService.builder()
                 .requestConverter(new VerificationContextRequestConverter())
                 .identityService(identityService)
@@ -95,18 +96,17 @@ public class UkPostVerificationContextServiceFactory implements CreateVerificati
         return factory.build();
     }
 
-    private LockoutStateService buildLockoutStateService() {
+    private LoadLockoutStateService buildLockoutStateService() {
         final TimeService timeService = new DefaultTimeService();
-        return LockoutStateService.builder()
-                .converter(new VerificationAttemptsConverter(timeService))
-                .dao(attemptsDao)
-                .loadAttemptsService(buildLoadAttemptsService())
+        return LoadLockoutStateService.builder()
+                .calculationService(new LockoutStateCalculationService(new VerificationAttemptsConverter(timeService)))
+                .attemptsService(buildAttemptsService())
                 .policiesService(lockoutPoliciesService)
                 .build();
     }
 
-    private LoadVerificationAttemptsService buildLoadAttemptsService() {
-        return LoadVerificationAttemptsService.builder()
+    private VerificationAttemptsService buildAttemptsService() {
+        return VerificationAttemptsService.builder()
                 .dao(attemptsDao)
                 .uuidGenerator(new RandomUuidGenerator())
                 .identityService(identityService)

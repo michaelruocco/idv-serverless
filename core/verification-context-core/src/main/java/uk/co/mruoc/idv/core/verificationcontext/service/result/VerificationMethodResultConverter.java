@@ -1,6 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.service.result;
 
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
+import uk.co.mruoc.idv.core.verificationattempts.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;

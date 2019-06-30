@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':core:lockout-state-core')
+    compile project(':core:verification-attempts-core')
+    compile project(':core:verification-context-core')
+}

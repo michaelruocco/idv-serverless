@@ -18,13 +18,13 @@ dependencies {
     compile project(':aws-lambda:verification-context-aws-lambda')
     compile project(':plugins:uk:uk-verification-context')
     compile project(':plugins:uk:uk-identity')
-    compile project(':plugins:uk:uk-lockout-decision')
+    compile project(':plugins:uk:uk-lockout-state')
     compile project(':plugins:uk:uk-aws-lambda:uk-identity-aws-lambda')
     compile project(':events:sns-events')
 
     integrationTestCompile project(':dao:verification-context:verification-context-dao-fake')
     integrationTestCompile project(':dao:identity:identity-dao-fake')
-    integrationTestCompile project(':dao:lockout-decision:lockout-decision-dao-fake')
+    integrationTestCompile project(':dao:verification-attempts:verification-attempts-dao-fake')
     integrationTestCompile project(':events:fake-events')
     integrationTestCompile 'net.javacrumbs.json-unit:json-unit-assertj:2.7.0'
 }

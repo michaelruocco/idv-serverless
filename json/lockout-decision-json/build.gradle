@@ -1,5 +1,0 @@
-dependencies {
-    compile project(':core:lockout-decision-core')
-    compile project(':json')
-    compile project(':json:identity-json')
-}

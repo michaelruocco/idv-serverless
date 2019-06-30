@@ -1,10 +1,10 @@
 package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 
 import org.junit.Test;
-import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.MaxAttemptsLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.TimeBasedLockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.DefaultLockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.MaxAttemptsLockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.TimeBasedLockoutState;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 
 import java.time.Duration;

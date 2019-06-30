@@ -2,6 +2,7 @@ package uk.co.mruoc.idv.core.identity.model.alias;
 
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,6 +48,15 @@ public class AliasesTest {
         final Aliases duplicateAliases = Aliases.with(aliases);
 
         assertThat(duplicateAliases.containsExactly(aliases)).isTrue();
+    }
+
+    @Test
+    public void shouldReturnAliasesAsACollection() {
+        final Aliases aliases = Aliases.with(idIdv, alias);
+
+        final Collection<Alias> collection = aliases.toCollection();
+
+        assertThat(collection).containsExactly(idIdv, alias);
     }
 
 }

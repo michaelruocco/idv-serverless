@@ -2,7 +2,7 @@ package uk.co.mruoc.idv.awslambda.verificationcontext.error;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.awslambda.JsonApiErrorHandler;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService.LockoutPolicyNotConfiguredForChannelException;
+import uk.co.mruoc.idv.core.lockoutstate.service.LockoutPoliciesService.LockoutPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.jsonapi.JsonApiErrorDocument;
 import uk.co.mruoc.jsonapi.JsonApiErrorItem;
 

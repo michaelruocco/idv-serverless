@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':plugins:uk')
+    compile project(':core:lockout-state-core')
+}

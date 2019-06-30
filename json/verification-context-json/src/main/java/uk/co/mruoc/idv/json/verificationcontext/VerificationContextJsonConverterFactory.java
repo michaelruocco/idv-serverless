@@ -9,7 +9,7 @@ import uk.co.mruoc.idv.json.JacksonJsonConverter;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.JsonConverterFactory;
 import uk.co.mruoc.idv.json.identity.IdvIdentityModule;
-import uk.co.mruoc.idv.json.lockoutdecision.IdvLockoutDecisionModule;
+import uk.co.mruoc.idv.json.verificationattempts.IdvVerificationAttemptsModule;
 
 public class VerificationContextJsonConverterFactory implements JsonConverterFactory {
 
@@ -23,7 +23,7 @@ public class VerificationContextJsonConverterFactory implements JsonConverterFac
         final ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new IdvIdentityModule());
         mapper.registerModule(new IdvVerificationContextModule());
-        mapper.registerModule(new IdvLockoutDecisionModule());
+        mapper.registerModule(new IdvVerificationAttemptsModule());
         mapper.registerModule(new MoneyModule());
         mapper.registerModule(new JavaTimeModule());
         mapper.registerModule(new Jdk8Module());

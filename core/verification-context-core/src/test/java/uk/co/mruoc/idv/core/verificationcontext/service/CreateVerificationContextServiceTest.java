@@ -6,9 +6,9 @@ import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.model.alias.IdvIdAlias;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
-import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
+import uk.co.mruoc.idv.core.lockoutstate.model.DefaultLockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.service.LoadLockoutStateService;
 import uk.co.mruoc.idv.core.channel.model.Channel;
 import uk.co.mruoc.idv.core.channel.model.DefaultChannel;
 import uk.co.mruoc.idv.core.service.TimeService;
@@ -58,7 +58,7 @@ public class CreateVerificationContextServiceTest {
     private final VerificationContextDao dao = mock(VerificationContextDao.class);
     private final VerificationContextConverter contextConverter = mock(VerificationContextConverter.class);
     private final EventPublisher eventPublisher = mock(EventPublisher.class);
-    private final LockoutStateService lockoutStateService = mock(LockoutStateService.class);
+    private final LoadLockoutStateService lockoutStateService = mock(LoadLockoutStateService.class);
 
     private final CreateVerificationContextService service = CreateVerificationContextService.builder()
             .requestConverter(requestConverter)

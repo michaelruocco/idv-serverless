@@ -4,8 +4,8 @@ import lombok.Builder;
 import uk.co.mruoc.idv.core.identity.model.Identity;
 import uk.co.mruoc.idv.core.identity.service.IdentityService;
 import uk.co.mruoc.idv.core.identity.service.UpsertIdentityRequest;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
+import uk.co.mruoc.idv.core.lockoutstate.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.service.LoadLockoutStateService;
 import uk.co.mruoc.idv.core.channel.model.Channel;
 import uk.co.mruoc.idv.core.service.TimeService;
 import uk.co.mruoc.idv.core.service.UuidGenerator;
@@ -35,7 +35,7 @@ public class CreateVerificationContextService {
     private final VerificationContextDao dao;
     private final VerificationContextConverter contextConverter;
     private final EventPublisher eventPublisher;
-    private final LockoutStateService lockoutStateService;
+    private final LoadLockoutStateService lockoutStateService;
 
     public VerificationContext create(final AbstractVerificationContextRequest request) {
         final UpsertIdentityRequest upsertIdentityRequest = requestConverter.toUpsertIdentityRequest(request);

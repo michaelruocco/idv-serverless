@@ -9,9 +9,9 @@ import uk.co.mruoc.idv.awslambda.verificationcontext.VerificationContextRequestE
 import uk.co.mruoc.idv.core.identity.model.alias.Alias;
 import uk.co.mruoc.idv.core.identity.service.AliasLoadFailedException;
 import uk.co.mruoc.idv.core.identity.service.AliasLoaderService.AliasTypeNotSupportedException;
-import uk.co.mruoc.idv.core.lockoutdecision.model.DefaultLockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.model.LockoutState;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutPoliciesService.LockoutPolicyNotConfiguredForChannelException;
+import uk.co.mruoc.idv.core.lockoutstate.model.DefaultLockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.model.LockoutState;
+import uk.co.mruoc.idv.core.lockoutstate.service.LockoutPoliciesService.LockoutPolicyNotConfiguredForChannelException;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.ChannelVerificationPolicies.VerificationPolicyNotConfiguredForActivityException;
 import uk.co.mruoc.idv.core.verificationcontext.service.CreateVerificationContextService.LockoutStateIsLockedException;
 import uk.co.mruoc.idv.core.verificationcontext.service.VerificationPoliciesService.VerificationPolicyNotConfiguredForChannelException;

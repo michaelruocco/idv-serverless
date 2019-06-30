@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':json-api')
+    compile project(':core:lockout-state-core')
+    compile project(':json:verification-attempts-json')
+    compile project(':json:identity-json')
+}

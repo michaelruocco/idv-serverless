@@ -2,21 +2,21 @@ package uk.co.mruoc.idv.core.verificationcontext.service.result;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import uk.co.mruoc.idv.core.lockoutdecision.model.VerificationAttempt;
-import uk.co.mruoc.idv.core.lockoutdecision.service.LockoutStateService;
+/*import uk.co.mruoc.idv.core.lockoutstate.service.LoadLockoutStateService;
+import uk.co.mruoc.idv.core.verificationattempts.model.VerificationAttempt;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.RegisterAttemptsRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
-import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
+import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;*/
 
 @Builder
 @Slf4j
 public class RegisterAttemptsService {
 
-    private final SequenceExtractor sequenceExtractor;
+    /*private final SequenceExtractor sequenceExtractor;
     private final VerificationMethodResultConverter converter;
-    private final LockoutStateService lockoutStateService;
+    private final LoadLockoutStateService lockoutStateService;
 
     public void registerAttempts(final RegisterAttemptsRequest request) {
         final VerificationMethodResults newResults = request.getNewResults();
@@ -51,6 +51,6 @@ public class RegisterAttemptsService {
         final VerificationAttempt attempt = converter.toAttempt(context, result);
         log.info("registering attempt {} for context {}", attempt, context);
         lockoutStateService.register(attempt);
-    }
+    }*/
 
 }
