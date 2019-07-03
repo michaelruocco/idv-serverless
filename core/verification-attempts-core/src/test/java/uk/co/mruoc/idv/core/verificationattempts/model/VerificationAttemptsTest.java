@@ -1,6 +1,5 @@
 package uk.co.mruoc.idv.core.verificationattempts.model;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.time.Instant;
@@ -113,7 +112,7 @@ public class VerificationAttemptsTest {
 
         final Stream<VerificationAttempt> stream = attempts.stream();
 
-        Assertions.assertThat(stream).containsExactly(attempt1, attempt2);
+        assertThat(stream).containsExactly(attempt1, attempt2);
     }
 
     @Test
@@ -126,7 +125,7 @@ public class VerificationAttemptsTest {
 
         final Collection<VerificationAttempt> attemptsCollection = attempts.toCollection();
 
-        Assertions.assertThat(attemptsCollection).containsExactly(attempt1, attempt2);
+        assertThat(attemptsCollection).containsExactly(attempt1, attempt2);
     }
 
     @Test
