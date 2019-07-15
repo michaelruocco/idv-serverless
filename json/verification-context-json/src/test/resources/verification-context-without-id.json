@@ -32,7 +32,6 @@
       "name": "PUSH_NOTIFICATION",
       "duration": 300000,
       "status": "AVAILABLE",
-      "registerAttemptStrategy": "IMMEDIATE",
       "methods": [
         {
           "name": "PUSH_NOTIFICATION",

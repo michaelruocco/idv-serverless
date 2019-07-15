@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence.VerificationMethodNotFoundInSequenceException;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.RegisterAttemptStrategy;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,22 +19,6 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(specifiedName, Collections.emptyList());
 
         assertThat(sequence.getName()).isEqualTo(specifiedName);
-    }
-
-    @Test
-    public void shouldReturnImmediateRegisterAttemptStrategyByDefault() {
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList());
-
-        assertThat(sequence.getRegisterAttemptStrategy()).isEqualTo(RegisterAttemptStrategy.IMMEDIATE);
-    }
-
-    @Test
-    public void shouldReturnSpecifiedRegisterAttemptStrategy() {
-        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
-
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
-
-        assertThat(sequence.getRegisterAttemptStrategy()).isEqualTo(registerAttemptStrategy);
     }
 
     @Test
@@ -207,26 +190,8 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
 
         assertThat(sequence.toString()).isEqualTo("VerificationMethodSequence(name=PUSH_NOTIFICATION, " +
-                "registerAttemptStrategy=IMMEDIATE, methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
+                "methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
                 "name=PUSH_NOTIFICATION, duration=0, status=AVAILABLE, properties={}))])");
-    }
-
-    @Test
-    public void shouldReturnRegisterAttemptImmediatelyTrueIfRegisterAttemptStrategyIsImmediate() {
-        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.IMMEDIATE;
-
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
-
-        assertThat(sequence.shouldRegisterAttemptImmediately()).isTrue();
-    }
-
-    @Test
-    public void shouldReturnRegisterAttemptImmediatelyFalseIfRegisterAttemptStrategyIsNotImmediate() {
-        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
-
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
-
-        assertThat(sequence.shouldRegisterAttemptImmediately()).isFalse();
     }
 
     private static class FakePhysicalPinsentryVerificationMethod extends PhysicalPinsentryVerificationMethod {

@@ -1,7 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import lombok.ToString;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.RegisterAttemptStrategy;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
 import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 
@@ -13,28 +12,16 @@ import java.util.Optional;
 @ToString
 public class VerificationMethodSequence {
 
-    private static final RegisterAttemptStrategy DEFAULT_REGISTER_ATTEMPT_STRATEGY = RegisterAttemptStrategy.IMMEDIATE;
-
     private final String name;
-    private final RegisterAttemptStrategy registerAttemptStrategy;
     private final Collection<VerificationMethod> methods;
 
     public VerificationMethodSequence(final VerificationMethod method) {
-        this(method, DEFAULT_REGISTER_ATTEMPT_STRATEGY);
-    }
-
-    public VerificationMethodSequence(final VerificationMethod method, final RegisterAttemptStrategy registerAttemptStrategy) {
-        this(method.getName(), Collections.singleton(method), registerAttemptStrategy);
+        this(method.getName(), Collections.singleton(method));
     }
 
     public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods) {
-        this(name, methods, DEFAULT_REGISTER_ATTEMPT_STRATEGY);
-    }
-
-    public VerificationMethodSequence(final String name, final Collection<VerificationMethod> methods, final RegisterAttemptStrategy registerAttemptStrategy) {
         this.name = name;
         this.methods = methods;
-        this.registerAttemptStrategy = registerAttemptStrategy;
     }
 
     public String getName() {
@@ -49,10 +36,6 @@ public class VerificationMethodSequence {
             return VerificationStatus.UNAVAILABLE;
         }
         return VerificationStatus.AVAILABLE;
-    }
-
-    public RegisterAttemptStrategy getRegisterAttemptStrategy() {
-        return registerAttemptStrategy;
     }
 
     public PhysicalPinsentryVerificationMethod getPhysicalPinsentry() {
@@ -88,10 +71,6 @@ public class VerificationMethodSequence {
         final Optional<VerificationMethod> method = getMethod(methodName);
         return method.map(verificationMethod -> (OtpSmsVerificationMethod) verificationMethod)
                 .orElseThrow(() -> new VerificationMethodNotFoundInSequenceException(methodName));
-    }
-
-    public boolean shouldRegisterAttemptImmediately() {
-        return RegisterAttemptStrategy.IMMEDIATE.equals(registerAttemptStrategy);
     }
 
     public boolean isComplete(final VerificationMethodResults results) {
