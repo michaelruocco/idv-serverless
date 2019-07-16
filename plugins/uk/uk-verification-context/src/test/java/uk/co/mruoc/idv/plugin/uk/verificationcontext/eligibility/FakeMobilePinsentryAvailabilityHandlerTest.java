@@ -9,6 +9,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMeth
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -40,52 +42,53 @@ public class FakeMobilePinsentryAvailabilityHandlerTest {
     }
 
     @Test
-    public void shouldReturnMethod() {
+    public void shouldReturnMethod() throws Exception {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method).isNotNull();
+        assertThat(method.get()).isNotNull();
     }
 
     @Test
-    public void shouldReturnMethodWithCorrectName() {
+    public void shouldReturnMethodWithCorrectName() throws Exception {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getName()).isEqualTo(METHOD_NAME);
+        assertThat(method.get().getName()).isEqualTo(METHOD_NAME);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedDuration() {
+    public void shouldReturnMethodWithPassedDuration() throws Exception {
         final int duration = 150000;
         final VerificationMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getDuration()).isEqualTo(duration);
+        assertThat(method.get().getDuration()).isEqualTo(duration);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedPinsentryFunction() {
+    public void shouldReturnMethodWithPassedPinsentryFunction() throws Exception {
         final PinsentryFunction function = PinsentryFunction.IDENTIFY;
         final MobilePinsentryMethodPolicy methodPolicy = mock(MobilePinsentryMethodPolicy.class);
         given(methodPolicy.getFunction()).willReturn(function);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final MobilePinsentryVerificationMethod method = (MobilePinsentryVerificationMethod) handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getFunction()).isEqualTo(function);
+        final MobilePinsentryVerificationMethod mobilePinsentry = (MobilePinsentryVerificationMethod) method.get();
+        assertThat(mobilePinsentry.getFunction()).isEqualTo(function);
     }
 
 }

@@ -1,4 +1,7 @@
 dependencies {
     compile project(':plugins:uk')
     compile project(':core:verification-context-core')
+
+
+    compile 'io.github.resilience4j:resilience4j-bulkhead:0.16.0'
 }

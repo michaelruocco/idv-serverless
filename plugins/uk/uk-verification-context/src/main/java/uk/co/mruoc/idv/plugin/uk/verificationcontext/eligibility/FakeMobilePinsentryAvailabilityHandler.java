@@ -7,15 +7,18 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
+import java.util.concurrent.CompletableFuture;
+
 public class FakeMobilePinsentryAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.MOBILE_PINSENTRY;
 
     @Override
-    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
-        final MobilePinsentryMethodPolicy method = (MobilePinsentryMethodPolicy) request.getMethodPolicy();
-        final PinsentryFunction function = method.getFunction();
-        return new MobilePinsentryVerificationMethod(request.getDuration(), function);
+    public CompletableFuture<VerificationMethod> loadMethod(final VerificationMethodRequest request) {
+        final MobilePinsentryMethodPolicy methodPolicy = (MobilePinsentryMethodPolicy) request.getMethodPolicy();
+        final PinsentryFunction function = methodPolicy.getFunction();
+        final VerificationMethod method = new MobilePinsentryVerificationMethod(request.getDuration(), function);
+        return CompletableFuture.completedFuture(method);
     }
 
     @Override

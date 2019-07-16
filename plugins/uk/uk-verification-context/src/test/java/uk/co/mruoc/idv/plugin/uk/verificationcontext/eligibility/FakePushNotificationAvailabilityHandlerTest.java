@@ -5,6 +5,8 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -36,34 +38,34 @@ public class FakePushNotificationAvailabilityHandlerTest {
     }
 
     @Test
-    public void shouldReturnMethod() {
+    public void shouldReturnMethod() throws Exception {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method).isNotNull();
+        assertThat(method.get()).isNotNull();
     }
 
     @Test
-    public void shouldReturnMethodWithCorrectName() {
+    public void shouldReturnMethodWithCorrectName() throws Exception {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getName()).isEqualTo(METHOD_NAME);
+        assertThat(method.get().getName()).isEqualTo(METHOD_NAME);
     }
 
     @Test
-    public void shouldReturnPushNotificationWithPassedDuration() {
+    public void shouldReturnPushNotificationWithPassedDuration() throws Exception {
         final int duration = 150000;
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getDuration()).isEqualTo(duration);
+        assertThat(method.get().getDuration()).isEqualTo(duration);
     }
 
 }

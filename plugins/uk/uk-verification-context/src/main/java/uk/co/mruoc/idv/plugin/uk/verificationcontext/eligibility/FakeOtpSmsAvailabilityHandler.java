@@ -11,17 +11,19 @@ import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class FakeOtpSmsAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.ONE_TIME_PASSCODE_SMS;
 
     @Override
-    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
-        final OtpSmsMethodPolicy method = (OtpSmsMethodPolicy) request.getMethodPolicy();
-        final Passcode passcode = method.getPasscode();
+    public CompletableFuture<VerificationMethod> loadMethod(final VerificationMethodRequest request) {
+        final OtpSmsMethodPolicy methodPolicy = (OtpSmsMethodPolicy) request.getMethodPolicy();
+        final Passcode passcode = methodPolicy.getPasscode();
         final Collection<MobileNumber> mobileNumbers = buildMobileNumbers();
-        return new OtpSmsVerificationMethod(request.getDuration(), passcode, mobileNumbers);
+        final VerificationMethod method = new OtpSmsVerificationMethod(request.getDuration(), passcode, mobileNumbers);
+        return CompletableFuture.completedFuture(method);
     }
 
     @Override

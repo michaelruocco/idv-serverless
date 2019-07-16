@@ -11,6 +11,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodP
 import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -43,67 +44,69 @@ public class FakeOtpSmsAvailabilityHandlerTest {
     }
 
     @Test
-    public void shouldReturnMethod() {
+    public void shouldReturnMethod() throws Exception {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method).isNotNull();
+        assertThat(method.get()).isNotNull();
     }
 
     @Test
-    public void shouldReturnMethodWithCorrectName() {
+    public void shouldReturnMethodWithCorrectName() throws Exception {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getName()).isEqualTo(METHOD_NAME);
+        assertThat(method.get().getName()).isEqualTo(METHOD_NAME);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedDuration() {
+    public void shouldReturnMethodWithPassedDuration() throws Exception {
         final int duration = 150000;
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final VerificationMethod method = handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getDuration()).isEqualTo(duration);
+        assertThat(method.get().getDuration()).isEqualTo(duration);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedPasscode() {
+    public void shouldReturnMethodWithPassedPasscode() throws Exception {
         final Passcode passcode = mock(Passcode.class);
         final OtpSmsMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(methodPolicy.getPasscode()).willReturn(passcode);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final OtpSmsVerificationMethod method = (OtpSmsVerificationMethod) handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
-        assertThat(method.getPasscode()).isEqualTo(passcode);
+        final OtpSmsVerificationMethod otpSms = (OtpSmsVerificationMethod) method.get();
+        assertThat(otpSms.getPasscode()).isEqualTo(passcode);
     }
 
     @Test
-    public void shouldReturnMethodWithMobileNumbers() {
+    public void shouldReturnMethodWithMobileNumbers() throws Exception {
         final OtpSmsMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final OtpSmsVerificationMethod method = (OtpSmsVerificationMethod) handler.loadMethod(request);
+        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
 
+        final OtpSmsVerificationMethod otpSms = (OtpSmsVerificationMethod) method.get();
         final MobileNumber expectedMobileNumber = MobileNumber.builder()
                 .id(UUID.fromString("48be7f28-37c2-42b6-956c-a32241310ee6"))
                 .masked("********789")
                 .build();
-        assertThat(method.getMobileNumbers())
+        assertThat(otpSms.getMobileNumbers())
                 .usingElementComparator(new MobileNumberComparator())
                 .contains(expectedMobileNumber);
     }

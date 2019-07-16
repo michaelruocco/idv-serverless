@@ -5,13 +5,16 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVer
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
+import java.util.concurrent.CompletableFuture;
+
 public class FakePushNotificationAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.PUSH_NOTIFICATION;
 
     @Override
-    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
-        return new PushNotificationVerificationMethod(request.getDuration());
+    public CompletableFuture<VerificationMethod> loadMethod(final VerificationMethodRequest request) {
+        final VerificationMethod method = new PushNotificationVerificationMethod(request.getDuration());
+        return CompletableFuture.completedFuture(method);
     }
 
     @Override

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -60,15 +62,16 @@ public class VerificationMethodsServiceTest {
     }
 
     @Test
-    public void shouldReturnVerificationMethodsFromSupportedEligibilityHandlers() {
-        final VerificationMethod method = new DefaultVerificationMethod("methodName");
+    public void shouldReturnVerificationMethodsFromSupportedEligibilityHandlers() throws InterruptedException, ExecutionException {
+        final CompletableFuture<VerificationMethod> methodFuture = CompletableFuture.completedFuture(new DefaultVerificationMethod("methodName"));
         given(handler1.isSupported(methodRequest)).willReturn(true);
-        given(handler1.loadMethod(methodRequest)).willReturn(method);
+        given(handler1.loadMethod(methodRequest)).willReturn(methodFuture);
 
         final Collection<VerificationMethodSequence> sequences = service.loadMethodSequences(methodsRequest);
 
         assertThat(sequences).hasSize(1);
         final VerificationMethodSequence sequence = new ArrayList<>(sequences).get(0);
+        final VerificationMethod method = methodFuture.get();
         assertThat(sequence.getName()).isEqualTo(method.getName());
         assertThat(sequence.getMethod(method.getName())).isEqualTo(Optional.of(method));
     }
