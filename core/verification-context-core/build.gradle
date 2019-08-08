@@ -4,4 +4,6 @@ dependencies {
     compile project(':core:identity-core')
     compile project(':core:lockout-state-core')
     compile project(':events')
+
+    compile 'io.github.resilience4j:resilience4j-bulkhead:0.17.0'
 }

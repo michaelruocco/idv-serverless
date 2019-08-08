@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.model.CardNumber;
@@ -9,8 +9,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.PhysicalPinsentryMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
-
-import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -43,64 +41,64 @@ public class FakePhysicalPinsentryAvailabilityHandlerTest {
     }
 
     @Test
-    public void shouldReturnMethod() throws Exception {
+    public void shouldReturnMethod() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(method.get()).isNotNull();
+        assertThat(method).isNotNull();
     }
 
     @Test
-    public void shouldReturnMethodWithCorrectName() throws Exception {
+    public void shouldReturnMethodWithCorrectName() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(method.get().getName()).isEqualTo(METHOD_NAME);
+        assertThat(method.getName()).isEqualTo(METHOD_NAME);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedDuration() throws Exception {
+    public void shouldReturnMethodWithPassedDuration() {
         final int duration = 150000;
         final VerificationMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(method.get().getDuration()).isEqualTo(duration);
+        assertThat(method.getDuration()).isEqualTo(duration);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedPinsentryFunction() throws Exception {
+    public void shouldReturnMethodWithPassedPinsentryFunction() {
         final PinsentryFunction function = PinsentryFunction.IDENTIFY;
         final PhysicalPinsentryMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         given(methodPolicy.getFunction()).willReturn(function);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final PhysicalPinsentryVerificationMethod physicalPinsentry = (PhysicalPinsentryVerificationMethod) method.get();
+        final PhysicalPinsentryVerificationMethod physicalPinsentry = (PhysicalPinsentryVerificationMethod) method;
         assertThat(physicalPinsentry.getFunction()).isEqualTo(function);
     }
 
     @Test
-    public void shouldReturnMethodWithCardNumbers() throws Exception {
+    public void shouldReturnMethodWithCardNumbers() {
         final PhysicalPinsentryMethodPolicy methodPolicy = mock(PhysicalPinsentryMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final PhysicalPinsentryVerificationMethod physicalPinsentry = (PhysicalPinsentryVerificationMethod) method.get();
+        final PhysicalPinsentryVerificationMethod physicalPinsentry = (PhysicalPinsentryVerificationMethod) method;
         final CardNumber expectedCardNumber = CardNumber.builder()
                 .tokenized("3213485412348005")
                 .masked("************8005")

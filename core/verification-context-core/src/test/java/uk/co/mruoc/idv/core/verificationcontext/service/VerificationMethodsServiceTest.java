@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
+import io.github.resilience4j.bulkhead.ThreadPoolBulkhead;
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.channel.model.Channel;
@@ -18,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -42,12 +41,14 @@ public class VerificationMethodsServiceTest {
             .methodPolicy(methodPolicy)
             .build();
 
+    private final ThreadPoolBulkhead bulkhead = ThreadPoolBulkhead.ofDefaults("eligibilityBulkhead");
+
     private final AvailabilityHandler handler1 = mock(AvailabilityHandler.class);
     private final AvailabilityHandler handler2 = mock(AvailabilityHandler.class);
     private final Collection<AvailabilityHandler> handlers = Arrays.asList(handler1, handler2);
     private final VerificationMethodsRequestConverter requestConverter = mock(VerificationMethodsRequestConverter.class);
 
-    private final VerificationMethodsService service = new DefaultVerificationMethodsService(handlers, requestConverter);
+    private final VerificationMethodsService service = new DefaultVerificationMethodsService(bulkhead, handlers, requestConverter);
 
     @Before
     public void setUp() {
@@ -62,16 +63,15 @@ public class VerificationMethodsServiceTest {
     }
 
     @Test
-    public void shouldReturnVerificationMethodsFromSupportedEligibilityHandlers() throws InterruptedException, ExecutionException {
-        final CompletableFuture<VerificationMethod> methodFuture = CompletableFuture.completedFuture(new DefaultVerificationMethod("methodName"));
+    public void shouldReturnVerificationMethodsFromSupportedEligibilityHandlers() {
+        final VerificationMethod method = new DefaultVerificationMethod("methodName");
         given(handler1.isSupported(methodRequest)).willReturn(true);
-        given(handler1.loadMethod(methodRequest)).willReturn(methodFuture);
+        given(handler1.loadMethod(methodRequest)).willReturn(method);
 
         final Collection<VerificationMethodSequence> sequences = service.loadMethodSequences(methodsRequest);
 
         assertThat(sequences).hasSize(1);
         final VerificationMethodSequence sequence = new ArrayList<>(sequences).get(0);
-        final VerificationMethod method = methodFuture.get();
         assertThat(sequence.getName()).isEqualTo(method.getName());
         assertThat(sequence.getMethod(method.getName())).isEqualTo(Optional.of(method));
     }

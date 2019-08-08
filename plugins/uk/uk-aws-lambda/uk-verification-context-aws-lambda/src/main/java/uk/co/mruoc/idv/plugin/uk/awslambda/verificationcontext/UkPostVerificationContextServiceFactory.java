@@ -28,7 +28,7 @@ import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 import uk.co.mruoc.idv.plugin.uk.awslambda.identity.UkIdentityServiceFactory;
 import uk.co.mruoc.idv.plugin.uk.lockoutdecision.policy.rsa.UkLockoutPoliciesService;
-import uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility.UkVerificationMethodsService;
+import uk.co.mruoc.idv.plugin.uk.verificationcontext.availability.UkVerificationMethodsService;
 import uk.co.mruoc.idv.plugin.uk.verificationcontext.policy.UkVerificationPoliciesService;
 
 @Slf4j

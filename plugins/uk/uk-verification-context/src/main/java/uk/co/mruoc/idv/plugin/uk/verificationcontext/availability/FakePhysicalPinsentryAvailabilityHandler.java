@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
 
 import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
@@ -10,19 +10,17 @@ import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 public class FakePhysicalPinsentryAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.PHYSICAL_PINSENTRY;
 
     @Override
-    public CompletableFuture<VerificationMethod> loadMethod(final VerificationMethodRequest request) {
+    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
         final PhysicalPinsentryMethodPolicy methodPolicy = (PhysicalPinsentryMethodPolicy) request.getMethodPolicy();
         final PinsentryFunction function = methodPolicy.getFunction();
         final Collection<CardNumber> cardNumbers = buildCardNumbers();
-        final VerificationMethod method = new PhysicalPinsentryVerificationMethod(request.getDuration(), function, cardNumbers);
-        return CompletableFuture.completedFuture(method);
+        return new PhysicalPinsentryVerificationMethod(request.getDuration(), function, cardNumbers);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.model.CardNumber;

@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.model.MobileNumber;
@@ -11,7 +11,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodP
 import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -44,64 +43,64 @@ public class FakeOtpSmsAvailabilityHandlerTest {
     }
 
     @Test
-    public void shouldReturnMethod() throws Exception {
+    public void shouldReturnMethod() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(method.get()).isNotNull();
+        assertThat(method).isNotNull();
     }
 
     @Test
-    public void shouldReturnMethodWithCorrectName() throws Exception {
+    public void shouldReturnMethodWithCorrectName() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(method.get().getName()).isEqualTo(METHOD_NAME);
+        assertThat(method.getName()).isEqualTo(METHOD_NAME);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedDuration() throws Exception {
+    public void shouldReturnMethodWithPassedDuration() {
         final int duration = 150000;
         final VerificationMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        assertThat(method.get().getDuration()).isEqualTo(duration);
+        assertThat(method.getDuration()).isEqualTo(duration);
     }
 
     @Test
-    public void shouldReturnMethodWithPassedPasscode() throws Exception {
+    public void shouldReturnMethodWithPassedPasscode() {
         final Passcode passcode = mock(Passcode.class);
         final OtpSmsMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         given(methodPolicy.getPasscode()).willReturn(passcode);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final OtpSmsVerificationMethod otpSms = (OtpSmsVerificationMethod) method.get();
+        final OtpSmsVerificationMethod otpSms = (OtpSmsVerificationMethod) method;
         assertThat(otpSms.getPasscode()).isEqualTo(passcode);
     }
 
     @Test
-    public void shouldReturnMethodWithMobileNumbers() throws Exception {
+    public void shouldReturnMethodWithMobileNumbers() {
         final OtpSmsMethodPolicy methodPolicy = mock(OtpSmsMethodPolicy.class);
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodPolicy()).willReturn(methodPolicy);
 
-        final CompletableFuture<VerificationMethod> method = handler.loadMethod(request);
+        final VerificationMethod method = handler.loadMethod(request);
 
-        final OtpSmsVerificationMethod otpSms = (OtpSmsVerificationMethod) method.get();
+        final OtpSmsVerificationMethod otpSms = (OtpSmsVerificationMethod) method;
         final MobileNumber expectedMobileNumber = MobileNumber.builder()
                 .id(UUID.fromString("48be7f28-37c2-42b6-956c-a32241310ee6"))
                 .masked("********789")

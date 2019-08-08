@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
 
 import uk.co.mruoc.idv.core.model.MobileNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
@@ -11,19 +11,17 @@ import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class FakeOtpSmsAvailabilityHandler implements AvailabilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.ONE_TIME_PASSCODE_SMS;
 
     @Override
-    public CompletableFuture<VerificationMethod> loadMethod(final VerificationMethodRequest request) {
+    public VerificationMethod loadMethod(final VerificationMethodRequest request) {
         final OtpSmsMethodPolicy methodPolicy = (OtpSmsMethodPolicy) request.getMethodPolicy();
         final Passcode passcode = methodPolicy.getPasscode();
         final Collection<MobileNumber> mobileNumbers = buildMobileNumbers();
-        final VerificationMethod method = new OtpSmsVerificationMethod(request.getDuration(), passcode, mobileNumbers);
-        return CompletableFuture.completedFuture(method);
+        return new OtpSmsVerificationMethod(request.getDuration(), passcode, mobileNumbers);
     }
 
     @Override
