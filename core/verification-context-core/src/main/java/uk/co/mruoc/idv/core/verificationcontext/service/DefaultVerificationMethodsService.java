@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 public class DefaultVerificationMethodsService implements VerificationMethodsService {
 
     private final ThreadPoolBulkhead bulkhead;
-    private final Collection<AvailabilityHandler> handlers;
+    private final Collection<EligibilityHandler> handlers;
     private final VerificationMethodsRequestConverter requestConverter;
 
     public DefaultVerificationMethodsService(final ThreadPoolBulkhead bulkhead,
-                                             final Collection<AvailabilityHandler> handlers,
+                                             final Collection<EligibilityHandler> handlers,
                                              final VerificationMethodsRequestConverter requestConverter) {
         this.bulkhead = bulkhead;
         this.handlers = handlers;
@@ -50,14 +50,14 @@ public class DefaultVerificationMethodsService implements VerificationMethodsSer
         final Collection<CompletionStage<VerificationMethod>> methodStages = new ArrayList<>();
         for (final VerificationMethodPolicy methodPolicy : sequencePolicy.getMethods()) {
             final VerificationMethodRequest methodRequest = requestConverter.toMethodRequest(request, methodPolicy);
-            final AvailabilityHandler handler = getHandler(methodRequest);
+            final EligibilityHandler handler = getHandler(methodRequest);
             final VerificationMethodSupplier supplier = new VerificationMethodSupplier(methodRequest, handler);
             methodStages.add(bulkhead.executeSupplier(supplier));
         }
         return new VerificationMethodSequenceFuture(sequencePolicy.getName(), methodStages);
     }
 
-    private AvailabilityHandler getHandler(final VerificationMethodRequest request) {
+    private EligibilityHandler getHandler(final VerificationMethodRequest request) {
         final String channelId = request.getChannelId();
         final String methodName = request.getMethodName();
         return handlers.stream()

@@ -1,29 +1,29 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import lombok.extern.slf4j.Slf4j;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class DelayedAvailabilityHandler implements AvailabilityHandler {
+public class DelayedEligibilityHandler implements EligibilityHandler {
 
     private final VerificationMethodRequestConverter converter;
     private final String methodName;
     private final int delay;
 
-    public DelayedAvailabilityHandler(final VerificationMethodRequestConverter converter,
-                                      final String methodName,
-                                      final String delayEnvironmentVariableName) {
+    public DelayedEligibilityHandler(final VerificationMethodRequestConverter converter,
+                                     final String methodName,
+                                     final String delayEnvironmentVariableName) {
         this(converter, methodName, getDelay(delayEnvironmentVariableName));
     }
 
-    public DelayedAvailabilityHandler(final VerificationMethodRequestConverter converter,
-                                      final String methodName,
-                                      final int delay) {
+    public DelayedEligibilityHandler(final VerificationMethodRequestConverter converter,
+                                     final String methodName,
+                                     final int delay) {
         this.converter = converter;
         this.methodName = methodName;
         this.delay = delay;

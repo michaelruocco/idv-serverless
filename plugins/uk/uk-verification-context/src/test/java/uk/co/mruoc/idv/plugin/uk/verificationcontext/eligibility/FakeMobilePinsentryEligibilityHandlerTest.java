@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
@@ -7,17 +7,17 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.MobilePinsentryMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FakeMobilePinsentryAvailabilityHandlerTest {
+public class FakeMobilePinsentryEligibilityHandlerTest {
 
     private static final String METHOD_NAME = VerificationMethod.Names.MOBILE_PINSENTRY;
 
-    private final AvailabilityHandler handler = new FakeMobilePinsentryAvailabilityHandler();
+    private final EligibilityHandler handler = new FakeMobilePinsentryEligibilityHandler();
 
     @Test
     public void shouldSupportMobilePinsentryMethod() {

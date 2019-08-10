@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import uk.co.mruoc.idv.core.model.CardNumber;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
@@ -6,12 +6,12 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVe
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.PhysicalPinsentryMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class FakePhysicalPinsentryAvailabilityHandler implements AvailabilityHandler {
+public class FakePhysicalPinsentryEligibilityHandler implements EligibilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.PHYSICAL_PINSENTRY;
 

@@ -1,4 +1,4 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.model.MobileNumber;
@@ -8,7 +8,7 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.OtpSmsMethodPolicy;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.VerificationMethodPolicy;
-import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
 
 import java.util.UUID;
 
@@ -16,11 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FakeOtpSmsAvailabilityHandlerTest {
+public class FakeOtpSmsEligibilityHandlerTest {
 
     private static final String METHOD_NAME = VerificationMethod.Names.ONE_TIME_PASSCODE_SMS;
 
-    private final AvailabilityHandler handler = new FakeOtpSmsAvailabilityHandler();
+    private final EligibilityHandler handler = new FakeOtpSmsEligibilityHandler();
 
     @Test
     public void shouldSupportPhysicalPinsentryMethod() {

@@ -5,7 +5,7 @@ import uk.co.mruoc.idv.core.verificationcontext.service.VerificationMethodsServi
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AvailabilityHandlerNotFoundExceptionTest {
+public class EligibilityHandlerNotFoundExceptionTest {
 
     private static final String CHANNEL_ID = "channelId";
     private static final String METHOD_NAME = "methodName";

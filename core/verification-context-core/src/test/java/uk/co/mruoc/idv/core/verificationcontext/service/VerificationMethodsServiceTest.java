@@ -43,9 +43,9 @@ public class VerificationMethodsServiceTest {
 
     private final ThreadPoolBulkhead bulkhead = ThreadPoolBulkhead.ofDefaults("eligibilityBulkhead");
 
-    private final AvailabilityHandler handler1 = mock(AvailabilityHandler.class);
-    private final AvailabilityHandler handler2 = mock(AvailabilityHandler.class);
-    private final Collection<AvailabilityHandler> handlers = Arrays.asList(handler1, handler2);
+    private final EligibilityHandler handler1 = mock(EligibilityHandler.class);
+    private final EligibilityHandler handler2 = mock(EligibilityHandler.class);
+    private final Collection<EligibilityHandler> handlers = Arrays.asList(handler1, handler2);
     private final VerificationMethodsRequestConverter requestConverter = mock(VerificationMethodsRequestConverter.class);
 
     private final VerificationMethodsService service = new DefaultVerificationMethodsService(bulkhead, handlers, requestConverter);

@@ -8,9 +8,9 @@ import java.util.function.Supplier;
 public class VerificationMethodSupplier implements Supplier<VerificationMethod> {
 
     private final VerificationMethodRequest request;
-    private final AvailabilityHandler handler;
+    private final EligibilityHandler handler;
 
-    public VerificationMethodSupplier(final VerificationMethodRequest request, final AvailabilityHandler handler) {
+    public VerificationMethodSupplier(final VerificationMethodRequest request, final EligibilityHandler handler) {
         this.request = request;
         this.handler = handler;
     }

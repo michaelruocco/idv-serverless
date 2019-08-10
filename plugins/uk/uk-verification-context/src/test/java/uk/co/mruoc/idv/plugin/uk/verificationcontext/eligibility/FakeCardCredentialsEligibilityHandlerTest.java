@@ -1,22 +1,22 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FakePushNotificationAvailabilityHandlerTest {
+public class FakeCardCredentialsEligibilityHandlerTest {
 
-    private static final String METHOD_NAME = VerificationMethod.Names.PUSH_NOTIFICATION;
+    private static final String METHOD_NAME = VerificationMethod.Names.CARD_CREDENTIALS;
 
-    private final AvailabilityHandler handler = new FakePushNotificationAvailabilityHandler();
+    private final EligibilityHandler handler = new FakeCardCredentialsEligibilityHandler();
 
     @Test
-    public void shouldSupportPushNotificationMethod() {
+    public void shouldSupportCardCredentialsMethod() {
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getMethodName()).willReturn(METHOD_NAME);
 
@@ -56,7 +56,7 @@ public class FakePushNotificationAvailabilityHandlerTest {
     }
 
     @Test
-    public void shouldReturnPushNotificationWithPassedDuration() {
+    public void shouldReturnMethodWithPassedDuration() {
         final int duration = 150000;
         final VerificationMethodRequest request = mock(VerificationMethodRequest.class);
         given(request.getDuration()).willReturn(duration);

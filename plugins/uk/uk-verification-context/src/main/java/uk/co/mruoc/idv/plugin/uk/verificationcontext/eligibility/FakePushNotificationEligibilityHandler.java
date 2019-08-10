@@ -1,11 +1,11 @@
-package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
+package uk.co.mruoc.idv.plugin.uk.verificationcontext.eligibility;
 
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.service.AvailabilityHandler;
+import uk.co.mruoc.idv.core.verificationcontext.service.EligibilityHandler;
 
-public class FakePushNotificationAvailabilityHandler implements AvailabilityHandler {
+public class FakePushNotificationEligibilityHandler implements EligibilityHandler {
 
     private static final String METHOD_NAME = VerificationMethod.Names.PUSH_NOTIFICATION;
 
