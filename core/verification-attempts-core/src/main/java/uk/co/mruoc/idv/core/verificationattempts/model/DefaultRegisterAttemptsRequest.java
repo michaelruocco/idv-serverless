@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 @Getter
 @Builder
@@ -16,6 +17,12 @@ public class DefaultRegisterAttemptsRequest implements RegisterAttemptsRequest {
 
     private final Collection<RegisterAttemptRequest> attempts;
 
+    @Override
+    public Iterator<RegisterAttemptRequest> iterator() {
+        return getAttempts().iterator();
+    }
+
+    @Override
     public Collection<RegisterAttemptRequest> getAttempts() {
         if (attempts == null) {
             return Collections.emptyList();

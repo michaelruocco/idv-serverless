@@ -102,7 +102,7 @@ public class VerificationAttemptTest {
                 .build();
 
         assertThat(attempt.toString()).isEqualTo("VerificationAttempt(" +
-                "channelId=null, timestamp=null, alias=null, activityType=null, " +
+                "contextId=null, channelId=null, timestamp=null, alias=null, activityType=null, " +
                 "methodName=null, verificationId=null, successful=false)");
     }
 

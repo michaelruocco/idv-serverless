@@ -31,6 +31,7 @@ public class VerificationAttemptsJsonConverterFactoryTest {
 
     private static VerificationAttempts buildAttempts() {
         final VerificationAttempt attempt = VerificationAttempt.builder()
+                .contextId(UUID.fromString("17a63c75-b6e4-4302-9050-7288fdaf0b31"))
                 .channelId("CHANNEL_ID")
                 .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .activityType("ACTIVITY_TYPE")

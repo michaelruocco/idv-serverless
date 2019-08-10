@@ -36,6 +36,7 @@ public class VerificationAttemptsDeserializerTest {
 
     private static VerificationAttempts buildAttempts() {
         final VerificationAttempt attempt = VerificationAttempt.builder()
+                .contextId(UUID.fromString("17a63c75-b6e4-4302-9050-7288fdaf0b31"))
                 .channelId("CHANNEL_ID")
                 .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .activityType("ACTIVITY_TYPE")
@@ -58,7 +59,8 @@ public class VerificationAttemptsDeserializerTest {
 
         @Override
         public int compare(final VerificationAttempt a1, final VerificationAttempt a2) {
-            return a1.getActivityType().compareTo(a2.getActivityType()) +
+            return a1.getContextId().compareTo(a2.getContextId()) +
+                    a1.getActivityType().compareTo(a2.getActivityType()) +
                     a1.getChannelId().compareTo(a2.getChannelId()) +
                     a1.getTimestamp().compareTo(a2.getTimestamp()) +
                     Boolean.compare(a1.isSuccessful(), a2.isSuccessful()) +
