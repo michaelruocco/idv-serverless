@@ -35,13 +35,12 @@ public class DynamoVerificationContextDaoTest {
     @Rule
     public final LocalDynamoRule localDynamoRule = new LocalDynamoRule();
 
-    private final VerificationResultTableFactory tableFactory = new VerificationResultTableFactory(TABLE_NAME);
-
     private VerificationContextDao dao;
 
     @Before
     public void setUp() throws InterruptedException {
         final AmazonDynamoDB client = localDynamoRule.getClient();
+        final TableFactory tableFactory = new TableFactory(TABLE_NAME);
         tableFactory.createTable(client);
 
         dao = DynamoVerificationContextDao.builder()

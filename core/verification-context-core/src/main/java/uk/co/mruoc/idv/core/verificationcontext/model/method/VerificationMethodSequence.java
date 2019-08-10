@@ -1,10 +1,7 @@
 package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import lombok.ToString;
-import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResult;
-import uk.co.mruoc.idv.core.verificationcontext.model.result.VerificationMethodResults;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -65,16 +62,6 @@ public class VerificationMethodSequence {
         final Optional<VerificationMethod> method = getMethod(methodName);
         return method.map(verificationMethod -> (OtpSmsVerificationMethod) verificationMethod)
                 .orElseThrow(() -> new VerificationMethodNotFoundInSequenceException(methodName));
-    }
-
-    public boolean isComplete(final VerificationMethodResults results) {
-        final Collection<VerificationMethod> remainingMethods = new ArrayList<>(methods);
-        for (final VerificationMethodResult result : results) {
-            if (result.getSequenceName().equals(name)) {
-                remainingMethods.removeIf(method -> method.getName().equals(result.getMethodName()));
-            }
-        }
-        return remainingMethods.isEmpty();
     }
 
     public int getDuration() {
