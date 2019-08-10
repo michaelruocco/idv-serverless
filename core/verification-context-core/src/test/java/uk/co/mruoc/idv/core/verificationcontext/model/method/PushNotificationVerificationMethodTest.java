@@ -25,10 +25,10 @@ public class PushNotificationVerificationMethodTest {
     }
 
     @Test
-    public void shouldReturnStatus() {
-        final VerificationStatus status = pushNotification.getStatus();
+    public void shouldReturnEligible() {
+        final boolean eligible = pushNotification.isEligible();
 
-        assertThat(status).isEqualTo(VerificationMethod.DEFAULT_STATUS);
+        assertThat(eligible).isTrue();
     }
 
     @Test
@@ -36,7 +36,7 @@ public class PushNotificationVerificationMethodTest {
         final String value = pushNotification.toString();
 
         assertThat(value).isEqualTo("PushNotificationVerificationMethod(super=" +
-                "DefaultVerificationMethod(name=PUSH_NOTIFICATION, duration=300000, status=AVAILABLE, " +
+                "DefaultVerificationMethod(name=PUSH_NOTIFICATION, duration=300000, eligible=true, " +
                 "properties={}))");
     }
 

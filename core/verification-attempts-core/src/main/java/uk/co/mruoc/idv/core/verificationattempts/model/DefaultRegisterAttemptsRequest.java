@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Builder
@@ -15,8 +16,11 @@ public class DefaultRegisterAttemptsRequest implements RegisterAttemptsRequest {
 
     private final Collection<RegisterAttemptRequest> attempts;
 
-    public boolean isEmpty() {
-        return attempts == null || attempts.isEmpty();
+    public Collection<RegisterAttemptRequest> getAttempts() {
+        if (attempts == null) {
+            return Collections.emptyList();
+        }
+        return attempts;
     }
 
 }

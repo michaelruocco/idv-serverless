@@ -3,7 +3,8 @@ package uk.co.mruoc.idv.plugin.uk.verificationcontext.availability;
 import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.CardCredentialsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationStatus;
+
+import static uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod.INELIGIBLE;
 
 public class CardCredentialsVerificationMethodRequestConverter implements VerificationMethodRequestConverter {
 
@@ -14,7 +15,7 @@ public class CardCredentialsVerificationMethodRequestConverter implements Verifi
 
     @Override
     public VerificationMethod toUnavailableVerificationMethod(final VerificationMethodRequest request) {
-        return new CardCredentialsVerificationMethod(request.getDuration(), VerificationStatus.UNAVAILABLE);
+        return new CardCredentialsVerificationMethod(request.getDuration(), INELIGIBLE);
     }
 
 }

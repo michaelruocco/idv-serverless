@@ -31,7 +31,6 @@ public class UpdateLockoutStateService {
     private final GetVerificationContextService getContextService;
 
     public LockoutState register(final RegisterAttemptsRequest request) {
-        validate(request);
         LockoutState state = null;
         for (final RegisterAttemptRequest attemptRequest : request.getAttempts()) {
             state = register(attemptRequest);
@@ -80,12 +79,6 @@ public class UpdateLockoutStateService {
         final LockoutPolicy policy = policiesService.getPolicy(request);
         final VerificationAttempts attempts = attemptsService.load(request.getAlias());
         return reset(request.getAlias(), policy, attempts);
-    }
-
-    private void validate(final RegisterAttemptsRequest request) {
-        if (request.isEmpty()) {
-            throw new IllegalArgumentException("attempt requests collection must not be empty");
-        }
     }
 
     private LockoutState reset(final Alias alias, final LockoutPolicy policy, final VerificationAttempts attempts) {

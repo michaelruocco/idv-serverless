@@ -214,7 +214,7 @@ public class VerificationContextTest {
                 "created=2019-03-10T12:54:02.547Z, " +
                 "expiry=2019-03-10T12:59:02.547Z, " +
                 "sequences=[VerificationMethodSequence(name=method, methods=[DefaultVerificationMethod(" +
-                "name=method, duration=300000, status=AVAILABLE, properties={})])])");
+                "name=method, duration=300000, eligible=true, properties={})])])");
     }
 
 }

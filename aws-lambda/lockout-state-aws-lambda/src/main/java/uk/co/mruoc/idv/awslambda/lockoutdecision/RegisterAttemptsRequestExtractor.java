@@ -15,11 +15,7 @@ public class RegisterAttemptsRequestExtractor {
     public final RegisterAttemptsRequest extractRequest(final APIGatewayProxyRequestEvent input) {
         try {
             final RegisterAttemptsRequestDocument document = converter.toObject(input.getBody(), RegisterAttemptsRequestDocument.class);
-            final RegisterAttemptsRequest request = document.getRequest();
-            if (request.isEmpty()) {
-                throw new InvalidRegisterAttemptsRequestException("results array must not be empty");
-            }
-            return request;
+            return document.getRequest();
         } catch (final JsonConversionException e) {
             throw new InvalidRegisterAttemptsRequestException(e);
         }

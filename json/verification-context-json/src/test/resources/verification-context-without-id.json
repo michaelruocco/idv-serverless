@@ -31,12 +31,12 @@
     {
       "name": "PUSH_NOTIFICATION",
       "duration": 300000,
-      "status": "AVAILABLE",
+      "eligible": true,
       "methods": [
         {
           "name": "PUSH_NOTIFICATION",
           "duration": 300000,
-          "status": "AVAILABLE"
+          "eligible": true
         }
       ]
     }

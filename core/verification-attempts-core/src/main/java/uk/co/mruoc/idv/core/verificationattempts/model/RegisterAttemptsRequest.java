@@ -6,6 +6,4 @@ public interface RegisterAttemptsRequest {
 
     Collection<RegisterAttemptRequest> getAttempts();
 
-    boolean isEmpty();
-
 }

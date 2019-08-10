@@ -28,14 +28,8 @@ public class VerificationMethodSequence {
         return name;
     }
 
-    public VerificationStatus getStatus() {
-        final Optional<VerificationMethod> unavailableMethod = methods.stream()
-                .filter(method -> VerificationStatus.UNAVAILABLE == method.getStatus())
-                .findFirst();
-        if (unavailableMethod.isPresent()) {
-            return VerificationStatus.UNAVAILABLE;
-        }
-        return VerificationStatus.AVAILABLE;
+    public boolean isEligible() {
+        return methods.stream().allMatch(VerificationMethod::isEligible);
     }
 
     public PhysicalPinsentryVerificationMethod getPhysicalPinsentry() {

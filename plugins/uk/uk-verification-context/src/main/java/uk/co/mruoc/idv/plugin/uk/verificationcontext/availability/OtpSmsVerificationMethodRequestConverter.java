@@ -5,30 +5,32 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationMethodRequest;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.OtpSmsVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.Passcode;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationStatus;
 import uk.co.mruoc.idv.core.verificationcontext.model.policy.OtpSmsMethodPolicy;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+import static uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod.ELIGIBLE;
+import static uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod.INELIGIBLE;
+
 public class OtpSmsVerificationMethodRequestConverter implements VerificationMethodRequestConverter {
 
     @Override
     public VerificationMethod toAvailableVerificationMethod(final VerificationMethodRequest request) {
-        return toVerificationMethod(request, VerificationStatus.AVAILABLE);
+        return toVerificationMethod(request, ELIGIBLE);
     }
 
     @Override
     public VerificationMethod toUnavailableVerificationMethod(final VerificationMethodRequest request) {
-        return toVerificationMethod(request, VerificationStatus.UNAVAILABLE);
+        return toVerificationMethod(request, INELIGIBLE);
     }
 
-    private static VerificationMethod toVerificationMethod(final VerificationMethodRequest request, final VerificationStatus status) {
+    private static VerificationMethod toVerificationMethod(final VerificationMethodRequest request, final boolean eligible) {
         final OtpSmsMethodPolicy methodPolicy = (OtpSmsMethodPolicy) request.getMethodPolicy();
         final Passcode passcode = methodPolicy.getPasscode();
         final Collection<MobileNumber> mobileNumbers = buildMobileNumbers();
-        return new OtpSmsVerificationMethod(request.getDuration(), passcode, status, mobileNumbers);
+        return new OtpSmsVerificationMethod(request.getDuration(), passcode, eligible, mobileNumbers);
     }
 
     private static Collection<MobileNumber> buildMobileNumbers() {

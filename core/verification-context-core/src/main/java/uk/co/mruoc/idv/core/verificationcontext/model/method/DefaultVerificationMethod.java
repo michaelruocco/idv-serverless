@@ -13,34 +13,34 @@ public class DefaultVerificationMethod implements VerificationMethod {
 
     private final String name;
     private final int duration;
-    private final VerificationStatus status;
+    private final boolean eligible;
     private final Map<String, Object> properties;
 
     public DefaultVerificationMethod(final String name) {
-        this(name, DEFAULT_DURATION, DEFAULT_STATUS);
+        this(name, DEFAULT_DURATION, ELIGIBLE);
     }
 
     public DefaultVerificationMethod(final String name, final int duration) {
-        this(name, duration, DEFAULT_STATUS);
+        this(name, duration, ELIGIBLE);
     }
 
-    public DefaultVerificationMethod(final String name, final VerificationStatus status) {
-        this(name, DEFAULT_DURATION, status);
-    }
-
-    public DefaultVerificationMethod(final String name,
-                                     final int duration,
-                                     final VerificationStatus status) {
-        this(name, duration, status, Collections.emptyMap());
+    public DefaultVerificationMethod(final String name, final boolean eligible) {
+        this(name, DEFAULT_DURATION, eligible);
     }
 
     public DefaultVerificationMethod(final String name,
                                      final int duration,
-                                     final VerificationStatus status,
+                                     final boolean eligible) {
+        this(name, duration, eligible, Collections.emptyMap());
+    }
+
+    public DefaultVerificationMethod(final String name,
+                                     final int duration,
+                                     final boolean eligible,
                                      final Map<String, Object> properties) {
         this.name = name;
         this.duration = duration;
-        this.status = status;
+        this.eligible = eligible;
         this.properties = properties;
     }
 

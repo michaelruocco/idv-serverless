@@ -1,7 +1,7 @@
 {
   "name": "PHYSICAL_PINSENTRY",
   "duration": 300000,
-  "status": "AVAILABLE",
+  "eligible": true,
   "properties": {
     "cardNumbers": [
       {
