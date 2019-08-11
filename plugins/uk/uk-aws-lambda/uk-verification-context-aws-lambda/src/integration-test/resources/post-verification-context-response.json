@@ -48,13 +48,12 @@
         {
           "name": "PHYSICAL_PINSENTRY",
           "duration": 300000,
-          "status": "AVAILABLE",
-          "registerAttemptStrategy": "IMMEDIATE",
+          "eligible": true,
           "methods": [
             {
               "name": "PHYSICAL_PINSENTRY",
               "duration": 300000,
-              "status": "AVAILABLE",
+              "eligible": true,
               "properties": {
                 "cardNumbers": [
                   {
@@ -70,18 +69,17 @@
         {
           "name": "OTP_SMS",
           "duration": 600000,
-          "status": "AVAILABLE",
-          "registerAttemptStrategy": "IMMEDIATE",
+          "eligible": true,
           "methods": [
             {
               "name": "CARD_CREDENTIALS",
               "duration": 300000,
-              "status": "AVAILABLE"
+              "eligible": true
             },
             {
               "name": "ONE_TIME_PASSCODE_SMS",
               "duration": 300000,
-              "status": "AVAILABLE",
+              "eligible": true,
               "properties": {
                 "mobileNumbers": [
                   {

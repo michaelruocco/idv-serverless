@@ -40,10 +40,10 @@ public class OtpSmsVerificationMethodTest {
     }
 
     @Test
-    public void shouldReturnStatus() {
-        final VerificationStatus status = otpSms.getStatus();
+    public void shouldReturnIsEligible() {
+        final boolean eligible = otpSms.isEligible();
 
-        assertThat(status).isEqualTo(VerificationMethod.DEFAULT_STATUS);
+        assertThat(eligible).isTrue();
     }
 
     @Test
@@ -66,7 +66,7 @@ public class OtpSmsVerificationMethodTest {
 
         assertThat(value).isEqualTo("OtpSmsVerificationMethod(super=" +
                 "DefaultVerificationMethod(name=ONE_TIME_PASSCODE_SMS, duration=300000, " +
-                "status=AVAILABLE, " +
+                "eligible=true, " +
                 "properties={mobileNumbers=[MobileNumber(id=3cc9109d-4a7c-424d-9f7b-5805636dfb2d, masked=********111), " +
                 "MobileNumber(id=03571bf0-1140-4ee6-b9a7-49b64e174730, masked=********333)], " +
                 "passcode=Passcode(length=8, duration=150000, maxAttempts=3)}))");

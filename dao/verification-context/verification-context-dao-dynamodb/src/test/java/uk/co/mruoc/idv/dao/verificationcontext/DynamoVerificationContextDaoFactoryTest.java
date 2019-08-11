@@ -26,7 +26,7 @@ public class DynamoVerificationContextDaoFactoryTest {
     @Before
     public void setUp() throws InterruptedException {
         final AmazonDynamoDB client = localDynamoRule.getClient();
-        final VerificationResultTableFactory tableFactory = new VerificationResultTableFactory(TABLE_NAME);
+        final TableFactory tableFactory = new TableFactory(TABLE_NAME);
         tableFactory.createTable(client);
 
         final JsonConverter converter = mock(JsonConverter.class);

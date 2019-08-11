@@ -43,6 +43,7 @@ public class VerificationAttemptsDeserializer extends StdDeserializer<Verificati
 
     private static VerificationAttempt toAttempt(final JsonNode attempt) {
         final VerificationAttempt.VerificationAttemptBuilder builder = VerificationAttempt.builder()
+                .contextId(UUID.fromString(attempt.get("contextId").asText()))
                 .channelId(attempt.get("channelId").asText())
                 .activityType(attempt.get("activityType").asText())
                 .successful(attempt.get("successful").asBoolean())

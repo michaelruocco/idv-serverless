@@ -1,7 +1,7 @@
 {
   "name": "ONE_TIME_PASSCODE_SMS",
   "duration": 300000,
-  "status": "AVAILABLE",
+  "eligible": true,
   "properties": {
     "mobileNumbers": [
       {

@@ -15,11 +15,11 @@ public class OtpSmsVerificationMethod extends DefaultVerificationMethod {
     private static final String MOBILE_NUMBERS_PROPERTY_NAME = "mobileNumbers";
 
     public OtpSmsVerificationMethod(final int duration, final Passcode passcode, final Collection<MobileNumber> mobileNumbers) {
-        this(duration, passcode, DEFAULT_STATUS, mobileNumbers);
+        this(duration, passcode, ELIGIBLE, mobileNumbers);
     }
 
-    public OtpSmsVerificationMethod(final int duration, final Passcode passcode, final VerificationStatus status, final Collection<MobileNumber> mobileNumbers) {
-        super(Names.ONE_TIME_PASSCODE_SMS, duration, status, toMap(passcode, mobileNumbers));
+    public OtpSmsVerificationMethod(final int duration, final Passcode passcode, final boolean eligible, final Collection<MobileNumber> mobileNumbers) {
+        super(Names.ONE_TIME_PASSCODE_SMS, duration, eligible, toMap(passcode, mobileNumbers));
     }
 
     public Passcode getPasscode() {

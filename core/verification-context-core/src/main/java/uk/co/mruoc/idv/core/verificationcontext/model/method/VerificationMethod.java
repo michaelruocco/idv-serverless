@@ -6,13 +6,14 @@ import java.util.Map;
 public interface VerificationMethod {
 
     int DEFAULT_DURATION = 300000;
-    VerificationStatus DEFAULT_STATUS = VerificationStatus.AVAILABLE;
+    boolean ELIGIBLE = true;
+    boolean INELIGIBLE = false;
 
     String getName();
 
     int getDuration();
 
-    VerificationStatus getStatus();
+    boolean isEligible();
 
     Map<String, Object> getProperties();
 

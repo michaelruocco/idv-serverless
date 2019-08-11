@@ -1,5 +1,6 @@
 package uk.co.mruoc.idv.core.verificationcontext.service;
 
+import io.github.resilience4j.bulkhead.ThreadPoolBulkhead;
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.mruoc.idv.core.channel.model.Channel;
@@ -40,12 +41,14 @@ public class VerificationMethodsServiceTest {
             .methodPolicy(methodPolicy)
             .build();
 
-    private final AvailabilityHandler handler1 = mock(AvailabilityHandler.class);
-    private final AvailabilityHandler handler2 = mock(AvailabilityHandler.class);
-    private final Collection<AvailabilityHandler> handlers = Arrays.asList(handler1, handler2);
+    private final ThreadPoolBulkhead bulkhead = ThreadPoolBulkhead.ofDefaults("eligibilityBulkhead");
+
+    private final EligibilityHandler handler1 = mock(EligibilityHandler.class);
+    private final EligibilityHandler handler2 = mock(EligibilityHandler.class);
+    private final Collection<EligibilityHandler> handlers = Arrays.asList(handler1, handler2);
     private final VerificationMethodsRequestConverter requestConverter = mock(VerificationMethodsRequestConverter.class);
 
-    private final VerificationMethodsService service = new DefaultVerificationMethodsService(handlers, requestConverter);
+    private final VerificationMethodsService service = new DefaultVerificationMethodsService(bulkhead, handlers, requestConverter);
 
     @Before
     public void setUp() {

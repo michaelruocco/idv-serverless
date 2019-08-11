@@ -12,11 +12,11 @@ public class MobilePinsentryVerificationMethod extends DefaultVerificationMethod
     private static final String FUNCTION_PROPERTY_NAME = "function";
 
     public MobilePinsentryVerificationMethod(final int duration, final PinsentryFunction function) {
-        this(duration, function, DEFAULT_STATUS);
+        this(duration, function, ELIGIBLE);
     }
 
-    public MobilePinsentryVerificationMethod(final int duration, final PinsentryFunction function, final VerificationStatus status) {
-        super(Names.MOBILE_PINSENTRY, duration, status, toMap(function));
+    public MobilePinsentryVerificationMethod(final int duration, final PinsentryFunction function, final boolean eligible) {
+        super(Names.MOBILE_PINSENTRY, duration, eligible, toMap(function));
     }
 
     public PinsentryFunction getFunction() {

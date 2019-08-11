@@ -26,10 +26,10 @@ public class MobilePinsentryVerificationMethodTest {
     }
 
     @Test
-    public void shouldReturnStatus() {
-        final VerificationStatus status = mobilePinsentry.getStatus();
+    public void shouldReturnIsEligible() {
+        final boolean eligible = mobilePinsentry.isEligible();
 
-        assertThat(status).isEqualTo(VerificationMethod.DEFAULT_STATUS);
+        assertThat(eligible).isTrue();
     }
 
     @Test
@@ -45,7 +45,7 @@ public class MobilePinsentryVerificationMethodTest {
 
         assertThat(value).isEqualTo("MobilePinsentryVerificationMethod(super=" +
                 "DefaultVerificationMethod(" +
-                "name=MOBILE_PINSENTRY, duration=300000, status=AVAILABLE, " +
+                "name=MOBILE_PINSENTRY, duration=300000, eligible=true, " +
                 "properties={function=IDENTIFY}))");
     }
 

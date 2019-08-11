@@ -17,7 +17,7 @@ public class DefaultRegisterAttemptsRequestTest {
                 .attempts(attempts)
                 .build();
 
-        assertThat(request.getAttempts()).isEqualTo(attempts);
+        assertThat(request).containsExactlyElementsOf(attempts);
     }
 
     @Test

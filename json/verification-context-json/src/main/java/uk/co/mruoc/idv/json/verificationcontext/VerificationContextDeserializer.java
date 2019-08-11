@@ -14,7 +14,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.VerificationContext;
 import uk.co.mruoc.idv.core.verificationcontext.model.activity.Activity;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.RegisterAttemptStrategy;
 import uk.co.mruoc.idv.json.verificationcontext.activity.ActivityDeserializer;
 import uk.co.mruoc.idv.json.verificationcontext.method.VerificationMethodDeserializer;
 import uk.co.mruoc.idv.json.identity.AliasDeserializer;
@@ -105,12 +104,11 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
     private static VerificationMethodSequence toVerificationMethodSequence(final JsonNode sequenceNode) {
         final List<VerificationMethod> methods = new ArrayList<>();
         final String name = extractName(sequenceNode);
-        final RegisterAttemptStrategy registerAttemptStrategy = extractRegisterAttemptStrategy(sequenceNode);
         final JsonNode methodsNode = sequenceNode.get("methods");
         for (final JsonNode methodNode : methodsNode) {
             methods.add(toMethod(methodNode));
         }
-        return new VerificationMethodSequence(name, methods, registerAttemptStrategy);
+        return new VerificationMethodSequence(name, methods);
     }
 
     private static VerificationMethod toMethod(final JsonNode methodNode) {
@@ -120,10 +118,6 @@ public class VerificationContextDeserializer extends StdDeserializer<Verificatio
 
     private static String extractName(final JsonNode node) {
         return node.get("name").asText();
-    }
-
-    private static RegisterAttemptStrategy extractRegisterAttemptStrategy(final JsonNode node) {
-        return RegisterAttemptStrategy.valueOf(node.get("registerAttemptStrategy").asText());
     }
 
 }

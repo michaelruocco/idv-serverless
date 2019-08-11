@@ -12,7 +12,6 @@ import uk.co.mruoc.idv.core.verificationcontext.model.method.PhysicalPinsentryVe
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PinsentryFunction;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.PushNotificationVerificationMethod;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod;
-import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationStatus;
 import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationcontext.VerificationContextJsonConverterFactory;
 import java.util.Arrays;
@@ -25,6 +24,7 @@ import java.util.UUID;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.mruoc.file.ContentLoader.loadContentFromClasspath;
+import static uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod.ELIGIBLE;
 
 public class VerificationMethodDeserializerTest {
 
@@ -36,7 +36,6 @@ public class VerificationMethodDeserializerTest {
     private static final String DEFAULT_METHOD_PATH = "/method/default-verification-method.json";
 
     private static final int DURATION = 300000;
-    private static final VerificationStatus STATUS = VerificationStatus.AVAILABLE;
 
     private static final JsonConverter CONVERTER = new VerificationContextJsonConverterFactory().build();
 
@@ -243,7 +242,7 @@ public class VerificationMethodDeserializerTest {
         properties.put("anotherProperty", Collections.unmodifiableMap(subProperty));
 
         final String name = "DEFAULT_METHOD";
-        return new DefaultVerificationMethod(name, DURATION, STATUS, Collections.unmodifiableMap(properties));
+        return new DefaultVerificationMethod(name, DURATION, ELIGIBLE, Collections.unmodifiableMap(properties));
     }
 
 }

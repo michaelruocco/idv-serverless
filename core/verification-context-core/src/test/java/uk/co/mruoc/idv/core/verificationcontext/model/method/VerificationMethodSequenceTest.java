@@ -2,7 +2,6 @@ package uk.co.mruoc.idv.core.verificationcontext.model.method;
 
 import org.junit.Test;
 import uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethodSequence.VerificationMethodNotFoundInSequenceException;
-import uk.co.mruoc.idv.core.verificationcontext.model.policy.RegisterAttemptStrategy;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,6 +9,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod.ELIGIBLE;
+import static uk.co.mruoc.idv.core.verificationcontext.model.method.VerificationMethod.INELIGIBLE;
 
 public class VerificationMethodSequenceTest {
 
@@ -23,39 +24,23 @@ public class VerificationMethodSequenceTest {
     }
 
     @Test
-    public void shouldReturnImmediateRegisterAttemptStrategyByDefault() {
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList());
-
-        assertThat(sequence.getRegisterAttemptStrategy()).isEqualTo(RegisterAttemptStrategy.IMMEDIATE);
-    }
-
-    @Test
-    public void shouldReturnSpecifiedRegisterAttemptStrategy() {
-        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
-
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
-
-        assertThat(sequence.getRegisterAttemptStrategy()).isEqualTo(registerAttemptStrategy);
-    }
-
-    @Test
-    public void shouldReturnUnavailableStatusIfAnyMethodsAreUnavailable() {
-        final VerificationMethod availableMethod = new DefaultVerificationMethod("availableMethod", VerificationStatus.AVAILABLE);
-        final VerificationMethod unavailableMethod = new DefaultVerificationMethod("unavailableMethod", VerificationStatus.UNAVAILABLE);
+    public void shouldReturnIneligibleIfAnyMethodsAreIneligible() {
+        final VerificationMethod availableMethod = new DefaultVerificationMethod("eligibleMethod", ELIGIBLE);
+        final VerificationMethod unavailableMethod = new DefaultVerificationMethod("ineligibleMethod", INELIGIBLE);
 
         final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Arrays.asList(availableMethod, unavailableMethod));
 
-        assertThat(sequence.getStatus()).isEqualTo(VerificationStatus.UNAVAILABLE);
+        assertThat(sequence.isEligible()).isFalse();
     }
 
     @Test
-    public void shouldReturnAvailableStatusIfAllMethodsAreAvailable() {
-        final VerificationMethod availableMethod1 = new DefaultVerificationMethod("availableMethod1", VerificationStatus.AVAILABLE);
-        final VerificationMethod availableMethod2 = new DefaultVerificationMethod("availableMethod2", VerificationStatus.AVAILABLE);
+    public void shouldReturnEligibleIfAllMethodsAreEligible() {
+        final VerificationMethod availableMethod1 = new DefaultVerificationMethod("eligibleMethod1", ELIGIBLE);
+        final VerificationMethod availableMethod2 = new DefaultVerificationMethod("eligibleMethod2", ELIGIBLE);
 
         final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Arrays.asList(availableMethod1, availableMethod2));
 
-        assertThat(sequence.getStatus()).isEqualTo(VerificationStatus.AVAILABLE);
+        assertThat(sequence.isEligible()).isTrue();
     }
 
     @Test
@@ -207,26 +192,8 @@ public class VerificationMethodSequenceTest {
         final VerificationMethodSequence sequence = new VerificationMethodSequence(method);
 
         assertThat(sequence.toString()).isEqualTo("VerificationMethodSequence(name=PUSH_NOTIFICATION, " +
-                "registerAttemptStrategy=IMMEDIATE, methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
-                "name=PUSH_NOTIFICATION, duration=0, status=AVAILABLE, properties={}))])");
-    }
-
-    @Test
-    public void shouldReturnRegisterAttemptImmediatelyTrueIfRegisterAttemptStrategyIsImmediate() {
-        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.IMMEDIATE;
-
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
-
-        assertThat(sequence.shouldRegisterAttemptImmediately()).isTrue();
-    }
-
-    @Test
-    public void shouldReturnRegisterAttemptImmediatelyFalseIfRegisterAttemptStrategyIsNotImmediate() {
-        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
-
-        final VerificationMethodSequence sequence = new VerificationMethodSequence("name", Collections.emptyList(), registerAttemptStrategy);
-
-        assertThat(sequence.shouldRegisterAttemptImmediately()).isFalse();
+                "methods=[PushNotificationVerificationMethod(super=DefaultVerificationMethod(" +
+                "name=PUSH_NOTIFICATION, duration=0, eligible=true, properties={}))])");
     }
 
     private static class FakePhysicalPinsentryVerificationMethod extends PhysicalPinsentryVerificationMethod {

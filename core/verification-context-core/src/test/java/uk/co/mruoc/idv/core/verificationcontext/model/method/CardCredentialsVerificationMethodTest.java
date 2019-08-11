@@ -25,10 +25,10 @@ public class CardCredentialsVerificationMethodTest {
     }
 
     @Test
-    public void shouldReturnStatus() {
-        final VerificationStatus status = cardCredentials.getStatus();
+    public void shouldReturnEligible() {
+        final boolean eligible = cardCredentials.isEligible();
 
-        assertThat(status).isEqualTo(VerificationMethod.DEFAULT_STATUS);
+        assertThat(eligible).isTrue();
     }
 
     @Test
@@ -36,7 +36,7 @@ public class CardCredentialsVerificationMethodTest {
         final String value = cardCredentials.toString();
 
         assertThat(value).isEqualTo("CardCredentialsVerificationMethod(super=" +
-                "DefaultVerificationMethod(name=CARD_CREDENTIALS, duration=300000, status=AVAILABLE, " +
+                "DefaultVerificationMethod(name=CARD_CREDENTIALS, duration=300000, eligible=true, " +
                 "properties={}))");
     }
 

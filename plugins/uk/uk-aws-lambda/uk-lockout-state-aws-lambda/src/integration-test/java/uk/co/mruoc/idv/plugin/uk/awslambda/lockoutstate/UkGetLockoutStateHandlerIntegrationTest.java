@@ -78,6 +78,7 @@ public class UkGetLockoutStateHandlerIntegrationTest {
 
     private VerificationAttempts buildAttempts() {
         final VerificationAttempt attemptWithMatchingAlias = VerificationAttempt.builder()
+                .contextId(UUID.fromString("cff8ccc4-608d-4d24-a499-6c74c9a1c4ed"))
                 .successful(false)
                 .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
                 .timestamp(Instant.now())

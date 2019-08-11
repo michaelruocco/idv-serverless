@@ -6,11 +6,11 @@ import lombok.ToString;
 public class CardCredentialsVerificationMethod extends DefaultVerificationMethod {
 
     public CardCredentialsVerificationMethod(final int duration) {
-        this(duration, DEFAULT_STATUS);
+        this(duration, ELIGIBLE);
     }
 
-    public CardCredentialsVerificationMethod(final int duration, final VerificationStatus status) {
-        super(Names.CARD_CREDENTIALS, duration, status);
+    public CardCredentialsVerificationMethod(final int duration, final boolean eligible) {
+        super(Names.CARD_CREDENTIALS, duration, eligible);
     }
 
 }

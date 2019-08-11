@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class VerificationSequencePolicyTest {
 
-    private static final RegisterAttemptStrategy DEFAULT_REGISTER_ATTEMPT_STRATEGY = RegisterAttemptStrategy.IMMEDIATE;
     private static final String CUSTOM_NAME = "CUSTOM_NAME";
 
     @Test
@@ -25,25 +24,6 @@ public class VerificationSequencePolicyTest {
         final VerificationSequencePolicy entry = new VerificationSequencePolicy(CUSTOM_NAME, policy);
 
         assertThat(entry.getName()).isEqualTo(CUSTOM_NAME);
-    }
-
-    @Test
-    public void shouldReturnDefaultRegisterAttemptStrategyIfNotSet() {
-        final VerificationMethodPolicy policy = new PushNotificationMethodPolicy();
-
-        final VerificationSequencePolicy entry = new VerificationSequencePolicy(CUSTOM_NAME, policy);
-
-        assertThat(entry.getRegisterAttemptStrategy()).isEqualTo(DEFAULT_REGISTER_ATTEMPT_STRATEGY);
-    }
-
-    @Test
-    public void shouldReturnRegisterAttemptStrategy() {
-        final VerificationMethodPolicy policy = new PushNotificationMethodPolicy();
-        final RegisterAttemptStrategy registerAttemptStrategy = RegisterAttemptStrategy.ON_COMPLETION;
-
-        final VerificationSequencePolicy entry = new VerificationSequencePolicy(CUSTOM_NAME, registerAttemptStrategy, policy);
-
-        assertThat(entry.getRegisterAttemptStrategy()).isEqualTo(registerAttemptStrategy);
     }
 
     @Test

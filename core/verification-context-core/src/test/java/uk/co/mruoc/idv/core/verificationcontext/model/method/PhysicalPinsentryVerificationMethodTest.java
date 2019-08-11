@@ -41,10 +41,10 @@ public class PhysicalPinsentryVerificationMethodTest {
     }
 
     @Test
-    public void shouldReturnStatus() {
-        final VerificationStatus status = physicalPinsentry.getStatus();
+    public void shouldReturnEligible() {
+        final boolean eligible = physicalPinsentry.isEligible();
 
-        assertThat(status).isEqualTo(VerificationMethod.DEFAULT_STATUS);
+        assertThat(eligible).isTrue();
     }
 
     @Test
@@ -60,7 +60,7 @@ public class PhysicalPinsentryVerificationMethodTest {
 
         assertThat(value).isEqualTo("PhysicalPinsentryVerificationMethod(" +
                 "super=DefaultVerificationMethod(" +
-                "name=PHYSICAL_PINSENTRY, duration=300000, status=AVAILABLE, " +
+                "name=PHYSICAL_PINSENTRY, duration=300000, eligible=true, " +
                 "properties={" +
                 "cardNumbers=[CardNumber(masked=null, tokenized=1234567890123456, encrypted=null), " +
                 "CardNumber(masked=null, tokenized=6543210987654321, encrypted=null)], function=IDENTIFY}))");

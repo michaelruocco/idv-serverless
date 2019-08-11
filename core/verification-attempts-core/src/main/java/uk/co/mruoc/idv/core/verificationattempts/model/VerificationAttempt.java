@@ -13,6 +13,7 @@ import java.util.UUID;
 @ToString
 public class VerificationAttempt {
 
+    private final UUID contextId;
     private final String channelId;
     private final Instant timestamp;
     private final Alias alias;

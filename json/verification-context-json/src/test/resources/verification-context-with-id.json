@@ -32,13 +32,12 @@
     {
       "name": "PUSH_NOTIFICATION",
       "duration": 300000,
-      "status": "AVAILABLE",
-      "registerAttemptStrategy": "IMMEDIATE",
+      "eligible": true,
       "methods": [
         {
           "name": "PUSH_NOTIFICATION",
           "duration": 300000,
-          "status": "AVAILABLE"
+          "eligible": true
         }
       ]
     }
