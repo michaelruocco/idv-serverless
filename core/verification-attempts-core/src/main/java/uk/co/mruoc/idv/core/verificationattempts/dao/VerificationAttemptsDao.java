@@ -9,6 +9,8 @@ public interface VerificationAttemptsDao {
 
     Optional<VerificationAttempts> loadByIdvId(final UUID idvId);
 
+    Optional<VerificationAttempts> loadByContextId(final UUID contextId);
+
     void save(final VerificationAttempts attempts);
 
 }

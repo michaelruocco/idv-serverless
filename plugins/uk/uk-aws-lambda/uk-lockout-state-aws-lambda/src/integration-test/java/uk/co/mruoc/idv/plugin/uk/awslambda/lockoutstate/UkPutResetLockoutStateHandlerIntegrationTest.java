@@ -39,6 +39,7 @@ public class UkPutResetLockoutStateHandlerIntegrationTest {
     private final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
     private final Identity identity = Identity.withAliases(new IdvIdAlias(), providedAlias);
     private final VerificationAttempt attemptWithDifferentAlias = VerificationAttempt.builder()
+            .contextId(UUID.randomUUID())
             .successful(false)
             .timestamp(Instant.now())
             .methodName("METHOD_NAME2")
@@ -74,6 +75,7 @@ public class UkPutResetLockoutStateHandlerIntegrationTest {
 
     private VerificationAttempts buildAttempts() {
         final VerificationAttempt attemptWithMatchingAlias = VerificationAttempt.builder()
+                .contextId(UUID.randomUUID())
                 .successful(false)
                 .timestamp(Instant.now())
                 .methodName("METHOD_NAME1")

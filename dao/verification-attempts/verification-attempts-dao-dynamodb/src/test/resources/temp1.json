@@ -1,0 +1,38 @@
+{
+  "lockoutStateId": "0e04ecff-73bc-44ce-9f68-8ebf86c29947",
+  "idvId": "43411907-8e85-482b-9fb9-388c7695d713",
+  "attempts": [
+    {
+      "alias": {
+        "format": "CLEAR_TEXT",
+        "type": "IDV_ID",
+        "value": "43411907-8e85-482b-9fb9-388c7695d713"
+      },
+      "contextId": "92278b82-fa97-4f27-834b-aa2fd7c545f1",
+      "channelId": "channelId",
+      "timestamp": "2019-08-18T06:29:01.905Z",
+      "activityType": "activityType",
+      "methodName": "method",
+      "verificationId": "ce627498-c2e9-403c-920b-76a2648a3e93",
+      "successful": true
+    },
+    {
+      "alias": {
+        "format": "CLEAR_TEXT",
+        "type": "IDV_ID",
+        "value": "43411907-8e85-482b-9fb9-388c7695d713"
+      },
+      "methodName": "method",
+      "contextId": "8c95d415-24d8-400b-a241-afcbdbd7bc43",
+      "activityType": "activityType",
+      "channelId": "channelId",
+      "verificationId": "7ea3295f-3bac-4703-becd-b9e9e198703c",
+      "timestamp": "2019-08-18T06:29:01.905Z",
+      "successful": true
+    }
+  ],
+  "contextIds": [
+    "92278b82-fa97-4f27-834b-aa2fd7c545f1",
+    "8c95d415-24d8-400b-a241-afcbdbd7bc43"
+  ]
+}

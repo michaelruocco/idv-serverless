@@ -40,6 +40,7 @@ public class UkGetLockoutStateHandlerIntegrationTest {
     private final Alias providedAlias = new TokenizedCreditCardNumberAlias("3489347343788005");
     private final Identity identity = Identity.withAliases(new IdvIdAlias(), providedAlias);
     private final VerificationAttempt attemptWithDifferentAlias = VerificationAttempt.builder()
+            .contextId(UUID.fromString("cff8ccc4-608d-4d24-a499-6c74c9a1c4ed"))
             .verificationId(UUID.fromString("0dcbf980-5a82-4b9f-9cfa-4f72959f392a"))
             .successful(false)
             .timestamp(Instant.now())

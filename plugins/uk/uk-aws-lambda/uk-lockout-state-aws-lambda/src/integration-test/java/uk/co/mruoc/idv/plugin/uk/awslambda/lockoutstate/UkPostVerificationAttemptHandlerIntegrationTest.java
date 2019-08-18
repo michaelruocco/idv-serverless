@@ -57,7 +57,7 @@ public class UkPostVerificationAttemptHandlerIntegrationTest {
     }
 
     @Test
-    public void shouldCreateVerificationContextResults() {
+    public void shouldPostVerificationAttempt() {
         final String requestBody = loadContentFromClasspath("/post-verification-attempts-request.json");
         final APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent()
                 .withBody(requestBody);

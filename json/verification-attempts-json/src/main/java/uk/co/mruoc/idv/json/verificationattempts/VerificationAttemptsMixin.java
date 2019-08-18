@@ -7,12 +7,16 @@ import uk.co.mruoc.idv.core.verificationattempts.model.VerificationAttempt;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.UUID;
 
 @JsonPropertyOrder({ "lockoutStateId", "idvId", "idvIdAlias", "attempts" })
 public interface VerificationAttemptsMixin {
 
     @JsonIgnore
     Instant getMostRecentTimestamp();
+
+    @JsonIgnore
+    Collection<UUID> getContextIds();
 
     @JsonProperty("attempts")
     Collection<VerificationAttempt> toCollection();

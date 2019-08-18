@@ -46,9 +46,13 @@ custom:
       name: ${self:custom.stage}-verification-context
       arn: { "Fn::Join" : ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref" : "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationContext.name}" ] ] }
 
-    verificationAttempt:
-      name: ${self:custom.stage}-verification-attempt
-      arn: { "Fn::Join": ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref": "AWS::AccountId" }, ":table/${self:custom.dynamoTables.verificationAttempt.name}" ] ] }
+    idvIdVerificationAttempt:
+      name: ${self:custom.stage}-idv-id-verification-attempt
+      arn: { "Fn::Join": ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref": "AWS::AccountId" }, ":table/${self:custom.dynamoTables.idvIdVerificationAttempt.name}" ] ] }
+
+    contextIdVerificationAttempt:
+      name: ${self:custom.stage}-context-id-verification-attempt
+      arn: { "Fn::Join": ["", ["arn:aws:dynamodb:${self:custom.region}:", { "Ref": "AWS::AccountId" }, ":table/${self:custom.dynamoTables.contextIdVerificationAttempt.name}" ] ] }
 
   topics:
     idvEvent:
@@ -135,7 +139,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:GetItem
-        Resource: ${self:custom.dynamoTables.verificationAttempt.arn}
+        Resource: ${self:custom.dynamoTables.idvIdVerificationAttempt.arn}
       - Effect: Allow
         Action:
           - sns:Publish
@@ -178,7 +182,12 @@ functions:
         Action:
           - dynamodb:PutItem
           - dynamodb:GetItem
-        Resource: ${self:custom.dynamoTables.verificationAttempt.arn}
+        Resource: ${self:custom.dynamoTables.idvIdVerificationAttempt.arn}
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:GetItem
+        Resource: ${self:custom.dynamoTables.contextIdVerificationAttempt.arn}
       - Effect: Allow
         Action:
           - dynamodb:GetItem
@@ -200,7 +209,7 @@ functions:
         Action:
           - dynamodb:PutItem
           - dynamodb:GetItem
-        Resource: ${self:custom.dynamoTables.verificationAttempt.arn}
+        Resource: ${self:custom.dynamoTables.idvIdVerificationAttempt.arn}
       - Effect: Allow
         Action:
           - dynamodb:GetItem
@@ -221,7 +230,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:GetItem
-        Resource: ${self:custom.dynamoTables.verificationAttempt.arn}
+        Resource: ${self:custom.dynamoTables.idvIdVerificationAttempt.arn}
       - Effect: Allow
         Action:
           - dynamodb:GetItem
@@ -261,7 +270,7 @@ resources:
           WriteCapacityUnits: 1
         TableName: ${self:custom.dynamoTables.verificationContext.name}
 
-    verificationAttemptTable:
+    idvIdVerificationAttemptTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
@@ -273,7 +282,21 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:custom.dynamoTables.verificationAttempt.name}
+        TableName: ${self:custom.dynamoTables.idvIdVerificationAttempt.name}
+
+    contextIdVerificationAttemptTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: contextId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: contextId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.dynamoTables.contextIdVerificationAttempt.name}
 
     idvEventTopic:
       Type: AWS::SNS::Topic

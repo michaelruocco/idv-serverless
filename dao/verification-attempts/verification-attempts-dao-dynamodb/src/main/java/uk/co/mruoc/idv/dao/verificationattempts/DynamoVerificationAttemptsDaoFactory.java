@@ -11,39 +11,54 @@ import uk.co.mruoc.idv.json.JsonConverter;
 
 public class DynamoVerificationAttemptsDaoFactory implements VerificationAttemptsDaoFactory {
 
-    private static final String TABLE_NAME_FORMAT = "%s-verification-attempt";
+    private static final String IDV_ID_TABLE_NAME_FORMAT = "%s-idv-id-verification-attempt";
+    private static final String CONTEXT_ID_TABLE_NAME_FORMAT = "%s-context-id-verification-attempt";
 
-    private final Table table;
+    private final Table idvIdAttemptsTable;
+    private final Table contextIdAttemptsTable;
     private final JsonConverter converter;
 
     public DynamoVerificationAttemptsDaoFactory(final DynamoEnvironment environment, final JsonConverter converter) {
-        this(toTable(environment), converter);
+        this(toIdvIdTable(environment), toContextIdTable(environment), converter);
     }
 
-    public DynamoVerificationAttemptsDaoFactory(final Table table, final JsonConverter converter) {
-        this.table = table;
+    public DynamoVerificationAttemptsDaoFactory(final Table idvIdAttemptsTable, final Table contextIdAttemptsTable, final JsonConverter converter) {
+        this.idvIdAttemptsTable = idvIdAttemptsTable;
+        this.contextIdAttemptsTable = contextIdAttemptsTable;
         this.converter = converter;
     }
 
     @Override
     public VerificationAttemptsDao build() {
         return DynamoVerificationAttemptsDao.builder()
-                .table(table)
+                .idvIdAttemptsTable(idvIdAttemptsTable)
+                .contextIdAttemptsTable(contextIdAttemptsTable)
                 .converter(converter)
                 .build();
     }
 
-    private static Table toTable(final DynamoEnvironment environment) {
+    private static Table toIdvIdTable(final DynamoEnvironment environment) {
+        return toTable(environment, toIdvIdTableName(environment.getStage()));
+    }
+
+    private static String toIdvIdTableName(final String stage) {
+        return String.format(IDV_ID_TABLE_NAME_FORMAT, stage);
+    }
+
+    private static Table toContextIdTable(final DynamoEnvironment environment) {
+        return toTable(environment, toContextIdTableName(environment.getStage()));
+    }
+
+    private static String toContextIdTableName(final String stage) {
+        return String.format(CONTEXT_ID_TABLE_NAME_FORMAT, stage);
+    }
+
+    private static Table toTable(final DynamoEnvironment environment, final String tableName) {
         final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
                 .withRegion(environment.getRegion())
                 .build();
         final DynamoDB dynamoDB = new DynamoDB(client);
-        final String tableName = toTableName(environment.getStage());
         return dynamoDB.getTable(tableName);
-    }
-
-    private static String toTableName(final String stage) {
-        return String.format(TABLE_NAME_FORMAT, stage);
     }
 
 }

@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Builder
@@ -61,6 +62,12 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
         return toNewAttempts(newAttempts);
     }
 
+    public VerificationAttempts addAll(final VerificationAttempts attemptsToAdd) {
+        final Collection<VerificationAttempt> newAttempts = new ArrayList<>(this.attempts);
+        newAttempts.addAll(attemptsToAdd.attempts);
+        return toNewAttempts(newAttempts);
+    }
+
     public Instant getMostRecentTimestamp() {
         Instant latest = Instant.MIN;
         for (final VerificationAttempt attempt : attempts) {
@@ -79,6 +86,19 @@ public class VerificationAttempts implements Iterable<VerificationAttempt> {
         final Collection<VerificationAttempt> remainingAttempts = new ArrayList<>(attempts);
         remainingAttempts.removeAll(attemptsToRemove);
         return toNewAttempts(remainingAttempts);
+    }
+
+    public VerificationAttempts getByContextId(final UUID contextId) {
+        final Collection<VerificationAttempt> contextIdAttempts = attempts.stream()
+                .filter(attempt -> attempt.getContextId().equals(contextId))
+                .collect(Collectors.toList());
+        return toNewAttempts(contextIdAttempts);
+    }
+
+    public Collection<UUID> getContextIds() {
+        return attempts.stream()
+                .map(VerificationAttempt::getContextId)
+                .collect(Collectors.toSet());
     }
 
     private VerificationAttempts toNewAttempts(final Collection<VerificationAttempt> newAttempts) {

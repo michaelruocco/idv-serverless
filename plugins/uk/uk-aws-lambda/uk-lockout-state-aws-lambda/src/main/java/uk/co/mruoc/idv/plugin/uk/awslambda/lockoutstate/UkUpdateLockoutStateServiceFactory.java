@@ -52,13 +52,6 @@ public class UkUpdateLockoutStateServiceFactory implements UpdateLockoutStateSer
         return buildService();
     }
 
-    /*private final VerificationAttemptsService attemptsService;
-    private final LoadLockoutStateService loadLockoutStateService;
-    private final LockoutStateCalculationService calculationService;
-    private final VerificationAttemptConverter attemptConverter;
-    private final LockoutPoliciesService policiesService;
-    private final GetVerificationContextService getContextService;*/
-
     private UpdateLockoutStateService buildService() {
         final VerificationAttemptsService attemptsService = VerificationAttemptsService.builder()
                 .identityService(identityService)

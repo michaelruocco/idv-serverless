@@ -35,7 +35,7 @@ public class VerificationAttemptsDeserializer extends StdDeserializer<Verificati
     private static Collection<VerificationAttempt> toAttempts(final JsonNode attempts) {
         final Collection<VerificationAttempt> collection = new ArrayList<>();
         for (int i = 0; i < attempts.size(); i++) {
-            final JsonNode attempt = attempts.get(0);
+            final JsonNode attempt = attempts.get(i);
             collection.add(toAttempt(attempt));
         }
         return collection;

@@ -15,19 +15,21 @@ import java.util.List;
 @Slf4j
 public class VerificationAttemptTableFactory {
 
+    private final String keyAttributeName;
     private final String tableName;
 
-    public VerificationAttemptTableFactory(final String tableName) {
+    public VerificationAttemptTableFactory(final String keyAttributeName, final String tableName) {
+        this.keyAttributeName = keyAttributeName;
         this.tableName = tableName;
     }
 
     public void createTable(final AmazonDynamoDB client) throws InterruptedException {
         final List<KeySchemaElement> keySchema = Collections.singletonList(new KeySchemaElement()
-                .withAttributeName("idvId")
+                .withAttributeName(keyAttributeName)
                 .withKeyType(KeyType.HASH));
 
         final List<AttributeDefinition> attributeDefinitions = Collections.singletonList(new AttributeDefinition()
-                .withAttributeName("idvId")
+                .withAttributeName(keyAttributeName)
                 .withAttributeType("S"));
 
         final ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
