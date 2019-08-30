@@ -14,7 +14,10 @@ import uk.co.mruoc.idv.json.JsonConverter;
 import uk.co.mruoc.idv.json.verificationattempts.VerificationAttemptsJsonConverterFactory;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
@@ -52,7 +55,11 @@ public class DynamoVerificationAttemptsDaoTest {
 
     @Test
     public void shouldSaveAttemptsAndLoadByIdvId() {
-        final VerificationAttempts attempts = buildVerificationAttempts();
+        final UUID idvId = UUID.randomUUID();
+        final VerificationAttempts attempts = buildVerificationAttempts(
+                buildAttempt(idvId),
+                buildAttempt(idvId)
+        );
         dao.save(attempts);
 
         final Optional<VerificationAttempts> loadedAttempts = dao.loadByIdvId(attempts.getIdvId());
@@ -65,8 +72,12 @@ public class DynamoVerificationAttemptsDaoTest {
 
     @Test
     public void shouldSaveAttemptsAndLoadByContextId() {
-        final VerificationAttempts attempts = buildVerificationAttempts();
-        final VerificationAttempt attempt1 = attempts.get(0);
+        final UUID idvId = UUID.randomUUID();
+        final VerificationAttempt attempt1 = buildAttempt(idvId);
+        final VerificationAttempts attempts = buildVerificationAttempts(
+                attempt1,
+                buildAttempt(idvId)
+        );
         dao.save(attempts);
 
         final Optional<VerificationAttempts> loadedAttempts = dao.loadByContextId(attempt1.getContextId());
@@ -86,20 +97,43 @@ public class DynamoVerificationAttemptsDaoTest {
         assertThat(loadedAttempts).isEmpty();
     }
 
-    private static VerificationAttempts buildVerificationAttempts() {
+    @Test
+    public void shouldAddAttemptsToExistingAttemptsWhenSaving() {
+        final UUID contextId = UUID.randomUUID();
+        final UUID idvId = UUID.randomUUID();
+        final VerificationAttempts attempts1 = buildVerificationAttempts(
+                buildAttempt(idvId, contextId)
+        );
+        final VerificationAttempts attempts2 = buildVerificationAttempts(
+                buildAttempt(idvId, contextId)
+        );
+        dao.save(attempts1);
+        dao.save(attempts2);
+
+        final Optional<VerificationAttempts> loadedAttempts = dao.loadByContextId(contextId);
+
+        assertThat(loadedAttempts.isPresent()).isTrue();
+        assertThat(loadedAttempts.get())
+                .usingElementComparator(new VerificationAttemptComparator())
+                .containsExactlyElementsOf(merge(attempts1, attempts2));
+    }
+
+    private static VerificationAttempts buildVerificationAttempts(final VerificationAttempt... attempts) {
         final UUID idvId = UUID.randomUUID();
         final UUID lockoutStateId = UUID.randomUUID();
-        final VerificationAttempt attempt1 = buildAttempt(idvId);
-        final VerificationAttempt attempt2 = buildAttempt(idvId);
         return VerificationAttempts.builder()
                 .idvId(idvId)
                 .lockoutStateId(lockoutStateId)
-                .attempts(Arrays.asList(attempt1, attempt2))
+                .attempts(Arrays.asList(attempts))
                 .build();
     }
 
     private static VerificationAttempt buildAttempt(final UUID idvId) {
         final UUID contextId = UUID.randomUUID();
+        return buildAttempt(idvId, contextId);
+    }
+
+    private static VerificationAttempt buildAttempt(final UUID idvId, final UUID contextId) {
         final UUID verificationId = UUID.randomUUID();
         return VerificationAttempt.builder()
                 .contextId(contextId)
@@ -111,6 +145,12 @@ public class DynamoVerificationAttemptsDaoTest {
                 .timestamp(Instant.now())
                 .verificationId(verificationId)
                 .build();
+    }
+
+    private static Collection<VerificationAttempt> merge(final VerificationAttempts attempts1, final VerificationAttempts attempts2) {
+        final Collection<VerificationAttempt> allAttempts = new ArrayList<>(attempts1.toCollection());
+        allAttempts.addAll(attempts2.toCollection());
+        return Collections.unmodifiableCollection(allAttempts);
     }
 
     private static class VerificationAttemptComparator implements Comparator<VerificationAttempt> {
