@@ -28,7 +28,7 @@ remove:
 	sls remove -s $(env) --conceal
 
 postman:
-	$(eval HOST = $(shell java -jar tools/api-gateway/build/libs/api-gateway-*-standalone.jar -n idv -s $(env)))
+	$(eval HOST = $(shell java -jar tools/api-gateway/build/libs/api-gateway-*-standalone.jar -n idv-serverless -s $(env)))
 	cd postman; \
 	npm install --save-dev newman; \
 	newman run idv.postman_collection.json --env-var host=$(HOST)
