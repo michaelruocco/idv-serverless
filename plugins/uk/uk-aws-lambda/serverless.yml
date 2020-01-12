@@ -1,10 +1,10 @@
 plugins:
   - serverless-iam-roles-per-function
 
-service: idv-serverless
+service: idv
 
 custom:
-  defaultStage: dev
+  defaultStage: sls-dev
   defaultRegion: eu-west-1
   defaultVersion: 1.0.0-SNAPSHOT
 
