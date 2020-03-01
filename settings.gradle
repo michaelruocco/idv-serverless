@@ -1,4 +1,4 @@
-rootProject.name = 'idv'
+rootProject.name = 'idv-serverless'
 
 include 'core:authorizer-core'
 include 'core:identity-core'
