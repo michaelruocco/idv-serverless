@@ -1,9 +1,9 @@
 # IDV Serverless
 
-[![Build Status](https://travis-ci.org/michaelruocco/idv.svg?branch=master)](https://travis-ci.org/michaelruocco/idv)
-[![Coverage Status](https://coveralls.io/repos/github/michaelruocco/idv/badge.svg?branch=master)](https://coveralls.io/github/michaelruocco/idv?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bf0e7c1e4ce54853bdad4570230cc33c)](https://app.codacy.com/app/michaelruocco/idv?utm_source=github.com&utm_medium=referral&utm_content=michaelruocco/idv&utm_campaign=Badge_Grade_Dashboard)
-[![BCH compliance](https://bettercodehub.com/edge/badge/michaelruocco/idv?branch=master)](https://bettercodehub.com/)
+[![Build Status](https://travis-ci.org/michaelruocco/idv-serverless.svg?branch=master)](https://travis-ci.org/michaelruocco/idv-serverless)
+[![Coverage Status](https://coveralls.io/repos/github/michaelruocco/idv-serverless/badge.svg?branch=master)](https://coveralls.io/github/michaelruocco/idv-serverless?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4b2b137a83d14e9382fcad07090785ad)](https://www.codacy.com/manual/michaelruocco/idv-serverless?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=michaelruocco/idv-serverless&amp;utm_campaign=Badge_Grade)
+[![BCH compliance](https://bettercodehub.com/edge/badge/michaelruocco/idv-serverless?branch=master)](https://bettercodehub.com/)
 
 ## Running Unit Tests
 
