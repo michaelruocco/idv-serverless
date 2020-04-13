@@ -16,8 +16,11 @@ checkDependencies:
 
 deploy:
 	cd plugins/uk/uk-aws-lambda; \
+	npm update; \
 	npm install --save-dev serverless; \
 	npm install --save-dev serverless-iam-roles-per-function; \
+	npm audit; \
+	npm audit fix; \
 	sls deploy -s $(env) --conceal
 
 remove:
